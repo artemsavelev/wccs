@@ -2,9 +2,12 @@
   <div>
     <HeaderTable v-bind:typeSection="typeSection"/>
 
-    <DataContent/>
+    <DataContent v-for="item in devices"
+                 :key="item.id"
+                 v-bind:item="item"/>
 
     <ModalWin v-bind:typeSection="typeSection"
+              v-on:add="addDevice"
               v-bind:data="data"/>
   </div>
 </template>
@@ -18,11 +21,12 @@ import DataContent from "@/components/DataContent";
 
 export default {
   name: "ActiveDevice",
-  components: {DataContent, HeaderTable, ModalWin },
+  components: { DataContent, HeaderTable, ModalWin },
   data() {
     return {
       typeSection: 1,
-      data: []
+      data: [],
+      devices: []
 
     }
   },
@@ -30,8 +34,14 @@ export default {
     req.requestData(api.API_DEVICE_URL, 'GET')
         .then(response => response.json())
         .then(json => this.data = json)
+
+    // this.devices = JSON.parse(localStorage.getItem('device'))
   },
   methods: {
+    addDevice(item) {
+      this.devices.push(item)
+      console.log(this.devices)
+    }
 
   }
 }

@@ -29,7 +29,7 @@
                 tab: null,
                 items: [
                     { tab: 'персонал', content: 'Tab 1 Content' },
-                    { tab: 'Two', content: 'Tab 2 Content' },
+                    { tab: 'выбор пунктов', content: 'Tab 2 Content' },
                     { tab: 'Three', content: 'Tab 3 Content' },
                 ],
                 grow: true,

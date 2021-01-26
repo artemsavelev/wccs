@@ -17,20 +17,16 @@
 
       <div v-if="typeSection !== 0">
         <v-container>
-
           <v-col cols="12" class="pa-0 ma-0 align-center">
-            <v-text-field
-                dense
-                label="Поиск"
-                outlined
-                v-model="search"/>
+            <v-text-field dense
+                          label="Поиск"
+                          outlined
+                          v-model="search"/>
           </v-col>
 
-
-          <v-col cols="12">
+          <v-col cols="12" class="pa-0">
             <HeaderTable v-bind:type="type"/>
           </v-col>
-
         </v-container>
       </div>
 
@@ -40,42 +36,34 @@
           <div v-if="typeSection === 0">
             <v-row>
               <v-col cols="12">
-                <v-textarea
-                    outlined
-                    :auto-grow="true"
-                    rows="4"
-                    name="input-1"
-                    label="Виды работ"
-                    value="1.2.3."></v-textarea>
-                <v-btn class="mb-5" v-on:click="add" small color="primary" tile>add</v-btn>
+                <v-textarea outlined
+                            :auto-grow="true"
+                            rows="4"
+                            name="input-1"
+                            v-model="typeOfWork"
+                            label="Виды работ"></v-textarea>
 
-                <v-textarea
-                    outlined
-                    :auto-grow="true"
-                    rows="3"
-                    name="input-2"
-                    label="Примечание"
-                    v-model="this.text"></v-textarea>
+                <v-textarea outlined
+                            :auto-grow="true"
+                            rows="3"
+                            name="input-2"
+                            label="Примечание"
+                            v-model="text"></v-textarea>
+                <v-btn class="" v-on:click="add" small color="primary" tile>add</v-btn>
               </v-col>
             </v-row>
-
           </div>
-
-
 
           <div v-else>
             <v-row>
               <v-col cols="12">
-
                 <Item v-for="item of data"
                       :key="item.id"
                       v-on:add="addItem"
                       v-bind:item="item"/>
-
               </v-col>
             </v-row>
           </div>
-
 
         </v-container>
       </v-card-text>
@@ -102,33 +90,24 @@ export default {
       formTitle: '',
       search: '',
       type: 123,
+      typeOfWork: '',
       text: 'Смета ПРЕДВАРИТЕЛЬНАЯ Конечная цена и материал по согласованию строн могут измениться в большую или меньшую сторону. ' +
           'Цены в данной смете действительны в течении 5 (пяти) рабочих дней',
       items: []
-
     }
   },
   methods: {
     addItem(item) {
-      this.items.push(item)
-      // console.log(this.items)
-
-      if (this.typeSection === 1) {
-        localStorage.setItem('device', JSON.stringify(this.items))
-      } else if (this.typeSection === 2) {
-        localStorage.setItem('material', JSON.stringify(this.items))
-      } else if (this.typeSection === 3) {
-        localStorage.setItem('work', JSON.stringify(this.items))
-      } else {
-        localStorage.setItem('types', JSON.stringify(this.items))
-      }
-
-      console.log(localStorage.name)
+      this.$emit('add', item)
 
     },
 
     add() {
-      console.log('test')
+      let type = {
+        typeOfWork: this.typeOfWork,
+        text: this.text
+      }
+      this.$emit('add', type)
 
     },
     close() {

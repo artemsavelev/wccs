@@ -8,7 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -47,7 +46,7 @@ public class MaterialController {
     }
 
     @PostMapping
-    public ResponseEntity<MaterialDto> saveMaterial(@RequestBody @Valid Material material) {
+    public ResponseEntity<MaterialDto> saveMaterial(@RequestBody Material material) {
 
         if (material == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

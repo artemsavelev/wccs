@@ -2,9 +2,12 @@
   <div>
     <HeaderTable v-bind:typeSection="typeSection"/>
 
-    <DataContent/>
+    <DataContent v-for="item in works"
+                 :key="item.id"
+                 v-bind:item="item"/>
 
     <ModalWin v-bind:typeSection="typeSection"
+              v-on:add="addWork"
               v-bind:data="data"/>
   </div>
 </template>
@@ -22,7 +25,8 @@ export default {
   data() {
     return {
       typeSection: 3,
-      data: []
+      data: [],
+      works: []
 
     }
   },
@@ -32,6 +36,13 @@ export default {
         .then(response => response.json())
         .then(json => this.data = json)
   },
+  methods: {
+    addWork(item) {
+      this.works.push(item)
+      console.log(this.works)
+
+    }
+  }
 }
 </script>
 

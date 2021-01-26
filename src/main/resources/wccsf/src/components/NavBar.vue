@@ -4,15 +4,18 @@
 
     <v-spacer ></v-spacer>
 
-    <OrderForm v-bind:orderVal="ordersList"/>
 
-    <v-btn v-if="profile" v-on:click="orders" :disabled="$route.path === '/'" text tile>ORDERS</v-btn>
-    <v-btn v-if="profile" v-on:click="userProfile" :disabled="$route.path === '/profile'" text tile>profile</v-btn>
-    <v-btn class="mr-10" v-if="profile && profile.firstName === 'Артем'"
-           v-on:click="admin" :disabled="$route.path === '/admin'" text tile>administration</v-btn>
-    <v-btn v-if="profile" v-on:click="logout" text tile>
-      <v-icon>{{ mdiExitToApp }}</v-icon>
-    </v-btn>
+
+      <OrderForm v-bind:orderVal="ordersList"/>
+
+      <v-btn v-if="profile" v-on:click="orders" :disabled="$route.path === '/'" text tile>ORDERS</v-btn>
+      <v-btn v-if="profile" v-on:click="userProfile" :disabled="$route.path === '/profile'" text tile>profile</v-btn>
+      <v-btn class="mr-10" v-if="profile && profile.firstName === 'Артем'"
+             v-on:click="admin" :disabled="$route.path === '/admin'" text tile>administration</v-btn>
+      <v-btn v-if="profile" v-on:click="logout" text tile>
+        <v-icon>{{ mdiExitToApp }}</v-icon>
+      </v-btn>
+
 
   </v-app-bar>
 </template>

@@ -131,6 +131,9 @@ export default {
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
+    &-key {
+      justify-content: flex-end;
+    }
   }
 }
 .column-70 {

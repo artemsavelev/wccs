@@ -2,35 +2,38 @@
   <div class="main font-s mt-0">
     <div class="main-container">
       <div class="main-container-wrapper pa-1 column-80">
-
+        {{ item.id }}
       </div>
 
       <div class="main-container-wrapper pa-1 column-700">
-
+        {{ item.name }}
       </div>
       <div class="main-container-wrapper pa-1 column-100">
-
-      </div>
-
-      <div class="main-container-wrapper pa-1 column-100">
-
+        {{ item.dimension }}
       </div>
 
       <div class="main-container-wrapper pa-1 column-100">
-
+        {{ item.quantity }}
       </div>
 
       <div class="main-container-wrapper pa-1 column-100">
-
+        {{ item.price }}
       </div>
 
-      <div class="main-container-wrapper pa-1 column-600">
+      <div class="main-container-wrapper pa-1 column-100">
+        {{ item.price * item.quantity }}
+      </div>
+
+      <div class="main-container-wrapper pa-1 column-200">
 
       </div>
-      <div class="main-container-wrapper column-70">
-        <v-card-actions>
-          <v-btn v-on:click="remove" small color="primary" tile>
-            <v-icon>{{ mdiClose }}</v-icon>
+      <div class="main-container-wrapper-key column-100">
+        <v-card-actions class="pa-0">
+          <v-btn icon v-on:click="edit">
+            <v-icon>{{ mdiPencil }}</v-icon>
+          </v-btn>
+          <v-btn icon v-on:click="remove">
+            <v-icon>{{ mdiDelete }}</v-icon>
           </v-btn>
         </v-card-actions>
       </div>
@@ -40,16 +43,21 @@
 
 <script>
 
-import { mdiClose } from '@mdi/js';
+import { mdiPencil, mdiDelete } from '@mdi/js';
 
 export default {
   name: "DataContent",
+  props: ['item'],
   data() {
     return {
-      mdiClose,
+      mdiPencil,
+      mdiDelete,
     }
   },
   methods: {
+    edit() {
+
+    },
     remove(id) {
       console.log(id)
     }
