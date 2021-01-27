@@ -4,6 +4,8 @@
 
     <DataContent v-for="item in materials"
                  :key="item.id"
+                 v-on:edit="editMaterial"
+                 v-on:remove="removeMaterial"
                  v-bind:item="item"/>
 
     <ModalWin v-bind:typeSection="typeSection"
@@ -22,14 +24,6 @@ import DataContent from "@/components/DataContent";
 export default {
   name: "Materials",
   components: {DataContent, HeaderTable, ModalWin },
-  methods: {
-    addMaterial(item) {
-      this.materials.push(item)
-      console.log(this.materials)
-    }
-
-
-  },
   data() {
     return {
       typeSection: 2,
@@ -39,10 +33,26 @@ export default {
     }
   },
   mounted() {
-
+    // получаем данные с сервера (список материалов)
     req.requestData(api.API_MATERIAL_URL, 'GET')
         .then(response => response.json())
         .then(json => this.data = json)
+  },
+  methods: {
+    // добавление записи в конец массива
+    addMaterial(item) {
+      this.materials.push(item)
+      this.$emit('transmit', this.materials)
+    },
+    // редактироване записи по id
+    editMaterial() {
+
+    },
+    // удаление записи из массива по id
+    removeMaterial(id) {
+      this.materials = this.materials.filter(o => o.id !== id)
+      this.$emit('transmit', this.materials)
+    }
   },
 
 

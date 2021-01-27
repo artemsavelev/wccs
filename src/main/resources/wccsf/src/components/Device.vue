@@ -4,6 +4,8 @@
 
     <DataContent v-for="item in devices"
                  :key="item.id"
+                 v-on:edit="editDevice"
+                 v-on:remove="removeDevice"
                  v-bind:item="item"/>
 
     <ModalWin v-bind:typeSection="typeSection"
@@ -31,16 +33,25 @@ export default {
     }
   },
   mounted() {
+    // получаем данные с сервера (список оборудования)
     req.requestData(api.API_DEVICE_URL, 'GET')
         .then(response => response.json())
         .then(json => this.data = json)
-
-    // this.devices = JSON.parse(localStorage.getItem('device'))
   },
   methods: {
+    // добавление записи в конец массива
     addDevice(item) {
       this.devices.push(item)
-      console.log(this.devices)
+      this.$emit('transmit', this.devices)
+    },
+    // редактироване записи по id
+    editDevice() {
+
+    },
+    // удаление записи из массива по id
+    removeDevice(id) {
+      this.devices = this.devices.filter(o => o.id !== id)
+      this.$emit('transmit', this.devices)
     }
 
   }

@@ -1,7 +1,7 @@
 <template>
   <v-dialog v-model="dialog" width="80%" scrollable persistent>
 
-    <template v-slot:activator="{ on }" class="mt-10">
+    <template v-slot:activator="{ on }" class="mt-1">
       <v-btn v-on="on" small class="mb-10 mt-1" color="primary" tile>добавить</v-btn>
     </template>
     <v-card>
@@ -118,6 +118,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss">
+
 
 </style>

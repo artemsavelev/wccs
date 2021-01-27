@@ -56,10 +56,10 @@ export default {
   },
   methods: {
     edit() {
-
+      this.$emit('edit', this.item.id)
     },
-    remove(id) {
-      console.log(id)
+    remove() {
+      this.$emit('remove', this.item.id)
     }
   }
 }

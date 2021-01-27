@@ -13,8 +13,8 @@
           <v-icon>{{ mdiClose }}</v-icon>
         </v-btn>
       </v-card-title>
-      <v-card-text>
 
+      <v-card-text>
         <v-container>
           <div class="main-header">
             <div class="font-s">
@@ -30,32 +30,23 @@
               составил: {{ profile.lastName }} {{ new Date().toISOString().substr(0, 10) + ' ' + new Date().toTimeString().substr(0, 8)}}
             </div>
           </div>
-
+          <!-- загружаем модули -->
           <TypeOfWork/>
-
-          <Device/>
-
-          <Materials/>
-
-          <Work/>
-
+          <Device v-on:transmit="transmitDevices"/>
+          <Materials v-on:transmit="transmitMaterials"/>
+          <Work v-on:transmit="transmitWorks"/>
         </v-container>
-
       </v-card-text>
 
-
-
-      <v-container class="pt-0 mt-0 ml-5">
-        <div class="">
-          <v-card-actions >
+      <template>
+        <div class="border-top pl-8 pb-5">
+          <v-card-actions class="">
             <v-btn medium v-on:click="create" color="primary" tile>Создать смету</v-btn>
           </v-card-actions>
         </div>
-      </v-container>
+      </template>
 
     </v-card>
-
-
   </v-dialog>
 </template>
 
@@ -70,23 +61,48 @@ import {mapGetters} from "vuex";
 export default {
   name: "Estimate",
   props: ['extId', 'address', 'customer'],
-  components: {TypeOfWork, Device, Materials, Work},
+  components: { TypeOfWork, Device, Materials, Work },
   computed: mapGetters(['profile']),
   data() {
     return {
       mdiCalculator, mdiClose,
       dialog: false,
       formTitle: 'Смета',
-
+      estimate: {},
+      devices: [],
+      materials: [],
+      works: []
     }
   },
   methods: {
     close() {
       this.dialog = false
     },
-
+    transmitDevices(dev) {
+      this.devices = dev
+    },
+    transmitMaterials(mat) {
+      this.materials = mat
+    },
+    transmitWorks(works) {
+      this.works = works
+    },
     create() {
+      this.estimate = {
+        id: this.extId,
+        address: this.address,
+        customer: this.customer,
+        name: this.profile.lastName,
+        type: '',
+        data: {
+          device: this.devices,
+          material: this.materials,
+          work: this.works
+        }
+      }
 
+      console.log(this.estimate)
+      // console.log(dev)
     }
   }
 }
@@ -104,15 +120,13 @@ export default {
 }
 .main-header {
 
-
 }
+
 .main-header-container {
   display: flex;
   align-items: center;
   justify-content: flex-start;
   &-wrapper {
-
-
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
@@ -131,9 +145,6 @@ export default {
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
-    &-key {
-      justify-content: flex-end;
-    }
   }
 }
 .column-70 {
@@ -185,10 +196,24 @@ export default {
   max-width: 900px;
 }
 
-.border {
-  border: 1px solid gray;
+.border-top {
+  border-top: 1px solid #ccc;
   width: 100%;
 }
+//.container {
+//  display: flex;
+//  justify-content: flex-start;
+//  &-item {
+//    //border: 1px solid #ccc;
+//    text-align: left;
+//  }
+//}
+//
+//.container-width {
+//  width: 1080px;
+//  max-width: 1080px;
+//  text-align: left;
+//}
 
 
 </style>

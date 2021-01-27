@@ -27,13 +27,11 @@ export default {
     return {
       typeSection: 0,
       text: {}
-
     }
   },
   methods: {
     addTypeOfWork(text) {
       this.text = text
-      console.log(this.text)
     }
   }
 }

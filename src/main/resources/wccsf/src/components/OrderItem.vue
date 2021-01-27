@@ -1,7 +1,6 @@
 <template>
   <v-container class="pa-0">
     <div class="main">
-
       <div class="main-container">
         <div class="main-container-wrapper pa-1 column-70">
           {{ order.id }}
@@ -18,9 +17,7 @@
             </template>
             <span>Дата создания: {{ order.createdDate }}</span>
           </v-tooltip>
-
         </div>
-
 
         <div class="main-container-wrapper pa-1 column-500">
           <v-tooltip bottom>
@@ -40,27 +37,24 @@
           </v-tooltip>
         </div>
 
-
-
         <div class="main-container-wrapper pa-1 column-300">
-                    <span v-if="order.verificationDate === null" class="text-red">
-                        <v-tooltip bottom>
-                            <template v-slot:activator="{ on }">
-                                <v-icon color="red darken-1" v-on="on">{{ mdiAlertCircle }}</v-icon>
-                            </template>
-                            <span>Статус: в работе</span>
-                        </v-tooltip>
-                    </span>
-
+          <span v-if="order.verificationDate === null" class="text-red">
+            <v-tooltip bottom>
+              <template v-slot:activator="{ on }">
+                <v-icon color="red darken-1" v-on="on">{{ mdiAlertCircle }}</v-icon>
+              </template>
+              <span>Статус: в работе</span>
+            </v-tooltip>
+          </span>
 
           <span v-else-if="order.verificationDate !== null" class="text-green">
-                        <v-tooltip bottom>
-                            <template v-slot:activator="{ on }">
-                                <v-icon color="green darken-2" v-on="on">{{ mdiCheckAll }}</v-icon>
-                            </template>
-                            <span>Статус: завершено и проверено</span>
-                        </v-tooltip>
-                    </span>
+            <v-tooltip bottom>
+              <template v-slot:activator="{ on }">
+                <v-icon color="green darken-2" v-on="on">{{ mdiCheckAll }}</v-icon>
+              </template>
+              <span>Статус: завершено и проверено</span>
+            </v-tooltip>
+          </span>
         </div>
 
         <div class="main-container-wrapper column-200 pl-8">
@@ -72,14 +66,12 @@
                     v-bind:customer="order.customer"
                     v-bind:address="order.address"/>
 
-
           <v-btn icon v-on:click="del">
             <v-icon>{{ mdiDelete }}</v-icon>
           </v-btn>
         </div>
       </div>
     </div>
-
   </v-container>
 </template>
 
@@ -97,11 +89,10 @@ export default {
     ...mapActions(['fetchOrders']),
 
     edit() {
-
-      console.log(this.order.id)
+      this.$emit('edit', this.order.id)
     },
     del() {
-      console.log(this.order.id)
+      this.$emit('remove', this.order.id)
     },
 
 

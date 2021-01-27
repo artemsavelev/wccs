@@ -4,6 +4,8 @@
 
     <DataContent v-for="item in works"
                  :key="item.id"
+                 v-on:edit="editWork"
+                 v-on:remove="removeWork"
                  v-bind:item="item"/>
 
     <ModalWin v-bind:typeSection="typeSection"
@@ -31,16 +33,25 @@ export default {
     }
   },
   mounted() {
-
+    // получаем данные с сервера (список работ)
     req.requestData(api.API_WORK_URL, 'GET')
         .then(response => response.json())
         .then(json => this.data = json)
   },
   methods: {
+    // добавление записи в конец массива
     addWork(item) {
       this.works.push(item)
-      console.log(this.works)
+      this.$emit('transmit', this.works)
+    },
+    // редактироване записи по id
+    editWork() {
 
+    },
+    // удаление записи из массива по id
+    removeWork(id) {
+      this.works = this.works.filter(o => o.id !== id)
+      this.$emit('transmit', this.works)
     }
   }
 }
