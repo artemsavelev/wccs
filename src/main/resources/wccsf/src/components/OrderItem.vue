@@ -129,6 +129,10 @@ export default {
       overflow: hidden;
     }
   }
+  .column-50 {
+    width: 50px;
+    max-width: 50px;
+  }
   .column-70 {
     width: 70px;
     max-width: 70px;

@@ -6,8 +6,8 @@
     </template>
     <v-card>
 
-      <v-card-title class="headline grey lighten-2">
-        <span class="header-modal">{{formTitle}}</span>
+      <v-card-title class="grey lighten-2">
+        <span class="font-xl">{{formTitle}}</span>
         <v-spacer></v-spacer>
         <v-btn small text tile v-on:click="close">
           <v-icon>{{ mdiClose }}</v-icon>
@@ -54,7 +54,7 @@
             </v-row>
           </div>
 
-          <div v-else>
+          <div v-else-if="typeSection === 1 || typeSection === 2 || typeSection === 3">
             <v-row>
               <v-col cols="12">
                 <Item v-for="item of data"
@@ -76,8 +76,6 @@
 import { mdiClose } from '@mdi/js';
 import Item from "@/components/Item";
 import HeaderTable from "@/components/HeaderTable";
-
-
 
 export default {
   name: "ModalWin",

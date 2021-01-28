@@ -1,0 +1,146 @@
+<template>
+
+  <div class="main-section mb-3 font-s">
+    <div class="outer-container">
+
+      <div class="inner-container">
+        <div class="inner-container-item column-1150 brd-bottom-2">
+          {{  }}. {{  }}:
+        </div>
+      </div>
+
+      <div class="inner-container grey lighten-2 font-weight-bold">
+        <div class="inner-container-item column-50 pl-1 brd-bottom brd-right brd-left-2">
+          #
+        </div>
+        <div class="inner-container-item column-700 pl-1 brd-bottom brd-right">
+          Наименование
+        </div>
+        <div class="inner-container-item column-100 pl-1 brd-bottom brd-right">
+          Ед. изм.
+        </div>
+        <div class="inner-container-item column-100 pl-1 brd-bottom brd-right">
+          Кол-во
+        </div>
+        <div class="inner-container-item column-100 pl-1 brd-bottom brd-right">
+          Цена
+        </div>
+        <div class="inner-container-item column-100 pl-1 brd-bottom brd-right-2">
+          Стоимость
+        </div>
+      </div>
+
+      <div class="inner-container">
+        <div class="inner-container-item column-50 pl-1 brd-bottom brd-right brd-left-2">
+          1
+        </div>
+        <div class="inner-container-item column-700 pl-1 brd-bottom brd-right">
+          2
+        </div>
+        <div class="inner-container-item column-100 pl-1 brd-bottom brd-right">
+          3
+        </div>
+        <div class="inner-container-item column-100 pl-1 brd-bottom brd-right">
+          4
+        </div>
+        <div class="inner-container-item column-100 pl-1 brd-bottom brd-right">
+          5
+        </div>
+        <div class="inner-container-item column-100 pl-1 brd-bottom brd-right-2">
+          6
+        </div>
+      </div>
+
+      <div class="inner-container grey lighten-2 font-weight-bold">
+        <div class="inner-container-item column-1050 pl-1 pr-1 brd-right brd-left-2 t-align-right brd-bottom-2">
+          ИТОГО {{  }} :
+        </div>
+        <div class="inner-container-item column-100 pl-1 brd-bottom-2 brd-right-2">
+          {{ value.toLocaleString('ru-RU') }}
+        </div>
+      </div>
+    </div>
+  </div>
+
+</template>
+
+<script>
+export default {
+  name: "Section",
+  data() {
+    return {
+      value: 100000000,
+    }
+  },
+  filters: {
+    format: val => `${val}`.replace(/(\d)(?=(\d{3})+([^\d]|$))/g, '$1 '),
+  },
+}
+</script>
+
+<style scoped lang="scss">
+
+.main-section {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  color: black;
+
+}
+
+.outer-container {
+
+
+}
+
+.inner-container {
+  display: flex;
+  &-item {
+
+  }
+}
+
+.t-align-right {
+  text-align: right;
+}
+
+.brd-top {
+  border-top: 1px solid black;
+}
+
+.brd-bottom {
+  border-bottom: 1px solid black;
+}
+
+.brd-bottom-2 {
+  border-bottom: 2px solid black;
+}
+
+.brd-left {
+  border-left: 1px solid black;
+}
+
+.brd-left-2 {
+  border-left: 2px solid black;
+}
+
+.brd-right {
+  border-right: 1px solid black;
+}
+.brd-right-2 {
+  border-right: 2px solid black;
+}
+
+.column-1050 {
+  width: 1050px;
+  max-width: 1050px;
+}
+
+.column-1150 {
+  width: 1150px;
+  max-width: 1150px;
+}
+
+
+
+</style>

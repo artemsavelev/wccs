@@ -26,9 +26,8 @@ export default {
 
         async login({ commit }, { username, password }) {
             try {
-
                 const data = { username, password };
-                console.log(data)
+                // console.log(data)
 
                 const response = await fetch(api.API_AUTH_URL, {
                     method: 'POST',

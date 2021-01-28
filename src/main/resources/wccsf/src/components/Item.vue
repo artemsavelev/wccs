@@ -13,11 +13,11 @@
       </div>
 
       <div class="main-container-wrapper pa-1 column-100">
-        <input type="text" placeholder="0" v-model="quantity"/>
+        <input type="text" placeholder="0" v-model="quantity" class="input"/>
       </div>
 
       <div class="main-container-wrapper pa-1 column-100">
-        {{ item.price }}
+        {{ item.price.toLocaleString('ru-RU') }}
       </div>
 
       <div class="main-container-wrapper pa-1 column-600">
@@ -55,24 +55,27 @@ export default {
       }
       this.$emit('add', obj)
     }
-  }
+  },
+  filters: {
+    format: val => `${val}`.replace(/(\d)(?=(\d{3})+([^\d]|$))/g, '$1 '),
+  },
 }
 </script>
 
 <style scoped>
-input {
+.input {
   border: 1px solid gray;
   width: 70px;
-  border-radius: 0px;
-  padding-left: 5px;
-  padding-right: 5px;
-  text-align: center;
+  text-align: right;
+  padding: 2px;
+  outline:none;
 }
 
-input:focus {
-  border: 1px solid #1976d2;
+.input:focus {
+  border: 2px solid #1976d2;
   width: 70px;
-  border-radius: 0;
+  outline:none;
 
 }
+
 </style>

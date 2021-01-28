@@ -13,15 +13,15 @@
       </div>
 
       <div class="main-container-wrapper pa-1 column-100">
-        {{ item.quantity }}
+        {{ item.quantity.toLocaleString('ru-RU') }}
       </div>
 
       <div class="main-container-wrapper pa-1 column-100">
-        {{ item.price }}
+        {{ item.price.toLocaleString('ru-RU') }}
       </div>
 
       <div class="main-container-wrapper pa-1 column-100">
-        {{ item.price * item.quantity }}
+        {{ item.price * item.quantity | format }}
       </div>
 
       <div class="main-container-wrapper pa-1 column-200">
@@ -61,7 +61,10 @@ export default {
     remove() {
       this.$emit('remove', this.item.id)
     }
-  }
+  },
+  filters: {
+    format: val => `${val}`.replace(/(\d)(?=(\d{3})+([^\d]|$))/g, '$1 '),
+  },
 }
 </script>
 

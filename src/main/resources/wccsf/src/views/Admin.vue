@@ -30,7 +30,7 @@
                 items: [
                     { tab: 'персонал', content: 'Tab 1 Content' },
                     { tab: 'выбор пунктов', content: 'Tab 2 Content' },
-                    { tab: 'Three', content: 'Tab 3 Content' },
+                    { tab: 'настройка окружения', content: 'Tab 3 Content' },
                 ],
                 grow: true,
             }

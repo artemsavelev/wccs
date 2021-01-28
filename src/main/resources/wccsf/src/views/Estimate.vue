@@ -6,8 +6,14 @@
       </v-btn>
     </template>
     <v-card>
-      <v-card-title class="headline grey lighten-2">
-        <span class="header-modal ml-5">{{formTitle}}</span>
+      <v-card-title class="grey lighten-2">
+        <div class="ml-5 font-xl">{{formTitle}}</div>
+        <v-checkbox v-model="ex"
+                    class="pt-0 pb-0 mt-0 mb-0 ml-5"
+                    color="success"
+                    label="смета предварительная"
+                    value="success"
+                    hide-details></v-checkbox>
         <v-spacer></v-spacer>
         <v-btn small text tile v-on:click="close">
           <v-icon>{{ mdiClose }}</v-icon>
@@ -29,12 +35,16 @@
             <div class="font-s">
               составил: {{ profile.lastName }} {{ new Date().toISOString().substr(0, 10) + ' ' + new Date().toTimeString().substr(0, 8)}}
             </div>
+            <div>
+
+            </div>
           </div>
           <!-- загружаем модули -->
-          <TypeOfWork/>
+          <TypeOfWork v-on:transmit="transmitType"/>
           <Device v-on:transmit="transmitDevices"/>
           <Materials v-on:transmit="transmitMaterials"/>
           <Work v-on:transmit="transmitWorks"/>
+          <!-- // загружаем модули -->
         </v-container>
       </v-card-text>
 
@@ -42,6 +52,7 @@
         <div class="border-top pl-8 pb-5">
           <v-card-actions class="">
             <v-btn medium v-on:click="create" color="primary" tile>Создать смету</v-btn>
+            <Demo/>
           </v-card-actions>
         </div>
       </template>
@@ -55,20 +66,23 @@ import Work from "../components/Work";
 import Materials from "../components/Materials";
 import Device from "../components/Device";
 import TypeOfWork from "../components/TypeOfWork";
+import Demo from "@/components/Demo";
 import { mdiCalculator, mdiClose } from '@mdi/js';
-import {mapGetters} from "vuex";
+import { mapGetters } from "vuex";
 
 export default {
   name: "Estimate",
   props: ['extId', 'address', 'customer'],
-  components: { TypeOfWork, Device, Materials, Work },
+  components: { TypeOfWork, Device, Materials, Work, Demo },
   computed: mapGetters(['profile']),
   data() {
     return {
       mdiCalculator, mdiClose,
       dialog: false,
-      formTitle: 'Смета',
+      formTitle: 'Конструктор сметы',
+      ex: true,
       estimate: {},
+      type: '',
       devices: [],
       materials: [],
       works: []
@@ -77,6 +91,9 @@ export default {
   methods: {
     close() {
       this.dialog = false
+    },
+    transmitType(type) {
+      this.type = type
     },
     transmitDevices(dev) {
       this.devices = dev
@@ -103,7 +120,7 @@ export default {
 
       console.log(this.estimate)
       // console.log(dev)
-    }
+    },
   }
 }
 </script>
