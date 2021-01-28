@@ -19,6 +19,9 @@
 
             <section>
               <div>
+                <div class="font-xl ml-14 font-weight-medium">
+                  Смета
+                </div>
                 <div class="ml-14">
                   по заявке:
                 </div>
@@ -58,12 +61,16 @@
             </section>
 
             <section>
-              <div class="inner-container font-s font-weight-bold">
-                <div class="inner-container-item column-1050 pl-1 pr-1 brd-right brd-left-2 t-align-right brd-bottom-2 brd-top-2">
-                  ИТОГО {{  }} :
-                </div>
-                <div class="inner-container-item column-100 pl-1 brd-bottom-2 brd-right-2 brd-top-2">
-                  000 000 000
+              <div class="main-section mb-3 font-s">
+                <div class="outer-container grey lighten-2">
+                  <div class="inner-container font-s font-weight-bold">
+                    <div class="inner-container-item column-1050 pl-1 pr-1 brd-right brd-left-2 t-align-right brd-bottom-2 brd-top-2">
+                      ИТОГО {{  }} :
+                    </div>
+                    <div class="inner-container-item column-100 pl-1 brd-bottom-2 brd-right-2 brd-top-2">
+                      000 000 000
+                    </div>
+                  </div>
                 </div>
               </div>
             </section>
@@ -85,7 +92,7 @@ export default {
   data() {
     return {
       mdiClose,
-      formTitle: 'Смета',
+      formTitle: 'Пердпросмотр',
       dialog: false,
       typeSection: 4,
     }
@@ -98,11 +105,20 @@ export default {
 }
 </script>
 
-<style scoped lang="scss">
-.inner-container {
+<style lang="scss">
+.main-section {
   display: flex;
+  flex-direction: row;
   justify-content: center;
   color: black;
+}
+
+.outer-container {
+
+}
+
+.inner-container {
+  display: flex;
   &-item {
 
   }
@@ -111,7 +127,6 @@ export default {
 .t-align-right {
   text-align: right;
 }
-
 
 .brd-top {
   border-top: 1px solid black;

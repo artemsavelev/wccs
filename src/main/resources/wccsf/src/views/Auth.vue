@@ -19,7 +19,8 @@
 
     </form>
 
-    <Notifier/>
+    <Notifier v-bind:message="message"
+              v-bind:snackbar="snackbar"/>
 
   </div>
 </template>

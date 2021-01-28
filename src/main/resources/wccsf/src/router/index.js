@@ -18,18 +18,18 @@ const routes = [
   {
     path: '/create',
     name: 'Form',
-    component: () => import('../views/OrderForm.vue')
+    component: () => import('../components/OrderForm.vue')
   },
   {
     path: '/profile',
     name: 'Profile',
     component: () => import('../views/Profile.vue')
   },
-  // {
-  //   path: '/estimate',
-  //   name: 'Estimate',
-  //   component: () => import('../views/Estimate.vue')
-  // },
+  {
+    path: '/settings',
+    name: 'Settings',
+    component: () => import('../views/Settings.vue')
+  },
   {
     path: '/admin',
     name: 'Admin',

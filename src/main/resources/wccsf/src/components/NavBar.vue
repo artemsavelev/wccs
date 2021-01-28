@@ -6,15 +6,16 @@
 
 
 
-      <OrderForm v-bind:orderVal="ordersList"/>
+    <OrderForm v-bind:orderVal="ordersList"/>
 
-      <v-btn v-if="profile" v-on:click="orders" :disabled="$route.path === '/'" text tile>ORDERS</v-btn>
-      <v-btn v-if="profile" v-on:click="userProfile" :disabled="$route.path === '/profile'" text tile>profile</v-btn>
-      <v-btn class="mr-10" v-if="profile && profile.firstName === 'Артем'"
-             v-on:click="admin" :disabled="$route.path === '/admin'" text tile>administration</v-btn>
-      <v-btn v-if="profile" v-on:click="logout" text tile>
-        <v-icon>{{ mdiExitToApp }}</v-icon>
-      </v-btn>
+    <v-btn v-if="profile" v-on:click="orders" :disabled="$route.path === '/'" text tile>ORDERS</v-btn>
+    <v-btn v-if="profile" v-on:click="userProfile" :disabled="$route.path === '/profile'" text tile>profile</v-btn>
+    <v-btn v-if="profile" v-on:click="settings" :disabled="$route.path === '/settings'" text tile>settings</v-btn>
+    <v-btn class="mr-10" v-if="profile && profile.firstName === 'Артем'"
+           v-on:click="admin" :disabled="$route.path === '/admin'" text tile>administration</v-btn>
+    <v-btn v-if="profile" v-on:click="logout" text tile>
+      <v-icon>{{ mdiExitToApp }}</v-icon>
+    </v-btn>
 
 
   </v-app-bar>
@@ -22,14 +23,12 @@
 
 <script>
 import { mdiExitToApp } from '@mdi/js';
-import OrderForm from "../views/OrderForm";
+import OrderForm from "./OrderForm";
 import { mapGetters } from "vuex";
 export default {
   name: "NavBar",
   components: { OrderForm },
-
   computed: mapGetters(['profile']),
-
   data() {
     return {
       ordersList: [],
@@ -44,6 +43,9 @@ export default {
     },
     userProfile() {
       this.$router.push('/profile')
+    },
+    settings() {
+      this.$router.push('/settings')
     },
     admin() {
       this.$router.push('/admin')

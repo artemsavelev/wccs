@@ -62,10 +62,10 @@
 </template>
 
 <script>
-import Work from "../components/Work";
-import Materials from "../components/Materials";
-import Device from "../components/Device";
-import TypeOfWork from "../components/TypeOfWork";
+import Work from "./Work";
+import Materials from "./Materials";
+import Device from "./Device";
+import TypeOfWork from "./TypeOfWork";
 import Demo from "@/components/Demo";
 import { mdiCalculator, mdiClose } from '@mdi/js';
 import { mapGetters } from "vuex";
@@ -217,20 +217,6 @@ export default {
   border-top: 1px solid #ccc;
   width: 100%;
 }
-//.container {
-//  display: flex;
-//  justify-content: flex-start;
-//  &-item {
-//    //border: 1px solid #ccc;
-//    text-align: left;
-//  }
-//}
-//
-//.container-width {
-//  width: 1080px;
-//  max-width: 1080px;
-//  text-align: left;
-//}
 
 
 </style>

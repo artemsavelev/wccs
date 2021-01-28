@@ -1,8 +1,8 @@
 <template>
-    <v-dialog v-if="profile" v-model="dialog" scrollable width="70%">
+    <v-dialog v-if="profile" v-model="dialog" scrollable width="80%">
 
         <template v-slot:activator="{ on }" class="mt-10">
-            <v-btn :disabled="$route.path === '/profile' || $route.path === '/admin'" dark v-on="on" text tile>CREATE</v-btn>
+            <v-btn :disabled="$route.path === '/profile' || $route.path === '/admin' || $route.path === '/settings'" dark v-on="on" text tile>CREATE</v-btn>
         </template>
         <v-card>
 

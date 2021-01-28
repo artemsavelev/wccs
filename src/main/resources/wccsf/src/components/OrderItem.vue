@@ -78,7 +78,7 @@
 <script>
 import { mdiAlertCircle, mdiCheck, mdiCheckAll, mdiPencil, mdiDelete } from '@mdi/js';
 import {mapActions, mapGetters} from "vuex";
-import Estimate from "../views/Estimate";
+import Estimate from "./Estimate";
 export default {
   name: 'OrderItem',
   props: ['order', 'editOrder', 'delOrder'],

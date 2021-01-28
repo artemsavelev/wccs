@@ -13,7 +13,7 @@
       </div>
 
       <div class="main-container-wrapper pa-1 column-100">
-        <input type="text" placeholder="0" v-model="quantity" class="input"/>
+        <input type="text" placeholder="0" v-model="quantity" class="input" />
       </div>
 
       <div class="main-container-wrapper pa-1 column-100">
@@ -51,8 +51,9 @@ export default {
         name: this.item.name,
         dimension: this.item.dimension,
         price: this.item.price,
-        quantity: this.quantity
+        quantity: this.quantity === '' ? 1 : 0
       }
+
       this.$emit('add', obj)
     }
   },

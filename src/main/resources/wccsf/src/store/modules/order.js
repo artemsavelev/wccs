@@ -19,17 +19,17 @@ export default {
         }
     },
     actions: {
-        // получаем список задач из БД
         async fetchOrders({commit}) {
             if (localStorage.getItem('user') !== null) {
                 const data = await req.requestData(api.API_ORDER_URL, 'GET');
                 const orders = await data.json();
                 // console.log(orders);
                 commit('updateOrdersMutation', orders);
+            } else {
+                // errors
             }
         },
 
-        // добавляем новую запись в БД
         async addOrder({commit, state}, order) {
             const data = await req.responseData(api.API_ORDER_URL, 'POST', order);
             const orders = await data.json();

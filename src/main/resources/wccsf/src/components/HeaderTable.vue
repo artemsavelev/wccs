@@ -17,28 +17,25 @@
 
 
       <div class="main-container-wrapper pa-1 column-80">
-        №
+        {{ env.id }}
       </div>
-
       <div class="main-container-wrapper pa-1 column-700">
-        Наименование
+        {{ env.name }}
       </div>
       <div class="main-container-wrapper pa-1 column-100">
-        Ед. изм.
+        {{ env.dimension }}
       </div>
-
       <div class="main-container-wrapper pa-1 column-100">
-        Кол-во
+        {{ env.quantity }}
       </div>
-
       <div class="main-container-wrapper pa-1 column-100">
-        Цена
+        {{ env.price }}
       </div>
 
 
 
       <div class="main-container-wrapper pa-1 column-100" v-if="type !== 123">
-        Стоимость
+        {{ env.sum }}
       </div>
 
       <div class="main-container-wrapper pa-1 column-200" v-if="type !== 123">
@@ -56,16 +53,15 @@
 </template>
 
 <script>
+import env from '../../env.json'
+
 export default {
   name: "HeaderTable",
   props: ['typeSection', 'type'],
 
   data() {
     return {
-
-
-
-
+      env
     }
   },
 }
