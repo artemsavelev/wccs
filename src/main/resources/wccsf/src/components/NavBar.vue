@@ -4,15 +4,13 @@
 
     <v-spacer ></v-spacer>
 
-
-
     <OrderForm v-bind:orderVal="ordersList"/>
 
-    <v-btn v-if="profile" v-on:click="orders" :disabled="$route.path === '/'" text tile>ORDERS</v-btn>
-    <v-btn v-if="profile" v-on:click="userProfile" :disabled="$route.path === '/profile'" text tile>profile</v-btn>
-    <v-btn v-if="profile" v-on:click="settings" :disabled="$route.path === '/settings'" text tile>settings</v-btn>
+    <v-btn v-if="profile" v-on:click="orders" :disabled="$route.path === '/'" text tile>{{ env.keyOrder }}</v-btn>
+    <v-btn v-if="profile" v-on:click="userProfile" :disabled="$route.path === '/profile'" text tile>{{ env.keyProfile }}</v-btn>
+    <v-btn v-if="profile" v-on:click="settings" :disabled="$route.path === '/settings'" text tile>{{ env.keySetting }}</v-btn>
     <v-btn class="mr-10" v-if="profile && profile.firstName === 'Артем'"
-           v-on:click="admin" :disabled="$route.path === '/admin'" text tile>administration</v-btn>
+           v-on:click="admin" :disabled="$route.path === '/admin'" text tile>{{ env.keyAdministration }}</v-btn>
     <v-btn v-if="profile" v-on:click="logout" text tile>
       <v-icon>{{ mdiExitToApp }}</v-icon>
     </v-btn>
@@ -22,6 +20,7 @@
 </template>
 
 <script>
+import env from "../../env.config.json"
 import { mdiExitToApp } from '@mdi/js';
 import OrderForm from "./OrderForm";
 import { mapGetters } from "vuex";
@@ -31,6 +30,7 @@ export default {
   computed: mapGetters(['profile']),
   data() {
     return {
+      env,
       ordersList: [],
       dialog: false,
       mdiExitToApp

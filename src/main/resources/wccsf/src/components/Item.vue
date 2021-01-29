@@ -1,7 +1,7 @@
 <template>
   <div class="main font-s mt-0">
     <div class="main-container">
-      <div class="main-container-wrapper pa-1 column-70">
+      <div class="main-container-wrapper pa-1 column-80">
         {{ item.id }}
       </div>
 
@@ -23,9 +23,11 @@
       <div class="main-container-wrapper pa-1 column-600">
         {{ item.note }}
       </div>
-      <div class="main-container-wrapper column-70">
-        <v-card-actions>
-          <v-btn v-on:click="add" small color="primary" tile>add</v-btn>
+      <div class="main-container-wrapper column-70 ">
+        <v-card-actions class="ma-0 pa-0">
+          <v-btn v-on:click="add" icon>
+            <v-icon>{{ mdiPlus }}</v-icon>
+          </v-btn>
         </v-card-actions>
       </div>
     </div>
@@ -33,12 +35,16 @@
 </template>
 
 <script>
+import env from "../../env.config.json"
+import { mdiPlus } from '@mdi/js';
+
 export default {
   name: "Item",
   props: ['item', 'typeSection'],
   data() {
     return {
-
+      env,
+      mdiPlus,
       quantity: ''
 
     }
@@ -77,6 +83,9 @@ export default {
   width: 70px;
   outline:none;
 
+}
+.t-align-right {
+  text-align: right;
 }
 
 </style>

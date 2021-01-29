@@ -24,16 +24,17 @@
         <v-container>
           <div class="main-header">
             <div class="font-s">
-              по заявке: {{ extId }}
+              {{ env.request }}: {{ extId }}
             </div>
             <div class="font-s">
-              по адресу: {{ address }}
+              {{ env.address }}: {{ address }}
             </div>
             <div class="font-s">
-              от компании: {{ customer }}
+              {{ env.customer }}: {{ customer }}
             </div>
             <div class="font-s">
-              составил: {{ profile.lastName }} {{ new Date().toISOString().substr(0, 10) + ' ' + new Date().toTimeString().substr(0, 8)}}
+              {{ env.owner }}: {{ profile.lastName }} {{ profile.firstName}}
+              {{ new Date().toISOString().substr(0, 10) + ' ' + new Date().toTimeString().substr(0, 8)}}
             </div>
             <div>
 
@@ -51,7 +52,7 @@
       <template>
         <div class="border-top pl-8 pb-5">
           <v-card-actions class="">
-            <v-btn medium v-on:click="create" color="primary" tile>Создать смету</v-btn>
+            <v-btn medium v-on:click="create" color="primary" tile>{{ env.keyMakeEstimate }}</v-btn>
             <Demo/>
           </v-card-actions>
         </div>
@@ -62,11 +63,12 @@
 </template>
 
 <script>
+import env from "../../env.config.json"
 import Work from "./Work";
 import Materials from "./Materials";
 import Device from "./Device";
 import TypeOfWork from "./TypeOfWork";
-import Demo from "@/components/Demo";
+import Demo from "@/components/Preview";
 import { mdiCalculator, mdiClose } from '@mdi/js';
 import { mapGetters } from "vuex";
 
@@ -77,6 +79,7 @@ export default {
   computed: mapGetters(['profile']),
   data() {
     return {
+      env,
       mdiCalculator, mdiClose,
       dialog: false,
       formTitle: 'Конструктор сметы',
@@ -111,11 +114,10 @@ export default {
         customer: this.customer,
         name: this.profile.lastName,
         type: '',
-        data: {
-          device: this.devices,
-          material: this.materials,
-          work: this.works
-        }
+        device: this.devices,
+        material: this.materials,
+        work: this.works
+
       }
 
       console.log(this.estimate)

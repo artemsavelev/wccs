@@ -2,7 +2,7 @@
   <div>
     <div class="main font-s mt-5">
       <div class="font-s mt-1">
-        Виды работ:
+        {{ env.typeWork }}:
       </div>
       <div class="font-s mt-0">
         {{ this.text.typeOfWork }}
@@ -18,6 +18,7 @@
 </template>
 
 <script>
+import env from "../../env.config.json"
 import ModalWin from "./ModalWin";
 
 export default {
@@ -25,6 +26,7 @@ export default {
   components: { ModalWin },
   data() {
     return {
+      env,
       typeSection: 0,
       text: {}
     }

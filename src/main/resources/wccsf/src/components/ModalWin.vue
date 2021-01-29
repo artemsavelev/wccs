@@ -2,7 +2,7 @@
   <v-dialog v-model="dialog" width="80%" scrollable persistent>
 
     <template v-slot:activator="{ on }" class="mt-1">
-      <v-btn v-on="on" small class="mb-10 mt-1" color="primary" tile>добавить</v-btn>
+      <v-btn v-on="on" small class="mb-10 mt-1" color="primary" tile>{{ env.keyAdd }}</v-btn>
     </template>
     <v-card>
 
@@ -24,13 +24,13 @@
                           v-model="search"/>
           </v-col>
 
-          <v-col cols="12" class="pa-0">
+          <v-col class="pt-0 pr-3 pb-0 pl-3">
             <HeaderTable v-bind:type="type"/>
           </v-col>
         </v-container>
       </div>
 
-      <v-card-text>
+      <v-card-text class="ma-0 pa-0">
         <v-container>
 
           <div v-if="typeSection === 0">
@@ -49,14 +49,14 @@
                             name="input-2"
                             label="Примечание"
                             v-model="text"></v-textarea>
-                <v-btn class="" v-on:click="add" small color="primary" tile>add</v-btn>
+                <v-btn class="" v-on:click="add" small color="primary" tile>{{ env.keyAdd }}</v-btn>
               </v-col>
             </v-row>
           </div>
 
           <div v-else-if="typeSection === 1 || typeSection === 2 || typeSection === 3">
-            <v-row>
-              <v-col cols="12">
+            <v-row class="pl-3">
+              <v-col>
                 <Item v-for="item of data"
                       :key="item.id"
                       v-on:add="addItem"
@@ -73,6 +73,7 @@
 </template>
 
 <script>
+import env from "../../env.config.json";
 import { mdiClose } from '@mdi/js';
 import Item from "@/components/Item";
 import HeaderTable from "@/components/HeaderTable";
@@ -83,14 +84,14 @@ export default {
   props: ['typeSection', 'data'],
   data() {
     return {
+      env,
       mdiClose,
       dialog: false,
       formTitle: '',
       search: '',
       type: 123,
       typeOfWork: '',
-      text: 'Смета ПРЕДВАРИТЕЛЬНАЯ Конечная цена и материал по согласованию строн могут измениться в большую или меньшую сторону. ' +
-          'Цены в данной смете действительны в течении 5 (пяти) рабочих дней',
+      text: env.preliminary,
       items: []
     }
   },

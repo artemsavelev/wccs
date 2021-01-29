@@ -53,7 +53,7 @@
 
       <div class="inner-container grey lighten-2 font-weight-medium">
         <div class="inner-container-item column-1050 pl-1 pr-1 brd-right brd-left-2 t-align-right brd-bottom-2">
-          ИТОГО {{  }} :
+          {{ env.total }}:
         </div>
         <div class="inner-container-item column-100 pl-1 brd-bottom-2 brd-right-2">
           {{ value.toLocaleString('ru-RU') }}
@@ -65,14 +65,14 @@
 </template>
 
 <script>
-import env from '../../env.json'
+import env from '../../env.config.json'
 
 export default {
   name: "Section",
   data() {
     return {
+      env,
       value: 100000000,
-      env
 
     }
   },

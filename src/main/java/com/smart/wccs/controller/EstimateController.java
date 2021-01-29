@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequestMapping(value = "/api/v1/")
 public class EstimateController {
 
     private final EstimateService estimateService;
@@ -20,7 +21,7 @@ public class EstimateController {
         this.estimateService = estimateService;
     }
 
-    @RequestMapping(value = "", method = RequestMethod.POST)
+    @RequestMapping(value = "/createEstimate", method = RequestMethod.POST)
     public ResponseEntity<Estimate> saveEstimate(@RequestBody Estimate estimate) {
 
         if (estimate == null) {

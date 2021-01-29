@@ -31,7 +31,7 @@
         <div class="main-container-wrapper pa-1 column-500">
           <v-tooltip bottom>
             <template v-slot:activator="{ on }">
-              <span v-on="on">{{ order.address}}</span>
+              <span v-on="on">{{ order.address }}</span>
             </template>
             <span>{{ order.address }}</span>
           </v-tooltip>
@@ -57,7 +57,7 @@
           </span>
         </div>
 
-        <div class="main-container-wrapper column-200 pl-8">
+        <div class="main-container-wrapper column-200 pl-8 t-align-right">
           <v-btn icon v-on:click="edit">
             <v-icon>{{ mdiPencil }}</v-icon>
           </v-btn>
@@ -77,14 +77,14 @@
 
 <script>
 import { mdiAlertCircle, mdiCheck, mdiCheckAll, mdiPencil, mdiDelete } from '@mdi/js';
-import {mapActions, mapGetters} from "vuex";
+import { mapActions, mapGetters } from "vuex";
 import Estimate from "./Estimate";
+
 export default {
   name: 'OrderItem',
   props: ['order', 'editOrder', 'delOrder'],
   computed: mapGetters(['allOrders']),
   components: { Estimate },
-
   methods: {
     ...mapActions(['fetchOrders']),
 
@@ -95,11 +95,7 @@ export default {
       this.$emit('remove', this.order.id)
     },
 
-
   },
-
-
-
   data: () => ({
     mdiAlertCircle, mdiCheck, mdiCheckAll, mdiPencil, mdiDelete,
 
@@ -114,53 +110,56 @@ export default {
 </script>
 
 <style lang="scss">
-
-  .main {
-    border-bottom: 1px solid #ccc;
-    font-size: small;
+.main {
+  border-bottom: 1px solid #ccc;
+  font-size: small;
+}
+.main-container {
+  //border: 1px solid #000000;
+  display: flex;
+  justify-content: space-between;
+  &-wrapper {
+    //border: 1px solid #ccc;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
   }
-  .main-container {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    &-wrapper {
-      white-space: nowrap;
-      text-overflow: ellipsis;
-      overflow: hidden;
-    }
-  }
-  .column-50 {
-    width: 50px;
-    max-width: 50px;
-  }
-  .column-70 {
-    width: 70px;
-    max-width: 70px;
-  }
-  .column-100 {
-    width: 100px;
-    max-width: 100px;
-  }
-  .column-150 {
-    width: 150px;
-    max-width: 150px;
-  }
-  .column-200 {
-    width: 200px;
-    max-width: 200px;
-  }
-  .column-300 {
-    width: 300px;
-    max-width: 300px;
-  }
-  .column-400 {
-    width: 400px;
-    max-width: 400px;
-  }
-  .text-red {
-    color: red;
-  }
-  .text-green {
-    color: green;
-  }
+}
+.t-align-right {
+  text-align: right;
+}
+.column-50 {
+  width: 50px;
+  max-width: 50px;
+}
+.column-70 {
+  width: 70px;
+  max-width: 70px;
+}
+.column-100 {
+  width: 100px;
+  max-width: 100px;
+}
+.column-150 {
+  width: 150px;
+  max-width: 150px;
+}
+.column-200 {
+  width: 200px;
+  max-width: 200px;
+}
+.column-300 {
+  width: 300px;
+  max-width: 300px;
+}
+.column-400 {
+  width: 400px;
+  max-width: 400px;
+}
+.text-red {
+  color: red;
+}
+.text-green {
+  color: green;
+}
 </style>

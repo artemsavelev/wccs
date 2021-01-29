@@ -24,11 +24,9 @@
         {{ item.price * item.quantity | format }}
       </div>
 
-      <div class="main-container-wrapper pa-1 column-200">
 
-      </div>
-      <div class="main-container-wrapper-key column-100">
-        <v-card-actions class="pa-0">
+      <div class="main-container-wrapper column-100">
+        <v-card-actions class="pa-0 ma-0">
           <v-btn icon v-on:click="edit">
             <v-icon>{{ mdiPencil }}</v-icon>
           </v-btn>

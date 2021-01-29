@@ -2,7 +2,7 @@
   <v-dialog v-model="dialog" width="70%"  scrollable persistent>
 
     <template v-slot:activator="{ on }" class="mt-1">
-      <v-btn medium v-on="on" class="ml-5" color="primary" tile>предпросмотр</v-btn>
+      <v-btn medium v-on="on" class="ml-5" color="primary" tile>{{ env.keyPreview }}</v-btn>
     </template>
     <v-card>
 
@@ -20,19 +20,19 @@
             <section>
               <div>
                 <div class="font-xl ml-14 font-weight-medium">
-                  Смета
+                  {{ env.estimate }}
                 </div>
                 <div class="ml-14">
-                  по заявке:
+                  {{ env.request }}:
                 </div>
                 <div class="ml-14">
-                  по адресу:
+                  {{ env.address }}:
                 </div>
                 <div class="ml-14">
-                  от компании:
+                  {{ env.customer }}:
                 </div>
                 <div class="ml-14">
-                  составил:
+                  {{ env.owner }}:
                 </div>
               </div>
             </section>
@@ -40,7 +40,7 @@
             <section>
               <div>
                 <div class="ml-14">
-                  Виды работ:
+                  {{ env.typeWork }}
                 </div>
                 <div class="ml-14">
                   ***
@@ -65,7 +65,7 @@
                 <div class="outer-container grey lighten-2">
                   <div class="inner-container font-s font-weight-bold">
                     <div class="inner-container-item column-1050 pl-1 pr-1 brd-right brd-left-2 t-align-right brd-bottom-2 brd-top-2">
-                      ИТОГО {{  }} :
+                      {{ env.total }} :
                     </div>
                     <div class="inner-container-item column-100 pl-1 brd-bottom-2 brd-right-2 brd-top-2">
                       000 000 000
@@ -83,6 +83,7 @@
 </template>
 
 <script>
+import env from "../../env.config.json"
 import { mdiClose } from '@mdi/js';
 import Section from "@/components/Section";
 
@@ -91,6 +92,7 @@ export default {
   components: { Section },
   data() {
     return {
+      env,
       mdiClose,
       formTitle: 'Пердпросмотр',
       dialog: false,
