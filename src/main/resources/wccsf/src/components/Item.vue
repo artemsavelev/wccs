@@ -79,7 +79,7 @@ export default {
 }
 
 .input:focus {
-  border: 2px solid #1976d2;
+  border: 1px solid #1976d2;
   width: 70px;
   outline:none;
 

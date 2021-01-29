@@ -1,55 +1,53 @@
 <template>
-    <v-card class="mx-auto mt-2" max-width="1000" tile>
+  <v-card class="mx-auto mt-2" max-width="1000" tile>
 
-        <v-img height="100%" width="100%"
-               src="https://ves-rf.ru/sites/default/files/article-img/20161119/6.jpg">
+    <v-img height="100%" width="100%"
+           src="https://ves-rf.ru/sites/default/files/article-img/20161119/6.jpg">
 
-            <v-row align="end" class="fill-height">
+      <v-row align="end" class="fill-height">
+        <v-col align-self="start" class="pa-0" cols="12">
+          <v-avatar class="profile"
+                    color="grey"
+                    size="364"
+                    tile>
 
-                <v-col align-self="start" class="pa-0" cols="12">
+            <v-img src="https://cdn.vuetifyjs.com/images/profiles/marcus.jpg"></v-img>
+          </v-avatar>
 
-                    <v-avatar class="profile"
-                              color="grey"
-                              size="364"
-                              tile>
+        </v-col>
+        <v-col class="py-0">
+          <v-list-item color="rgba(0, 0, 0, .4)" dark>
 
-                        <v-img src="https://cdn.vuetifyjs.com/images/profiles/marcus.jpg"></v-img>
+            <v-list-item-content>
+              <v-list-item-title class="title">{{profile.lastName}} {{profile.firstName}}</v-list-item-title>
+              <v-list-item-subtitle>{{ env.login }}: {{profile.username}}</v-list-item-subtitle>
+              <v-list-item-subtitle>{{ env.email }}: {{profile.email}}</v-list-item-subtitle>
+              <v-list-item-subtitle>{{ env.department }}: </v-list-item-subtitle>
+              <v-list-item-subtitle>{{ env.position }}: Network Engineer</v-list-item-subtitle>
+              <v-list-item-subtitle>{{profile.roles}}</v-list-item-subtitle>
+            </v-list-item-content>
 
-                    </v-avatar>
-
-                </v-col>
-                <v-col class="py-0">
-
-                    <v-list-item color="rgba(0, 0, 0, .4)" dark>
-
-                        <v-list-item-content>
-                            <v-list-item-title class="title">{{profile.lastName}} {{profile.firstName}}</v-list-item-title>
-                            <v-list-item-subtitle>Login: {{profile.username}}</v-list-item-subtitle>
-                            <v-list-item-subtitle>E-mail: {{profile.email}}</v-list-item-subtitle>
-                            <v-list-item-subtitle>Department: </v-list-item-subtitle>
-                            <v-list-item-subtitle>Position: Network Engineer</v-list-item-subtitle>
-                            <v-list-item-subtitle>{{profile.roles}}</v-list-item-subtitle>
-                        </v-list-item-content>
-
-                    </v-list-item>
-
-                </v-col>
-            </v-row>
-        </v-img>
-    </v-card>
+          </v-list-item>
+        </v-col>
+      </v-row>
+    </v-img>
+  </v-card>
 </template>
 
 <script>
+import env from "../../env.config.json"
+import {mapGetters} from "vuex";
 
-
-
-    import {mapGetters} from "vuex";
-
-    export default {
-        name: "Profile",
-        computed: mapGetters(['profile']),
-
+export default {
+  name: "Profile",
+  computed: mapGetters(['profile']),
+  data() {
+    return {
+      env
     }
+  }
+
+}
 </script>
 
 <style scoped>

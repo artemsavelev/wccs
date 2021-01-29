@@ -17,10 +17,11 @@
 
       <div v-if="typeSection !== 0">
         <v-container>
-          <v-col cols="12" class="pa-0 ma-0 align-center">
+          <v-col cols="5" class="pa-0 mt-0 mr-0 mb-0 ml-3">
             <v-text-field dense
                           label="Поиск"
                           outlined
+                          clearable
                           v-model="search"/>
           </v-col>
 
@@ -57,7 +58,7 @@
           <div v-else-if="typeSection === 1 || typeSection === 2 || typeSection === 3">
             <v-row class="pl-3">
               <v-col>
-                <Item v-for="item of data"
+                <Item v-for="item of filteredData"
                       :key="item.id"
                       v-on:add="addItem"
                       v-bind:item="item"/>
@@ -81,6 +82,22 @@ import HeaderTable from "@/components/HeaderTable";
 export default {
   name: "ModalWin",
   components: { HeaderTable, Item },
+  computed: {
+    // поиск по данным
+    filteredData() {
+      let result = this.data
+      if (this.search && this.search.length >= 3) {
+        result = result.filter(item => {
+          if (item.name.toLowerCase().indexOf(this.search.toLowerCase()) !== -1) {
+            // console.log(this.search)
+            // console.log(item.name)
+            return item
+          }
+        })
+      }
+      return result;
+    }
+  },
   props: ['typeSection', 'data'],
   data() {
     return {
@@ -98,7 +115,6 @@ export default {
   methods: {
     addItem(item) {
       this.$emit('add', item)
-
     },
 
     add() {
