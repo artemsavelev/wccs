@@ -23,16 +23,16 @@
                   {{ env.estimate }}
                 </div>
                 <div class="ml-14">
-                  {{ env.request }}:
+                  {{ env.request }}: {{ data.id }}
                 </div>
                 <div class="ml-14">
-                  {{ env.address }}:
+                  {{ env.address }}: {{ data.address }}
                 </div>
                 <div class="ml-14">
-                  {{ env.customer }}:
+                  {{ env.customer }}: {{ data.customer }}
                 </div>
                 <div class="ml-14">
-                  {{ env.owner }}:
+                  {{ env.owner }}: {{ data.owner }}
                 </div>
               </div>
             </section>
@@ -40,7 +40,8 @@
             <section>
               <div>
                 <div class="ml-14">
-                  {{ env.typeWork }}
+                  {{ env.typeWork }}:
+                  {{ data.id }}
                 </div>
                 <div class="ml-14">
                   ***
@@ -88,13 +89,14 @@ import { mdiClose } from '@mdi/js';
 import Section from "@/components/Section";
 
 export default {
-  name: "Demo",
+  name: "Preview",
+  props: ['data'],
   components: { Section },
   data() {
     return {
       env,
       mdiClose,
-      formTitle: 'Пердпросмотр',
+      formTitle: env.title[2],
       dialog: false,
       typeSection: 4,
     }

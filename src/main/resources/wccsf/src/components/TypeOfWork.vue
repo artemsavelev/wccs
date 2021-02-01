@@ -10,7 +10,8 @@
       <div class="font-s mt-0">
         {{ this.text.text }}
       </div>
-      <ModalWin v-on:add="addTypeOfWork"
+      <ModalWin v-on:add="addWorkDescription"
+                v-bind:ex="ex"
                 v-bind:typeSection="typeSection"/>
 
     </div>
@@ -23,17 +24,19 @@ import ModalWin from "./ModalWin";
 
 export default {
   name: "TypeOfWork",
+  props: ['ex'],
   components: { ModalWin },
   data() {
     return {
       env,
       typeSection: 0,
-      text: {}
+      workDescription: {}
     }
   },
   methods: {
-    addTypeOfWork(text) {
-      this.text = text
+    addWorkDescription(text) {
+      this.workDescription = text
+      this.$emit('transmit', this.workDescription)
     }
   }
 }

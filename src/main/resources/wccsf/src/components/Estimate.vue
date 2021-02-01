@@ -12,7 +12,6 @@
                     class="pt-0 pb-0 mt-0 mb-0 ml-5"
                     color="success"
                     label="смета предварительная"
-                    value="success"
                     hide-details></v-checkbox>
         <v-spacer></v-spacer>
         <v-btn small text tile v-on:click="close">
@@ -34,14 +33,15 @@
             </div>
             <div class="font-s">
               {{ env.owner }}: {{ profile.lastName }} {{ profile.firstName}}
-              {{ new Date().toISOString().substr(0, 10) + ' ' + new Date().toTimeString().substr(0, 8)}}
+              {{ date }}
             </div>
             <div>
 
             </div>
           </div>
           <!-- загружаем модули -->
-          <TypeOfWork v-on:transmit="transmitType"/>
+          <TypeOfWork v-on:transmit="transmitDescription"
+                      v-bind:ex="ex"/>
           <Device v-on:transmit="transmitDevices"/>
           <Materials v-on:transmit="transmitMaterials"/>
           <Work v-on:transmit="transmitWorks"/>
@@ -53,7 +53,7 @@
         <div class="border-top pl-8 pb-5">
           <v-card-actions class="">
             <v-btn medium v-on:click="create" color="primary" tile>{{ env.keyMakeEstimate }}</v-btn>
-            <Demo/>
+            <Preview v-bind:data="estimate"/>
           </v-card-actions>
         </div>
       </template>
@@ -68,35 +68,38 @@ import Work from "./Work";
 import Materials from "./Materials";
 import Device from "./Device";
 import TypeOfWork from "./TypeOfWork";
-import Demo from "@/components/Preview";
+import Preview from "@/components/Preview";
 import { mdiCalculator, mdiClose } from '@mdi/js';
 import { mapGetters } from "vuex";
 
 export default {
   name: "Estimate",
   props: ['extId', 'address', 'customer'],
-  components: { TypeOfWork, Device, Materials, Work, Demo },
+  components: { TypeOfWork, Device, Materials, Work, Preview },
   computed: mapGetters(['profile']),
   data() {
     return {
       env,
       mdiCalculator, mdiClose,
       dialog: false,
-      formTitle: 'Конструктор сметы',
-      ex: true,
+      formTitle: env.title[1],
+      ex: false,
+      date: new Date().toISOString().substr(0, 10) + ' ' +
+          new Date().toTimeString().substr(0, 8),
       estimate: {},
-      type: '',
+      workDescription: {},
       devices: [],
       materials: [],
-      works: []
+      works: [],
+      data: {}
     }
   },
   methods: {
     close() {
       this.dialog = false
     },
-    transmitType(type) {
-      this.type = type
+    transmitDescription(description) {
+      this.workDescription = description
     },
     transmitDevices(dev) {
       this.devices = dev
@@ -112,16 +115,13 @@ export default {
         id: this.extId,
         address: this.address,
         customer: this.customer,
-        name: this.profile.lastName,
-        type: '',
+        owner: this.profile.lastName + ' ' + this.date,
+        workDescription: this.workDescription,
         device: this.devices,
         material: this.materials,
         work: this.works
-
       }
-
       console.log(this.estimate)
-      // console.log(dev)
     },
   }
 }

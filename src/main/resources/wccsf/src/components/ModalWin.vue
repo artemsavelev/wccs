@@ -14,9 +14,9 @@
         </v-btn>
       </v-card-title>
 
-
       <div v-if="typeSection !== 0">
         <v-container>
+          <!--  search in component -->
           <v-col cols="5" class="pa-0 mt-0 mr-0 mb-0 ml-3">
             <v-text-field dense
                           label="Поиск"
@@ -24,7 +24,6 @@
                           clearable
                           v-model="search"/>
           </v-col>
-
           <v-col class="pt-0 pr-3 pb-0 pl-3">
             <HeaderTable v-bind:type="type"/>
           </v-col>
@@ -33,35 +32,22 @@
 
       <v-card-text class="ma-0 pa-0" style="height: 50vh">
         <v-container>
-
           <div v-if="typeSection === 0">
-            <v-row>
-              <v-col cols="12">
-                <v-textarea outlined
-                            :auto-grow="true"
-                            rows="4"
-                            name="input-1"
-                            v-model="typeOfWork"
-                            label="Виды работ"></v-textarea>
-
-                <v-textarea outlined
-                            :auto-grow="true"
-                            rows="3"
-                            name="input-2"
-                            label="Примечание"
-                            v-model="text"></v-textarea>
-                <v-btn class="" v-on:click="add" small color="primary" tile>{{ env.keyAdd }}</v-btn>
-              </v-col>
-            </v-row>
+            <!--   load component add type work    -->
+            <ListTypeWork v-bind:ex="ex"
+                          v-on:add="addTypeWork"/>
+            <!--   // load component add type work  -->
           </div>
 
           <div v-else-if="(typeSection === 1 || typeSection === 2 || typeSection === 3) && filteredData.length">
             <v-row class="pl-3">
               <v-col>
+                <!--   load module add type work    -->
                 <Item v-for="item of filteredData"
                       :key="item.id"
                       v-on:add="addItem"
                       v-bind:item="item"/>
+                <!--   // load module add type work  -->
               </v-col>
             </v-row>
           </div>
@@ -80,10 +66,12 @@ import env from "../../env.config.json";
 import { mdiClose } from '@mdi/js';
 import Item from "@/components/Item";
 import HeaderTable from "@/components/HeaderTable";
+import ListTypeWork from "@/components/ListTypeWork";
 
 export default {
   name: "ModalWin",
-  components: { HeaderTable, Item },
+  components: {ListTypeWork, HeaderTable, Item },
+  props: ['typeSection', 'data', 'ex'],
   computed: {
     // поиск по данным
     filteredData() {
@@ -98,19 +86,27 @@ export default {
         })
       }
       return result;
+    },
+    // наименование модальных окон
+    formTitle() {
+      if (this.typeSection === 0) {
+        return env.typeWork;
+      } else if (this.typeSection === 1) {
+        return env.sectionDevice;
+      } else if (this.typeSection === 2) {
+        return env.sectionMaterial;
+      } else {
+        return env.sectionWork;
+      }
     }
   },
-  props: ['typeSection', 'data'],
   data() {
     return {
       env,
       mdiClose,
       dialog: false,
-      formTitle: '',
       search: '',
       type: 123,
-      typeOfWork: '',
-      text: env.preliminary,
       items: []
     }
   },
@@ -118,14 +114,8 @@ export default {
     addItem(item) {
       this.$emit('add', item)
     },
-
-    add() {
-      let type = {
-        typeOfWork: this.typeOfWork,
-        text: this.text
-      }
-      this.$emit('add', type)
-
+    addTypeWork(item) {
+      this.$emit('add', item)
     },
     close() {
       this.search = '';
