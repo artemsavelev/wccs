@@ -31,7 +31,7 @@
         </v-container>
       </div>
 
-      <v-card-text class="ma-0 pa-0">
+      <v-card-text class="ma-0 pa-0" style="height: 50vh">
         <v-container>
 
           <div v-if="typeSection === 0">
@@ -55,7 +55,7 @@
             </v-row>
           </div>
 
-          <div v-else-if="typeSection === 1 || typeSection === 2 || typeSection === 3">
+          <div v-else-if="(typeSection === 1 || typeSection === 2 || typeSection === 3) && filteredData.length">
             <v-row class="pl-3">
               <v-col>
                 <Item v-for="item of filteredData"
@@ -65,7 +65,9 @@
               </v-col>
             </v-row>
           </div>
-
+          <div v-else class="pl-4">
+            {{ env.noRecords }}
+          </div>
         </v-container>
       </v-card-text>
 
@@ -126,6 +128,7 @@ export default {
 
     },
     close() {
+      this.search = '';
       this.dialog = false
     }
   },

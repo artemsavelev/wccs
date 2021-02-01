@@ -57,7 +57,7 @@ export default {
         name: this.item.name,
         dimension: this.item.dimension,
         price: this.item.price,
-        quantity: this.quantity === '' ? 1 : 0
+        quantity: this.quantity === '' ? 1 : this.quantity
       }
 
       this.$emit('add', obj)

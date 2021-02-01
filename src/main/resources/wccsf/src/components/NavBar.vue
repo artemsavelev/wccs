@@ -33,7 +33,8 @@ export default {
       env,
       ordersList: [],
       dialog: false,
-      mdiExitToApp
+      mdiExitToApp,
+      search:''
     }
   },
 
