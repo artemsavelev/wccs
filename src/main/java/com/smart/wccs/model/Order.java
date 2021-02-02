@@ -6,6 +6,7 @@ import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
 @Entity
@@ -26,4 +27,10 @@ public class Order extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "verification_name_id")
     private User verificationName;
+
+//    @ManyToMany(fetch = FetchType.LAZY)
+//    @JoinTable(name = "department_orders",
+//            joinColumns = @JoinColumn(name = "orders_id"),
+//            inverseJoinColumns = @JoinColumn(name = "department_id"))
+//    private List<Department> departments;
 }

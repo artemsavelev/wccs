@@ -28,10 +28,10 @@
       <div class="main-container-wrapper column-100">
         <v-card-actions class="pa-0 ma-0">
           <v-btn icon v-on:click="edit">
-            <v-icon>{{ mdiPencil }}</v-icon>
+            <v-icon>mdi-pencil</v-icon>
           </v-btn>
           <v-btn icon v-on:click="remove">
-            <v-icon>{{ mdiDelete }}</v-icon>
+            <v-icon>mdi-delete</v-icon>
           </v-btn>
         </v-card-actions>
       </div>
@@ -41,15 +41,13 @@
 
 <script>
 
-import { mdiPencil, mdiDelete } from '@mdi/js';
 
 export default {
   name: "DataContent",
   props: ['item'],
   data() {
     return {
-      mdiPencil,
-      mdiDelete,
+
     }
   },
   methods: {

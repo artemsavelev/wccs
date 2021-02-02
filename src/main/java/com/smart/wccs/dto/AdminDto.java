@@ -2,9 +2,7 @@ package com.smart.wccs.dto;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.smart.wccs.model.Role;
-import com.smart.wccs.model.Status;
-import com.smart.wccs.model.User;
+import com.smart.wccs.model.*;
 import lombok.Data;
 
 import java.util.ArrayList;
@@ -20,16 +18,24 @@ public class AdminDto {
     private String lastName;
     private String email;
     private String status;
+    private List<DepartmentDto> departments;
+    private List<PositionDto> positions;
     private List<Role> roles;
 
     public User toUser() {
         User user = new User();
+        List<Department> departments = new ArrayList<>();
+        List<Position> positions = new ArrayList<>();
+        List<Role> roles = new ArrayList<>();
         user.setId(id);
         user.setUsername(username);
         user.setFirstName(firstName);
         user.setLastName(lastName);
         user.setEmail(email);
+        user.setDepartments(departments);
+        user.setPositions(positions);
         user.setStatus(Status.valueOf(status));
+        user.setRoles(roles);
 
         return user;
     }
@@ -41,6 +47,8 @@ public class AdminDto {
         adminDto.setFirstName(user.getFirstName());
         adminDto.setLastName(user.getLastName());
         adminDto.setEmail(user.getEmail());
+        adminDto.setDepartments(DepartmentDto.departmentDtoList(user.getDepartments()));
+        adminDto.setPositions(PositionDto.positionDtoList(user.getPositions()));
         adminDto.setStatus(user.getStatus().name());
 
         return adminDto;

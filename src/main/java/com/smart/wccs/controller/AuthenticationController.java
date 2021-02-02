@@ -2,6 +2,10 @@ package com.smart.wccs.controller;
 
 
 import com.smart.wccs.dto.AuthenticationRequestDto;
+import com.smart.wccs.dto.DepartmentDto;
+import com.smart.wccs.dto.PositionDto;
+import com.smart.wccs.dto.UserDto;
+import com.smart.wccs.model.Department;
 import com.smart.wccs.model.User;
 import com.smart.wccs.security.jwt.JwtTokenProvider;
 import com.smart.wccs.service.UserService;
@@ -17,7 +21,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -55,10 +61,13 @@ public class AuthenticationController {
 
             Map<Object, Object> response = new HashMap<>();
 
+
             response.put("username", username);
             response.put("lastName", user.getLastName());
             response.put("firstName", user.getFirstName());
             response.put("email", user.getEmail());
+            response.put("department", DepartmentDto.departmentDtoList(user.getDepartments()));
+            response.put("position", PositionDto.positionDtoList(user.getPositions()));
             response.put("token", token);
 
             return ResponseEntity.ok(response);

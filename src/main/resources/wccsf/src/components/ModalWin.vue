@@ -10,7 +10,7 @@
         <span class="font-xl">{{formTitle}}</span>
         <v-spacer></v-spacer>
         <v-btn small text tile v-on:click="close">
-          <v-icon>{{ mdiClose }}</v-icon>
+          <v-icon>mdi-close</v-icon>
         </v-btn>
       </v-card-title>
 
@@ -24,6 +24,7 @@
                           clearable
                           v-model="search"/>
           </v-col>
+          <!-- // search in component -->
           <v-col class="pt-0 pr-3 pb-0 pl-3">
             <HeaderTable v-bind:type="type"/>
           </v-col>
@@ -63,7 +64,6 @@
 
 <script>
 import env from "../../env.config.json";
-import { mdiClose } from '@mdi/js';
 import Item from "@/components/Item";
 import HeaderTable from "@/components/HeaderTable";
 import ListTypeWork from "@/components/ListTypeWork";
@@ -103,7 +103,6 @@ export default {
   data() {
     return {
       env,
-      mdiClose,
       dialog: false,
       search: '',
       type: 123,

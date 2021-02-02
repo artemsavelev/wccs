@@ -5,10 +5,10 @@
         {{ env.typeWork }}:
       </div>
       <div class="font-s mt-0">
-        {{ this.text.typeOfWork }}
+        {{ this.workDescription.typeOfWork }}
       </div>
       <div class="font-s mt-0">
-        {{ this.text.text }}
+        {{ this.workDescription.text }}
       </div>
       <ModalWin v-on:add="addWorkDescription"
                 v-bind:ex="ex"

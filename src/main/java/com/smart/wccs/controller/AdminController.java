@@ -38,7 +38,7 @@ public class AdminController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @GetMapping(value = "users/")
+    @GetMapping(value = "users")
     public ResponseEntity<List<AdminDto>> listUsers() {
         List<User> users = userService.getAllUsers();
 

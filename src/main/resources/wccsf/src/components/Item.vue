@@ -26,7 +26,7 @@
       <div class="main-container-wrapper column-70 ">
         <v-card-actions class="ma-0 pa-0">
           <v-btn v-on:click="add" icon>
-            <v-icon>{{ mdiPlus }}</v-icon>
+            <v-icon>mdi-plus</v-icon>
           </v-btn>
         </v-card-actions>
       </div>
@@ -36,7 +36,6 @@
 
 <script>
 import env from "../../env.config.json"
-import { mdiPlus } from '@mdi/js';
 
 export default {
   name: "Item",
@@ -44,7 +43,6 @@ export default {
   data() {
     return {
       env,
-      mdiPlus,
       quantity: ''
 
     }

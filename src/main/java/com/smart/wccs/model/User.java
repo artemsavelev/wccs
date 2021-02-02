@@ -30,14 +30,14 @@ public class User extends BaseEntity {
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "department_users",
-            joinColumns = @JoinColumn(name = "department_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id"))
+            joinColumns = @JoinColumn(name = "users_id"),
+            inverseJoinColumns = @JoinColumn(name = "department_id"))
     private List<Department> departments;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "position_users",
-            joinColumns = @JoinColumn(name = "position_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id"))
+            joinColumns = @JoinColumn(name = "users_id"),
+            inverseJoinColumns = @JoinColumn(name = "position_id"))
     private List<Position> positions;
 
     @OneToMany

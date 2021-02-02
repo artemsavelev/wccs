@@ -62,6 +62,7 @@ export default {
 
     getters: {
         profile(state) {
+            // console.log(state.profile)
             return state.profile
         }
     }

@@ -41,7 +41,7 @@
           <span v-if="order.verificationDate === null" class="text-red">
             <v-tooltip bottom>
               <template v-slot:activator="{ on }">
-                <v-icon color="red darken-1" v-on="on">{{ mdiAlertCircle }}</v-icon>
+                <v-icon color="red darken-1" v-on="on">mdi-alert-circle</v-icon>
               </template>
               <span>Статус: в работе</span>
             </v-tooltip>
@@ -50,7 +50,7 @@
           <span v-else-if="order.verificationDate !== null" class="text-green">
             <v-tooltip bottom>
               <template v-slot:activator="{ on }">
-                <v-icon color="green darken-2" v-on="on">{{ mdiCheckAll }}</v-icon>
+                <v-icon color="green darken-2" v-on="on">mdi-check-all</v-icon>
               </template>
               <span>Статус: завершено и проверено</span>
             </v-tooltip>
@@ -59,7 +59,7 @@
 
         <div class="main-container-wrapper column-200 pl-8 t-align-right">
           <v-btn icon v-on:click="edit">
-            <v-icon>{{ mdiPencil }}</v-icon>
+            <v-icon>mdi-pencil</v-icon>
           </v-btn>
 
           <Estimate v-bind:extId="order.extId"
@@ -67,7 +67,7 @@
                     v-bind:address="order.address"/>
 
           <v-btn icon v-on:click="del">
-            <v-icon>{{ mdiDelete }}</v-icon>
+            <v-icon>mdi-delete</v-icon>
           </v-btn>
         </div>
       </div>
@@ -76,7 +76,6 @@
 </template>
 
 <script>
-import { mdiAlertCircle, mdiCheck, mdiCheckAll, mdiPencil, mdiDelete } from '@mdi/js';
 import { mapActions, mapGetters } from "vuex";
 import Estimate from "./Estimate";
 
@@ -97,8 +96,6 @@ export default {
 
   },
   data: () => ({
-    mdiAlertCircle, mdiCheck, mdiCheckAll, mdiPencil, mdiDelete,
-
     customer: '',
     address: '',
     dataOrder: {}

@@ -11,19 +11,28 @@
                     size="364"
                     tile>
 
-            <v-img src="https://cdn.vuetifyjs.com/images/profiles/marcus.jpg"></v-img>
+<!--            <v-img src="https://cdn.vuetifyjs.com/images/profiles/marcus.jpg"></v-img>-->
+            <v-img src=""></v-img>
           </v-avatar>
 
         </v-col>
         <v-col class="py-0">
           <v-list-item color="rgba(0, 0, 0, .4)" dark>
-
             <v-list-item-content>
               <v-list-item-title class="title">{{profile.lastName}} {{profile.firstName}}</v-list-item-title>
-              <v-list-item-subtitle>{{ env.login }}: {{profile.username}}</v-list-item-subtitle>
-              <v-list-item-subtitle>{{ env.email }}: {{profile.email}}</v-list-item-subtitle>
-              <v-list-item-subtitle>{{ env.department }}: </v-list-item-subtitle>
-              <v-list-item-subtitle>{{ env.position }}: Network Engineer</v-list-item-subtitle>
+              <v-list-item-subtitle>{{ env.login }}: {{ profile.username }}</v-list-item-subtitle>
+              <v-list-item-subtitle>{{ env.email }}: {{ profile.email }}</v-list-item-subtitle>
+              <v-list-item-subtitle>{{ env.department }}:
+                <span v-for="(dep, i) in profile.department"
+                      :key="i + 1">
+                  <span>{{ dep.name }} </span>
+                </span>
+              </v-list-item-subtitle>
+              <v-list-item-subtitle>{{ env.position }}:
+                <span v-for="(pos, i) in profile.position"
+                      :key="i + 1">
+                  <span>{{ pos.name }} </span>
+                </span></v-list-item-subtitle>
               <v-list-item-subtitle>{{profile.roles}}</v-list-item-subtitle>
             </v-list-item-content>
 

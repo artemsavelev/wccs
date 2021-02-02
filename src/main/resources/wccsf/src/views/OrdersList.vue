@@ -22,13 +22,9 @@ export default {
   name: "OrdersList",
   computed: mapGetters(['allOrders']),
   components: { OrderItem },
-
-
   data: () => ({
     ...mapActions(['fetchOrders']),
-
     order:[]
-
   }),
   methods: {
     editOrder(id) {
@@ -38,8 +34,6 @@ export default {
       this.order = this.order.filter(o => o.id !== id)
       // console.log(id)
     }
-
-
   },
   mounted() {
     this.fetchOrders();

@@ -12,7 +12,7 @@
     <v-btn class="mr-10" v-if="profile && profile.firstName === 'Артем'"
            v-on:click="admin" :disabled="$route.path === '/admin'" text tile>{{ env.keyAdministration }}</v-btn>
     <v-btn v-if="profile" v-on:click="logout" text tile>
-      <v-icon>{{ mdiExitToApp }}</v-icon>
+      <v-icon>mdi-exit-to-app</v-icon>
     </v-btn>
 
 
@@ -21,7 +21,6 @@
 
 <script>
 import env from "../../env.config.json"
-import { mdiExitToApp } from '@mdi/js';
 import OrderForm from "./OrderForm";
 import { mapGetters } from "vuex";
 export default {
@@ -33,7 +32,6 @@ export default {
       env,
       ordersList: [],
       dialog: false,
-      mdiExitToApp,
       search:''
     }
   },
