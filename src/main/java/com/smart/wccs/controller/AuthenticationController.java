@@ -1,10 +1,7 @@
 package com.smart.wccs.controller;
 
 
-import com.smart.wccs.dto.AuthenticationRequestDto;
-import com.smart.wccs.dto.DepartmentDto;
-import com.smart.wccs.dto.PositionDto;
-import com.smart.wccs.dto.UserDto;
+import com.smart.wccs.dto.*;
 import com.smart.wccs.model.Department;
 import com.smart.wccs.model.User;
 import com.smart.wccs.security.jwt.JwtTokenProvider;
@@ -62,12 +59,14 @@ public class AuthenticationController {
             Map<Object, Object> response = new HashMap<>();
 
 
+            // передаем данные на фронтенд в профиль
             response.put("username", username);
             response.put("lastName", user.getLastName());
             response.put("firstName", user.getFirstName());
             response.put("email", user.getEmail());
             response.put("department", DepartmentDto.departmentDtoList(user.getDepartments()));
             response.put("position", PositionDto.positionDtoList(user.getPositions()));
+//            response.put("role", RoleDto.roleDtoList(user.getRoles()));
             response.put("token", token);
 
             return ResponseEntity.ok(response);

@@ -48,6 +48,7 @@ export default {
     },
     admin() {
       this.$router.push('/admin')
+      console.log(this.profile.role)
     },
     async logout() {
       // localStorage.removeItem('user')

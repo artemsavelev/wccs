@@ -20,7 +20,7 @@ public class AdminDto {
     private String status;
     private List<DepartmentDto> departments;
     private List<PositionDto> positions;
-    private List<Role> roles;
+    private List<RoleDto> roles;
 
     public User toUser() {
         User user = new User();
@@ -49,6 +49,7 @@ public class AdminDto {
         adminDto.setEmail(user.getEmail());
         adminDto.setDepartments(DepartmentDto.departmentDtoList(user.getDepartments()));
         adminDto.setPositions(PositionDto.positionDtoList(user.getPositions()));
+        adminDto.setRoles(RoleDto.roleDtoList(user.getRoles()));
         adminDto.setStatus(user.getStatus().name());
 
         return adminDto;
