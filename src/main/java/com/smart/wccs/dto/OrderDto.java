@@ -1,6 +1,7 @@
 package com.smart.wccs.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.smart.wccs.model.*;
 import lombok.Data;
 
@@ -8,7 +9,7 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 @Data
-//@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class OrderDto {
     private Long id;
     private String extId;
@@ -26,10 +27,12 @@ public class OrderDto {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private Date verificationDate;
     private UserDto verificationName;
+    private DepartmentDto department;
 
     public Order toOrder() {
         Order order = new Order();
         User user = new User();
+        Department department = new Department();
 
         order.setId(id);
         order.setExtId(extId);
@@ -41,7 +44,7 @@ public class OrderDto {
         order.setAddress(address);
         order.setVerificationDate(verificationDate);
         order.setVerificationName(UserDto.fromUser(user).toUser());
-
+        order.setDepartment(DepartmentDto.fromDepartment(department).toDepartment());
         return order;
     }
 
@@ -56,18 +59,16 @@ public class OrderDto {
         orderDto.setCustomer(order.getCustomer());
         orderDto.setAddress(order.getAddress());
         orderDto.setVerificationDate(order.getVerificationDate());
-
         if (order.getVerificationName() != null) {
             orderDto.setVerificationName(UserDto.fromUser(order.getVerificationName()));
         }
-
+        orderDto.setDepartment(DepartmentDto.fromDepartment(order.getDepartment()));
         return orderDto;
     }
 
     public static List<OrderDto> orderDtoList(List<Order> orders) {
         List<OrderDto> orderDtoList = new ArrayList<>();
         orders.forEach(order -> orderDtoList.add(fromOrder(order)));
-
         return orderDtoList;
     }
 

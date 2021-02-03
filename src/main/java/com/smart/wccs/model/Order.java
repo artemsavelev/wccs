@@ -1,12 +1,14 @@
 package com.smart.wccs.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
 @Entity
@@ -28,9 +30,7 @@ public class Order extends BaseEntity {
     @JoinColumn(name = "verification_name_id")
     private User verificationName;
 
-//    @ManyToMany(fetch = FetchType.LAZY)
-//    @JoinTable(name = "department_orders",
-//            joinColumns = @JoinColumn(name = "orders_id"),
-//            inverseJoinColumns = @JoinColumn(name = "department_id"))
-//    private List<Department> departments;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "department_id")
+    private Department department;
 }

@@ -26,11 +26,9 @@
 </template>
 
 <script>
-
 import {mapGetters} from "vuex";
 import messages from "../utils/messages";
 import Notifier from "../components/Notifier";
-
 
 export default {
   name: "auth",
@@ -57,11 +55,9 @@ export default {
 
   watch: {
     error(error) {
-
       console.log(messages[error])
       this.message = messages[error];
       this.snackbar = true;
-
     }
   },
 
