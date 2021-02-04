@@ -4,7 +4,6 @@ import com.smart.wccs.model.Estimate;
 import com.smart.wccs.model.Status;
 import com.smart.wccs.repo.EstimateRepo;
 import com.smart.wccs.service.EstimateService;
-import com.smart.wccs.service.filecreator.ExcelFileFactory;
 import com.smart.wccs.service.filecreator.FileCreator;
 import com.smart.wccs.service.filecreator.FileFactory;
 import lombok.extern.slf4j.Slf4j;
@@ -18,22 +17,30 @@ import java.time.LocalDateTime;
 public class EstimateServiceImpl implements EstimateService {
 
     private final EstimateRepo estimateRepo;
+    private final FileCreator fileCreator;
+    private final FileFactory fileFactory;
 
     @Autowired
-    public EstimateServiceImpl(EstimateRepo estimateRepo) {
+    public EstimateServiceImpl(EstimateRepo estimateRepo, FileCreator fileCreator, FileFactory fileFactory) {
         this.estimateRepo = estimateRepo;
+        this.fileCreator = fileCreator;
+        this.fileFactory = fileFactory;
     }
 
     @Override
     public void create(Estimate estimate) {
         estimate.setCreatedDate(LocalDateTime.now());
         estimate.setStatus(Status.COMPLETED);
+
         Estimate createdEstimate = estimateRepo.save(estimate);
 
         // create excel file
-        FileFactory fileFactory = new ExcelFileFactory();
-        FileCreator fileCreator = fileFactory.creator();
+        fileFactory.creator();
         fileCreator.createFile(estimate);
+
+//        FileFactory fileFactory = new ExcelFileFactory();
+//        FileCreator fileCreator = fileFactory.creator();
+//        fileCreator.createFile(estimate);
 
         log.info("IN create - estimate: {} successfully added", createdEstimate);
     }

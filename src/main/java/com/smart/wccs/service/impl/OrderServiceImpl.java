@@ -1,8 +1,5 @@
 package com.smart.wccs.service.impl;
 
-import com.smart.wccs.dto.DepartmentDto;
-import com.smart.wccs.dto.UserDto;
-import com.smart.wccs.model.Department;
 import com.smart.wccs.model.Order;
 import com.smart.wccs.model.Status;
 import com.smart.wccs.model.User;

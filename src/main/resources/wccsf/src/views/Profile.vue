@@ -22,12 +22,7 @@
               <v-list-item-title class="title">{{profile.lastName}} {{profile.firstName}}</v-list-item-title>
               <v-list-item-subtitle>{{ env.login }}: {{ profile.username }}</v-list-item-subtitle>
               <v-list-item-subtitle>{{ env.email }}: {{ profile.email }}</v-list-item-subtitle>
-              <v-list-item-subtitle>{{ env.department }}:
-                <span v-for="(dep, i) in profile.department"
-                      :key="i + 1">
-                  <span>{{ dep.name }} </span>
-                </span>
-              </v-list-item-subtitle>
+              <v-list-item-subtitle>{{ env.department }}: {{ profile.department.name }}</v-list-item-subtitle>
               <v-list-item-subtitle>{{ env.position }}:
                 <span v-for="(pos, i) in profile.position"
                       :key="i + 1">

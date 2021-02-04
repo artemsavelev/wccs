@@ -1,7 +1,6 @@
 package com.smart.wccs.service.filecreator;
 
 import com.smart.wccs.model.Estimate;
-import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
@@ -9,52 +8,73 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFFont;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
 @Slf4j
+@Component
 public class ExcelDocument implements FileCreator {
 
-    private int rowNum = 0;
+    private final XSSFWorkbook workbook;
+    private final Sheet sheet;
+    private XSSFCellStyle style;
+    private int rowNum;
     private Cell cell;
-    private Row row;
+    private final Row row;
+
+    public ExcelDocument() {
+        this.workbook = new XSSFWorkbook();
+        this.sheet = workbook.createSheet("sheet");
+        this.rowNum = 0;
+        this.row = sheet.createRow(rowNum);
+        this.style = createStyleForTitle(workbook);
+    }
+
+    private XSSFCellStyle createStyleForTitle(XSSFWorkbook workbook) {
+        style = workbook.createCellStyle();
+        XSSFFont font = workbook.createFont();
+//        font.setBold(true);
+        font.setFontName("Montserrat");
+        style.setFont(font);
+        return style;
+    }
+
+    public void createHeaderTable() {
+        // порядковый номер
+        cell = row.createCell(0, CellType.STRING);
+        cell.setCellValue("#");
+        cell.setCellStyle(style);
+        // нименование
+        cell = row.createCell(1, CellType.STRING);
+        cell.setCellValue("Наименование");
+        cell.setCellStyle(style);
+        // еденица измерения
+        cell = row.createCell(2, CellType.STRING);
+        cell.setCellValue("Ед. изм.");
+        cell.setCellStyle(style);
+        // количество
+        cell = row.createCell(3, CellType.STRING);
+        cell.setCellValue("Кол-во");
+        cell.setCellStyle(style);
+        // цена
+        cell = row.createCell(4, CellType.STRING);
+        cell.setCellValue("Цена");
+        cell.setCellStyle(style);
+        // сумма
+        cell = row.createCell(5, CellType.STRING);
+        cell.setCellValue("Сумма");
+        cell.setCellStyle(style);
+    }
 
 
     @Override
     public void createFile(Estimate estimate) {
-        XSSFWorkbook workbook = new XSSFWorkbook();
-        Sheet sheet = workbook.createSheet("sheet");
 
-
-        //
-        XSSFCellStyle style = createStyleForTitle(workbook);
-
-        row = sheet.createRow(rowNum);
-
-        // EmpNo
-        cell = row.createCell(0, CellType.STRING);
-        cell.setCellValue("EmpNo");
-        cell.setCellStyle(style);
-        // EmpName
-        cell = row.createCell(1, CellType.STRING);
-        cell.setCellValue("EmpNo");
-        cell.setCellStyle(style);
-        // Salary
-        cell = row.createCell(2, CellType.STRING);
-        cell.setCellValue("Salary");
-        cell.setCellStyle(style);
-        // Grade
-        cell = row.createCell(3, CellType.STRING);
-        cell.setCellValue("Grade");
-        cell.setCellStyle(style);
-        // Bonus
-        cell = row.createCell(4, CellType.STRING);
-        cell.setCellValue("Bonus");
-        cell.setCellStyle(style);
+        createHeaderTable();
 
         // Data
 //        for (Estimate est : estimate) {
@@ -80,7 +100,8 @@ public class ExcelDocument implements FileCreator {
 //        }
 
         try {
-            File file = new File("employee.xlsx");
+            File file = new File("upload" + File.separator + "employee.xlsx");
+
 
             if (file.createNewFile()) {
                 log.info("IN createFile - create estimate {} : successfully created in {} ", file.getName(), file.getAbsolutePath());
@@ -91,21 +112,14 @@ public class ExcelDocument implements FileCreator {
             FileOutputStream outFile = new FileOutputStream(file);
             workbook.write(outFile);
 
-
+            outFile.close();
 
 
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error("IN createFile - create estimate {} : error created {}", e.getMessage(), e.getStackTrace());
         }
 
 
     }
 
-    private static XSSFCellStyle createStyleForTitle(XSSFWorkbook workbook) {
-        XSSFFont font = workbook.createFont();
-        font.setBold(true);
-        XSSFCellStyle style = workbook.createCellStyle();
-        style.setFont(font);
-        return style;
-    }
 }
