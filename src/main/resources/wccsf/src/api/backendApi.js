@@ -1,4 +1,4 @@
-const API_BASE_URL = 'http://192.168.100.82:8080/api/v1/';
+const API_BASE_URL = 'http://localhost:8080/api/v1/';
 export default {
     API_AUTH_URL: API_BASE_URL + 'auth/login',
     API_ORDER_URL: API_BASE_URL + 'order/',

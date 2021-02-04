@@ -17,20 +17,20 @@ public class UserDto {
     private Long id;
     private String firstName;
     private String lastName;
-    private List<DepartmentDto> departments;
+    private DepartmentDto department;
     private List<PositionDto> positions;
 //    private List<RoleDto> roles;
 
     public User toUser() {
         User user = new User();
-        List<Department> departments = new ArrayList<>();
+        Department department = new Department();
         List<Position> positions = new ArrayList<>();
         List<Role> roles = new ArrayList<>();
 
         user.setId(id);
         user.setFirstName(firstName);
         user.setLastName(lastName);
-        user.setDepartments(departments);
+        user.setDepartment(department);
         user.setPositions(positions);
 //        user.setRoles(roles);
 
@@ -43,7 +43,7 @@ public class UserDto {
         userDto.setId(user.getId());
         userDto.setFirstName(user.getFirstName());
         userDto.setLastName(user.getLastName());
-        userDto.setDepartments(DepartmentDto.departmentDtoList(user.getDepartments()));
+        userDto.setDepartment(DepartmentDto.fromDepartment(user.getDepartment()));
         userDto.setPositions(PositionDto.positionDtoList(user.getPositions()));
 //        userDto.setRoles(RoleDto.roleDtoList(user.getRoles()));
 

@@ -16,7 +16,4 @@ public class Department extends BaseEntity {
 
     private String name;
 
-//    @OneToMany
-//    private List<Order> orders;
-
 }

@@ -64,7 +64,7 @@ public class AuthenticationController {
             response.put("lastName", user.getLastName());
             response.put("firstName", user.getFirstName());
             response.put("email", user.getEmail());
-            response.put("department", DepartmentDto.departmentDtoList(user.getDepartments()));
+            response.put("department", DepartmentDto.fromDepartment(user.getDepartment()));
             response.put("position", PositionDto.positionDtoList(user.getPositions()));
 //            response.put("role", RoleDto.roleDtoList(user.getRoles()));
             response.put("token", token);

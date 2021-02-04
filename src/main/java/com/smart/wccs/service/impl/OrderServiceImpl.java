@@ -1,5 +1,8 @@
 package com.smart.wccs.service.impl;
 
+import com.smart.wccs.dto.DepartmentDto;
+import com.smart.wccs.dto.UserDto;
+import com.smart.wccs.model.Department;
 import com.smart.wccs.model.Order;
 import com.smart.wccs.model.Status;
 import com.smart.wccs.model.User;
@@ -14,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -31,7 +35,12 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<Order> getAllOrders() {
-        List<Order> orders = orderRepo.findAll();
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String name = auth.getName();
+        List<Order> orders = orderRepo.findAll()
+                .stream()
+                .filter(o -> o.getDepartment() == userRepo.findByUsername(name).getDepartment())
+                .collect(Collectors.toList());
         log.info("IN getAllOrder - {} orders found", orders.size());
         return orders;
     }
@@ -57,6 +66,7 @@ public class OrderServiceImpl implements OrderService {
         order.setCreatedDate(LocalDateTime.now());
         order.setAuthor(user);
         order.setStatus(Status.ACTIVE);
+        order.setDepartment(user.getDepartment());
 
         Order createdOrder = orderRepo.save(order);
         log.info("IN create - order: {} successfully created", createdOrder);

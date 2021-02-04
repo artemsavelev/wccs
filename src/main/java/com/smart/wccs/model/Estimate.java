@@ -22,7 +22,6 @@ public class Estimate extends BaseEntity {
             inverseJoinColumns = @JoinColumn(name = "devices_id"))
     private List<Device> devices;
 
-
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "estimate_materials",
             joinColumns = @JoinColumn(name = "estimate_id"),
@@ -34,4 +33,8 @@ public class Estimate extends BaseEntity {
             joinColumns = @JoinColumn(name = "estimate_id"),
             inverseJoinColumns = @JoinColumn(name = "works_id"))
     private List<Work> works;
+
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "department_id")
+//    private Department department;
 }
