@@ -2,10 +2,8 @@ package com.smart.wccs.service.filecreator;
 
 import com.smart.wccs.model.Estimate;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellType;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -24,7 +22,7 @@ public class ExcelDocument implements FileCreator {
     private XSSFCellStyle style;
     private int rowNum;
     private Cell cell;
-    private final Row row;
+    private Row row;
 
     public ExcelDocument() {
         this.workbook = new XSSFWorkbook();
@@ -40,10 +38,28 @@ public class ExcelDocument implements FileCreator {
 //        font.setBold(true);
         font.setFontName("Montserrat");
         style.setFont(font);
+        style.setBorderBottom(BorderStyle.THIN);
         return style;
     }
 
     public void createHeaderTable() {
+
+        // объеденяем ячейки первой строки
+        sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 5));
+        sheet.setColumnWidth(1, 15000);
+
+
+
+
+        // создаем строку с наименованием секции
+        row = sheet.createRow(0);
+        row.setRowStyle(style);
+        cell = row.createCell(0);
+        cell.setCellValue("Test test"); // наименование секции
+
+        row = sheet.createRow(1);
+        row.setRowStyle(style);
+
         // порядковый номер
         cell = row.createCell(0, CellType.STRING);
         cell.setCellValue("#");
@@ -51,23 +67,18 @@ public class ExcelDocument implements FileCreator {
         // нименование
         cell = row.createCell(1, CellType.STRING);
         cell.setCellValue("Наименование");
-        cell.setCellStyle(style);
         // еденица измерения
         cell = row.createCell(2, CellType.STRING);
         cell.setCellValue("Ед. изм.");
-        cell.setCellStyle(style);
         // количество
         cell = row.createCell(3, CellType.STRING);
         cell.setCellValue("Кол-во");
-        cell.setCellStyle(style);
         // цена
         cell = row.createCell(4, CellType.STRING);
         cell.setCellValue("Цена");
-        cell.setCellStyle(style);
         // сумма
         cell = row.createCell(5, CellType.STRING);
         cell.setCellValue("Сумма");
-        cell.setCellStyle(style);
     }
 
 
@@ -116,7 +127,7 @@ public class ExcelDocument implements FileCreator {
 
 
         } catch (IOException e) {
-            log.error("IN createFile - create estimate {} : error created {}", e.getMessage(), e.getStackTrace());
+            log.error("IN createFile - create estimate {} : error {}", e.getMessage(), e.getStackTrace());
         }
 
 
