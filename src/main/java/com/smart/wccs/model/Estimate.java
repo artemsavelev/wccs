@@ -15,6 +15,7 @@ public class Estimate extends BaseEntity {
     private String extId;
     private String customer;
     private String address;
+    private String workDescription;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "estimate_devices",

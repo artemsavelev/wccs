@@ -2,9 +2,10 @@
   <v-dialog v-if="profile" v-model="dialog" scrollable persistent>
     <template v-slot:activator="{ on }" class="mt-10">
       <v-btn icon v-on="on" class="">
-        <v-icon>{{ mdiCalculator }}</v-icon>
+        <v-icon>mdi-calculator</v-icon>
       </v-btn>
     </template>
+
     <v-card>
       <v-card-title class="grey lighten-2">
         <div class="ml-5 font-xl">{{formTitle}}</div>
@@ -15,7 +16,7 @@
                     hide-details></v-checkbox>
         <v-spacer></v-spacer>
         <v-btn small text tile v-on:click="close">
-          <v-icon>{{ mdiClose }}</v-icon>
+          <v-icon>mdi-close</v-icon>
         </v-btn>
       </v-card-title>
 
@@ -59,6 +60,7 @@
       </template>
 
     </v-card>
+
   </v-dialog>
 </template>
 
@@ -69,7 +71,6 @@ import Materials from "./Materials";
 import Device from "./Device";
 import TypeOfWork from "./TypeOfWork";
 import Preview from "@/components/Preview";
-import { mdiCalculator, mdiClose } from '@mdi/js';
 import { mapGetters } from "vuex";
 
 export default {
@@ -80,7 +81,6 @@ export default {
   data() {
     return {
       env,
-      mdiCalculator, mdiClose,
       dialog: false,
       formTitle: env.title[1],
       ex: false,

@@ -87,9 +87,10 @@ export default {
         address: this.address,
       };
 
-      this.addOrder(order);
-      console.log(order);
-
+      if (this.extId && this.customer && this.address) {
+        this.addOrder(order);
+        console.log(order);
+      }
     },
     close() {
       this.dialog = false;

@@ -23,13 +23,15 @@
 import env from "../../env.config.json"
 import OrderForm from "./OrderForm";
 import { mapGetters } from "vuex";
+
 export default {
   name: "NavBar",
-  components: { OrderForm },
+  components: {OrderForm},
   computed: mapGetters(['profile']),
   data() {
     return {
       env,
+      selection: 'addOrder',
       ordersList: [],
       dialog: false,
       search:''

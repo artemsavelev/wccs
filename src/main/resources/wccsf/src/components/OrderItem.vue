@@ -66,6 +66,11 @@
                     v-bind:customer="order.customer"
                     v-bind:address="order.address"/>
 
+<!--          <ModalForm v-bind:selection="selection"-->
+<!--              v-bind:extId="order.extId"-->
+<!--                    v-bind:customer="order.customer"-->
+<!--                    v-bind:address="order.address"/>-->
+
           <v-btn icon v-on:click="del">
             <v-icon>mdi-delete</v-icon>
           </v-btn>
@@ -78,6 +83,7 @@
 <script>
 import { mapActions, mapGetters } from "vuex";
 import Estimate from "./Estimate";
+// import ModalForm from "@/components/ModalForm";
 
 export default {
   name: 'OrderItem',
@@ -98,7 +104,8 @@ export default {
   data: () => ({
     customer: '',
     address: '',
-    dataOrder: {}
+    dataOrder: {},
+    selection: 'addEstimate'
 
   }),
 

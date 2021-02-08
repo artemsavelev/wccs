@@ -1,11 +1,12 @@
 package com.smart.wccs.service.filecreator;
 
 import com.smart.wccs.model.Estimate;
+import com.smart.wccs.service.filecreator.builder.Data;
+import com.smart.wccs.service.filecreator.builder.HeaderTable;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
-import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Component;
 
@@ -17,120 +18,94 @@ import java.io.IOException;
 @Component
 public class ExcelDocument implements FileCreator {
 
-    private final XSSFWorkbook workbook;
-    private final Sheet sheet;
-    private XSSFCellStyle style;
-    private int rowNum;
-    private Cell cell;
-    private Row row;
-
-    public ExcelDocument() {
-        this.workbook = new XSSFWorkbook();
-        this.sheet = workbook.createSheet("sheet");
-        this.rowNum = 0;
-        this.row = sheet.createRow(rowNum);
-        this.style = createStyleForTitle(workbook);
-    }
-
-    private XSSFCellStyle createStyleForTitle(XSSFWorkbook workbook) {
-        style = workbook.createCellStyle();
-        XSSFFont font = workbook.createFont();
-//        font.setBold(true);
-        font.setFontName("Montserrat");
-        style.setFont(font);
-        style.setBorderBottom(BorderStyle.THIN);
-        return style;
-    }
-
-    public void createHeaderTable() {
-
-        // объеденяем ячейки первой строки
-        sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 5));
-        sheet.setColumnWidth(1, 15000);
-
-
-
-
-        // создаем строку с наименованием секции
-        row = sheet.createRow(0);
-        row.setRowStyle(style);
-        cell = row.createCell(0);
-        cell.setCellValue("Test test"); // наименование секции
-
-        row = sheet.createRow(1);
-        row.setRowStyle(style);
-
-        // порядковый номер
-        cell = row.createCell(0, CellType.STRING);
-        cell.setCellValue("#");
-        cell.setCellStyle(style);
-        // нименование
-        cell = row.createCell(1, CellType.STRING);
-        cell.setCellValue("Наименование");
-        // еденица измерения
-        cell = row.createCell(2, CellType.STRING);
-        cell.setCellValue("Ед. изм.");
-        // количество
-        cell = row.createCell(3, CellType.STRING);
-        cell.setCellValue("Кол-во");
-        // цена
-        cell = row.createCell(4, CellType.STRING);
-        cell.setCellValue("Цена");
-        // сумма
-        cell = row.createCell(5, CellType.STRING);
-        cell.setCellValue("Сумма");
-    }
-
 
     @Override
     public void createFile(Estimate estimate) {
 
-        createHeaderTable();
+        Workbook workbook = new XSSFWorkbook();
+        Sheet sheet = workbook.createSheet("sheet");
 
-        // Data
-//        for (Estimate est : estimate) {
-//            rowNum++;
-//            row = sheet.createRow(rowNum);
-//
-//            // EmpNo (A)
-//            cell = row.createCell(0, CellType.STRING);
-//            cell.setCellValue(est.getExtId());
-//            // EmpName (B)
-//            cell = row.createCell(1, CellType.STRING);
-//            cell.setCellValue(est.getCustomer());
-//            // Salary (C)
-//            cell = row.createCell(2, CellType.NUMERIC);
-//            cell.setCellValue(est.getAddress());
-//            // Grade (D)
-//            cell = row.createCell(3, CellType.NUMERIC);
-//            cell.setCellValue(est);
-//            // Bonus (E)
-//            String formula = "0.1*C" + (rowNum + 1) + "*D" + (rowNum + 1);
-//            cell = row.createCell(4, CellType.FORMULA);
-//            cell.setCellFormula(formula);
-//        }
+        sheet.setFitToPage(true);
+        sheet.setColumnWidth(0, 1000);
+        sheet.setColumnWidth(1, 15000);
+        sheet.setColumnWidth(2, 3000);
+        sheet.setColumnWidth(3, 3500);
+        sheet.setColumnWidth(4, 3500);
+        sheet.setColumnWidth(5, 3500);
+
+        CellStyle style = workbook.createCellStyle();
+        style.setWrapText(true);
+        style.setVerticalAlignment(VerticalAlignment.CENTER);
+
+        CellStyle style1 = workbook.createCellStyle();
+        style1.setWrapText(true);
+        style1.setAlignment(HorizontalAlignment.CENTER);
+        style1.setVerticalAlignment(VerticalAlignment.CENTER);
+
+        CellStyle styleHeader = workbook.createCellStyle();
+
+        sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 5));
+        Row rowTitle = sheet.createRow(0);
+        rowTitle.setHeight((short) 1000);
+        rowTitle.setRowStyle(style1);
+        rowTitle.createCell(0).setCellValue("Смета");
+
+        sheet.addMergedRegion(new CellRangeAddress(1, 1, 0, 5));
+        Row rowExtId = sheet.createRow(1);
+        rowExtId.setRowStyle(style1);
+        rowExtId.createCell(0).setCellValue("Запрос на смету : " + estimate.getExtId());
+
+        sheet.addMergedRegion(new CellRangeAddress(2, 2, 0, 5));
+        Row rowAddress = sheet.createRow(2);
+        rowAddress.setRowStyle(style1);
+        rowAddress.createCell(0).setCellValue("Адрес : " + estimate.getAddress());
+
+        sheet.addMergedRegion(new CellRangeAddress(3, 3, 0, 5));
+        Row rowCustomer = sheet.createRow(3);
+        rowCustomer.setRowStyle(style1);
+        rowCustomer.createCell(0).setCellValue("Заказчик : " + estimate.getCustomer());
+
+        sheet.addMergedRegion(new CellRangeAddress(4, 4, 0, 5));
+        sheet.createRow(4);
+
+        sheet.addMergedRegion(new CellRangeAddress(5, 5, 0, 5));
+        Row workDescription = sheet.createRow(5);
+        workDescription.setRowStyle(style);
+        workDescription.createCell(0).setCellValue("Описание работ :");
+
+        sheet.addMergedRegion(new CellRangeAddress(6, 6, 0, 5));
+        Row workDescriptionItem = sheet.createRow(6);
+        workDescriptionItem.setRowStyle(style);
+        workDescriptionItem.setHeightInPoints((short) 100);
+        workDescriptionItem.createCell(0).setCellValue(estimate.getWorkDescription());
+
+
+        sheet.addMergedRegion(new CellRangeAddress(7, 7, 0, 5));
+        Row row4 = sheet.createRow(7);
+        row4.setRowStyle(style);
+        row4.setHeight((short) 1000);
+
+
+
+        HeaderTable.getHeader(sheet, style, styleHeader, 8);
+        Data.getData(sheet, style, 9, estimate.getDevices());
+
+
+
 
         try {
-            File file = new File("upload" + File.separator + "employee.xlsx");
-
-
+            File file = new File("upload" + File.separator + "excel.xlsx");
             if (file.createNewFile()) {
                 log.info("IN createFile - create estimate {} : successfully created in {} ", file.getName(), file.getAbsolutePath());
             } else {
                 log.info("IN createFile - create estimate {} : error created", file.getName());
             }
-
             FileOutputStream outFile = new FileOutputStream(file);
             workbook.write(outFile);
-
             outFile.close();
-
-
         } catch (IOException e) {
             log.error("IN createFile - create estimate {} : error {}", e.getMessage(), e.getStackTrace());
         }
-
-
     }
 
 }
