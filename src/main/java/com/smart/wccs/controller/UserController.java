@@ -1,7 +1,9 @@
 package com.smart.wccs.controller;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import com.smart.wccs.dto.UserDto;
 import com.smart.wccs.model.User;
+import com.smart.wccs.model.Views;
 import com.smart.wccs.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,27 +27,28 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<List<UserDto>> listUsers() {
+    @JsonView(Views.UserView.class)
+    public ResponseEntity<List<User>> listUsers() {
         List<User> users = userService.getAllUsers();
 
         if (users == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        return new ResponseEntity<>(UserDto.userDtoList(users), HttpStatus.OK);
+        return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
     @GetMapping(value = "{id}")
-    public ResponseEntity<UserDto> getUser(@PathVariable(name = "id") Long id) {
+    @JsonView(Views.UserView.class)
+    public ResponseEntity<User> getUser(@PathVariable(name = "id") Long id) {
         User user = userService.findById(id);
 
         if (user == null) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
 
-        UserDto result = UserDto.fromUser(user);
 
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
 

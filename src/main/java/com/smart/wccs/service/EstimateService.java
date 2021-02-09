@@ -4,5 +4,7 @@ import com.smart.wccs.model.Estimate;
 
 public interface EstimateService {
 
-    void create(Estimate estimate);
+    Estimate create(Estimate estimate);
+
+
 }

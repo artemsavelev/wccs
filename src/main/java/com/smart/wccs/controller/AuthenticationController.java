@@ -1,9 +1,11 @@
 package com.smart.wccs.controller;
 
 
+import com.fasterxml.jackson.annotation.JsonView;
 import com.smart.wccs.dto.*;
 import com.smart.wccs.model.Department;
 import com.smart.wccs.model.User;
+import com.smart.wccs.model.Views;
 import com.smart.wccs.security.jwt.JwtTokenProvider;
 import com.smart.wccs.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +45,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("login")
+    @JsonView(Views.UserView.class)
     public ResponseEntity<?> login(@RequestBody AuthenticationRequestDto requestDto) {
 
         try {
@@ -64,8 +67,8 @@ public class AuthenticationController {
             response.put("lastName", user.getLastName());
             response.put("firstName", user.getFirstName());
             response.put("email", user.getEmail());
-            response.put("department", DepartmentDto.fromDepartment(user.getDepartment()));
-            response.put("position", PositionDto.positionDtoList(user.getPositions()));
+            response.put("department", user.getDepartment());
+            response.put("position", user.getPositions());
 //            response.put("role", RoleDto.roleDtoList(user.getRoles()));
             response.put("token", token);
 

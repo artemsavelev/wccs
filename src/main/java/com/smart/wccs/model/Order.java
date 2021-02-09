@@ -1,9 +1,7 @@
 package com.smart.wccs.model;
 
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIdentityReference;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -16,21 +14,31 @@ import java.util.Date;
 @Data
 public class Order extends BaseEntity {
 
+    @JsonView({Views.UserView.class, Views.AdminView.class})
     private String extId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "author_id")
+    @JsonView({Views.UserView.class, Views.AdminView.class})
     private User author;
 
+    @JsonView({Views.UserView.class, Views.AdminView.class})
     private String customer;
+
+    @JsonView({Views.UserView.class, Views.AdminView.class})
     private String address;
+
+    @JsonView({Views.UserView.class, Views.AdminView.class})
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private Date verificationDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "verification_name_id")
+    @JsonView({Views.UserView.class, Views.AdminView.class})
     private User verificationName;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "department_id")
+    @JsonView({Views.UserView.class, Views.AdminView.class})
     private Department department;
 }

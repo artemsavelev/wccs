@@ -1,5 +1,7 @@
 package com.smart.wccs.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonView;
 import lombok.Data;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -14,14 +16,20 @@ public class BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonView({Views.UserView.class, Views.AdminView.class})
     private Long id;
 
     @CreatedDate
+    @JsonView({Views.UserView.class, Views.AdminView.class})
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdDate;
 
     @LastModifiedDate
+    @JsonView(Views.AdminView.class)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updatedDate;
 
     @Enumerated(EnumType.STRING)
+    @JsonView(Views.AdminView.class)
     private Status status;
 }

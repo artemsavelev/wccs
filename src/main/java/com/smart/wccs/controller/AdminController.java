@@ -1,8 +1,10 @@
 package com.smart.wccs.controller;
 
 
+import com.fasterxml.jackson.annotation.JsonView;
 import com.smart.wccs.dto.AdminDto;
 import com.smart.wccs.model.User;
+import com.smart.wccs.model.Views;
 import com.smart.wccs.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,27 +28,27 @@ public class AdminController {
     }
 
     @GetMapping(value = "users/{id}")
-    public ResponseEntity<AdminDto> getUser(@PathVariable(name = "id") Long id) {
+    @JsonView(Views.AdminView.class)
+    public ResponseEntity<User> getUser(@PathVariable(name = "id") Long id) {
         User user = userService.findById(id);
 
         if (user == null) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
 
-        AdminDto result = AdminDto.fromUser(user);
-
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
     @GetMapping(value = "users")
-    public ResponseEntity<List<AdminDto>> listUsers() {
+    @JsonView(Views.AdminView.class)
+    public ResponseEntity<List<User>> listUsers() {
         List<User> users = userService.getAllUsers();
 
         if (users == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        return new ResponseEntity<>(AdminDto.userDtoList(users), HttpStatus.OK);
+        return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
 }

@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -28,7 +29,7 @@ public class EstimateServiceImpl implements EstimateService {
     }
 
     @Override
-    public void create(Estimate estimate) {
+    public Estimate create(Estimate estimate) {
         estimate.setCreatedDate(LocalDateTime.now());
         estimate.setStatus(Status.COMPLETED);
 
@@ -38,10 +39,7 @@ public class EstimateServiceImpl implements EstimateService {
         fileFactory.creator();
         fileCreator.createFile(estimate);
 
-//        FileFactory fileFactory = new ExcelFileFactory();
-//        FileCreator fileCreator = fileFactory.creator();
-//        fileCreator.createFile(estimate);
-
         log.info("IN create - estimate: {} successfully added", createdEstimate);
+        return createdEstimate;
     }
 }

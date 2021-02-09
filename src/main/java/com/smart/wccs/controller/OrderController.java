@@ -1,8 +1,10 @@
 package com.smart.wccs.controller;
 
 
+import com.fasterxml.jackson.annotation.JsonView;
 import com.smart.wccs.dto.OrderDto;
 import com.smart.wccs.model.Order;
+import com.smart.wccs.model.Views;
 import com.smart.wccs.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,38 +25,39 @@ public class OrderController {
     }
 
     @GetMapping
-    public ResponseEntity<List<OrderDto>> listOrders() {
+    @JsonView(Views.UserView.class)
+    public ResponseEntity<List<Order>> listOrders() {
         List<Order> orders = orderService.getAllOrders();
 
         if (orders.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        return new ResponseEntity<>(OrderDto.orderDtoList(orders), HttpStatus.OK);
+        return new ResponseEntity<>(orders, HttpStatus.OK);
     }
 
     @GetMapping(value = "{id}")
-    public ResponseEntity<OrderDto> getOrder(@PathVariable(name = "id") Long id) {
+    @JsonView(Views.UserView.class)
+    public ResponseEntity<Order> getOrder(@PathVariable(name = "id") Long id) {
         Order order = orderService.getById(id);
 
         if (order == null) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
 
-        OrderDto result = OrderDto.fromOrder(order);
-
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        return new ResponseEntity<>(order, HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<OrderDto> saveOrder(@RequestBody Order order) {
+    @JsonView(Views.UserView.class)
+    public ResponseEntity<Order> saveOrder(@RequestBody Order order) {
 
         if (order == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
         orderService.create(order);
-        return new ResponseEntity<>(OrderDto.fromOrder(order), HttpStatus.OK);
+        return new ResponseEntity<>(order, HttpStatus.OK);
 
     }
 }

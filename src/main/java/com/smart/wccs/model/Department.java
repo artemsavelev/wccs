@@ -1,6 +1,7 @@
 package com.smart.wccs.model;
 
 
+import com.fasterxml.jackson.annotation.JsonView;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -14,6 +15,7 @@ import javax.persistence.Table;
 @Data
 public class Department extends BaseEntity {
 
+    @JsonView({Views.UserView.class, Views.AdminView.class})
     private String name;
 
 }

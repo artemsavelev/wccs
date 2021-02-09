@@ -1,6 +1,8 @@
 package com.smart.wccs.controller;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import com.smart.wccs.model.Estimate;
+import com.smart.wccs.model.Views;
 import com.smart.wccs.service.EstimateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,14 +24,15 @@ public class EstimateController {
     }
 
     @RequestMapping(value = "/createEstimate", method = RequestMethod.POST)
+    @JsonView(Views.UserView.class)
     public ResponseEntity<Estimate> saveEstimate(@RequestBody Estimate estimate) {
 
         if (estimate == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
-        estimateService.create(estimate);
-        return new ResponseEntity<>(HttpStatus.OK);
+        Estimate result = estimateService.create(estimate);
+        return new ResponseEntity<>(result, HttpStatus.OK);
 
     }
 }
