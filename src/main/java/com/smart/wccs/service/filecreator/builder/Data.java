@@ -29,8 +29,8 @@ public class Data {
             row.createCell(2, CellType.STRING).setCellValue(emp.getDimension());
             row.setRowStyle(style);
             // quantity (D)
-//            row.createCell(3, CellType.NUMERIC).setCellValue(emp.getQuantity());
-//            row.setRowStyle(style);
+            row.createCell(3, CellType.NUMERIC).setCellValue(emp.getQuantity());
+            row.setRowStyle(style);
 
             // price (E)
             row.createCell(4, CellType.BOOLEAN).setCellValue(emp.getPrice());

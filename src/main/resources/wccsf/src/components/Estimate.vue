@@ -51,7 +51,8 @@
       </v-card-text>
 
       <template>
-        <div class="border-top pl-8 pb-5">
+        <v-progress-linear height="5" value="7"></v-progress-linear>
+        <div class="pl-8 pb-5">
           <v-card-actions class="">
             <v-btn medium v-on:click="create" color="primary" tile>{{ env.keyMakeEstimate }}</v-btn>
             <Preview v-bind:data="estimate"/>
@@ -71,7 +72,7 @@ import Materials from "./Materials";
 import Device from "./Device";
 import TypeOfWork from "./TypeOfWork";
 import Preview from "@/components/Preview";
-import { mapGetters } from "vuex";
+import {mapActions, mapGetters} from "vuex";
 
 export default {
   name: "Estimate",
@@ -91,10 +92,12 @@ export default {
       devices: [],
       materials: [],
       works: [],
-      data: {}
+      ext: 'upload',
+      type: this.address + ' ' + this.customer + '.xlsx'
     }
   },
   methods: {
+    ...mapActions(['addEstimate']),
     close() {
       this.dialog = false
     },
@@ -112,17 +115,41 @@ export default {
     },
     create() {
       this.estimate = {
-        id: this.extId,
+        extId: this.extId,
         address: this.address,
         customer: this.customer,
         owner: this.profile.lastName + ' ' + this.date,
-        workDescription: this.workDescription,
-        device: this.devices,
-        material: this.materials,
-        work: this.works
+        workDescription: this.workDescription.typeOfWork,
+        devices: this.devices,
+        materials: this.materials,
+        works: this.works
       }
       console.log(this.estimate)
+      this.addEstimate(this.estimate);
+      //
+      // const user = JSON.parse(localStorage.getItem('user'));
+      //
+      // fetch('http://localhost:8080/upload/', {
+      //   responseType: 'blob',
+      //   method: 'GET',
+      //   headers: new Headers({
+      //         'Authorization': 'bearer_' + user.token
+      //       },
+      //   ),
+      // })
+      //     .then((response) => {
+      //       const url = window.URL.createObjectURL(new Blob([response.data]));
+      //       const link = document.createElement('a');
+      //       link.href = url;
+      //       link.setAttribute('download', 'Тест Тест 1.xlsx');
+      //       document.body.appendChild(link);
+      //       link.click();
+      //     })
+
+
     },
+
+
   }
 }
 </script>

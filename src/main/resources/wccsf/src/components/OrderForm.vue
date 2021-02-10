@@ -99,6 +99,7 @@ export default {
   watch: {
 
     orderVal(newVal){
+      console.log(newVal)
 
       this.dialog = true;
       this.id = newVal.id;

@@ -25,28 +25,29 @@ public class Estimate extends BaseEntity {
     @JsonView({Views.UserView.class, Views.AdminView.class})
     private String workDescription;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "estimate_devices",
             joinColumns = @JoinColumn(name = "estimate_id"),
             inverseJoinColumns = @JoinColumn(name = "devices_id"))
     @JsonView({Views.UserView.class, Views.AdminView.class})
     private List<Device> devices;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "estimate_materials",
             joinColumns = @JoinColumn(name = "estimate_id"),
             inverseJoinColumns = @JoinColumn(name = "materials_id"))
     @JsonView({Views.UserView.class, Views.AdminView.class})
     private List<Material> materials;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "estimate_works",
             joinColumns = @JoinColumn(name = "estimate_id"),
             inverseJoinColumns = @JoinColumn(name = "works_id"))
     @JsonView({Views.UserView.class, Views.AdminView.class})
     private List<Work> works;
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "department_id")
-//    private Department department;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "department_id")
+    @JsonView({Views.UserView.class, Views.AdminView.class})
+    private Department department;
 }

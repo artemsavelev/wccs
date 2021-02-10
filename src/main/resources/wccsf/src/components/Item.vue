@@ -1,14 +1,14 @@
 <template>
-  <div class="main font-s mt-0">
+  <div class="main font-s mt-0 ">
     <div class="main-container">
-      <div class="main-container-wrapper pa-1 column-80">
+      <div class="main-container-wrapper pa-1 column-80" v-bind:style="this.done">
         {{ item.id }}
       </div>
 
-      <div class="main-container-wrapper pa-1 column-700">
+      <div class="main-container-wrapper pa-1 column-700" v-bind:style="this.done">
         {{ item.name }}
       </div>
-      <div class="main-container-wrapper pa-1 column-100">
+      <div class="main-container-wrapper pa-1 column-100" v-bind:style="this.done">
         {{ item.dimension }}
       </div>
 
@@ -16,16 +16,21 @@
         <input type="text" placeholder="0" v-model="quantity" class="input" />
       </div>
 
-      <div class="main-container-wrapper pa-1 column-100">
+      <div class="main-container-wrapper pa-1 column-100" v-bind:style="this.done">
         {{ item.price.toLocaleString('ru-RU') }}
       </div>
 
-      <div class="main-container-wrapper pa-1 column-600">
+      <div class="main-container-wrapper pa-1 column-600" v-bind:style="this.done">
         {{ item.note }}
       </div>
-      <div class="main-container-wrapper column-70 ">
+      <div class="main-container-wrapper column-70 " v-bind:style="this.done">
         <v-card-actions class="ma-0 pa-0">
-          <v-btn v-on:click="add" icon>
+<!--          <v-checkbox v-on:change="add"-->
+<!--                      class="pt-0 pb-0 mt-0 mb-0 ml-0"-->
+<!--                      color="error"-->
+<!--                      label=""-->
+<!--                      hide-details></v-checkbox>-->
+          <v-btn icon v-on:click="add">
             <v-icon>mdi-plus</v-icon>
           </v-btn>
         </v-card-actions>
@@ -43,7 +48,8 @@ export default {
   data() {
     return {
       env,
-      quantity: ''
+      quantity: '',
+      done: ''
 
     }
   },
@@ -58,6 +64,7 @@ export default {
         quantity: this.quantity === '' ? 1 : this.quantity
       }
 
+      this.done = 'color: red; text-decoration: line-through;'
       this.$emit('add', obj)
     }
   },

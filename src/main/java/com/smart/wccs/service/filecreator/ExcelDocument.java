@@ -8,6 +8,7 @@ import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
@@ -17,6 +18,9 @@ import java.io.IOException;
 @Slf4j
 @Component
 public class ExcelDocument implements FileCreator {
+
+    @Value("${upload.path}")
+    private String uploadPath;
 
 
     @Override
@@ -94,7 +98,10 @@ public class ExcelDocument implements FileCreator {
 
 
         try {
-            File file = new File("upload" + File.separator + "excel.xlsx");
+            File file = new File(uploadPath + File.separator +
+                    estimate.getAddress() + " " +
+                    estimate.getCustomer() + " " +
+                    estimate.getExtId() + ".xlsx");
             if (file.createNewFile()) {
                 log.info("IN createFile - create estimate {} : successfully created in {} ", file.getName(), file.getAbsolutePath());
             } else {
