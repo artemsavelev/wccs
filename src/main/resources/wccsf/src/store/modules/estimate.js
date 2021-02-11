@@ -10,7 +10,7 @@ export default {
     mutations: {
         addEstimateMutation(state, est) {
             state.orders = est
-            console.log('mut ', state.estimate);
+            // console.log('mut ', state.estimate);
         }
 
     },

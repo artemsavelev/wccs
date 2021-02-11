@@ -51,7 +51,10 @@
       </v-card-text>
 
       <template>
-        <v-progress-linear height="5" value="7"></v-progress-linear>
+        <v-progress-linear height="5"
+                           color="primary"
+                           :indeterminate="loading"
+                           ></v-progress-linear>
         <div class="pl-8 pb-5">
           <v-card-actions class="">
             <v-btn medium v-on:click="create" color="primary" tile>{{ env.keyMakeEstimate }}</v-btn>
@@ -93,7 +96,8 @@ export default {
       materials: [],
       works: [],
       ext: 'upload',
-      type: this.address + ' ' + this.customer + '.xlsx'
+      type: this.address + ' ' + this.customer + '.xlsx',
+      loading: true
     }
   },
   methods: {
@@ -125,26 +129,41 @@ export default {
         works: this.works
       }
       console.log(this.estimate)
-      this.addEstimate(this.estimate);
+      this.addEstimate(this.estimate).then(() => {
+        this.loading = false
+      })
+
+      const user = JSON.parse(localStorage.getItem('user'));
       //
-      // const user = JSON.parse(localStorage.getItem('user'));
       //
-      // fetch('http://localhost:8080/upload/', {
+      // fetch('http://localhost:8080/uploads/Address customer 7654321.xlsx', {
+      // // fetch('file:///home/maverick/uploads', {
       //   responseType: 'blob',
       //   method: 'GET',
+      //   type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
       //   headers: new Headers({
       //         'Authorization': 'bearer_' + user.token
       //       },
       //   ),
+      // }).then((response) => {
+      //   const url = window.URL.createObjectURL(new Blob([response.data]));
+      //   const link = document.createElement('a');
+      //   link.href = url;
+      //   link.setAttribute('download', 'Address customer 7654321.xlsx');
+      //   document.body.appendChild(link);
+      //   link.click();
+      //   console.log(response)
       // })
-      //     .then((response) => {
-      //       const url = window.URL.createObjectURL(new Blob([response.data]));
-      //       const link = document.createElement('a');
-      //       link.href = url;
-      //       link.setAttribute('download', 'Тест Тест 1.xlsx');
-      //       document.body.appendChild(link);
-      //       link.click();
-      //     })
+      fetch(`http://localhost:8080/uploads/`, {
+        method: 'get',
+        responseType: 'blob',
+        headers: new Headers({
+              'Authorization': 'bearer_' + user.token
+            },
+        ),
+      }).then((response) => {
+        console.log(response)
+      })
 
 
     },

@@ -6,10 +6,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.persistence.Entity;
-import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
 @Entity
@@ -26,14 +24,13 @@ public class Device extends BaseEntity {
     @JsonView({Views.UserView.class, Views.AdminView.class})
     private double price;
 
+
     @Transient
     @JsonView({Views.UserView.class, Views.AdminView.class})
     private int quantity;
 
+
     @JsonView({Views.UserView.class, Views.AdminView.class})
     private String note;
-
-    @ManyToMany
-    private List<Estimate> estimates;
 
 }

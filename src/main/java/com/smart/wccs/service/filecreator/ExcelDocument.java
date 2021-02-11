@@ -98,10 +98,18 @@ public class ExcelDocument implements FileCreator {
 
 
         try {
+
+            File uploadDir = new File(uploadPath);
+            if (!uploadDir.exists()) {
+                uploadDir.mkdir();
+            }
+
+
             File file = new File(uploadPath + File.separator +
                     estimate.getAddress() + " " +
                     estimate.getCustomer() + " " +
                     estimate.getExtId() + ".xlsx");
+
             if (file.createNewFile()) {
                 log.info("IN createFile - create estimate {} : successfully created in {} ", file.getName(), file.getAbsolutePath());
             } else {
