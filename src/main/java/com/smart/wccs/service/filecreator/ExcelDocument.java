@@ -6,7 +6,6 @@ import com.smart.wccs.service.filecreator.builder.HeaderTable;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
-import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -99,6 +98,7 @@ public class ExcelDocument implements FileCreator {
 
         try {
 
+            // проверяем существует ли папка
             File uploadDir = new File(uploadPath);
             if (!uploadDir.exists()) {
                 uploadDir.mkdir();

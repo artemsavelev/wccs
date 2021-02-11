@@ -26,6 +26,7 @@ public class JwtTokenFilter extends GenericFilterBean {
         res.setHeader("Access-Control-Max-Age", "3600");
         res.setHeader("Access-Control-Allow-Headers", "Authorization, Content-Type, Origin, X-Requested-With, Accept");
 
+
         String token = jwtTokenProvider.resolveToken((HttpServletRequest) request);
 
         if (token != null && jwtTokenProvider.validateToken(token)) {

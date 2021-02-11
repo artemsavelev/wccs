@@ -96,7 +96,7 @@ export default {
       materials: [],
       works: [],
       ext: 'upload',
-      type: this.address + ' ' + this.customer + '.xlsx',
+      file: this.address + ' ' + this.customer + ' ' + this.extId,
       loading: true
     }
   },
@@ -128,42 +128,29 @@ export default {
         materials: this.materials,
         works: this.works
       }
-      console.log(this.estimate)
+      console.log('estimate', this.estimate)
       this.addEstimate(this.estimate).then(() => {
         this.loading = false
       })
 
-      const user = JSON.parse(localStorage.getItem('user'));
-      //
-      //
-      // fetch('http://localhost:8080/uploads/Address customer 7654321.xlsx', {
-      // // fetch('file:///home/maverick/uploads', {
-      //   responseType: 'blob',
-      //   method: 'GET',
-      //   type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-      //   headers: new Headers({
-      //         'Authorization': 'bearer_' + user.token
-      //       },
-      //   ),
-      // }).then((response) => {
-      //   const url = window.URL.createObjectURL(new Blob([response.data]));
-      //   const link = document.createElement('a');
-      //   link.href = url;
-      //   link.setAttribute('download', 'Address customer 7654321.xlsx');
-      //   document.body.appendChild(link);
-      //   link.click();
-      //   console.log(response)
-      // })
-      fetch(`http://localhost:8080/uploads/`, {
-        method: 'get',
-        responseType: 'blob',
-        headers: new Headers({
-              'Authorization': 'bearer_' + user.token
-            },
-        ),
-      }).then((response) => {
-        console.log(response)
-      })
+
+      fetch("http://localhost:8080/api/v1/files/" + this.file, {
+        method: 'GET',
+      }).then(response => response.blob())
+          .then(blob => {
+
+            console.log(blob.size)
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download =   this.file;
+            document.body.appendChild(a); // we need to append the element to the dom -> otherwise it will not work in firefox
+            a.click();
+            a.remove();  //afterwards we remove the element again
+          });
+
+
+
 
 
     },
