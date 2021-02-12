@@ -25,6 +25,10 @@ public class Estimate extends BaseEntity {
     @JsonView({Views.UserView.class, Views.AdminView.class})
     private String workDescription;
 
+    @Transient
+    @JsonView({Views.UserView.class, Views.AdminView.class})
+    private String simpleText;
+
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "estimate_devices",
             joinColumns = @JoinColumn(name = "estimate_id"),

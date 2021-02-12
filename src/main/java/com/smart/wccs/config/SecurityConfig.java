@@ -19,7 +19,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private static final String ADMIN_ENDPOINT = "/api/v1/admin/**";
     private static final String USER_ENDPOINT = "/api/v1/user/**";
     private static final String LOGIN_ENDPOINT = "/api/v1/auth/login";
-    private static final String UPLOADS = "/api/v1/files/**";
+    private static final String FILE_PATH = "/api/v1/files/**";
     private static final String LOGOUT_ENDPOINT = "/api/v1/auth/logout";
 
     @Autowired
@@ -43,7 +43,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers(LOGIN_ENDPOINT, UPLOADS).permitAll()
+                .antMatchers(LOGIN_ENDPOINT, FILE_PATH).permitAll()
                 .antMatchers(ADMIN_ENDPOINT).hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and()

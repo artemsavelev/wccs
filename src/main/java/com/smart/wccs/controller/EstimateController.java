@@ -49,11 +49,12 @@ public class EstimateController {
     public void getFile(@PathVariable("file_name") String fileName, HttpServletResponse response) {
         // Прежде всего стоит проверить, если необходимо, авторизован ли пользователь и имеет достаточно прав на скачивание файла. Если нет, то выбрасываем здесь Exception
 
-        //Авторизованные пользователи смогут скачать файл
+        // Авторизованные пользователи смогут скачать файл
         Path file = Paths.get(uploadPath, fileName);
-        if (Files.exists(file)){
+        if (Files.exists(file)) {
             response.setHeader("Content-disposition", "attachment;filename=" + fileName);
             response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+
 
             try {
                 Files.copy(file, response.getOutputStream());

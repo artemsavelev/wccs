@@ -23,7 +23,7 @@
       <div class="main-container-wrapper pa-1 column-600" v-bind:style="this.done">
         {{ item.note }}
       </div>
-      <div class="main-container-wrapper column-70 " v-bind:style="this.done">
+      <div class="main-container-wrapper column-70 ">
         <v-card-actions class="ma-0 pa-0">
 <!--          <v-checkbox v-on:change="add"-->
 <!--                      class="pt-0 pb-0 mt-0 mb-0 ml-0"-->

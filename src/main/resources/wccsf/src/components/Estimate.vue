@@ -51,8 +51,8 @@
       </v-card-text>
 
       <template>
-        <v-progress-linear height="5"
-                           color="primary"
+        <v-progress-linear height="3"
+                           color="purple"
                            :indeterminate="loading"
                            ></v-progress-linear>
         <div class="pl-8 pb-5">
@@ -95,9 +95,9 @@ export default {
       devices: [],
       materials: [],
       works: [],
-      ext: 'upload',
-      file: this.address + ' ' + this.customer + ' ' + this.extId,
-      loading: true
+      file: this.address + ' ' + this.customer + ' ' + this.extId + '.xlsx',
+      loading: false,
+      timerId: null
     }
   },
   methods: {
@@ -118,40 +118,59 @@ export default {
       this.works = works
     },
     create() {
+
+      // создаем объект для отправки на сервер
       this.estimate = {
         extId: this.extId,
         address: this.address,
         customer: this.customer,
         owner: this.profile.lastName + ' ' + this.date,
         workDescription: this.workDescription.typeOfWork,
+        simpleText: this.workDescription.text,
         devices: this.devices,
         materials: this.materials,
         works: this.works
       }
-      console.log('estimate', this.estimate)
-      this.addEstimate(this.estimate).then(() => {
-        this.loading = false
-      })
+      // console.log('estimate', this.estimate)
+      this.addEstimate(this.estimate) // отправляем данные на сервер через store
 
+      // таймер через который начинается скачивание
+      let delay = 2000;
 
-      fetch("http://localhost:8080/api/v1/files/" + this.file, {
-        method: 'GET',
-      }).then(response => response.blob())
-          .then(blob => {
+      this.loading = true // активируем анимацию загрузки
 
-            console.log(blob.size)
+      // проверяем и загружаем файл по таймеру
+      this.timerId = setInterval(() => {
+        fetch('http://localhost:8080/api/v1/files/' + this.file, {
+          method: 'GET',
+        }).then(response =>
+            response.blob()
+        ).then(blob => {
+
+          // проверяем существует ли файл
+          if (blob.size === 0) {
+
+            console.log('file size:', blob.size)
+            delay += 1000; // увеличиваем таймер на 1 секунду с каждым интервалом
+
+          } else {
+
             const url = window.URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download =   this.file;
+            a.download = this.file;
             document.body.appendChild(a); // we need to append the element to the dom -> otherwise it will not work in firefox
             a.click();
             a.remove();  //afterwards we remove the element again
-          });
 
+            console.log('file size:', blob.size, 'file type:', blob.type)
+            this.loading = false // останавливаем анимацию
+            clearInterval(this.timerId) // останавливаем таймер
 
+          }
+        })
 
-
+      }, delay);
 
     },
 
