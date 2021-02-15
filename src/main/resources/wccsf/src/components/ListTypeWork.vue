@@ -31,7 +31,7 @@ export default {
   data() {
     return {
       env,
-      typeOfWork: '',
+      typeOfWork: env.workDescription,
       text: env.preliminary,
     }
   },

@@ -1,15 +1,10 @@
 package com.smart.wccs.service.filecreator;
 
-import com.smart.wccs.model.Device;
+import com.smart.wccs.model.Components;
 import com.smart.wccs.model.Estimate;
-import com.smart.wccs.model.Material;
-import com.smart.wccs.model.Work;
-import com.smart.wccs.service.filecreator.builder.Data;
-import com.smart.wccs.service.filecreator.builder.HeaderTable;
+import com.smart.wccs.service.filecreator.components.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.ss.util.CellRangeAddress;
-import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -17,6 +12,8 @@ import org.springframework.stereotype.Component;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -32,167 +29,77 @@ public class ExcelDocument implements FileCreator {
 
         Workbook workbook = new XSSFWorkbook();
         Sheet sheet = workbook.createSheet("sheet");
-        Font font = new XSSFFont();
+        Font font = workbook.createFont();
+        font.setFontHeightInPoints((short) 8);
         font.setFontName("Montserrat");
+        List<Components> listDevice = new ArrayList<>(estimate.getDevices());
+        List<Components> listMaterial = new ArrayList<>(estimate.getMaterials());
+        List<Components> listWork = new ArrayList<>(estimate.getWorks());
 
-        sheet.setFitToPage(true);
-        sheet.setColumnWidth(0, 1000);
-        sheet.setColumnWidth(1, 15000);
-        sheet.setColumnWidth(2, 3000);
-        sheet.setColumnWidth(3, 3500);
-        sheet.setColumnWidth(4, 3500);
-        sheet.setColumnWidth(5, 3500);
+        CreateStyle createStyle = new CreateStyle(workbook, font);
+        CellStyle styleHeaderTable = createStyle.getStyle(IndexedColors.GREY_25_PERCENT, FillPatternType.SOLID_FOREGROUND,
+                HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+        CellStyle styleEmpty = createStyle.getStyle();
+        CellStyle styleAlignCenter = createStyle.getStyle(HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+        CellStyle styleAlignCenter2 = createStyle.getStyle(HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+        CellStyle styleAlignCenterTop = createStyle.getStyle(HorizontalAlignment.LEFT, VerticalAlignment.TOP);
+        CellStyle styleAlignCenterBold = createStyle.getStyle(true, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+        CellStyle styleAlignLeft = createStyle.getStyle(HorizontalAlignment.LEFT, VerticalAlignment.CENTER);
+        CellStyle styleAlignLeftColor = createStyle.getStyle(IndexedColors.RED, HorizontalAlignment.LEFT, VerticalAlignment.CENTER);
+        CellStyle styleAlignRightBold = createStyle.getStyle(true, HorizontalAlignment.RIGHT, VerticalAlignment.CENTER);
+        CellStyle styleAlignLeftBottomBold = createStyle.getStyle(true,  HorizontalAlignment.LEFT, VerticalAlignment.BOTTOM);
 
-        CellStyle style = workbook.createCellStyle();
-        style.setWrapText(true);
-        style.setFont(font);
-        style.setVerticalAlignment(VerticalAlignment.CENTER);
+        new SheetSettings(sheet).getSettings();
 
-        CellStyle style1 = workbook.createCellStyle();
-        style1.setWrapText(true);
-        style1.setFont(font);
-        style1.setAlignment(HorizontalAlignment.CENTER);
-        style1.setVerticalAlignment(VerticalAlignment.CENTER);
+        CreateCell createCell = new CreateCell(sheet, CellType.STRING);
+        CreateHeaderTable headerTable = new CreateHeaderTable(sheet, CellType.STRING);
+        Data data = new Data(workbook, sheet, font, styleAlignCenter);
 
-        CellStyle styleHeader = workbook.createCellStyle();
+        createCell.getCell(styleAlignCenter2,0, 0, 5, 30, "Смета");
+        createCell.getCell(styleAlignCenter2,1, 0, 5, 15, "№: " + estimate.getExtId());
+        createCell.getCell(styleAlignCenter2,2, 0, 5, 15, "адрес: " + estimate.getAddress());
+        createCell.getCell(styleAlignCenter2,3, 0, 5, 15, "заказчик: " + estimate.getCustomer());
+        createCell.getCell(styleAlignCenter2,4, 0, 5, 15, "составил: " +
+                estimate.getAuthor().getLastName() + " " + estimate.getAuthor().getFirstName() + " " +
+                estimate.getCreatedDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+        createCell.getCell(styleEmpty, 5, 0, 5, 15, "");
+        createCell.getCell(styleAlignLeft, 6, 0, 5, 15, "Описание работ :");
+        createCell.getCell(styleAlignCenterTop, 7, 0, 5, 100, estimate.getWorkDescription());
+        createCell.getCell(styleAlignLeftColor, 8, 0, 5, 70, estimate.getSimpleText());
 
-        sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 5));
-        Row rowTitle = sheet.createRow(0);
-        rowTitle.setHeight((short) 1000);
-        rowTitle.setRowStyle(style1);
-        rowTitle.createCell(0).setCellValue("Смета");
+        createCell.getCell(styleAlignLeftBottomBold, 9, 0, 5, 25, "1. Активное оборудование");
+        headerTable.getHeader(styleHeaderTable, 9);
 
-        sheet.addMergedRegion(new CellRangeAddress(1, 1, 0, 5));
-        Row rowExtId = sheet.createRow(1);
-        rowExtId.setRowStyle(style1);
-        rowExtId.createCell(0).setCellValue("Запрос на смету : " + estimate.getExtId());
-
-        sheet.addMergedRegion(new CellRangeAddress(2, 2, 0, 5));
-        Row rowAddress = sheet.createRow(2);
-        rowAddress.setRowStyle(style1);
-        rowAddress.createCell(0).setCellValue("Адрес : " + estimate.getAddress());
-
-        sheet.addMergedRegion(new CellRangeAddress(3, 3, 0, 5));
-        Row rowCustomer = sheet.createRow(3);
-        rowCustomer.setRowStyle(style1);
-        rowCustomer.createCell(0).setCellValue("Заказчик : " + estimate.getCustomer());
-
-        sheet.addMergedRegion(new CellRangeAddress(4, 4, 0, 5));
-        sheet.createRow(4);
-
-        sheet.addMergedRegion(new CellRangeAddress(5, 5, 0, 5));
-        Row workDescription = sheet.createRow(5);
-        workDescription.setRowStyle(style);
-        workDescription.createCell(0).setCellValue("Описание работ :");
-
-        sheet.addMergedRegion(new CellRangeAddress(6, 6, 0, 5));
-        Row workDescriptionItem = sheet.createRow(6);
-        workDescriptionItem.setRowStyle(style);
-        workDescriptionItem.setHeightInPoints((short) 100);
-        workDescriptionItem.createCell(0).setCellValue(estimate.getWorkDescription());
-
-        sheet.addMergedRegion(new CellRangeAddress(7, 7, 0, 5));
-        Row simpleText = sheet.createRow(7);
-        simpleText.setRowStyle(style);
-        simpleText.setHeight((short) 1000);
-        simpleText.createCell(0).setCellValue(estimate.getSimpleText());
-
-        HeaderTable.getHeader(sheet, style, styleHeader, 8);
-//        Data.getData(sheet, style, 9, estimate.getDevices());
-
-
-        List<Device> listDevice = estimate.getDevices();
         // Data device
-        int row1 = 9;
-        int i = 1;
-        for (Device dev : listDevice) {
-            row1++;
-            i++;
-            Row rowDevice = sheet.createRow(row1);
-            // # (A)
-            rowDevice.createCell(0, CellType.NUMERIC).setCellValue(i);
-            rowDevice.setRowStyle(style);
-            // name (B)
-            rowDevice.createCell(1, CellType.STRING).setCellValue(dev.getName());
-            rowDevice.setRowStyle(style);
-            // dimension (C)
-            rowDevice.createCell(2, CellType.STRING).setCellValue(dev.getDimension());
-            rowDevice.setRowStyle(style);
-            // quantity (D)
-            rowDevice.createCell(3, CellType.NUMERIC).setCellValue(dev.getQuantity());
-            rowDevice.setRowStyle(style);
+        int row1 = 10;
+        row1 = data.getData(row1, listDevice);
 
-            // price (E)
-            rowDevice.createCell(4, CellType.BOOLEAN).setCellValue(dev.getPrice());
-            rowDevice.setRowStyle(style);
-            // sum (F)
+        createCell.getCell(styleAlignRightBold, row1 + 1, 0, 4, 15, "ИТОГО за активное оборудование: ");
+        createCell.cellFormula(styleAlignCenterBold, row1-listDevice.size()+2, row1 + 1, 15);
 
+        createCell.getCell(styleAlignLeftBottomBold, row1 + 2, 0, 5, 25, "2. Материалы и оборудование");
+        headerTable.getHeader(styleHeaderTable,row1 + 2);
 
-        }
-        sheet.addMergedRegion(new CellRangeAddress(row1 + 1, row1 + 1, 0, 4));
-
-
-        List<Material> listMaterial = estimate.getMaterials();
         // Data material
-        int row2 = row1 + estimate.getDevices().size() + 1;
-        HeaderTable.getHeader(sheet, style, styleHeader, row2 - 1);
-        log.info("row2 {}", row2);
-        for (Material mat : listMaterial) {
-            row2++;
-            Row rowMaterial = sheet.createRow(row2);
-            // # (A)
-            rowMaterial.createCell(0, CellType.NUMERIC).setCellValue(mat.getId());
-            rowMaterial.setRowStyle(style);
-            // name (B)
-            rowMaterial.createCell(1, CellType.STRING).setCellValue(mat.getName());
-            rowMaterial.setRowStyle(style);
-            // dimension (C)
-            rowMaterial.createCell(2, CellType.STRING).setCellValue(mat.getDimension());
-            rowMaterial.setRowStyle(style);
-            // quantity (D)
-            rowMaterial.createCell(3, CellType.NUMERIC).setCellValue(mat.getQuantity());
-            rowMaterial.setRowStyle(style);
+        int row2 = row1 + 3;
+        row2 = data.getData(row2, listMaterial);
 
-            // price (E)
-            rowMaterial.createCell(4, CellType.BOOLEAN).setCellValue(mat.getPrice());
-            rowMaterial.setRowStyle(style);
-            // sum (F)
+        createCell.getCell(styleAlignRightBold, row2 + 1, 0, 4, 15, "ИТОГО за материалы и оборудование: ");
+        createCell.cellFormula(styleAlignCenterBold,row2-listMaterial.size()+2, row2 + 1, 15);
 
+        createCell.getCell(styleAlignLeftBottomBold, row2 + 2, 0, 5, 25, "3. Работы");
+        headerTable.getHeader(styleHeaderTable,row2 + 2);
 
-        }
-        sheet.addMergedRegion(new CellRangeAddress(row2 + 1, row2 + 1, 0, 4));
-
-
-        List<Work> listWork = estimate.getWorks();
         // Data work
-        int row3 = row2 + estimate.getMaterials().size() + 1;
-        HeaderTable.getHeader(sheet, style, styleHeader, row3 - 1);
-        log.info("row3 {}", row3);
-        for (Work work : listWork) {
-            row3++;
-            Row rowWork = sheet.createRow(row3);
+        int row3 = row2 + 3;
+        row3 = data.getData(row3, listWork);
 
-            // # (A)
-            rowWork.createCell(0, CellType.NUMERIC).setCellValue(work.getId());
-            rowWork.setRowStyle(style);
-            // name (B)
-            rowWork.createCell(1, CellType.STRING).setCellValue(work.getName());
-            rowWork.setRowStyle(style);
-            // dimension (C)
-            rowWork.createCell(2, CellType.STRING).setCellValue(work.getDimension());
-            rowWork.setRowStyle(style);
-            // quantity (D)
-            rowWork.createCell(3, CellType.NUMERIC).setCellValue(work.getQuantity());
-            rowWork.setRowStyle(style);
+        createCell.getCell(styleAlignRightBold, row3 + 1, 0, 4, 15, "ИТОГО за работы: ");
+        createCell.cellFormula(styleAlignCenterBold,row3-listWork.size()+2, row3 + 1, 15);
 
-            // price (E)
-            rowWork.createCell(4, CellType.BOOLEAN).setCellValue(work.getPrice());
-            rowWork.setRowStyle(style);
-            // sum (F)
-
-
-        }
-        sheet.addMergedRegion(new CellRangeAddress(row3 + 1, row3 + 1, 0, 4));
+        createCell.getCell(styleEmpty,row3 + 2, 0, 5, 7, "");
+        createCell.getCell(styleAlignRightBold,row3 + 3, 0, 4, 15, "ИТОГО ОБЩАЯ СУММА: ");
+        createCell.cellFormula(styleAlignCenterBold,row1 + 2, row2 + 2, row3 + 2, row3 + 3, 15);
 
 
         try {
@@ -202,7 +109,6 @@ public class ExcelDocument implements FileCreator {
             if (!uploadDir.exists()) {
                 uploadDir.mkdir();
             }
-
 
             File file = new File(uploadPath + File.separator +
                     estimate.getAddress() + " " +

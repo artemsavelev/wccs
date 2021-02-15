@@ -14,7 +14,7 @@ import java.util.List;
 @Entity
 @Table(name = "material")
 @Data
-public class Material extends BaseEntity {
+public class Material extends BaseEntity implements Components {
 
     @JsonView({Views.UserView.class, Views.AdminView.class})
     private String name;

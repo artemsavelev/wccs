@@ -13,7 +13,7 @@ import javax.persistence.Transient;
 @Entity
 @Table(name = "device")
 @Data
-public class Device extends BaseEntity {
+public class Device extends BaseEntity implements Components {
 
     @JsonView({Views.UserView.class, Views.AdminView.class})
     private String name;

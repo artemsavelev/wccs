@@ -7,4 +7,5 @@ export default {
     API_MATERIAL_URL: API_BASE_URL + 'material/',
     API_WORK_URL: API_BASE_URL + 'work/',
     API_ESTIMATE_URL: API_BASE_URL + 'createEstimate/',
+    API_GET_FILE: API_BASE_URL + 'files/',
 }

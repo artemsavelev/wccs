@@ -52,7 +52,7 @@
 
       <template>
         <v-progress-linear height="3"
-                           color="purple"
+                           color="primary"
                            :indeterminate="loading"
                            ></v-progress-linear>
         <div class="pl-8 pb-5">
@@ -76,6 +76,7 @@ import Device from "./Device";
 import TypeOfWork from "./TypeOfWork";
 import Preview from "@/components/Preview";
 import {mapActions, mapGetters} from "vuex";
+import api from "@/api/backendApi";
 
 export default {
   name: "Estimate",
@@ -97,7 +98,8 @@ export default {
       works: [],
       file: this.address + ' ' + this.customer + ' ' + this.extId + '.xlsx',
       loading: false,
-      timerId: null
+      timerId: null,
+      delay: 2000
     }
   },
   methods: {
@@ -134,14 +136,14 @@ export default {
       // console.log('estimate', this.estimate)
       this.addEstimate(this.estimate) // отправляем данные на сервер через store
 
-      // таймер через который начинается скачивание
-      let delay = 2000;
+      // // таймер через который начинается скачивание
+      // let delay = 2000;
 
       this.loading = true // активируем анимацию загрузки
 
       // проверяем и загружаем файл по таймеру
       this.timerId = setInterval(() => {
-        fetch('http://localhost:8080/api/v1/files/' + this.file, {
+        fetch(api.API_GET_FILE + this.file, {
           method: 'GET',
         }).then(response =>
             response.blob()
@@ -151,7 +153,8 @@ export default {
           if (blob.size === 0) {
 
             console.log('file size:', blob.size)
-            delay += 1000; // увеличиваем таймер на 1 секунду с каждым интервалом
+            this.delay += 1000; // увеличиваем таймер на 1 секунду с каждым интервалом
+            console.log(this.delay)
 
           } else {
 
@@ -170,7 +173,7 @@ export default {
           }
         })
 
-      }, delay);
+      }, this.delay);
 
     },
 

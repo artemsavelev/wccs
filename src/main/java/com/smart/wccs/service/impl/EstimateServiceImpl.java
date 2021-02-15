@@ -41,6 +41,7 @@ public class EstimateServiceImpl implements EstimateService {
 
         estimate.setCreatedDate(LocalDateTime.now());
         estimate.setStatus(Status.COMPLETED);
+        estimate.setAuthor(user);
         estimate.setDepartment(user.getDepartment());
 
         Estimate createdEstimate = estimateRepo.save(estimate);

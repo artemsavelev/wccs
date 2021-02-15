@@ -14,7 +14,7 @@ import java.util.List;
 @Entity
 @Table(name = "work")
 @Data
-public class Work extends BaseEntity {
+public class Work extends BaseEntity implements Components {
 
     @JsonView({Views.UserView.class, Views.AdminView.class})
     private String name;

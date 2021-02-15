@@ -22,6 +22,11 @@ public class Estimate extends BaseEntity {
     @JsonView({Views.UserView.class, Views.AdminView.class})
     private String address;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "author_id")
+    @JsonView({Views.UserView.class, Views.AdminView.class})
+    private User author;
+
     @JsonView({Views.UserView.class, Views.AdminView.class})
     private String workDescription;
 
