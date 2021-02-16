@@ -12,6 +12,8 @@ import org.springframework.stereotype.Component;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -76,7 +78,6 @@ public class ExcelDocument implements FileCreator {
 
         createCell.getCell(styleAlignRightBold, row1 + 1, 0, 4, 15, "ИТОГО за активное оборудование: ");
         createCell.cellFormula(styleAlignCenterBold, row1-listDevice.size()+2, row1 + 1, 15);
-
         createCell.getCell(styleAlignLeftBottomBold, row1 + 2, 0, 5, 25, "2. Материалы и оборудование");
         headerTable.getHeader(styleHeaderTable,row1 + 2);
 
@@ -86,7 +87,6 @@ public class ExcelDocument implements FileCreator {
 
         createCell.getCell(styleAlignRightBold, row2 + 1, 0, 4, 15, "ИТОГО за материалы и оборудование: ");
         createCell.cellFormula(styleAlignCenterBold,row2-listMaterial.size()+2, row2 + 1, 15);
-
         createCell.getCell(styleAlignLeftBottomBold, row2 + 2, 0, 5, 25, "3. Работы");
         headerTable.getHeader(styleHeaderTable,row2 + 2);
 
@@ -96,7 +96,6 @@ public class ExcelDocument implements FileCreator {
 
         createCell.getCell(styleAlignRightBold, row3 + 1, 0, 4, 15, "ИТОГО за работы: ");
         createCell.cellFormula(styleAlignCenterBold,row3-listWork.size()+2, row3 + 1, 15);
-
         createCell.getCell(styleEmpty,row3 + 2, 0, 5, 7, "");
         createCell.getCell(styleAlignRightBold,row3 + 3, 0, 4, 15, "ИТОГО ОБЩАЯ СУММА: ");
         createCell.cellFormula(styleAlignCenterBold,row1 + 2, row2 + 2, row3 + 2, row3 + 3, 15);

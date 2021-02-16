@@ -28,13 +28,18 @@ public class Data {
         CellStyle styleLocal = workbook.createCellStyle();
         styleLocal.setWrapText(true);
         styleLocal.setFont(font);
-        styleLocal.setAlignment(HorizontalAlignment.CENTER);
+        styleLocal.setAlignment(HorizontalAlignment.CENTER_SELECTION);
         styleLocal.setVerticalAlignment(VerticalAlignment.CENTER);
         styleLocal.setBorderBottom(BorderStyle.HAIR);
         styleLocal.setBottomBorderColor(IndexedColors.GREY_25_PERCENT.getIndex());
 
+        if (list.size() == 0) {
+            list.add(emptyComponent());
+        }
+
         int i = 0;
         for (Components comp: list) {
+
             rowNum++;
             i++;
             row = sheet.createRow(rowNum);
@@ -75,6 +80,60 @@ public class Data {
 
         }
         return rowNum;
+    }
+
+    private Components emptyComponent() {
+        return new Components() {
+            @Override
+            public String getName() {
+                return null;
+            }
+
+            @Override
+            public void setName(String name) {
+
+            }
+
+            @Override
+            public String getDimension() {
+                return null;
+            }
+
+            @Override
+            public void setDimension(String dimension) {
+
+            }
+
+            @Override
+            public double getPrice() {
+                return 0;
+            }
+
+            @Override
+            public void setPrice(double price) {
+
+            }
+
+            @Override
+            public int getQuantity() {
+                return 0;
+            }
+
+            @Override
+            public void setQuantity(int quantity) {
+
+            }
+
+            @Override
+            public String getNote() {
+                return null;
+            }
+
+            @Override
+            public void setNote(String note) {
+
+            }
+        };
     }
 
 }

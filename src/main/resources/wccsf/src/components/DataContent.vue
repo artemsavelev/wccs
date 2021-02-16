@@ -12,7 +12,10 @@
         {{ item.dimension }}
       </div>
 
-      <div class="main-container-wrapper pa-1 column-100">
+      <div v-if="editedIndex" class="main-container-wrapper pa-1 column-100">
+        <input type="text" placeholder="0" v-model="item.quantity" class="input" />
+      </div>
+      <div v-if="!editedIndex" class="main-container-wrapper pa-1 column-100">
         {{ item.quantity.toLocaleString('ru-RU') }}
       </div>
 
@@ -48,10 +51,12 @@ export default {
   data() {
     return {
 
+      editedIndex : false
     }
   },
   methods: {
     edit() {
+      this.editedIndex = true
       this.$emit('edit', this.item.id)
     },
     remove() {
@@ -65,5 +70,18 @@ export default {
 </script>
 
 <style scoped>
+.input {
+  border: 1px solid gray;
+  width: 70px;
+  text-align: right;
+  padding: 2px;
+  outline:none;
+}
 
+.input:focus {
+  border: 1px solid #d21919;
+  width: 70px;
+  outline:none;
+
+}
 </style>

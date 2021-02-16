@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 
 @Slf4j
 @RestController
@@ -59,9 +60,18 @@ public class EstimateController {
             try {
                 Files.copy(file, response.getOutputStream());
                 response.getOutputStream().flush();
+                Files.delete(file);
             } catch (IOException e) {
                 log.info("Error writing file to output stream. Filename was '{}'" + fileName, e);
                 throw new RuntimeException("IOError writing file to output stream");
+            } finally {
+                try {
+                    if (Files.exists(file)) {
+                        Files.delete(file);
+                    }
+                } catch (IOException e) {
+                    log.info("Error delete file. Filename '{}'" + fileName, e);
+                }
             }
         }
     }

@@ -43,12 +43,12 @@
           <div v-else-if="(typeSection === 1 || typeSection === 2 || typeSection === 3) && filteredData.length">
             <v-row class="pl-3">
               <v-col>
-                <!--   load module add type work    -->
+                <!--   load module add device, material, work    -->
                 <Item v-for="item of filteredData"
                       :key="item.id"
                       v-on:add="addItem"
                       v-bind:item="item"/>
-                <!--   // load module add type work  -->
+                <!--   // load module add device, material, work  -->
               </v-col>
             </v-row>
           </div>
@@ -115,6 +115,7 @@ export default {
     },
     addTypeWork(item) {
       this.$emit('add', item)
+      this.dialog = false
     },
     close() {
       this.search = '';

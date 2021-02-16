@@ -135,10 +135,6 @@ export default {
       }
       // console.log('estimate', this.estimate)
       this.addEstimate(this.estimate) // отправляем данные на сервер через store
-
-      // // таймер через который начинается скачивание
-      // let delay = 2000;
-
       this.loading = true // активируем анимацию загрузки
 
       // проверяем и загружаем файл по таймеру

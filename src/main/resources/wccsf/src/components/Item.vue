@@ -1,4 +1,5 @@
 <template>
+
   <div class="main font-s mt-0 ">
     <div class="main-container">
       <div class="main-container-wrapper pa-1 column-80" v-bind:style="this.done">
@@ -25,7 +26,8 @@
       </div>
       <div class="main-container-wrapper column-70 ">
         <v-card-actions class="ma-0 pa-0">
-<!--          <v-checkbox v-on:change="add"-->
+
+<!--          <v-checkbox v-on:change="add()"-->
 <!--                      class="pt-0 pb-0 mt-0 mb-0 ml-0"-->
 <!--                      color="error"-->
 <!--                      label=""-->
@@ -35,8 +37,10 @@
           </v-btn>
         </v-card-actions>
       </div>
+
     </div>
   </div>
+
 </template>
 
 <script>
@@ -64,7 +68,11 @@ export default {
         quantity: this.quantity === '' ? 1 : this.quantity
       }
 
-      this.done = 'color: red; text-decoration: line-through;'
+
+
+
+      // this.done = 'color: red; text-decoration: line-through;'
+      this.done = 'color: red;'
       this.$emit('add', obj)
     }
   },
@@ -87,10 +95,7 @@ export default {
   border: 1px solid #1976d2;
   width: 70px;
   outline:none;
+}
 
-}
-.t-align-right {
-  text-align: right;
-}
 
 </style>
