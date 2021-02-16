@@ -86,7 +86,7 @@ public class Data {
         return new Components() {
             @Override
             public String getName() {
-                return null;
+                return "";
             }
 
             @Override
@@ -96,7 +96,7 @@ public class Data {
 
             @Override
             public String getDimension() {
-                return null;
+                return "";
             }
 
             @Override
@@ -126,7 +126,7 @@ public class Data {
 
             @Override
             public String getNote() {
-                return null;
+                return "";
             }
 
             @Override

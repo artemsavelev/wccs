@@ -16,7 +16,8 @@ export default {
             };
 
             // console.log(user.token)
-            return fetch(url, options);
+            return fetch(url, options).catch(err => console.warn(err))
+
         }
     },
 
@@ -34,7 +35,7 @@ export default {
                 body: JSON.stringify(data)
             };
 
-            return fetch(url, options);
+            return fetch(url, options).catch(err => console.warn(err))
         }
     },
 

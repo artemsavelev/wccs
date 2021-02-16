@@ -1,7 +1,7 @@
 <template>
   <v-dialog v-if="profile" v-model="dialog" scrollable persistent>
     <template v-slot:activator="{ on }" class="mt-10">
-      <v-btn icon v-on="on" class="">
+      <v-btn icon v-on="on" class="" @click="get">
         <v-icon>mdi-calculator</v-icon>
       </v-btn>
     </template>
@@ -172,6 +172,10 @@ export default {
       }, this.delay);
 
     },
+
+    get() {
+      console.log('!')
+    }
 
 
   }
