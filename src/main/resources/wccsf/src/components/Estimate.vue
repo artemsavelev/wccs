@@ -78,6 +78,8 @@ import Preview from "@/components/Preview";
 import {mapActions, mapGetters} from "vuex";
 import api from "@/api/backendApi";
 
+
+// const pause = ms => new Promise(resolve => setTimeout(resolve, ms))
 export default {
   name: "Estimate",
   props: ['extId', 'address', 'customer'],
@@ -99,7 +101,7 @@ export default {
       file: this.address + ' ' + this.customer + ' ' + this.extId + '.xlsx',
       loading: false,
       timerId: null,
-      delay: 2000
+      delay: 1000
     }
   },
   methods: {
@@ -119,7 +121,7 @@ export default {
     transmitWorks(works) {
       this.works = works
     },
-    create() {
+    async create() {
 
       // создаем объект для отправки на сервер
       this.estimate = {
@@ -134,23 +136,22 @@ export default {
         works: this.works
       }
       // console.log('estimate', this.estimate)
-      this.addEstimate(this.estimate) // отправляем данные на сервер через store
+      await this.addEstimate(this.estimate) // отправляем данные на сервер через store
       this.loading = true // активируем анимацию загрузки
 
       // проверяем и загружаем файл по таймеру
-      this.timerId = setInterval(() => {
-        fetch(api.API_GET_FILE + this.file, {
+      // this.timerId = setInterval(() => {
+      // await pause(this.delay)
+      await fetch(api.API_GET_FILE + this.file, {
           method: 'GET',
         }).then(response =>
             response.blob()
         ).then(blob => {
-
           // проверяем существует ли файл
           if (blob.size === 0) {
-
-            console.log('file size:', blob.size)
-            this.delay += 1000; // увеличиваем таймер на 1 секунду с каждым интервалом
-            console.log(this.delay)
+            // console.log('file size:', blob.size)
+            // this.delay += 1000; // увеличиваем таймер на 1 секунду с каждым интервалом
+            // console.log(this.delay)
 
           } else {
 
@@ -158,18 +159,16 @@ export default {
             const a = document.createElement('a');
             a.href = url;
             a.download = this.file;
-            document.body.appendChild(a); // we need to append the element to the dom -> otherwise it will not work in firefox
+            document.body.appendChild(a);
             a.click();
             a.remove();  //afterwards we remove the element again
-
-            console.log('file size:', blob.size, 'file type:', blob.type)
             this.loading = false // останавливаем анимацию
-            clearInterval(this.timerId) // останавливаем таймер
-
+            // console.log('file size:', blob.size, 'file type:', blob.type)
+            // clearInterval(pause) // останавливаем таймер
           }
-        })
+        }).catch(err => console.warn(err))
 
-      }, this.delay);
+      // }, this.delay);
 
     },
 

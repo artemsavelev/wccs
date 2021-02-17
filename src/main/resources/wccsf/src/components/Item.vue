@@ -32,7 +32,7 @@
 <!--                      color="error"-->
 <!--                      label=""-->
 <!--                      hide-details></v-checkbox>-->
-          <v-btn icon v-on:click="add">
+          <v-btn icon v-on:click="add" :disabled="addItem === !addItem">
             <v-icon>mdi-plus</v-icon>
           </v-btn>
         </v-card-actions>
@@ -53,7 +53,8 @@ export default {
     return {
       env,
       quantity: '',
-      done: ''
+      done: '',
+      addItem: false
 
     }
   },
@@ -67,10 +68,7 @@ export default {
         price: this.item.price,
         quantity: this.quantity === '' ? 1 : this.quantity
       }
-
-
-
-
+      this.addItem = true
       // this.done = 'color: red; text-decoration: line-through;'
       this.done = 'color: red;'
       this.$emit('add', obj)

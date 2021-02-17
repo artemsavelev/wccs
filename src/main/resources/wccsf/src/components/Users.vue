@@ -153,7 +153,7 @@ export default {
       async fetchUsers (item) {
         // Remove in 6 months and say
         // you've made optimizations! :)
-        await pause(1500)
+        await pause(1)
 
         return fetch('https://jsonplaceholder.typicode.com/users')
             .then(res => res.json())

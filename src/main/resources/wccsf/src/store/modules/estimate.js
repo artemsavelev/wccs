@@ -19,7 +19,7 @@ export default {
             const data = await req.responseData(api.API_ESTIMATE_URL, 'POST', estimate);
             const est = await data.json();
             // const index = state.estimate.findIndex(item => item.id === est.id);
-            console.log('act ',est);
+            // console.log('act ',est);
             // console.log(index);
             commit('addEstimateMutation', est)
         }
