@@ -31,6 +31,16 @@ public class CreateCell {
         cell.setCellStyle(style);
     }
 
+    public void cellFormula(CellStyle style, int firstSum, int secondSum, int thirdSum, int tax,  int taxRow, int height) {
+        String formula = "(F" + firstSum + "+F" + secondSum + "+F" + thirdSum + ")*" + tax + "/100";
+        Row row = sheet.getRow(taxRow);
+        row.setHeightInPoints((short) height); // высота строк
+        Cell cell = row.createCell(5, type);
+        cell.setCellFormula(formula);
+        style.setDataFormat((short) 0x27);
+        cell.setCellStyle(style);
+    }
+
     public void cellFormula(CellStyle style, int firstSum, int secondSum, int thirdSum, int finalRow, int height) {
         String formula = "SUM(F" + firstSum + "+F" + secondSum + "+F" + thirdSum + ")";
         Row row = sheet.getRow(finalRow);

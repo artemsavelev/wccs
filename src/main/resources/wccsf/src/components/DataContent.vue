@@ -1,34 +1,35 @@
 <template>
-  <div class="main font-s mt-0">
-    <div class="main-container">
-      <div class="main-container-wrapper pa-1 column-80">
+  <div class="section-row font-s mt-0">
+    <div class="section-row-container">
+      <div class="section-cols col-idx">
         {{ item.id }}
       </div>
 
-      <div class="main-container-wrapper pa-1 column-700">
+      <div class="section-cols col-name">
         {{ item.name }}
       </div>
-      <div class="main-container-wrapper pa-1 column-100">
+
+      <div class="section-cols col-dimension">
         {{ item.dimension }}
       </div>
 
-      <div v-if="editedIndex" class="main-container-wrapper pa-1 column-100">
+      <div v-if="editedIndex" class="section-cols col-quantity">
         <input type="text" placeholder="0" v-model="item.quantity" class="input" />
       </div>
-      <div v-if="!editedIndex" class="main-container-wrapper pa-1 column-100">
+
+      <div v-if="!editedIndex" class="section-cols col-quantity">
         {{ item.quantity.toLocaleString('ru-RU') }}
       </div>
 
-      <div class="main-container-wrapper pa-1 column-100">
+      <div class="section-cols col-price">
         {{ item.price.toLocaleString('ru-RU') }}
       </div>
 
-      <div class="main-container-wrapper pa-1 column-100">
+      <div class="section-cols col-sum">
         {{ item.price * item.quantity | format }}
       </div>
 
-
-      <div class="main-container-wrapper column-100">
+      <div class="section-cols col-action-section">
         <v-card-actions class="pa-0 ma-0">
           <v-btn icon v-on:click="edit">
             <v-icon>mdi-pencil</v-icon>
@@ -69,7 +70,8 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss">
+
 .input {
   border: 1px solid gray;
   width: 70px;
@@ -82,6 +84,7 @@ export default {
   border: 1px solid #d21919;
   width: 70px;
   outline:none;
-
 }
+
+
 </style>

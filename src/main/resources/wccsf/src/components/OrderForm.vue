@@ -80,6 +80,7 @@ export default {
 
   methods: {
     ...mapActions(['addOrder', 'addOrderMutation']),
+    // сохранение новой записи
     save() {
       const order = {
         extId: this.extId,
@@ -90,6 +91,7 @@ export default {
       if (this.extId && this.customer && this.address) {
         this.addOrder(order);
         console.log(order);
+        this.dialog = false;
       }
     },
     close() {
@@ -108,16 +110,9 @@ export default {
       this.editedIndex = this.id
     }
 
-
-
-
   },
 
-
 }
-
-
-
 
 </script>
 

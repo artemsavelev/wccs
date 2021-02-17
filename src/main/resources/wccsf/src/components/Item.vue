@@ -1,30 +1,30 @@
 <template>
 
-  <div class="main font-s mt-0 ">
-    <div class="main-container">
-      <div class="main-container-wrapper pa-1 column-80" v-bind:style="this.done">
+  <div class="section-row font-s mt-0 ">
+    <div class="section-row-container">
+      <div class="section-cols col-idx" v-bind:style="this.done">
         {{ item.id }}
       </div>
 
-      <div class="main-container-wrapper pa-1 column-700" v-bind:style="this.done">
+      <div class="section-cols col-name" v-bind:style="this.done">
         {{ item.name }}
       </div>
-      <div class="main-container-wrapper pa-1 column-100" v-bind:style="this.done">
+      <div class="section-cols col-dimension" v-bind:style="this.done">
         {{ item.dimension }}
       </div>
 
-      <div class="main-container-wrapper pa-1 column-100">
+      <div class="section-cols col-quantity">
         <input type="text" placeholder="0" v-model="quantity" class="input" />
       </div>
 
-      <div class="main-container-wrapper pa-1 column-100" v-bind:style="this.done">
+      <div class="section-cols col-price" v-bind:style="this.done">
         {{ item.price.toLocaleString('ru-RU') }}
       </div>
 
-      <div class="main-container-wrapper pa-1 column-600" v-bind:style="this.done">
+      <div class="section-cols col-comment" v-bind:style="this.done">
         {{ item.note }}
       </div>
-      <div class="main-container-wrapper column-70 ">
+      <div class="section-cols col-action-section">
         <v-card-actions class="ma-0 pa-0">
 
 <!--          <v-checkbox v-on:change="add()"-->
@@ -32,7 +32,7 @@
 <!--                      color="error"-->
 <!--                      label=""-->
 <!--                      hide-details></v-checkbox>-->
-          <v-btn icon v-on:click="add" :disabled="addItem === !addItem">
+          <v-btn icon v-on:click="add">
             <v-icon>mdi-plus</v-icon>
           </v-btn>
         </v-card-actions>

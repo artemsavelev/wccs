@@ -5,10 +5,10 @@
         {{ env.typeWork }}:
       </div>
       <div class="font-s mt-0">
-        {{ this.workDescription.typeOfWork }}
+        {{ this.description.workDescription }}
       </div>
       <div class="font-s mt-0">
-        {{ this.workDescription.text }}
+        {{ this.description.comment }}
       </div>
       <ModalWin v-on:add="addWorkDescription"
                 v-bind:ex="ex"
@@ -30,13 +30,13 @@ export default {
     return {
       env,
       typeSection: 0,
-      workDescription: {}
+      description: {}
     }
   },
   methods: {
     addWorkDescription(text) {
-      this.workDescription = text
-      this.$emit('transmit', this.workDescription)
+      this.description = text
+      this.$emit('transmit', this.description)
     }
   }
 }

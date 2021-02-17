@@ -1,5 +1,5 @@
 <template>
-  <div class="main font-s mt-1">
+  <div class="section-row font-s">
     <div class="font-weight-bold mb-1" v-if="typeSection === 1">
       {{ env.sectionDevice }}
     </div>
@@ -12,31 +12,32 @@
 
 
 
-    <div class="main-container blue-grey lighten-4">
-      <div class="main-container-wrapper pa-1 column-80">
+    <div class="section-row-container blue-grey lighten-4">
+      <div class="section-cols col-idx">
         {{ env.id }}
       </div>
-      <div class="main-container-wrapper pa-1 column-700">
+      <div class="section-cols col-name">
         {{ env.name }}
       </div>
-      <div class="main-container-wrapper pa-1 column-100">
+      <div class="section-cols col-dimension">
         {{ env.dimension }}
       </div>
-      <div class="main-container-wrapper pa-1 column-100">
+      <div class="section-cols col-quantity">
         {{ env.quantity }}
       </div>
-      <div class="main-container-wrapper pa-1 column-100">
+      <div class="section-cols col-price">
         {{ env.price }}
       </div>
-      <div class="main-container-wrapper pa-1 column-100" v-if="type !== 123">
+      <div class="section-cols col-sum" v-if="type !== 123">
         {{ env.sum }}
       </div>
-      <div class="main-container-wrapper pa-1 column-100" v-if="type !== 123">
+      <div class="section-cols col-action-section" v-if="type !== 123">
       </div>
-      <div class="main-container-wrapper pa-1 column-600" v-if="type === 123">
+
+      <div class="section-cols col-comment" v-if="type === 123">
         Комментарий
       </div>
-      <div class="main-container-wrapper pa-1 column-70" v-if="type === 123">
+      <div class="section-cols col-action-section" v-if="type === 123">
       </div>
 
 

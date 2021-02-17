@@ -34,10 +34,10 @@
       <v-card-text class="ma-0 pa-0" style="height: 50vh">
         <v-container>
           <div v-if="typeSection === 0">
-            <!--   load component add type work    -->
-            <ListTypeWork v-bind:ex="ex"
-                          v-on:add="addTypeWork"/>
-            <!--   // load component add type work  -->
+            <!--   load component add work description   -->
+            <WorkDescription v-bind:ex="ex"
+                             v-on:add="addTypeWork"/>
+            <!--   // load component add work description -->
           </div>
 
           <div v-else-if="(typeSection === 1 || typeSection === 2 || typeSection === 3) && filteredData.length">
@@ -66,11 +66,11 @@
 import env from "../../env.config.json";
 import Item from "@/components/Item";
 import HeaderTable from "@/components/HeaderTable";
-import ListTypeWork from "@/components/ListTypeWork";
+import WorkDescription from "@/components/WorkDescription";
 
 export default {
   name: "ModalWin",
-  components: {ListTypeWork, HeaderTable, Item },
+  components: {WorkDescription, HeaderTable, Item },
   props: ['typeSection', 'data', 'ex'],
   computed: {
     // поиск по данным

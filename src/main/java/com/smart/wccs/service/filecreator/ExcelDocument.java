@@ -25,6 +25,9 @@ public class ExcelDocument implements FileCreator {
     @Value("${upload.path}")
     private String uploadPath;
 
+    @Value("${tax.percent}")
+    private int tax;
+
 
     @Override
     public void createFile(Estimate estimate) {
@@ -97,8 +100,12 @@ public class ExcelDocument implements FileCreator {
         createCell.getCell(styleAlignRightBold, row3 + 1, 0, 4, 15, "ИТОГО за работы: ");
         createCell.cellFormula(styleAlignCenterBold,row3-listWork.size()+2, row3 + 1, 15);
         createCell.getCell(styleEmpty,row3 + 2, 0, 5, 7, "");
-        createCell.getCell(styleAlignRightBold,row3 + 3, 0, 4, 15, "ИТОГО ОБЩАЯ СУММА: ");
-        createCell.cellFormula(styleAlignCenterBold,row1 + 2, row2 + 2, row3 + 2, row3 + 3, 15);
+
+        createCell.getCell(styleAlignRightBold,row3 + 3, 0, 4, 15, "В том числе НДС " + tax + "%: ");
+        createCell.cellFormula(styleAlignCenterBold,row1 + 2, row2 + 2, row3 + 2, tax,row3 + 3, 15);
+
+        createCell.getCell(styleAlignRightBold,row3 + 4, 0, 4, 15, "ИТОГО ОБЩАЯ СУММА: ");
+        createCell.cellFormula(styleAlignCenterBold,row1 + 2, row2 + 2, row3 + 2, row3 + 4, 15);
 
 
         try {

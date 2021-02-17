@@ -1,16 +1,16 @@
 <template>
-  <v-container class="pa-0">
-    <div class="main">
-      <div class="main-container">
-        <div class="main-container-wrapper pa-1 column-70">
+
+    <div class="order-row">
+      <div class="order-row-container">
+        <div class="order-cols col-id pa-0">
           {{ order.id }}
         </div>
 
-        <div class="main-container-wrapper pa-1 column-70">
+        <div class="order-cols col-ext-id pa-0">
           {{ order.extId }}
         </div>
 
-        <div class="main-container-wrapper pa-1 column-200">
+        <div class="order-cols col-created-date pa-0">
           <v-tooltip bottom>
             <template v-slot:activator="{ on }">
               <span v-on="on">{{ order.createdDate }}</span>
@@ -19,7 +19,7 @@
           </v-tooltip>
         </div>
 
-        <div class="main-container-wrapper pa-1 column-500">
+        <div class="order-cols col-customer pa-0">
           <v-tooltip bottom>
             <template v-slot:activator="{ on }">
               <span v-on="on">{{ order.customer }}</span>
@@ -28,7 +28,7 @@
           </v-tooltip>
         </div>
 
-        <div class="main-container-wrapper pa-1 column-500">
+        <div class="order-cols col-address pa-0">
           <v-tooltip bottom>
             <template v-slot:activator="{ on }">
               <span v-on="on">{{ order.address }}</span>
@@ -37,7 +37,7 @@
           </v-tooltip>
         </div>
 
-        <div class="main-container-wrapper pa-1 column-300">
+        <div class="order-cols col-verif pa-0">
           <span v-if="order.verificationDate === null" class="text-red">
             <v-tooltip bottom>
               <template v-slot:activator="{ on }">
@@ -57,7 +57,7 @@
           </span>
         </div>
 
-        <div class="main-container-wrapper column-200 pl-8 t-align-right">
+        <div class="order-cols col-action pa-0">
           <v-btn icon v-on:click="edit">
             <v-icon>mdi-pencil</v-icon>
           </v-btn>
@@ -77,7 +77,7 @@
         </div>
       </div>
     </div>
-  </v-container>
+
 </template>
 
 <script>
@@ -114,52 +114,56 @@ export default {
 </script>
 
 <style lang="scss">
-.main {
+
+.order-row {
   border-bottom: 1px solid #ccc;
   font-size: small;
+  margin-left: 10px;
+  margin-right: 10px;
 }
-.main-container {
-  //border: 1px solid #000000;
+
+.order-row-container {
+  //border: 1px solid #ff0000;
   display: flex;
   justify-content: space-between;
-  &-wrapper {
-    //border: 1px solid #ccc;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    overflow: hidden;
-  }
+  align-items: center;
 }
-.t-align-right {
+
+.order-cols {
+  //border: 1px solid #ccc;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.col-id {
+  flex-basis: 3%;
+}
+
+.col-ext-id {
+  flex-basis: 5%;
+}
+
+.col-created-date {
+  flex-basis: 10%;
+}
+
+.col-customer {
+  flex-basis: 30%;
+}
+
+.col-address {
+  flex-basis: 40%;
+}
+
+.col-verif {
+  flex-basis: 3%;
+}
+
+.col-action {
   text-align: right;
 }
-.column-50 {
-  width: 50px;
-  max-width: 50px;
-}
-.column-70 {
-  width: 70px;
-  max-width: 70px;
-}
-.column-100 {
-  width: 100px;
-  max-width: 100px;
-}
-.column-150 {
-  width: 150px;
-  max-width: 150px;
-}
-.column-200 {
-  width: 200px;
-  max-width: 200px;
-}
-.column-300 {
-  width: 300px;
-  max-width: 300px;
-}
-.column-400 {
-  width: 400px;
-  max-width: 400px;
-}
+
 .text-red {
   color: red;
 }

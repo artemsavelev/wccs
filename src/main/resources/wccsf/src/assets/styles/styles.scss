@@ -4,3 +4,68 @@
 @mixin font-montserrat {
   font-family: 'Montserrat', sans-serif;
 }
+
+.font-s {
+  font-size: small;
+}
+.font-m {
+  font-size: medium;
+}
+.font-xl {
+  font-size: large;
+}
+
+.section-row {
+  border-bottom: 1px solid #ccc;
+  font-size: small;
+  margin: 0;
+}
+
+.section-row-container {
+  //border: 1px solid #ff0000;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.section-cols {
+  //border: 1px solid #ccc;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.col-idx {
+  flex-basis: 3%;
+}
+
+.col-name {
+  flex-basis: 40%;
+}
+
+.col-dimension {
+  flex-basis: 5%;
+}
+
+.col-quantity {
+  flex-basis: 5%;
+}
+
+.col-price {
+  flex-basis: 5%;
+}
+
+.col-sum {
+  flex-basis: 3%;
+}
+
+.col-comment {
+  flex-basis: 30%;
+}
+
+.col-action-section {
+  text-align: right;
+  flex-basis: 5%;
+}
+
+

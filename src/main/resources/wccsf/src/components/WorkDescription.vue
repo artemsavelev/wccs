@@ -6,7 +6,7 @@
                   :auto-grow="true"
                   rows="4"
                   name="input-1"
-                  v-model="typeOfWork"
+                  v-model="workDescription"
                   label="Виды работ"></v-textarea>
 
       <v-textarea outlined
@@ -14,8 +14,7 @@
                   rows="3"
                   name="input-2"
                   label="Примечание"
-                  :disabled="!ex"
-                  v-model="text"></v-textarea>
+                  v-model="visibleComment"></v-textarea>
       <v-btn class="" v-on:click="add" small color="primary" tile>{{ env.keyAdd }}</v-btn>
     </v-col>
   </v-row>
@@ -28,20 +27,29 @@ import env from '../../env.config.json'
 export default {
   name: "ListTypeWork",
   props: ['ex'],
+  computed: {
+    visibleComment() {
+      return this.ex ? env.preliminary + env.priceTimeout : env.priceTimeout
+    }
+  },
+
   data() {
     return {
       env,
-      typeOfWork: env.workDescription,
-      text: env.preliminary,
+      workDescription: env.workDescription,
+      comment: this.visibleComment
     }
   },
   methods: {
     add() {
-      let type = {
-        typeOfWork: this.typeOfWork,
-        text: this.ex ? this.text : null
+
+
+      const description = {
+        workDescription: this.workDescription,
+        comment: this.visibleComment
       }
-      this.$emit('add', type)
+
+      this.$emit('add', description)
     },
   }
 }
