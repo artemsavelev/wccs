@@ -11,9 +11,8 @@
     </div>
 
 
-
     <div class="section-row-container blue-grey lighten-4">
-      <div class="section-cols col-idx">
+      <div class="section-cols col-idx pl-2">
         {{ env.id }}
       </div>
       <div class="section-cols col-name">
@@ -39,8 +38,6 @@
       </div>
       <div class="section-cols col-action-section" v-if="type === 123">
       </div>
-
-
 
     </div>
   </div>

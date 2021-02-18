@@ -5,9 +5,8 @@ import com.fasterxml.jackson.annotation.JsonView;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.persistence.*;
+import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
 @Entity
@@ -24,13 +23,17 @@ public class Device extends BaseEntity implements Components {
     @JsonView({Views.UserView.class, Views.AdminView.class})
     private double price;
 
-
     @Transient
     @JsonView({Views.UserView.class, Views.AdminView.class})
     private int quantity;
 
-
     @JsonView({Views.UserView.class, Views.AdminView.class})
     private String note;
 
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "devices_departments",
+            joinColumns = @JoinColumn(name = "device_id"),
+            inverseJoinColumns = @JoinColumn(name = "department_id"))
+    @JsonView({Views.UserView.class, Views.AdminView.class})
+    private List<Department> departments;
 }

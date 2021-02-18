@@ -57,7 +57,7 @@
           </span>
         </div>
 
-        <div class="order-cols col-action pa-0">
+        <div class="order-cols col-action-order">
           <v-btn icon v-on:click="edit">
             <v-icon>mdi-pencil</v-icon>
           </v-btn>
@@ -160,7 +160,7 @@ export default {
   flex-basis: 3%;
 }
 
-.col-action {
+.col-action-order {
   text-align: right;
 }
 

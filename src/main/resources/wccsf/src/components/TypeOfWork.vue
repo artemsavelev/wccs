@@ -20,7 +20,7 @@
 
 <script>
 import env from "../../env.config.json"
-import ModalWin from "./ModalWin";
+import ModalWin from "./ModalForm";
 
 export default {
   name: "TypeOfWork",

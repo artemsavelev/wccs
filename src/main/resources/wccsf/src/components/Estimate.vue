@@ -40,6 +40,7 @@
 
             </div>
           </div>
+
           <!-- загружаем модули -->
           <TypeOfWork v-on:transmit="transmitDescription"
                       v-bind:ex="ex"/>
@@ -136,7 +137,9 @@ export default {
         works: this.works
       }
       // console.log('estimate', this.estimate)
-      await this.addEstimate(this.estimate) // отправляем данные на сервер через store
+      await this.addEstimate(this.estimate).then(() => {
+        this.loading = true
+      }) // отправляем данные на сервер через store
       this.loading = true // активируем анимацию загрузки
 
       // проверяем и загружаем файл по таймеру
@@ -173,7 +176,7 @@ export default {
     },
 
     get() {
-      console.log('!')
+      console.log('При нажатии на кнопку калькулятор')
     }
 
 
@@ -183,8 +186,5 @@ export default {
 
 <style lang="scss">
 
-//.main {
-//  border-bottom: 1px solid #ccc;
-//}
 
 </style>

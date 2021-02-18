@@ -20,7 +20,7 @@
 
 
 import Users from "@/components/Users";
-import ModalWin from "@/components/ModalWin";
+import ModalWin from "@/components/ModalForm";
 import req from "@/store/headers";
 import api from "@/api/backendApi";
 

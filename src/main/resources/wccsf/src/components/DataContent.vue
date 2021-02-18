@@ -1,7 +1,7 @@
 <template>
   <div class="section-row font-s mt-0">
     <div class="section-row-container">
-      <div class="section-cols col-idx">
+      <div class="section-cols col-idx pl-2">
         {{ item.id }}
       </div>
 
@@ -72,19 +72,8 @@ export default {
 
 <style lang="scss">
 
-.input {
-  border: 1px solid gray;
-  width: 70px;
-  text-align: right;
-  padding: 2px;
-  outline:none;
-}
-
 .input:focus {
-  border: 1px solid #d21919;
-  width: 70px;
-  outline:none;
+  border: 1px solid #ff0000;
 }
-
 
 </style>

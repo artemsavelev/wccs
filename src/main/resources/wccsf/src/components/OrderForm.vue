@@ -8,42 +8,41 @@
     </template>
     <v-card>
 
-      <v-card-title class="headline grey lighten-2">
-        <span class="font-xl font-weight-medium ml-3">{{formTitle}}</span>
+      <v-card-title class="grey lighten-2">
+        <span class="font-xl">{{formTitle}}</span>
+        <v-spacer></v-spacer>
+        <v-btn small text tile v-on:click="close">
+          <v-icon>mdi-close</v-icon>
+        </v-btn>
       </v-card-title>
 
       <v-card-text>
-        <v-container>
+        <v-row>
+          <v-col cols="12" sm="6" md="4">
+            <v-text-field
+                dense
+                label="Номер заявки"
+                v-model="extId"/>
+          </v-col>
 
-          <v-row>
-            <v-col cols="12" sm="6" md="4">
-              <v-text-field
-                  dense
-                  label="Номер заявки"
-                  v-model="extId"/>
-            </v-col>
+          <v-col cols="12" sm="6" md="4">
+            <v-text-field
+                dense
+                label="Заказчик"
+                v-model="customer"/>
+          </v-col>
 
-            <v-col cols="12" sm="6" md="4">
-              <v-text-field
-                  dense
-                  label="Заказчик"
-                  v-model="customer"/>
-            </v-col>
+          <v-col cols="12" sm="6" md="4">
+            <v-text-field
+                dense
+                label="Адрес"
+                v-model="address" />
+          </v-col>
+        </v-row>
 
 
-
-            <v-col cols="12" sm="6" md="4">
-              <v-text-field
-                  dense
-                  label="Адрес"
-                  v-model="address" />
-            </v-col>
-          </v-row>
-
-        </v-container>
-        <v-card-actions>
-          <v-btn v-on:click="save" color="primary" class="mr-2" tile>{{ env.keySave }}</v-btn>
-          <v-btn v-on:click="close" color="primary" tile>{{ env.keyClose }}</v-btn>
+        <v-card-actions class="pa-0">
+          <v-btn v-on:click="save" color="primary" class="" tile>{{ env.keySave }}</v-btn>
         </v-card-actions>
       </v-card-text>
 
@@ -117,8 +116,6 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.container-form {
-  margin: auto 0;
-}
+
 
 </style>

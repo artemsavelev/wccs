@@ -2,29 +2,42 @@ package com.smart.wccs.service.impl;
 
 import com.smart.wccs.model.Status;
 import com.smart.wccs.model.Work;
+import com.smart.wccs.repo.UserRepo;
 import com.smart.wccs.repo.WorkRepo;
 import com.smart.wccs.service.WorkService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
 public class WorkServiceImpl implements WorkService {
 
     private final WorkRepo workRepo;
+    private final UserRepo userRepo;
 
     @Autowired
-    public WorkServiceImpl(WorkRepo workRepo) {
+    public WorkServiceImpl(WorkRepo workRepo, UserRepo userRepo) {
         this.workRepo = workRepo;
+        this.userRepo = userRepo;
     }
 
     @Override
     public List<Work> getAllWork() {
-        List<Work> works = workRepo.findAll();
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String name = auth.getName();
+
+
+        List<Work> works = workRepo.findAll()
+                .stream()
+                .filter(o -> o.getDepartments().contains(userRepo.findByUsername(name).getDepartment()))
+                .collect(Collectors.toList());
         log.info("IN getAllWorks - {} works found", works.size());
         return works;
     }

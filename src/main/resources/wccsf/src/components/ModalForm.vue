@@ -44,7 +44,7 @@
             <v-row class="pl-3">
               <v-col>
                 <!--   load module add device, material, work    -->
-                <Item v-for="item of filteredData"
+                <SectionItem v-for="item of filteredData"
                       :key="item.id"
                       v-on:add="addItem"
                       v-bind:item="item"/>
@@ -64,13 +64,13 @@
 
 <script>
 import env from "../../env.config.json";
-import Item from "@/components/Item";
+import SectionItem from "@/components/SectionItem";
 import HeaderTable from "@/components/HeaderTable";
 import WorkDescription from "@/components/WorkDescription";
 
 export default {
   name: "ModalWin",
-  components: {WorkDescription, HeaderTable, Item },
+  components: { WorkDescription, HeaderTable, SectionItem },
   props: ['typeSection', 'data', 'ex'],
   computed: {
     // поиск по данным

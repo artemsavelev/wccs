@@ -32,7 +32,7 @@
 <!--                      color="error"-->
 <!--                      label=""-->
 <!--                      hide-details></v-checkbox>-->
-          <v-btn icon v-on:click="add">
+          <v-btn icon v-on:click="add" :disabled="addedItem === 1">
             <v-icon>mdi-plus</v-icon>
           </v-btn>
         </v-card-actions>
@@ -47,14 +47,14 @@
 import env from "../../env.config.json"
 
 export default {
-  name: "Item",
+  name: "SectionItem",
   props: ['item', 'typeSection'],
   data() {
     return {
       env,
       quantity: '',
       done: '',
-      addItem: false
+      addedItem: 0
 
     }
   },
@@ -68,7 +68,7 @@ export default {
         price: this.item.price,
         quantity: this.quantity === '' ? 1 : this.quantity
       }
-      this.addItem = true
+      this.addedItem = 1
       // this.done = 'color: red; text-decoration: line-through;'
       this.done = 'color: red;'
       this.$emit('add', obj)
@@ -81,19 +81,9 @@ export default {
 </script>
 
 <style scoped>
-.input {
-  border: 1px solid gray;
-  width: 70px;
-  text-align: right;
-  padding: 2px;
-  outline:none;
-}
 
 .input:focus {
   border: 1px solid #1976d2;
-  width: 70px;
-  outline:none;
 }
-
 
 </style>

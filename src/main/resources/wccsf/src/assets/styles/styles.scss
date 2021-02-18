@@ -68,4 +68,17 @@
   flex-basis: 5%;
 }
 
+.input {
+  border: 1px solid gray;
+  width: 70px;
+  text-align: left;
+  padding: 2px;
+  outline:none;
+}
+
+.input:focus {
+  width: 70px;
+  outline:none;
+}
+
 

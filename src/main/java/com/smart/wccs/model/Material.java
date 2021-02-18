@@ -4,10 +4,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import javax.persistence.Entity;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
@@ -34,4 +31,11 @@ public class Material extends BaseEntity implements Components {
 
     @ManyToMany
     private List<Estimate> estimates;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "materials_departments",
+            joinColumns = @JoinColumn(name = "material_id"),
+            inverseJoinColumns = @JoinColumn(name = "department_id"))
+    @JsonView({Views.UserView.class, Views.AdminView.class})
+    private List<Department> departments;
 }

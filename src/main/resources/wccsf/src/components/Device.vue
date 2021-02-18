@@ -8,14 +8,15 @@
                  v-on:remove="removeDevice"
                  v-bind:item="item"/>
 
-    <ModalWin v-bind:typeSection="typeSection"
+    <ModalForm v-bind:typeSection="typeSection"
+              v-bind:addedItem="addedItem"
               v-on:add="addDevice"
               v-bind:data="data"/>
   </div>
 </template>
 
 <script>
-import ModalWin from "./ModalWin";
+import ModalForm from "./ModalForm";
 import req from "../store/headers";
 import api from "../api/backendApi";
 import HeaderTable from "@/components/HeaderTable";
@@ -23,10 +24,11 @@ import DataContent from "@/components/DataContent";
 
 export default {
   name: "ActiveDevice",
-  components: { DataContent, HeaderTable, ModalWin },
+  components: { DataContent, HeaderTable, ModalForm },
   data() {
     return {
       typeSection: 1,
+      addedItem: '',
       data: [],
       devices: []
 
