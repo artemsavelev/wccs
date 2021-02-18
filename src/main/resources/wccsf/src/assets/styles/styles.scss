@@ -16,13 +16,13 @@
 }
 
 .section-row {
-  border-bottom: 1px solid #ccc;
   font-size: small;
   margin: 0;
 }
 
 .section-row-container {
   //border: 1px solid #ff0000;
+  border-bottom: 1px solid #ccc;
   display: flex;
   justify-content: space-between;
   align-items: center;

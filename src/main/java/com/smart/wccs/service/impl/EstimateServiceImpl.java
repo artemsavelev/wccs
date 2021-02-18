@@ -53,4 +53,17 @@ public class EstimateServiceImpl implements EstimateService {
         log.info("IN create - estimate: {} successfully added", createdEstimate);
         return createdEstimate;
     }
+
+    @Override
+    public Estimate getById(Long id) {
+        Estimate estimate = estimateRepo.findById(id).orElse(null);
+        if (estimate == null) {
+            log.warn("IN findById - no estimate found by id: {}", id);
+            return null;
+        }
+        log.info("IN findById - estimate found by id: {}", estimate);
+        return estimate;
+    }
+
+
 }

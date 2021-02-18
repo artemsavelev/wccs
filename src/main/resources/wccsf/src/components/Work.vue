@@ -1,6 +1,8 @@
 <template>
   <div>
-    <HeaderTable v-bind:typeSection="typeSection"/>
+    <HeaderTable v-bind:typeSection="typeSection"
+                 v-bind:sortName="sortByName"
+                 v-bind:sortId="sortById"/>
 
     <DataContent v-for="item in works"
                  :key="item.id"
@@ -23,7 +25,7 @@ import DataContent from "@/components/DataContent";
 
 export default {
   name: "Work",
-  components: {DataContent, HeaderTable, ModalForm },
+  components: { DataContent, HeaderTable, ModalForm },
   data() {
     return {
       typeSection: 3,
@@ -52,6 +54,15 @@ export default {
     removeWork(id) {
       this.works = this.works.filter(o => o.id !== id)
       this.$emit('transmit', this.works)
+    },
+
+    // сортировка по id
+    sortById() {
+      this.works.sort((a, b) => a.id - b.id)
+    },
+    // сортировка по name
+    sortByName() {
+      this.works.sort((a, b) => a.name.localeCompare(b.name))
     }
   }
 }

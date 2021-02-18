@@ -20,7 +20,7 @@ import java.nio.file.StandardCopyOption;
 
 @Slf4j
 @RestController
-@RequestMapping(value = "/api/v1/")
+@RequestMapping(value = "/api/v1/estimate")
 public class EstimateController {
 
     @Value("${upload.path}")
@@ -44,6 +44,18 @@ public class EstimateController {
         Estimate result = estimateService.create(estimate);
         return new ResponseEntity<>(result, HttpStatus.OK);
 
+    }
+
+    @RequestMapping(value = "{id}", method = RequestMethod.GET)
+    @JsonView(Views.UserView.class)
+    public ResponseEntity<Estimate> getEstimate(@PathVariable(name = "id") Long id) {
+        Estimate estimate = estimateService.getById(id);
+
+        if (estimate == null) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+
+        return new ResponseEntity<>(estimate, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/files/{file_name:.+}", method = RequestMethod.GET)

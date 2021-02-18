@@ -6,5 +6,7 @@ public interface EstimateService {
 
     Estimate create(Estimate estimate);
 
+    Estimate getById(Long id);
+
 
 }

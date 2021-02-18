@@ -1,6 +1,8 @@
 <template>
   <div>
-    <HeaderTable v-bind:typeSection="typeSection"/>
+    <HeaderTable v-bind:typeSection="typeSection"
+                 v-bind:sortName="sortByName"
+                 v-bind:sortId="sortById"/>
 
     <DataContent v-for="item in materials"
                  :key="item.id"
@@ -52,9 +54,16 @@ export default {
     removeMaterial(id) {
       this.materials = this.materials.filter(o => o.id !== id)
       this.$emit('transmit', this.materials)
+    },
+    // сортировка по id
+    sortById() {
+      this.materials.sort((a, b) => a.id - b.id)
+    },
+    // сортировка по name
+    sortByName() {
+      this.materials.sort((a, b) => a.name.localeCompare(b.name))
     }
   },
-
 
 }
 </script>

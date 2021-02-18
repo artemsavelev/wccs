@@ -2,7 +2,7 @@
 
   <div class="section-row font-s mt-0 ">
     <div class="section-row-container">
-      <div class="section-cols col-idx" v-bind:style="this.done">
+      <div class="section-cols col-idx pl-2" v-bind:style="this.done">
         {{ item.id }}
       </div>
 

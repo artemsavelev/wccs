@@ -26,7 +26,9 @@
           </v-col>
           <!-- // search in component -->
           <v-col class="pt-0 pr-3 pb-0 pl-3">
-            <HeaderTable v-bind:type="type"/>
+            <HeaderTable v-bind:type="type"
+                         v-bind:sortName="sortByName"
+                         v-bind:sortId="sortById"/>
           </v-col>
         </v-container>
       </div>
@@ -48,7 +50,7 @@
                       :key="item.id"
                       v-on:add="addItem"
                       v-bind:item="item"/>
-                <!--   // load module add device, material, work  -->
+                <!--  // load module add device, material, work  -->
               </v-col>
             </v-row>
           </div>
@@ -98,7 +100,9 @@ export default {
       } else {
         return env.sectionWork;
       }
-    }
+    },
+
+
   },
   data() {
     return {
@@ -120,6 +124,14 @@ export default {
     close() {
       this.search = '';
       this.dialog = false
+    },
+
+    sortById() {
+      this.filteredData.sort((a, b) => a.id - b.id)
+    },
+
+    sortByName() {
+      this.filteredData.sort((a, b) => a.name.localeCompare(b.name))
     }
   },
 

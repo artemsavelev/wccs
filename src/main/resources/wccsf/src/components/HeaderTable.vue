@@ -11,11 +11,11 @@
     </div>
 
 
-    <div class="section-row-container blue-grey lighten-4">
-      <div class="section-cols col-idx pl-2">
+    <div class="section-row-container blue-grey lighten-2">
+      <div class="section-cols col-idx pl-2 pointer" @click="sortId">
         {{ env.id }}
       </div>
-      <div class="section-cols col-name">
+      <div class="section-cols col-name pointer" @click="sortName">
         {{ env.name }}
       </div>
       <div class="section-cols col-dimension">
@@ -48,16 +48,22 @@ import env from '../../env.config.json'
 
 export default {
   name: "HeaderTable",
-  props: ['typeSection', 'type'],
+  props: ['typeSection', 'type', 'sortId', 'sortName'],
+  computed: {
+
+  },
 
   data() {
     return {
-      env
+      env,
+
     }
   },
 }
 </script>
 
 <style scoped>
-
+.pointer {
+  cursor: pointer;
+}
 </style>
