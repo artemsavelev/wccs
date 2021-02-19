@@ -11,23 +11,24 @@
                  v-bind:item="item"/>
 
     <ModalForm v-bind:typeSection="typeSection"
-              v-on:add="addMaterial"
-              v-bind:data="data"/>
+               v-on:add="addMaterial"
+               v-bind:data="allMaterials"/>
   </div>
 </template>
 
 <script>
 import ModalForm from "./ModalForm";
-import req from "../store/headers";
-import api from "../api/backendApi";
 import HeaderTable from "@/components/HeaderTable";
 import DataContent from "@/components/DataContent";
+import {mapActions, mapGetters} from "vuex";
 
 export default {
   name: "Materials",
   components: {DataContent, HeaderTable, ModalForm },
+  computed: mapGetters(['allMaterials']),
   data() {
     return {
+      ...mapActions(['fetchMaterials']),
       typeSection: 2,
       data: [],
       materials: []
@@ -36,9 +37,7 @@ export default {
   },
   mounted() {
     // получаем данные с сервера (список материалов)
-    req.requestData(api.API_MATERIAL_URL, 'GET')
-        .then(response => response.json())
-        .then(json => this.data = json)
+    this.fetchMaterials();
   },
   methods: {
     // добавление записи в конец массива

@@ -26,6 +26,7 @@
           </v-col>
           <!-- // search in component -->
           <v-col class="pt-0 pr-3 pb-0 pl-3">
+
             <HeaderTable v-bind:type="type"
                          v-bind:sortName="sortByName"
                          v-bind:sortId="sortById"/>
@@ -38,7 +39,7 @@
           <div v-if="typeSection === 0">
             <!--   load component add work description   -->
             <WorkDescription v-bind:ex="ex"
-                             v-on:add="addTypeWork"/>
+                             v-on:add="addWorkDescription"/>
             <!--   // load component add work description -->
           </div>
 
@@ -81,14 +82,13 @@ export default {
       if (this.search && this.search.length >= 3) {
         result = result.filter(item => {
           if (item.name.toLowerCase().indexOf(this.search.toLowerCase()) !== -1) {
-            // console.log(this.search)
-            // console.log(item.name)
             return item
           }
         })
       }
       return result;
     },
+
     // наименование модальных окон
     formTitle() {
       if (this.typeSection === 0) {
@@ -101,8 +101,6 @@ export default {
         return env.sectionWork;
       }
     },
-
-
   },
   data() {
     return {
@@ -117,19 +115,21 @@ export default {
     addItem(item) {
       this.$emit('add', item)
     },
-    addTypeWork(item) {
+
+    addWorkDescription(item) {
       this.$emit('add', item)
       this.dialog = false
     },
+
     close() {
       this.search = '';
       this.dialog = false
     },
-
+    // сортировка по id
     sortById() {
       this.filteredData.sort((a, b) => a.id - b.id)
     },
-
+    // сортировка по name
     sortByName() {
       this.filteredData.sort((a, b) => a.name.localeCompare(b.name))
     }

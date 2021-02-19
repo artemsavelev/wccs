@@ -11,23 +11,24 @@
                  v-bind:item="item"/>
 
     <ModalForm v-bind:typeSection="typeSection"
-              v-on:add="addWork"
-              v-bind:data="data"/>
+               v-on:add="addWork"
+               v-bind:data="allWorks"/>
   </div>
 </template>
 
 <script>
 import ModalForm from "./ModalForm";
-import req from "../store/headers";
-import api from "../api/backendApi";
 import HeaderTable from "@/components/HeaderTable";
 import DataContent from "@/components/DataContent";
+import {mapActions, mapGetters} from "vuex";
 
 export default {
   name: "Work",
   components: { DataContent, HeaderTable, ModalForm },
+  computed: mapGetters(['allWorks']),
   data() {
     return {
+      ...mapActions(['fetchWorks']),
       typeSection: 3,
       data: [],
       works: []
@@ -36,9 +37,7 @@ export default {
   },
   mounted() {
     // получаем данные с сервера (список работ)
-    req.requestData(api.API_WORK_URL, 'GET')
-        .then(response => response.json())
-        .then(json => this.data = json)
+    this.fetchWorks()
   },
   methods: {
     // добавление записи в конец массива

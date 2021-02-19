@@ -59,7 +59,7 @@
         <div class="ml-4 mb-1">
           <v-card-actions class="">
             <v-btn medium v-on:click="create" color="primary" tile>{{ env.keyMakeEstimate }}</v-btn>
-            <Preview v-bind:data="estimate"/>
+            <Preview :preview="preview"/>
           </v-card-actions>
         </div>
       </template>
@@ -85,7 +85,23 @@ export default {
   name: "Estimate",
   props: ['extId', 'address', 'customer'],
   components: { TypeOfWork, Device, Materials, Work, Preview },
-  computed: mapGetters(['profile']),
+  computed: {
+    ...mapGetters(['profile']),
+    preview() {
+
+      return {
+        extId: this.extId,
+        address: this.address,
+        customer: this.customer,
+        owner: this.profile.lastName + ' ' + this.profile.firstName + ' ' +this.date,
+        workDescription: this.workDescription.workDescription,
+        comment: this.workDescription.comment,
+        devices: this.devices,
+        materials: this.materials,
+        works: this.works
+      };
+    }
+  },
   data() {
     return {
       env,
@@ -99,10 +115,10 @@ export default {
       devices: [],
       materials: [],
       works: [],
-      file: this.address + ' ' + this.customer + ' ' + this.extId + '.xlsx',
+      fileName: this.address + ' ' + this.customer + ' ' + this.extId + '.xlsx',
       loading: false,
-      timerId: null,
-      delay: 1000
+      // timerId: null,
+      // delay: 1000
     }
   },
   methods: {
@@ -110,18 +126,23 @@ export default {
     close() {
       this.dialog = false
     },
+
     transmitDescription(description) {
       this.workDescription = description
     },
+
     transmitDevices(dev) {
       this.devices = dev
     },
+
     transmitMaterials(mat) {
       this.materials = mat
     },
+
     transmitWorks(works) {
       this.works = works
     },
+
     async create() {
 
       // создаем объект для отправки на сервер
@@ -136,28 +157,24 @@ export default {
         materials: this.materials,
         works: this.works
       }
-      // console.log('estimate', this.estimate)
+
       await this.addEstimate(this.estimate).then(() => {
         this.loading = true
       }) // отправляем данные на сервер через store
-      this.loading = true // активируем анимацию загрузки
 
-      // проверяем и загружаем файл по таймеру
+      // проверяем и загружаем файл
       // this.timerId = setInterval(() => {
-      // await pause(this.delay)
-      await fetch(api.API_GET_FILE + this.file, {
+
+      await fetch(api.API_GET_FILE + this.fileName, {
           method: 'GET',
         }).then(response =>
             response.blob()
         ).then(blob => {
+
           // проверяем существует ли файл
           if (blob.size === 0) {
-            // console.log('file size:', blob.size)
             // this.delay += 1000; // увеличиваем таймер на 1 секунду с каждым интервалом
-            // console.log(this.delay)
-
           } else {
-
             const url = window.URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
@@ -166,11 +183,10 @@ export default {
             a.click();
             a.remove();  //afterwards we remove the element again
             this.loading = false // останавливаем анимацию
-            // console.log('file size:', blob.size, 'file type:', blob.type)
             // clearInterval(pause) // останавливаем таймер
           }
-        }).catch(err => console.warn(err))
 
+        }).catch(err => console.warn(err))
       // }, this.delay);
 
     },
@@ -178,7 +194,6 @@ export default {
     get() {
       console.log('При нажатии на кнопку калькулятор')
     }
-
 
   }
 }

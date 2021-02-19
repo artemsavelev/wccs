@@ -13,22 +13,25 @@
     <ModalForm v-bind:typeSection="typeSection"
                v-bind:addedItem="addedItem"
                v-on:add="addDevice"
-               v-bind:data="data"/>
+               v-bind:data="allDevices"/>
   </div>
 </template>
 
 <script>
 import ModalForm from "./ModalForm";
-import req from "../store/headers";
-import api from "../api/backendApi";
 import HeaderTable from "@/components/HeaderTable";
 import DataContent from "@/components/DataContent";
+import {mapActions, mapGetters} from "vuex";
+
 
 export default {
   name: "ActiveDevice",
   components: { DataContent, HeaderTable, ModalForm },
+  computed: mapGetters(['allDevices']),
+
   data() {
     return {
+      ...mapActions(['fetchDevices']),
       typeSection: 1,
       addedItem: '',
       data: [],
@@ -38,10 +41,8 @@ export default {
   },
   mounted() {
     // получаем данные с сервера (список оборудования)
-    req.requestData(api.API_DEVICE_URL, 'GET')
-        .then(response => response.json())
-        .then(json => this.data = json)
-    .catch(err => console.warn(err))
+    this.fetchDevices();
+
   },
   methods: {
     // добавление записи в конец массива

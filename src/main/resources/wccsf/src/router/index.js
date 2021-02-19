@@ -12,12 +12,12 @@ const routes = [
   },
   {
     path: '/',
-    name: 'List',
+    name: 'OrdersList',
     component: () => import('../views/OrdersList.vue')
   },
   {
     path: '/create',
-    name: 'Form',
+    name: 'OrderForm',
     component: () => import('../components/OrderForm.vue')
   },
   {
