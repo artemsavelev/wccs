@@ -7,10 +7,6 @@
 
             v-bind:data="data"/>
 
-
-
-
-
 </div>
 </template>
 

@@ -58,7 +58,7 @@
                 {{ env.subTotal[1] }}:
               </div>
               <div class="subtotal-price font-weight-bold">
-                subTotal
+                {{  }}
               </div>
             </div>
 
@@ -114,21 +114,16 @@
 </template>
 
 <script>
-import env from "../../env.config.json"
 import { mdiClose } from '@mdi/js';
-import Section from "@/components/Section"
-import HeaderTable from "@/components/HeaderTable";
+import env from "../../env.config.json"
+const Section = () => import('@/components/Section')
+const HeaderTable = () => import('@/components/HeaderTable')
 
 export default {
   name: "Preview",
   props: ['preview'],
   components: { Section, HeaderTable },
-  computed: {
-
-    uuid() {
-      return Math.floor(Math.random() * Math.max(10000))
-    }
-  },
+  computed: {},
   data() {
     return {
       env,
@@ -141,6 +136,10 @@ export default {
   methods: {
     close() {
       this.dialog = false
+    },
+
+    click: function () {
+      this.$refs.subTotal.setValue(2.0);
     },
 
     // сортировка по id

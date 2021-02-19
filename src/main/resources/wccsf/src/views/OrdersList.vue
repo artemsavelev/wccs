@@ -12,9 +12,7 @@
 </template>
 
 <script>
-
-
-import OrderItem from "../components/OrderItem";
+const OrderItem = () => import('../components/OrderItem')
 import {mapActions, mapGetters} from "vuex";
 
 

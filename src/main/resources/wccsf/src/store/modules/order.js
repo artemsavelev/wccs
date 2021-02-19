@@ -42,7 +42,7 @@ export default {
     },
     getters: {
         allOrders(state) {
-            return (state.orders || []).sort((a, b) => (a.id - b.id))
+            return (state.orders || []).sort((a, b) => (-a.id - b.id))
         }
 
     }

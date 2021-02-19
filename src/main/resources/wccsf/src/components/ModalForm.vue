@@ -48,9 +48,10 @@
               <v-col>
                 <!--   load module add device, material, work    -->
                 <SectionItem v-for="item of filteredData"
-                      :key="item.id"
-                      v-on:add="addItem"
-                      v-bind:item="item"/>
+                             :key="item.id"
+                             v-on:add="addItem"
+
+                             v-bind:item="item"/>
                 <!--  // load module add device, material, work  -->
               </v-col>
             </v-row>
@@ -101,6 +102,7 @@ export default {
         return env.sectionWork;
       }
     },
+
   },
   data() {
     return {
@@ -127,11 +129,11 @@ export default {
     },
     // сортировка по id
     sortById() {
-      this.filteredData.sort((a, b) => a.id - b.id)
+      (this.filteredData || []).sort((a, b) => a.id - b.id)
     },
     // сортировка по name
     sortByName() {
-      this.filteredData.sort((a, b) => a.name.localeCompare(b.name))
+      (this.filteredData || []).sort((a, b) => a.name.localeCompare(b.name))
     }
   },
 

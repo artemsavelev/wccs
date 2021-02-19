@@ -1,7 +1,6 @@
 package com.smart.wccs.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import com.smart.wccs.dto.DeviceDto;
 import com.smart.wccs.model.Device;
 import com.smart.wccs.model.Views;
 import com.smart.wccs.service.DeviceService;

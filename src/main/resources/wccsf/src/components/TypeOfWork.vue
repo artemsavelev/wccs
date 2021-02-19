@@ -10,7 +10,7 @@
       <div class="font-s mt-0">
         {{ this.description.comment }}
       </div>
-      <ModalWin v-on:add="addWorkDescription"
+      <ModalForm v-on:add="addWorkDescription"
                 v-bind:ex="ex"
                 v-bind:typeSection="typeSection"/>
 
@@ -20,12 +20,12 @@
 
 <script>
 import env from "../../env.config.json"
-import ModalWin from "./ModalForm";
+const ModalForm = () => import('./ModalForm')
 
 export default {
   name: "TypeOfWork",
   props: ['ex'],
-  components: { ModalWin },
+  components: { ModalForm },
   data() {
     return {
       env,

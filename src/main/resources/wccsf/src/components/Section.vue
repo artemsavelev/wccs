@@ -18,6 +18,7 @@
       </div>
       <div class="data-cols col-sum">
         {{ item.price * item.quantity }}
+
       </div>
       <div class="data-cols col-action-section">
 
@@ -33,6 +34,7 @@ import env from '../../env.config.json'
 export default {
   name: "Section",
   props: ['item', 'idx'],
+  computed: {},
   data() {
     return {
       env,

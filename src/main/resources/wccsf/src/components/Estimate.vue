@@ -15,7 +15,7 @@
                     label="смета предварительная"
                     hide-details></v-checkbox>
         <v-spacer></v-spacer>
-        <v-btn small text tile v-on:click="close">
+        <v-btn small text tile v-on:click="close" aria-label="">
           <v-icon>mdi-close</v-icon>
         </v-btn>
       </v-card-title>
@@ -37,7 +37,6 @@
               {{ date }}
             </div>
             <div>
-
             </div>
           </div>
 
@@ -70,14 +69,14 @@
 </template>
 
 <script>
+import {mapActions, mapGetters} from "vuex"
+import api from "@/api/backendApi"
 import env from "../../env.config.json"
-import Work from "./Work";
-import Materials from "./Materials";
-import Device from "./Device";
-import TypeOfWork from "./TypeOfWork";
-import Preview from "@/components/Preview";
-import {mapActions, mapGetters} from "vuex";
-import api from "@/api/backendApi";
+const TypeOfWork = () => import('./TypeOfWork')
+const Device = () => import('./Device')
+const Materials = () => import('./Materials')
+const Work = () => import('./Work')
+const Preview = () => import('@/components/Preview')
 
 
 // const pause = ms => new Promise(resolve => setTimeout(resolve, ms))
@@ -158,9 +157,10 @@ export default {
         works: this.works
       }
 
+      // отправляем данные на сервер через store
       await this.addEstimate(this.estimate).then(() => {
         this.loading = true
-      }) // отправляем данные на сервер через store
+      })
 
       // проверяем и загружаем файл
       // this.timerId = setInterval(() => {
@@ -178,7 +178,7 @@ export default {
             const url = window.URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = this.file;
+            a.download = this.fileName;
             document.body.appendChild(a);
             a.click();
             a.remove();  //afterwards we remove the element again

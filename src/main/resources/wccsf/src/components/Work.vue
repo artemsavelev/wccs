@@ -17,9 +17,10 @@
 </template>
 
 <script>
-import ModalForm from "./ModalForm";
-import HeaderTable from "@/components/HeaderTable";
-import DataContent from "@/components/DataContent";
+
+const ModalForm = () => import('./ModalForm')
+const HeaderTable = () => import('@/components/HeaderTable')
+const DataContent = () => import('@/components/DataContent')
 import {mapActions, mapGetters} from "vuex";
 
 export default {
@@ -57,11 +58,11 @@ export default {
 
     // сортировка по id
     sortById() {
-      this.works.sort((a, b) => a.id - b.id)
+      (this.works || []).sort((a, b) => a.id - b.id)
     },
     // сортировка по name
     sortByName() {
-      this.works.sort((a, b) => a.name.localeCompare(b.name))
+      (this.works || []).sort((a, b) => a.name.localeCompare(b.name))
     }
   }
 }

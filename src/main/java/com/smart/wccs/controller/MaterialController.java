@@ -1,7 +1,6 @@
 package com.smart.wccs.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import com.smart.wccs.dto.MaterialDto;
 import com.smart.wccs.model.Material;
 import com.smart.wccs.model.Views;
 import com.smart.wccs.service.MaterialService;

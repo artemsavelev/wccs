@@ -32,7 +32,7 @@
 <!--                      color="error"-->
 <!--                      label=""-->
 <!--                      hide-details></v-checkbox>-->
-          <v-btn icon v-on:click="add" :disabled="addedItem === 1">
+          <v-btn icon v-on:click="add" :disabled="key === 1">
             <v-icon>mdi-plus</v-icon>
           </v-btn>
         </v-card-actions>
@@ -49,18 +49,23 @@ import env from "../../env.config.json"
 export default {
   name: "SectionItem",
   props: ['item', 'typeSection'],
+  computed: {
+
+  },
   data() {
     return {
       env,
+
       quantity: '',
       done: '',
-      addedItem: 0
+      key: 0
 
     }
   },
 
   methods: {
     add() {
+
       let obj = {
         id: this.item.id,
         name: this.item.name,
@@ -68,9 +73,24 @@ export default {
         price: this.item.price,
         quantity: this.quantity === '' ? 1 : this.quantity
       }
-      this.addedItem = 1
-      // this.done = 'color: red; text-decoration: line-through;'
-      this.done = 'color: red;'
+
+
+
+
+
+
+
+
+       const styleAddedItem = {
+        id: this.item.id,
+        key: this.key = 1,
+        done: this.done = 'color: #F8425F;'
+      }
+
+
+      localStorage.setItem(this.item.name, JSON.stringify(styleAddedItem));
+
+
       this.$emit('add', obj)
     }
   },

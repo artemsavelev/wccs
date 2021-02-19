@@ -82,8 +82,7 @@
 
 <script>
 import { mapActions, mapGetters } from "vuex";
-import Estimate from "./Estimate";
-// import ModalForm from "@/components/ModalForm";
+const Estimate = () => import('@/components/Estimate')
 
 export default {
   name: 'OrderItem',

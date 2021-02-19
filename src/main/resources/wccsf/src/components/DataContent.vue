@@ -61,6 +61,17 @@ export default {
       this.$emit('edit', this.item.id)
     },
     remove() {
+
+      const styleGetItem = JSON.parse(localStorage.getItem(this.item.name))
+
+      const styleSetItem = {
+        id: styleGetItem.id,
+        key: styleGetItem.key = 0,
+        done: styleGetItem.done = 'color: gray;'
+      }
+
+      localStorage.setItem(this.item.name, JSON.stringify(styleSetItem));
+
       this.$emit('remove', this.item.id)
     }
   },

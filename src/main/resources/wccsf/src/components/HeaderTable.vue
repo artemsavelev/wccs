@@ -11,7 +11,7 @@
     </div>
 
 
-    <div class="section-row-container blue-grey lighten-2">
+    <div class="section-row-container headerTable color-text">
       <div class="section-cols col-idx pl-2 pointer" @click="sortId">
         {{ env.id }}
       </div>
@@ -44,7 +44,7 @@
 </template>
 
 <script>
-import env from '../../env.config.json'
+import env from "../../env.config.json"
 
 export default {
   name: "HeaderTable",
@@ -65,5 +65,9 @@ export default {
 <style scoped>
 .pointer {
   cursor: pointer;
+}
+
+.color-text {
+  color: white;
 }
 </style>
