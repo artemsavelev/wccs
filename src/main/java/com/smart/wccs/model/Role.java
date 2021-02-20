@@ -14,7 +14,6 @@ public class Role extends BaseEntity {
 
     private String roles;
 
-    @ManyToMany
-    private List<User> users;
+
 
 }

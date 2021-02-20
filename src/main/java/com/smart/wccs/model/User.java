@@ -49,7 +49,5 @@ public class User extends BaseEntity {
     @JsonView({Views.UserView.class, Views.AdminView.class})
     private List<Position> positions;
 
-    @OneToMany
-    private List<Order> orders;
 
 }

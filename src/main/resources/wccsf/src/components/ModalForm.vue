@@ -113,6 +113,13 @@ export default {
       items: []
     }
   },
+
+  updated() {
+
+    console.log('updated ModalForm', new Date().toTimeString().substr(0, 8))
+
+  },
+
   methods: {
     addItem(item) {
       this.$emit('add', item)

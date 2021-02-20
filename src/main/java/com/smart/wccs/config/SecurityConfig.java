@@ -20,6 +20,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private static final String SUPERUSER_ENDPOINT = "/api/v1/super/**";
     private static final String USER_ENDPOINT = "/api/v1/user/**";
     private static final String LOGIN_ENDPOINT = "/api/v1/auth/login";
+    private static final String REGISTRATION_ENDPOINT = "/api/v1/auth/registration";
     private static final String FILE_PATH = "/api/v1/estimate/files/**";
     private static final String LOGOUT_ENDPOINT = "/api/v1/auth/logout";
 
@@ -44,7 +45,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers(LOGIN_ENDPOINT, FILE_PATH).permitAll()
+                .antMatchers(LOGIN_ENDPOINT, REGISTRATION_ENDPOINT, FILE_PATH).permitAll()
                 .antMatchers(ADMIN_ENDPOINT).hasRole("ADMIN")
                 .antMatchers(SUPERUSER_ENDPOINT).hasRole("SUPERUSER")
                 .anyRequest().authenticated()

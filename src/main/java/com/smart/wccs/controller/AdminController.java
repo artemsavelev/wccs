@@ -2,7 +2,6 @@ package com.smart.wccs.controller;
 
 
 import com.fasterxml.jackson.annotation.JsonView;
-import com.smart.wccs.dto.AdminDto;
 import com.smart.wccs.model.User;
 import com.smart.wccs.model.Views;
 import com.smart.wccs.service.UserService;

@@ -64,7 +64,9 @@ export default {
     }
   },
 
-
+  updated() {
+    // console.log('updated SectionItem', localStorage.getItem(this.item.name))
+  },
 
   mounted() {
     if (localStorage.getItem(this.item.name) !== null) {
@@ -89,7 +91,7 @@ export default {
         done: this.styleAddedItem.done = 'color: #F8425F;'
       }
 
-      localStorage.setItem(this.item.name, JSON.stringify(this.styleAddedItem));
+      localStorage.setItem(this.item.extId + ' ' +this.item.name, JSON.stringify(this.styleAddedItem));
 
 
       this.$emit('add', obj)
