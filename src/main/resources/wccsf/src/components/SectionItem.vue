@@ -2,14 +2,14 @@
 
   <div class="section-row font-s mt-0 ">
     <div class="section-row-container">
-      <div class="section-cols col-idx pl-2" v-bind:style="this.done">
+      <div class="section-cols col-idx pl-2" v-bind:style="this.styleAddedItem.done">
         {{ item.id }}
       </div>
 
-      <div class="section-cols col-name" v-bind:style="this.done">
+      <div class="section-cols col-name" v-bind:style="this.styleAddedItem.done">
         {{ item.name }}
       </div>
-      <div class="section-cols col-dimension" v-bind:style="this.done">
+      <div class="section-cols col-dimension" v-bind:style="this.styleAddedItem.done">
         {{ item.dimension }}
       </div>
 
@@ -17,11 +17,11 @@
         <input type="text" placeholder="0" v-model="quantity" class="input" />
       </div>
 
-      <div class="section-cols col-price" v-bind:style="this.done">
+      <div class="section-cols col-price" v-bind:style="this.styleAddedItem.done">
         {{ item.price.toLocaleString('ru-RU') }}
       </div>
 
-      <div class="section-cols col-comment" v-bind:style="this.done">
+      <div class="section-cols col-comment" v-bind:style="this.styleAddedItem.done">
         {{ item.note }}
       </div>
       <div class="section-cols col-action-section">
@@ -32,7 +32,7 @@
 <!--                      color="error"-->
 <!--                      label=""-->
 <!--                      hide-details></v-checkbox>-->
-          <v-btn icon v-on:click="add" :disabled="key === 1">
+          <v-btn icon v-on:click="add" :disabled="this.styleAddedItem.key === 1">
             <v-icon>mdi-plus</v-icon>
           </v-btn>
         </v-card-actions>
@@ -55,11 +55,21 @@ export default {
   data() {
     return {
       env,
-
+      styleAddedItem: {},
       quantity: '',
       done: '',
-      key: 0
+      key: 0,
 
+
+    }
+  },
+
+
+
+  mounted() {
+    if (localStorage.getItem(this.item.name) !== null) {
+      this.styleAddedItem = JSON.parse(localStorage.getItem(this.item.name))
+      console.log('mounted', this.styleAddedItem.key)
     }
   },
 
@@ -74,21 +84,12 @@ export default {
         quantity: this.quantity === '' ? 1 : this.quantity
       }
 
-
-
-
-
-
-
-
-       const styleAddedItem = {
-        id: this.item.id,
-        key: this.key = 1,
-        done: this.done = 'color: #F8425F;'
+      this.styleAddedItem = {
+        key: this.styleAddedItem.key = 1,
+        done: this.styleAddedItem.done = 'color: #F8425F;'
       }
 
-
-      localStorage.setItem(this.item.name, JSON.stringify(styleAddedItem));
+      localStorage.setItem(this.item.name, JSON.stringify(this.styleAddedItem));
 
 
       this.$emit('add', obj)

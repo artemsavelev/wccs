@@ -11,7 +11,7 @@
     </div>
 
 
-    <div class="section-row-container headerTable color-text">
+    <div class="section-row-container table color-text">
       <div class="section-cols col-idx pl-2 pointer" @click="sortId">
         {{ env.id }}
       </div>

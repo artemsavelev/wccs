@@ -7,7 +7,7 @@
     </template>
 
     <v-card>
-      <v-card-title class="grey lighten-2">
+      <v-card-title class="form">
         <div class="font-xl">{{formTitle}}</div>
         <v-checkbox v-model="ex"
                     class="pt-0 pb-0 mt-0 mb-0 ml-5"
@@ -16,7 +16,7 @@
                     hide-details></v-checkbox>
         <v-spacer></v-spacer>
         <v-btn small text tile v-on:click="close" aria-label="">
-          <v-icon>mdi-close</v-icon>
+          <v-icon>mdi-window-close</v-icon>
         </v-btn>
       </v-card-title>
 

@@ -55,6 +55,10 @@ export default {
       editedIndex : false
     }
   },
+
+  updated() {
+    console.log('test')
+  },
   methods: {
     edit() {
       this.editedIndex = true
@@ -62,15 +66,15 @@ export default {
     },
     remove() {
 
-      const styleGetItem = JSON.parse(localStorage.getItem(this.item.name))
+      // const styleGetItem = JSON.parse(localStorage.getItem(this.item.name))
 
-      const styleSetItem = {
-        id: styleGetItem.id,
-        key: styleGetItem.key = 0,
-        done: styleGetItem.done = 'color: gray;'
-      }
+      // const styleSetItem = {
+      //   key: styleGetItem.key = 0,
+      //   done: styleGetItem.done = 'color: gray;'
+      // }
+      console.log('removeItem', JSON.parse(localStorage.getItem(this.item.name)))
+      localStorage.removeItem(this.item.name);
 
-      localStorage.setItem(this.item.name, JSON.stringify(styleSetItem));
 
       this.$emit('remove', this.item.id)
     }
