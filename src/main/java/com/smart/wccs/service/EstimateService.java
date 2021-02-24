@@ -8,5 +8,7 @@ public interface EstimateService {
 
     Estimate getById(Long id);
 
+    Estimate update(Long id, Estimate estimate);
+
 
 }

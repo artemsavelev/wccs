@@ -89,6 +89,7 @@ export default {
     ...mapGetters(['profile']),
     preview() {
       return {
+        // keyEstimate: this.ex ? this.key = 'ФАКТИЧЕСКАЯ' : this.key = 'ПРЕДВАРИТЕЛЬНАЯ',
         extId: this.extId,
         address: this.address,
         customer: this.customer,
@@ -98,15 +99,20 @@ export default {
         devices: this.devices,
         materials: this.materials,
         works: this.works
-      };
-    }
+      }
+    },
+
+
+
   },
   data() {
     return {
       env,
       dialog: false,
       formTitle: env.title[1],
-      ex: false,
+      ex: true,
+      key: '',
+      keyEstimate: '',
       date: new Date().toISOString().substr(0, 10) + ' ' +
           new Date().toTimeString().substr(0, 8),
       estimate: {},
@@ -114,12 +120,15 @@ export default {
       devices: [],
       materials: [],
       works: [],
-      fileName: this.address + ' ' + this.customer + ' ' + this.extId + '.xlsx',
-      loading: false,
-      // timerId: null,
-      // delay: 1000
+      fileName: '',
+      loading: false
     }
   },
+
+  watch: {
+
+  },
+
   methods: {
     ...mapActions(['addEstimate']),
     close() {
@@ -143,9 +152,13 @@ export default {
     },
 
     async create() {
+      this.keyEstimate = this.ex ? this.key = 'ПРЕДВАРИТЕЛЬНАЯ' : this.key = 'ФАКТИЧЕСКАЯ'
+      this.fileName = this.address + ' ' + this.customer + ' ' + this.extId + ' ' + this.keyEstimate + '.xlsx'
+
 
       // создаем объект для отправки на сервер
       this.estimate = {
+        key: this.keyEstimate,
         extId: this.extId,
         address: this.address,
         customer: this.customer,
@@ -157,14 +170,14 @@ export default {
         works: this.works
       }
 
+      // console.log(this.estimate)
+
       // отправляем данные на сервер через store
       await this.addEstimate(this.estimate).then(() => {
         this.loading = true
       })
 
       // проверяем и загружаем файл
-      // this.timerId = setInterval(() => {
-
       await fetch(api.API_GET_FILE + this.fileName, {
           method: 'GET',
         }).then(response =>
@@ -173,7 +186,8 @@ export default {
 
           // проверяем существует ли файл
           if (blob.size === 0) {
-            // this.delay += 1000; // увеличиваем таймер на 1 секунду с каждым интервалом
+            //
+
           } else {
             const url = window.URL.createObjectURL(blob);
             const a = document.createElement('a');
@@ -183,10 +197,8 @@ export default {
             a.click();
             a.remove();  //afterwards we remove the element again
             this.loading = false // останавливаем анимацию
-            // clearInterval(pause) // останавливаем таймер
           }
         })
-      // }, this.delay);
 
     },
 

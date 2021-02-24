@@ -42,25 +42,30 @@ export default {
             commit('updateCurrentPageMutation', Math.min(data.currentPage, data.totalPages))
         },
 
-        async addOrder({commit, state}, order) {
+        async addOrder({commit}, order) {
             const data = await req.request(api.API_ORDER_URL, 'POST', order);
-            const index = state.orders.findIndex(item => item.id === data.id);
-            console.log(index);
+            // const index = state.orders.findIndex(item => item.id === data.id);
+            // console.log(index);
             commit('addOrderMutation', data)
         },
 
         async loadPage({commit, state}) {
-            const data = await req.request(api.API_ORDER_PAGE_URL + (state.currentPage + 1));
+            try {
+                const data = await req.request(api.API_ORDER_PAGE_URL + (state.currentPage + 1));
 
-            console.log('currentPage', data.currentPage)
-            console.log('totalPages', data.totalPages)
-            console.log('state currentPage', state.currentPage)
-            console.log('state totalPages', state.totalPages)
-            console.log('min', Math.min(data.currentPage, data.totalPages))
+                // console.log('currentPage', data.currentPage)
+                // console.log('totalPages', data.totalPages)
+                // console.log('state currentPage', state.currentPage)
+                // console.log('state totalPages', state.totalPages)
+                // console.log('min', Math.min(data.currentPage, data.totalPages))
 
-            commit('fetchOrderPageMutation', data.orders)
-            commit('updateTotalPagesMutation', data.totalPages)
-            commit('updateCurrentPageMutation', Math.min(data.currentPage, data.totalPages))
+                commit('fetchOrderPageMutation', data.orders)
+                commit('updateTotalPagesMutation', data.totalPages)
+                commit('updateCurrentPageMutation', Math.min(data.currentPage, data.totalPages))
+            } catch (e) {
+                // console.warn(e.message)
+            }
+
 
         }
 

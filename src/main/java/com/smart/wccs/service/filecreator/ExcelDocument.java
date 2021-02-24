@@ -2,6 +2,7 @@ package com.smart.wccs.service.filecreator;
 
 import com.smart.wccs.model.Components;
 import com.smart.wccs.model.Estimate;
+import com.smart.wccs.model.Status;
 import com.smart.wccs.service.filecreator.components.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.*;
@@ -12,8 +13,6 @@ import org.springframework.stereotype.Component;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,8 +31,16 @@ public class ExcelDocument implements FileCreator {
     @Override
     public void createFile(Estimate estimate) {
 
+        String keyEstimate;
+        if ("ПРЕДВАРИТЕЛЬНАЯ".equals(estimate.getKey())) {
+            keyEstimate = "ПРЕДВАРИТЕЛЬНАЯ";
+        } else {
+            keyEstimate = "ФАКТИЧЕСКАЯ";
+        }
+
+
         Workbook workbook = new XSSFWorkbook();
-        Sheet sheet = workbook.createSheet("sheet");
+        Sheet sheet = workbook.createSheet("Смета " + keyEstimate);
         Font font = workbook.createFont();
         font.setFontHeightInPoints((short) 8);
         font.setFontName("Montserrat");
@@ -60,7 +67,7 @@ public class ExcelDocument implements FileCreator {
         CreateHeaderTable headerTable = new CreateHeaderTable(sheet, CellType.STRING);
         Data data = new Data(workbook, sheet, font, styleAlignCenter);
 
-        createCell.getCell(styleAlignCenter2,0, 0, 5, 30, "Смета");
+        createCell.getCell(styleAlignCenter2,0, 0, 5, 30, "Смета " + keyEstimate);
         createCell.getCell(styleAlignCenter2,1, 0, 5, 15, "№: " + estimate.getExtId());
         createCell.getCell(styleAlignCenter2,2, 0, 5, 15, "адрес: " + estimate.getAddress());
         createCell.getCell(styleAlignCenter2,3, 0, 5, 15, "заказчик: " + estimate.getCustomer());
@@ -119,7 +126,8 @@ public class ExcelDocument implements FileCreator {
             File file = new File(uploadPath + File.separator +
                     estimate.getAddress() + " " +
                     estimate.getCustomer() + " " +
-                    estimate.getExtId() + ".xlsx");
+                    estimate.getExtId() + " " +
+                    keyEstimate + ".xlsx");
 
             if (file.createNewFile()) {
                 log.info("IN createFile - create estimate {} : successfully created in {} ", file.getName(), file.getAbsolutePath());

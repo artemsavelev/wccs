@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping(value = "/api/v1/order/")
 public class OrderController {
-    public static final int MESSAGES_PER_PAGE = 20;
+    public static final int MESSAGES_PER_PAGE = 30;
 
     private final OrderService orderService;
 

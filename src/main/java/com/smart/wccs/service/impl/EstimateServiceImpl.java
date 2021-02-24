@@ -40,7 +40,7 @@ public class EstimateServiceImpl implements EstimateService {
         User user = userRepo.findByUsername(name);
 
         estimate.setCreatedDate(LocalDateTime.now());
-        estimate.setStatus(Status.COMPLETED);
+        estimate.setStatus(Status.ACTIVE);
         estimate.setAuthor(user);
         estimate.setDepartment(user.getDepartment());
 
@@ -63,6 +63,14 @@ public class EstimateServiceImpl implements EstimateService {
         }
         log.info("IN findById - estimate found by id: {}", estimate);
         return estimate;
+    }
+
+    @Override
+    public Estimate update(Long id, Estimate estimate) {
+
+        Estimate updatedEstimate = estimateRepo.findById(id).orElse(null);
+
+        return null;
     }
 
 

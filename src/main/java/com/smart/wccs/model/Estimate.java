@@ -13,6 +13,9 @@ import java.util.List;
 @Data
 public class Estimate extends BaseEntity {
 
+    @Transient
+    private String key;
+
     @JsonView({Views.UserView.class, Views.AdminView.class})
     private String extId;
 

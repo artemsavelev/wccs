@@ -43,8 +43,8 @@ export default {
     }
   },
   updated() {
-
-    console.log('device', JSON.parse(localStorage.getItem(this.extId + '_' + this.itemName)))
+    //
+    // console.log('device', JSON.parse(localStorage.getItem(this.extId + '_' + this.itemName)))
   },
   mounted() {
     // получаем данные с сервера (список оборудования)
