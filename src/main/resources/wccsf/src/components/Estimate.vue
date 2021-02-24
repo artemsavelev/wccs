@@ -22,30 +22,31 @@
 
       <v-card-text>
 
-          <div class="font-s">
-            <div class="ext-id">
-              {{ env.request }}: {{ extId }}
-            </div>
-            <div class="address">
-              {{ env.address }}: {{ address }}
-            </div>
-            <div class="">
-              {{ env.customer }}: {{ customer }}
-            </div>
-            <div class="">
-              {{ env.owner }}: {{ profile.lastName }} {{ profile.firstName}}
-              {{ date }}
-            </div>
-            <div>
-            </div>
+        <div class="font-s">
+          <div class="ext-id">
+            {{ env.request }}: {{ extId }}
           </div>
+          <div class="address">
+            {{ env.address }}: {{ address }}
+          </div>
+          <div class="">
+            {{ env.customer }}: {{ customer }}
+          </div>
+          <div class="">
+            {{ env.owner }}: {{ profile.lastName }} {{ profile.firstName}}
+            {{ date }}
+          </div>
+          <div>
+          </div>
+        </div>
 
           <!-- загружаем модули -->
-          <TypeOfWork v-on:transmit="transmitDescription"
-                      v-bind:ex="ex"/>
-          <Device v-on:transmit="transmitDevices"/>
-          <Materials v-on:transmit="transmitMaterials"/>
-          <Work v-on:transmit="transmitWorks"/>
+        <TypeOfWork v-on:transmit="transmitDescription"
+                    v-bind:ex="ex"/>
+        <Device v-on:transmit="transmitDevices"
+                v-bind:extId="extId"/>
+        <Materials v-on:transmit="transmitMaterials"/>
+        <Work v-on:transmit="transmitWorks"/>
           <!-- // загружаем модули -->
 
       </v-card-text>
@@ -53,8 +54,8 @@
       <template>
         <v-progress-linear height="3"
                            color="primary"
-                           :indeterminate="loading"
-                           ></v-progress-linear>
+                           :indeterminate="loading">
+        </v-progress-linear>
         <div class="ml-4 mb-1">
           <v-card-actions class="">
             <v-btn medium v-on:click="create" color="primary" tile>{{ env.keyMakeEstimate }}</v-btn>
@@ -87,7 +88,6 @@ export default {
   computed: {
     ...mapGetters(['profile']),
     preview() {
-
       return {
         extId: this.extId,
         address: this.address,
@@ -185,8 +185,7 @@ export default {
             this.loading = false // останавливаем анимацию
             // clearInterval(pause) // останавливаем таймер
           }
-
-        }).catch(err => console.warn(err))
+        })
       // }, this.delay);
 
     },

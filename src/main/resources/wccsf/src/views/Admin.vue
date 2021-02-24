@@ -1,42 +1,112 @@
 <template>
-<div>
+  <div>
+    <div class="ml-10 mr-10">
 
-  <Users/>
+      <div class="font-weight-bold">
+        {{ env.sectionDevice }}
+      </div>
 
-  <ModalWin v-bind:typeSection="typeSection"
+      <v-col cols="4">
+        <v-text-field
+            v-model="searchDevice"
+            append-icon="mdi-magnify"
+            label="Поиск"
+            single-line
+            clearable
+            hide-details
+        ></v-text-field>
+      </v-col>
+      <v-data-table
+          dense
+          show-select
+          :headers="headers"
+          :items="allDevices"
+          :items-per-page="10"
+          :search="searchDevice"
+          class="elevation-1 mb-10"
+      ></v-data-table>
 
-            v-bind:data="data"/>
+      <div class="font-weight-bold">
+        {{ env.sectionMaterial }}
+      </div>
 
-</div>
+      <v-col cols="4">
+        <v-text-field
+            v-model="searchMaterial"
+            append-icon="mdi-magnify"
+            label="Поиск"
+            single-line
+            clearable
+            hide-details
+        ></v-text-field>
+      </v-col>
+      <v-data-table
+          dense
+          show-select
+          :headers="headers"
+          :items="allMaterials"
+          :items-per-page="10"
+          :search="searchMaterial"
+          class="elevation-1 mb-10"
+      ></v-data-table>
+
+      <div class="font-weight-bold">
+        {{ env.sectionWork }}
+      </div>
+
+      <v-col cols="4">
+        <v-text-field
+            v-model="searchWork"
+            append-icon="mdi-magnify"
+            label="Поиск"
+            single-line
+            clearable
+            hide-details
+        ></v-text-field>
+      </v-col>
+      <v-data-table
+          dense
+          show-select
+          :headers="headers"
+          :items="allWorks"
+          :items-per-page="10"
+          :search="searchWork"
+          class="elevation-1"
+      ></v-data-table>
+
+    </div>
+  </div>
 </template>
 
 <script>
-
-
-
-
-import Users from "@/components/Users";
-import ModalWin from "@/components/ModalForm";
-import req from "@/store/headers";
-import api from "@/api/backendApi";
+import {mapActions, mapGetters} from "vuex";
+import env from "../../env.config.json"
 
 export default {
   name: "Admin",
+  computed: mapGetters(['allDevices', 'allMaterials', 'allWorks']),
 
-  components: {ModalWin, Users},
 
   data () {
     return {
-      typeSection: 1,
-      data: [],
+      ...mapActions(['fetchDevices', 'fetchMaterials', 'fetchWorks']),
+      env,
+      searchDevice: '',
+      searchWork: '',
+      searchMaterial: '',
+      headers: [
+        { text: 'id', value: 'id' },
+        { text: 'name', value: 'name' },
+      ],
+
     }
   },
 
   mounted() {
     // получаем данные с сервера (список оборудования)
-    req.requestData(api.API_DEVICE_URL, 'GET')
-        .then(response => response.json())
-        .then(json => this.data = json)
+    this.fetchDevices();
+    this.fetchMaterials();
+    this.fetchWorks();
   },
 
 

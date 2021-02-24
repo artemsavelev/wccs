@@ -1,4 +1,4 @@
-import req from "@/store/headers";
+import req from "@/store/request";
 import api from "@/api/backendApi";
 
 
@@ -36,52 +36,35 @@ export default {
     actions: {
         // get devices list from backend
         async fetchDevices({commit}) {
-            if (localStorage.getItem('user') !== null) {
-                const data = await req.requestData(api.API_DEVICE_URL, 'GET')
-                const devices = await data.json();
-                commit('updateDeviceMutation', devices);
-            } else {
-                // errors
-            }
+            const data = await req.request(api.API_DEVICE_URL)
+            commit('updateDeviceMutation', data);
+
         },
         async addDevice({commit}, device) {
-            const data = await req.responseData(api.API_DEVICE_URL, 'POST', device)
-            const dev = await data.json();
-            commit('addDeviceMutation', dev)
+            const data = await req.request(api.API_DEVICE_URL, 'POST', device)
+            commit('addDeviceMutation', data)
         },
 
 
         // get materials list from backend
         async fetchMaterials({commit}) {
-            if (localStorage.getItem('user') !== null) {
-                const data = await req.requestData(api.API_MATERIAL_URL, 'GET')
-                const materials = await data.json();
-                commit('updateMaterialMutation', materials);
-            } else {
-                // errors
-            }
+            const data = await req.request(api.API_MATERIAL_URL)
+            commit('updateMaterialMutation', data);
         },
         async addMaterial({commit}, material) {
-            const data = await req.responseData(api.API_MATERIAL_URL, 'POST', material)
-            const mat = await data.json();
-            commit('addMaterialMutation', mat)
+            const data = await req.request(api.API_MATERIAL_URL, 'POST', material)
+            commit('addMaterialMutation', data)
         },
 
 
         // get works list from backend
         async fetchWorks({commit}) {
-            if (localStorage.getItem('user') !== null) {
-                const data = await req.requestData(api.API_WORK_URL, 'GET')
-                const works = await data.json();
-                commit('updateWorkMutation', works);
-            } else {
-                // errors
-            }
+            const data = await req.request(api.API_WORK_URL)
+            commit('updateWorkMutation', data);
         },
         async addWork({commit}, work) {
-            const data = await req.responseData(api.API_WORK_URL, 'POST', work)
-            const wor = await data.json();
-            commit('addWorkMutation', wor)
+            const data = await req.request(api.API_WORK_URL, 'POST', work)
+            commit('addWorkMutation', data)
         }
 
     },

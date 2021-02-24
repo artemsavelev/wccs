@@ -1,4 +1,4 @@
-import req from "@/store/headers";
+import req from "@/store/request";
 import api from "@/api/backendApi";
 
 
@@ -16,9 +16,8 @@ export default {
     },
     actions: {
         async addEstimate({commit}, estimate) {
-            const data = await req.responseData(api.API_CREATE_ESTIMATE_URL, 'POST', estimate);
-            const est = await data.json();
-            commit('addEstimateMutation', est)
+            const data = await req.request(api.API_CREATE_ESTIMATE_URL, 'POST', estimate);
+            commit('addEstimateMutation', data)
         },
 
     },

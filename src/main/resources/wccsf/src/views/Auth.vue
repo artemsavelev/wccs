@@ -55,7 +55,7 @@ export default {
 
   watch: {
     error(error) {
-      console.log(messages[error])
+      // console.log(messages[error])
       this.message = messages[error];
       this.snackbar = true;
     }
@@ -64,16 +64,16 @@ export default {
   methods: {
 
     async auth() {
-      const formData = {
+      const formAuth = {
         username: this.username,
         password: this.password
       };
       try {
-        await this.$store.dispatch('login', formData);
+        await this.$store.dispatch('login', formAuth);
         await this.$router.push('/')
 
       } catch (e) {
-        // console.log('error', e)
+        // console.warn('Error auth: ', e.message)
       }
     }
   }

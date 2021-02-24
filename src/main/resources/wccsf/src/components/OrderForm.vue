@@ -89,7 +89,6 @@ export default {
 
       if (this.extId && this.customer && this.address) {
         this.addOrder(order);
-        console.log(order);
         this.dialog = false;
       }
     },
@@ -99,8 +98,7 @@ export default {
   },
   watch: {
 
-    orderVal(newVal){
-      console.log(newVal)
+    orderVal(newVal) {
 
       this.dialog = true;
       this.id = newVal.id;

@@ -10,8 +10,9 @@
                  v-on:remove="removeWork"
                  v-bind:item="item"/>
 
-    <ModalForm v-bind:typeSection="typeSection"
-               v-on:add="addWork"
+    <ModalForm v-on:transmitParentForm="addWork"
+               v-bind:typeSection="typeSection"
+               v-bind:extId="extId"
                v-bind:data="allWorks"/>
   </div>
 </template>
@@ -25,13 +26,13 @@ import {mapActions, mapGetters} from "vuex";
 
 export default {
   name: "Work",
+  props: ['extId'],
   components: { DataContent, HeaderTable, ModalForm },
   computed: mapGetters(['allWorks']),
   data() {
     return {
       ...mapActions(['fetchWorks']),
       typeSection: 3,
-      data: [],
       works: []
 
     }

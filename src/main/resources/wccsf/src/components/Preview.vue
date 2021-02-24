@@ -89,17 +89,17 @@
 
             <div class="tax-container">
               <div class="tax font-weight-bold">
-                {{ env.tax }}:
+                {{ env.tax + ' ' + env.taxPercent }}%:
               </div>
               <div class="tax-price font-weight-bold">
-                tax
+               tax:
               </div>
             </div>
 
 
             <div class="total-container">
               <div class="total font-weight-bold">
-                {{ env.total }}:
+                {{ env.total }}
               </div>
               <div class="total-price font-weight-bold">
                 total

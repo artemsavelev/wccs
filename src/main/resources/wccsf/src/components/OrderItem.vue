@@ -66,11 +66,6 @@
                     v-bind:customer="order.customer"
                     v-bind:address="order.address"/>
 
-<!--          <ModalForm v-bind:selection="selection"-->
-<!--              v-bind:extId="order.extId"-->
-<!--                    v-bind:customer="order.customer"-->
-<!--                    v-bind:address="order.address"/>-->
-
           <v-btn icon v-on:click="del">
             <v-icon>mdi-delete</v-icon>
           </v-btn>
@@ -164,7 +159,7 @@ export default {
 }
 
 .text-red {
-  color: red;
+  color: #F8425F;
 }
 .text-green {
   color: green;

@@ -7,11 +7,14 @@
                  v-on:remove="removeOrder"
                  v-on:edit="editOrder"/>
 
+      <LazyLoader/>
     </div>
   </div>
 </template>
 
 <script>
+import LazyLoader from "@/components/LazyLoader";
+// const LazyLoader = () => import('../components/LazyLoader')
 const OrderItem = () => import('../components/OrderItem')
 import {mapActions, mapGetters} from "vuex";
 
@@ -19,18 +22,17 @@ import {mapActions, mapGetters} from "vuex";
 export default {
   name: "OrdersList",
   computed: mapGetters(['allOrders']),
-  components: { OrderItem },
+  components: { LazyLoader, OrderItem },
   data: () => ({
     ...mapActions(['fetchOrders']),
-    order:[]
   }),
   methods: {
     editOrder(id) {
       console.log(id)
     },
     removeOrder(id) {
-      this.order = this.order.filter(o => o.id !== id)
-      // console.log(id)
+      // this.allOrders = this.allOrders.filter(o => o.id !== id)
+      console.log(id)
     }
   },
   mounted() {

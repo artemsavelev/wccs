@@ -48,34 +48,20 @@
 
 export default {
   name: "DataContent",
-  props: ['item'],
+  props: ['item', 'extId'],
   data() {
     return {
-
       editedIndex : false
     }
   },
 
-  updated() {
-    console.log('test')
-  },
   methods: {
     edit() {
       this.editedIndex = true
       this.$emit('edit', this.item.id)
     },
     remove() {
-
-      // const styleGetItem = JSON.parse(localStorage.getItem(this.item.name))
-
-      // const styleSetItem = {
-      //   key: styleGetItem.key = 0,
-      //   done: styleGetItem.done = 'color: gray;'
-      // }
-      console.log('removeItem', JSON.parse(localStorage.getItem(this.item.name)))
-      localStorage.removeItem(this.item.name);
-
-
+      localStorage.removeItem(this.extId + '_' + this.item.name);
       this.$emit('remove', this.item.id)
     }
   },
@@ -88,7 +74,7 @@ export default {
 <style lang="scss">
 
 .input:focus {
-  border: 1px solid #ff0000;
+  border: 1px solid #F8425F;
 }
 
 </style>

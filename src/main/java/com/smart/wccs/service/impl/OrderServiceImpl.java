@@ -8,6 +8,9 @@ import com.smart.wccs.repo.UserRepo;
 import com.smart.wccs.service.OrderService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -31,15 +34,15 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<Order> getAllOrders() {
+    public Page<Order> getAllOrders(Pageable pageable) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String name = auth.getName();
-        List<Order> orders = orderRepo.findAll()
+        List<Order> orders =  orderRepo.findAll(pageable)
                 .stream()
                 .filter(o -> o.getDepartment() == userRepo.findByUsername(name).getDepartment())
                 .collect(Collectors.toList());
-        log.info("IN getAllOrder - {} orders found", orders.size());
-        return orders;
+        log.info("IN getAllOrder - {} orders found", orders);
+        return new PageImpl<>(orders, pageable, orders.size());
     }
 
     @Override

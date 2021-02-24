@@ -2,19 +2,23 @@ package com.smart.wccs.controller;
 
 
 import com.fasterxml.jackson.annotation.JsonView;
+import com.smart.wccs.dto.OrderPageDto;
 import com.smart.wccs.model.Order;
 import com.smart.wccs.model.Views;
 import com.smart.wccs.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequestMapping(value = "/api/v1/order/")
 public class OrderController {
+    public static final int MESSAGES_PER_PAGE = 20;
 
     private final OrderService orderService;
 
@@ -25,14 +29,17 @@ public class OrderController {
 
     @GetMapping
     @JsonView(Views.UserView.class)
-    public ResponseEntity<List<Order>> listOrders() {
-        List<Order> orders = orderService.getAllOrders();
+    public ResponseEntity<OrderPageDto> listOrders(@PageableDefault(size = MESSAGES_PER_PAGE, sort = { "id" }, direction = Sort.Direction.DESC) Pageable pageable) {
+
+        Page<Order> orders = orderService.getAllOrders(pageable);
+
+
 
         if (orders.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        return new ResponseEntity<>(orders, HttpStatus.OK);
+        return new ResponseEntity<>(new OrderPageDto(orders.getContent(), pageable.getPageNumber(), orders.getTotalPages()), HttpStatus.OK);
     }
 
     @GetMapping(value = "{id}")

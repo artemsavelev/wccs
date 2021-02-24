@@ -10,7 +10,7 @@
       <div class="font-s mt-0">
         {{ this.description.comment }}
       </div>
-      <ModalForm v-on:add="addWorkDescription"
+      <ModalForm v-on:addParentFormDescription="addWorkDescription"
                 v-bind:ex="ex"
                 v-bind:typeSection="typeSection"/>
 

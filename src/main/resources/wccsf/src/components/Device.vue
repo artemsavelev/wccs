@@ -8,11 +8,12 @@
                  :key="item.id"
                  v-on:edit="editDevice"
                  v-on:remove="removeDevice"
+                 v-bind:extId="extId"
                  v-bind:item="item"/>
 
-    <ModalForm v-bind:typeSection="typeSection"
-               v-bind:addedItem="addedItem"
-               v-on:add="addDevice"
+    <ModalForm v-on:transmitParentForm="addDevice"
+               v-bind:typeSection="typeSection"
+               v-bind:extId="extId"
                v-bind:data="allDevices"/>
   </div>
 </template>
@@ -30,26 +31,29 @@ import {mapActions, mapGetters} from "vuex";
 export default {
   name: "ActiveDevice",
   components: { DataContent, HeaderTable, ModalForm },
+  props: ['extId'],
   computed: mapGetters(['allDevices']),
-
   data() {
     return {
       ...mapActions(['fetchDevices']),
       typeSection: 1,
-      addedItem: '',
-      data: [],
-      devices: []
+      devices: [],
+      itemName: ''
 
     }
+  },
+  updated() {
+
+    console.log('device', JSON.parse(localStorage.getItem(this.extId + '_' + this.itemName)))
   },
   mounted() {
     // получаем данные с сервера (список оборудования)
     this.fetchDevices();
-
   },
   methods: {
     // добавление записи в конец массива
     addDevice(item) {
+      this.itemName = item.name
       this.devices.push(item)
       this.$emit('transmit', this.devices)
     },

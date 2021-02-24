@@ -4,9 +4,9 @@
     <template v-slot:activator="{ on }" class="mt-1">
       <v-btn v-on="on" small class="mb-10 mt-1" color="primary" tile>{{ env.keyAdd }}</v-btn>
     </template>
-    <v-card>
+    <v-card style="height: 90vh">
 
-      <v-card-title class="grey lighten-2">
+      <v-card-title class="form">
         <span class="font-xl">{{formTitle}}</span>
         <v-spacer></v-spacer>
         <v-btn small text tile v-on:click="close">
@@ -49,8 +49,8 @@
                 <!--   load module add device, material, work    -->
                 <SectionItem v-for="item of filteredData"
                              :key="item.id"
-                             v-on:add="addItem"
-
+                             v-on:transmitItemInModalForm="addItem"
+                             v-bind:extId="extId"
                              v-bind:item="item"/>
                 <!--  // load module add device, material, work  -->
               </v-col>
@@ -68,14 +68,14 @@
 
 <script>
 import env from "../../env.config.json";
-import SectionItem from "@/components/SectionItem";
-import HeaderTable from "@/components/HeaderTable";
-import WorkDescription from "@/components/WorkDescription";
+const SectionItem = () => import("@/components/SectionItem");
+const HeaderTable = () => import("@/components/HeaderTable");
+const WorkDescription = () => import("@/components/WorkDescription");
 
 export default {
   name: "ModalWin",
   components: { WorkDescription, HeaderTable, SectionItem },
-  props: ['typeSection', 'data', 'ex'],
+  props: ['typeSection', 'data', 'ex', 'extId'],
   computed: {
     // поиск по данным
     filteredData() {
@@ -110,23 +110,22 @@ export default {
       dialog: false,
       search: '',
       type: 123,
-      items: []
+      // itemName: '',
+      // keyLocalStorage: this.extId + '_' + this.itemName
     }
   },
 
-  updated() {
 
-    console.log('updated ModalForm', new Date().toTimeString().substr(0, 8))
-
-  },
 
   methods: {
     addItem(item) {
-      this.$emit('add', item)
+      console.log(item)
+      // this.itemName = item.name
+      this.$emit('transmitParentForm', item)
     },
 
     addWorkDescription(item) {
-      this.$emit('add', item)
+      this.$emit('addParentFormDescription', item)
       this.dialog = false
     },
 

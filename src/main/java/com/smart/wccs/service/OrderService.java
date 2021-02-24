@@ -1,12 +1,12 @@
 package com.smart.wccs.service;
 
 import com.smart.wccs.model.Order;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface OrderService {
 
-    List<Order> getAllOrders();
+    Page<Order> getAllOrders(Pageable pageable);
 
     Order getById(Long id);
 

@@ -10,8 +10,9 @@
                  v-on:remove="removeMaterial"
                  v-bind:item="item"/>
 
-    <ModalForm v-bind:typeSection="typeSection"
-               v-on:add="addMaterial"
+    <ModalForm v-on:transmitParentForm="addMaterial"
+               v-bind:typeSection="typeSection"
+               v-bind:extId="extId"
                v-bind:data="allMaterials"/>
   </div>
 </template>
@@ -26,13 +27,13 @@ import {mapActions, mapGetters} from "vuex";
 
 export default {
   name: "Materials",
+  props: ['extId'],
   components: {DataContent, HeaderTable, ModalForm },
   computed: mapGetters(['allMaterials']),
   data() {
     return {
       ...mapActions(['fetchMaterials']),
       typeSection: 2,
-      data: [],
       materials: []
 
     }

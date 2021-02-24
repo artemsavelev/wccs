@@ -26,12 +26,6 @@
       </div>
       <div class="section-cols col-action-section">
         <v-card-actions class="ma-0 pa-0">
-
-<!--          <v-checkbox v-on:change="add()"-->
-<!--                      class="pt-0 pb-0 mt-0 mb-0 ml-0"-->
-<!--                      color="error"-->
-<!--                      label=""-->
-<!--                      hide-details></v-checkbox>-->
           <v-btn icon v-on:click="add" :disabled="this.styleAddedItem.key === 1">
             <v-icon>mdi-plus</v-icon>
           </v-btn>
@@ -48,10 +42,8 @@ import env from "../../env.config.json"
 
 export default {
   name: "SectionItem",
-  props: ['item', 'typeSection'],
-  computed: {
-
-  },
+  props: ['item', 'typeSection', 'extId'],
+  computed: {},
   data() {
     return {
       env,
@@ -59,42 +51,38 @@ export default {
       quantity: '',
       done: '',
       key: 0,
-
-
     }
   },
-
-  updated() {
-    // console.log('updated SectionItem', localStorage.getItem(this.item.name))
+  watch: {
+      // id: console.log("watch SectionItem")
   },
 
+
   mounted() {
-    if (localStorage.getItem(this.item.name) !== null) {
-      this.styleAddedItem = JSON.parse(localStorage.getItem(this.item.name))
-      console.log('mounted', this.styleAddedItem.key)
+    if (localStorage.getItem(this.extId + '_' + this.item.name) !== null) {
+      this.styleAddedItem = JSON.parse(localStorage.getItem(this.extId + '_' + this.item.name))
+      console.log('mounted SectionItem', this.styleAddedItem.key)
     }
   },
 
   methods: {
     add() {
 
-      let obj = {
+      let item = {
         id: this.item.id,
         name: this.item.name,
         dimension: this.item.dimension,
         price: this.item.price,
         quantity: this.quantity === '' ? 1 : this.quantity
       }
-
       this.styleAddedItem = {
         key: this.styleAddedItem.key = 1,
         done: this.styleAddedItem.done = 'color: #F8425F;'
       }
 
-      localStorage.setItem(this.item.extId + ' ' +this.item.name, JSON.stringify(this.styleAddedItem));
 
-
-      this.$emit('add', obj)
+      localStorage.setItem(this.extId + '_' + this.item.name, JSON.stringify(this.styleAddedItem));
+      this.$emit('transmitItemInModalForm', item)
     }
   },
   filters: {
