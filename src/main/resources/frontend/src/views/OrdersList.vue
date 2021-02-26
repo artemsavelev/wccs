@@ -27,13 +27,13 @@ export default {
     ...mapActions(['fetchOrders']),
   }),
   methods: {
-    // editOrder(id) {
-    //   // console.log(id)
-    // },
-    // removeOrder(id) {
-    //   // this.allOrders = this.allOrders.filter(o => o.id !== id)
-    //   // console.log(id)
-    // }
+    editOrder(id) {
+      console.log(id)
+    },
+    removeOrder(id) {
+      // this.allOrders = this.allOrders.filter(o => o.id !== id)
+      console.log(id)
+    }
   },
   mounted() {
     this.fetchOrders();

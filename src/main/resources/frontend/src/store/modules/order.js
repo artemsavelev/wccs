@@ -57,13 +57,13 @@ export default {
                 // console.log('totalPages', data.totalPages)
                 // console.log('state currentPage', state.currentPage)
                 // console.log('state totalPages', state.totalPages)
-                // console.log('min', Math.min(data.currentPage, data.totalPages))
+                // console.log('min', Math.min(state.currentPage, state.totalPages))
 
                 commit('fetchOrderPageMutation', data.orders)
                 commit('updateTotalPagesMutation', data.totalPages)
                 commit('updateCurrentPageMutation', Math.min(data.currentPage, data.totalPages))
             } catch (e) {
-                // console.warn(e.message)
+                console.warn(e.message)
             }
 
 
