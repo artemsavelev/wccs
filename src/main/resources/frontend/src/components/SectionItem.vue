@@ -7,8 +7,14 @@
       </div>
 
       <div class="section-cols col-name" v-bind:style="this.styleAddedItem.done">
-        {{ item.name }}
+        <v-tooltip bottom class="col-name">
+          <template v-slot:activator="{ on }">
+            <span v-on="on">{{ item.name }}</span>
+          </template>
+          <span>{{ item.name }}</span>
+        </v-tooltip>
       </div>
+
       <div class="section-cols col-dimension" v-bind:style="this.styleAddedItem.done">
         {{ item.dimension }}
       </div>
@@ -22,8 +28,14 @@
       </div>
 
       <div class="section-cols col-comment" v-bind:style="this.styleAddedItem.done">
-        {{ item.note }}
+        <v-tooltip bottom max-width="700">
+          <template v-slot:activator="{ on }">
+            <span v-on="on">{{ item.note }}</span>
+          </template>
+          <span>{{ item.note }}</span>
+        </v-tooltip>
       </div>
+
       <div class="section-cols col-action-section">
         <v-card-actions class="ma-0 pa-0">
           <v-btn icon v-on:click="add" :disabled="this.styleAddedItem.key === 1">

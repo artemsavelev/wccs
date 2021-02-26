@@ -10,13 +10,13 @@
         <span class="font-xl">{{formTitle}}</span>
         <v-spacer></v-spacer>
         <v-btn small text tile v-on:click="close">
-          <v-icon>{{ mdiClose }}</v-icon>
+          <v-icon>mdi-close</v-icon>
         </v-btn>
       </v-card-title>
       <v-card-text>
 
           <div style="height: 120vh">
-            <div class="title-estimate">{{ env.estimate }}</div>
+            <div class="title-estimate mt-5">{{ env.estimate + ' ' + preview.key }}</div>
             <div class="id">{{ env.request }}: {{ preview.extId }}</div>
             <div class="address">{{ env.address }}: {{ preview.address }}</div>
             <div class="customer">{{ env.customer }}: {{ preview.customer }}</div>
@@ -40,7 +40,7 @@
                 {{ env.subTotal[0] }}:
               </div>
               <div class="subtotal-price font-weight-bold">
-                subTotal
+                {{ preview.subSumDevice | format }}
               </div>
             </div>
 
@@ -58,7 +58,7 @@
                 {{ env.subTotal[1] }}:
               </div>
               <div class="subtotal-price font-weight-bold">
-                {{  }}
+                {{ preview.subSumMaterial | format }}
               </div>
             </div>
 
@@ -73,13 +73,12 @@
                      v-bind:item="item"/>
 
 
-
             <div class="subtotal-container">
               <div class="subtotal font-weight-bold">
                 {{ env.subTotal[2] }}:
               </div>
               <div class="subtotal-price font-weight-bold">
-                subTotal
+                {{ preview.subSumWork | format }}
               </div>
             </div>
 
@@ -92,17 +91,17 @@
                 {{ env.tax + ' ' + env.taxPercent }}%:
               </div>
               <div class="tax-price font-weight-bold">
-               tax:
+                {{ env.taxPercent * preview.totalSum / 100 | format }}
               </div>
             </div>
 
 
             <div class="total-container">
               <div class="total font-weight-bold">
-                {{ env.total }}
+                {{ env.total }}:
               </div>
               <div class="total-price font-weight-bold">
-                total
+                {{ preview.totalSum | format }}
               </div>
             </div>
 
@@ -114,7 +113,7 @@
 </template>
 
 <script>
-import { mdiClose } from '@mdi/js';
+
 import env from "../../env.config.json"
 const Section = () => import('@/components/Section')
 const HeaderTable = () => import('@/components/HeaderTable')
@@ -127,7 +126,6 @@ export default {
   data() {
     return {
       env,
-      mdiClose,
       formTitle: env.title[2],
       dialog: false,
       typeSection: 4,
@@ -138,9 +136,6 @@ export default {
       this.dialog = false
     },
 
-    click: function () {
-      this.$refs.subTotal.setValue(2.0);
-    },
 
     // сортировка по id
     sortById() {
@@ -150,7 +145,10 @@ export default {
     sortByName() {
       this.preview.materials.sort((a, b) => a.name.localeCompare(b.name))
     }
-  }
+  },
+  filters: {
+    format: val => `${val}`.replace(/(\d)(?=(\d{3})+([^\d]|$))/g, '$1 '),
+  },
 }
 </script>
 

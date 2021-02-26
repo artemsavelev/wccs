@@ -1,5 +1,5 @@
 module.exports = {
-  publicPath: process.env.NODE_ENV === 'production' ? '/frontend/dist/' : '/',
+  publicPath: process.env.NODE_ENV === 'production' ? '/wccs/' : '/',
   "transpileDependencies": [
     "vuetify"
   ],

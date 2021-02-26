@@ -13,6 +13,7 @@ export default new Vuetify({
                 accent: '#3F51B5',
                 table: '#2D4059',
                 form: '#0085ff',
+                black: '#000000'
             },
         },
     },

@@ -14,10 +14,11 @@
         {{ item.quantity }}
       </div>
       <div class="data-cols col-price">
-        {{ item.price }}
+        {{ item.price | format }}
       </div>
       <div class="data-cols col-sum">
-        {{ item.price * item.quantity }}
+        {{ item.price * item.quantity | format }}
+
 
       </div>
       <div class="data-cols col-action-section">
@@ -39,6 +40,7 @@ export default {
     return {
       env,
       value: 100000000,
+      sum: 0
 
     }
   },

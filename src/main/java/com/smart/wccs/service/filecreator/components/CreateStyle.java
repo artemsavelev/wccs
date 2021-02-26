@@ -27,25 +27,12 @@ public class CreateStyle {
         return style;
     }
 
-    public CellStyle getStyle(boolean fontBold, HorizontalAlignment hAlign, VerticalAlignment vAlign) {
+    public CellStyle getStyle(Font font, HorizontalAlignment hAlign, VerticalAlignment vAlign) {
         CellStyle style = getStyle(hAlign, vAlign);
-        Font font = workbook.createFont();
-        font.setFontHeightInPoints((short) 8);
-        font.setFontName("Montserrat");
-        font.setBold(fontBold);
         style.setFont(font);
         return style;
     }
 
-    public CellStyle getStyle(IndexedColors color,  HorizontalAlignment hAlign, VerticalAlignment vAlign) {
-        CellStyle style = getStyle(hAlign, vAlign);
-        Font font = workbook.createFont();
-        font.setFontHeightInPoints((short) 8);
-        font.setFontName("Montserrat");
-        font.setColor(color.getIndex());
-        style.setFont(font);
-        return style;
-    }
 
     public CellStyle getStyle(IndexedColors color, FillPatternType fill, HorizontalAlignment hAlign, VerticalAlignment vAlign) {
         CellStyle style = getStyle(hAlign, vAlign);

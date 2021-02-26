@@ -88,8 +88,19 @@ export default {
   computed: {
     ...mapGetters(['profile']),
     preview() {
+      const subSumDevice = this.devices.reduce((total, device) => total + device.quantity * device.price, 0)
+      const subSumMaterial = this.materials.reduce((total, material) => total + material.quantity * material.price, 0)
+      const subSumWork = this.works.reduce((total, work) => total + work.quantity * work.price, 0)
+      // const p = 'ПРЕДВАРИТЕЛЬНАЯ'
+      // const f = 'ФАКТИЧЕСКАЯ'
+      // const key =  ex ? p : f
+      const key =  0
+
+      const totalSum = subSumDevice + subSumMaterial + subSumWork
+
+      // console.log(totalSum)
       return {
-        // keyEstimate: this.ex ? this.key = 'ФАКТИЧЕСКАЯ' : this.key = 'ПРЕДВАРИТЕЛЬНАЯ',
+        key: key,
         extId: this.extId,
         address: this.address,
         customer: this.customer,
@@ -98,7 +109,11 @@ export default {
         comment: this.workDescription.comment,
         devices: this.devices,
         materials: this.materials,
-        works: this.works
+        works: this.works,
+        subSumDevice: subSumDevice,
+        subSumMaterial: subSumMaterial,
+        subSumWork: subSumWork,
+        totalSum: totalSum
       }
     },
 

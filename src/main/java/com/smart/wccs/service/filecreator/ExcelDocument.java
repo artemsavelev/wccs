@@ -41,9 +41,7 @@ public class ExcelDocument implements FileCreator {
 
         Workbook workbook = new XSSFWorkbook();
         Sheet sheet = workbook.createSheet("Смета " + keyEstimate);
-        Font font = workbook.createFont();
-        font.setFontHeightInPoints((short) 8);
-        font.setFontName("Montserrat");
+        Font font = new CreateFont(workbook).getFont(8, false);
         List<Components> listDevice = new ArrayList<>(estimate.getDevices());
         List<Components> listMaterial = new ArrayList<>(estimate.getMaterials());
         List<Components> listWork = new ArrayList<>(estimate.getWorks());
@@ -55,11 +53,20 @@ public class ExcelDocument implements FileCreator {
         CellStyle styleAlignCenter = createStyle.getStyle(HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
         CellStyle styleAlignCenter2 = createStyle.getStyle(HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
         CellStyle styleAlignCenterTop = createStyle.getStyle(HorizontalAlignment.LEFT, VerticalAlignment.TOP);
-        CellStyle styleAlignCenterBold = createStyle.getStyle(true, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
         CellStyle styleAlignLeft = createStyle.getStyle(HorizontalAlignment.LEFT, VerticalAlignment.CENTER);
-        CellStyle styleAlignLeftColor = createStyle.getStyle(IndexedColors.RED, HorizontalAlignment.LEFT, VerticalAlignment.CENTER);
-        CellStyle styleAlignRightBold = createStyle.getStyle(true, HorizontalAlignment.RIGHT, VerticalAlignment.CENTER);
-        CellStyle styleAlignLeftBottomBold = createStyle.getStyle(true,  HorizontalAlignment.LEFT, VerticalAlignment.BOTTOM);
+
+        CellStyle styleAlignCenter3 = createStyle.getStyle(new CreateFont(workbook)
+                .getFont(12, false), HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+
+        CellStyle styleAlignLeftColor = createStyle.getStyle(new CreateFont(workbook)
+                .getFont(IndexedColors.RED, 8, false), HorizontalAlignment.LEFT, VerticalAlignment.CENTER);
+
+        CellStyle styleAlignCenterBold = createStyle.getStyle(new CreateFont(workbook)
+                .getFont(8, true), HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+        CellStyle styleAlignRightBold = createStyle.getStyle(new CreateFont(workbook)
+                .getFont(8, true), HorizontalAlignment.RIGHT, VerticalAlignment.CENTER);
+        CellStyle styleAlignLeftBottomBold = createStyle.getStyle(new CreateFont(workbook)
+                .getFont(8, true), HorizontalAlignment.LEFT, VerticalAlignment.BOTTOM);
 
         new SheetSettings(sheet).getSettings();
 
@@ -67,7 +74,8 @@ public class ExcelDocument implements FileCreator {
         CreateHeaderTable headerTable = new CreateHeaderTable(sheet, CellType.STRING);
         Data data = new Data(workbook, sheet, font, styleAlignCenter);
 
-        createCell.getCell(styleAlignCenter2,0, 0, 5, 30, "Смета " + keyEstimate);
+        createCell.getCell(styleAlignCenter3,0, 0, 5, 30,
+                "ФАКТИЧЕСКАЯ".equals(keyEstimate) ? "Смета" : "Смета " + keyEstimate);
         createCell.getCell(styleAlignCenter2,1, 0, 5, 15, "№: " + estimate.getExtId());
         createCell.getCell(styleAlignCenter2,2, 0, 5, 15, "адрес: " + estimate.getAddress());
         createCell.getCell(styleAlignCenter2,3, 0, 5, 15, "заказчик: " + estimate.getCustomer());
