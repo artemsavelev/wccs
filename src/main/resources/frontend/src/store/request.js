@@ -24,7 +24,7 @@ export default {
             })
             return await response.json()
         } catch (e) {
-            // console.warn('Error request: ', e.message)
+            console.warn('Error request: ', e.message)
         }
     }
 

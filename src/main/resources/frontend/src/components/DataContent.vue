@@ -32,10 +32,10 @@
       <div class="section-cols col-action-section">
         <v-card-actions class="pa-0 ma-0">
           <v-btn icon v-on:click="edit">
-            <v-icon>mdi-pencil</v-icon>
+            <v-icon color="iconLight">mdi-pencil</v-icon>
           </v-btn>
           <v-btn icon v-on:click="remove">
-            <v-icon>mdi-delete</v-icon>
+            <v-icon color="iconLight">mdi-delete</v-icon>
           </v-btn>
         </v-card-actions>
       </div>

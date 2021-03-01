@@ -2,7 +2,7 @@
   <v-dialog v-model="dialog" width="80%" scrollable persistent>
 
     <template v-slot:activator="{ on }" class="mt-1">
-      <v-btn v-on="on" small class="mb-10 mt-1" color="primary" tile>{{ env.keyAdd }}</v-btn>
+      <v-btn v-on="on" v-on:click="open" small class="mb-10 mt-1" color="primary" tile>{{ env.keyAdd }}</v-btn>
     </template>
     <v-card style="height: 90vh">
 
@@ -56,7 +56,7 @@
               </v-col>
             </v-row>
           </div>
-          <div v-else class="pl-4">
+          <div v-else class="no-content">
             {{ env.noRecords }}
           </div>
         </v-container>
@@ -110,8 +110,6 @@ export default {
       dialog: false,
       search: '',
       type: 123,
-      // itemName: '',
-      // keyLocalStorage: this.extId + '_' + this.itemName
     }
   },
 
@@ -120,13 +118,17 @@ export default {
   methods: {
     addItem(item) {
       console.log(item)
-      // this.itemName = item.name
       this.$emit('transmitParentForm', item)
     },
 
     addWorkDescription(item) {
       this.$emit('addParentFormDescription', item)
       this.dialog = false
+    },
+
+    open() {
+
+      console.log('open modal form')
     },
 
     close() {

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div>
+    <div v-if="allOrders.length">
       <OrderItem v-for="order in allOrders"
                  :key="order.id"
                  v-bind:order="order"
@@ -9,13 +9,14 @@
 
       <LazyLoader/>
     </div>
+    <div v-else class="no-content"> {{ env.noRecords }}</div>
   </div>
 </template>
 
 <script>
+import env from '../../env.config.json'
 import LazyLoader from "@/components/LazyLoader";
-// const LazyLoader = () => import('../components/LazyLoader')
-const OrderItem = () => import('../components/OrderItem')
+import OrderItem from "@/components/OrderItem";
 import {mapActions, mapGetters} from "vuex";
 
 
@@ -25,6 +26,7 @@ export default {
   components: { LazyLoader, OrderItem },
   data: () => ({
     ...mapActions(['fetchOrders']),
+    env
   }),
   methods: {
     editOrder(id) {
@@ -36,7 +38,8 @@ export default {
     }
   },
   mounted() {
-    this.fetchOrders();
+    this.fetchOrders()
+
   },
 
 

@@ -6,7 +6,6 @@
 
     <DataContent v-for="item in works"
                  :key="item.id"
-                 v-on:edit="editWork"
                  v-on:remove="removeWork"
                  v-bind:item="item"/>
 
@@ -47,10 +46,7 @@ export default {
       this.works.push(item)
       this.$emit('transmit', this.works)
     },
-    // редактироване записи по id
-    editWork() {
 
-    },
     // удаление записи из массива по id
     removeWork(id) {
       this.works = this.works.filter(o => o.id !== id)
@@ -61,6 +57,7 @@ export default {
     sortById() {
       (this.works || []).sort((a, b) => a.id - b.id)
     },
+
     // сортировка по name
     sortByName() {
       (this.works || []).sort((a, b) => a.name.localeCompare(b.name))

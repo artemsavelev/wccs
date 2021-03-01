@@ -6,7 +6,7 @@
     </template>
     <v-card>
 
-      <v-card-title class="grey lighten-2">
+      <v-card-title class="form">
         <span class="font-xl">{{formTitle}}</span>
         <v-spacer></v-spacer>
         <v-btn small text tile v-on:click="close">

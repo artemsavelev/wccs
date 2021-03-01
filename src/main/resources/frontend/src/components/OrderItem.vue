@@ -59,7 +59,7 @@
 
         <div class="order-cols col-action-order">
           <v-btn icon v-on:click="edit">
-            <v-icon>mdi-pencil</v-icon>
+            <v-icon color="iconLight">mdi-pencil</v-icon>
           </v-btn>
 
           <Estimate v-bind:extId="order.extId"
@@ -67,7 +67,7 @@
                     v-bind:address="order.address"/>
 
           <v-btn icon v-on:click="del">
-            <v-icon>mdi-delete</v-icon>
+            <v-icon color="iconLight">mdi-delete</v-icon>
           </v-btn>
         </div>
       </div>
@@ -77,7 +77,7 @@
 
 <script>
 import { mapActions, mapGetters } from "vuex";
-const Estimate = () => import('@/components/Estimate')
+import Estimate from '@/components/Estimate'
 
 export default {
   name: 'OrderItem',
@@ -108,9 +108,10 @@ export default {
 </script>
 
 <style lang="scss">
-
+@import "../assets/styles/styles";
 .order-row {
-  border-bottom: 1px solid #ccc;
+  color: $text-color;
+  border-bottom: 1px solid $border-bottom;
   font-size: small;
   margin-left: 10px;
   margin-right: 10px;
@@ -121,6 +122,9 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+.order-row-container:hover {
+  background: $hover-item;
 }
 
 .order-cols {

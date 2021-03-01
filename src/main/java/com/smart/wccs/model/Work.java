@@ -29,8 +29,6 @@ public class Work extends BaseEntity implements Components {
     @JsonView({Views.UserView.class, Views.AdminView.class})
     private String note;
 
-    @ManyToMany
-    private List<Estimate> estimates;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "works_departments",

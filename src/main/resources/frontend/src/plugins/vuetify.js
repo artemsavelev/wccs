@@ -6,14 +6,27 @@ Vue.use(Vuetify);
 export default new Vuetify({
 
     theme: {
+        options: {
+            customProperties: true,
+        },
         themes: {
             light: {
                 primary: '#7D30FA',
-                secondary: '#FFCDD2',
-                accent: '#3F51B5',
                 table: '#2D4059',
                 form: '#0085ff',
-                black: '#000000'
+                line: '#ccc',
+                hoverItem: '#f6f6f6',
+                textColor: '#424242'
+            },
+            dark: {
+                primary: '#512DA8',
+                form: '#000000',
+                table: '#424242',
+                line: '#212121',
+                iconLight: '#757575',
+                hoverItem: '#212121',
+                inputTextColor: '#fff',
+                textColor: '#BDBDBD'
             },
         },
     },

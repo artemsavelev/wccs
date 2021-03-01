@@ -2,20 +2,20 @@
   <v-dialog v-if="profile" v-model="dialog" scrollable persistent>
     <template v-slot:activator="{ on }" class="">
       <v-btn icon v-on="on" class="" @click="get">
-        <v-icon>mdi-calculator</v-icon>
+        <v-icon color="iconLight">mdi-calculator</v-icon>
       </v-btn>
     </template>
 
     <v-card>
       <v-card-title class="form">
-        <div class="font-xl">{{formTitle}}</div>
+        <div class="font-xl color">{{formTitle}}</div>
         <v-checkbox v-model="ex"
-                    class="pt-0 pb-0 mt-0 mb-0 ml-5"
+                    class="pt-0 pb-0 mt-0 mb-0 ml-5 "
                     color="success"
                     label="смета предварительная"
                     hide-details></v-checkbox>
         <v-spacer></v-spacer>
-        <v-btn small text tile v-on:click="close" aria-label="">
+        <v-btn small text tile v-on:click="close">
           <v-icon>mdi-window-close</v-icon>
         </v-btn>
       </v-card-title>
@@ -56,6 +56,7 @@
                            color="primary"
                            :indeterminate="loading">
         </v-progress-linear>
+
         <div class="ml-4 mb-1">
           <v-card-actions class="">
             <v-btn medium v-on:click="create" color="primary" tile>{{ env.keyMakeEstimate }}</v-btn>
@@ -73,11 +74,12 @@
 import {mapActions, mapGetters} from "vuex"
 import api from "@/api/backendApi"
 import env from "../../env.config.json"
-const TypeOfWork = () => import('./TypeOfWork')
-const Device = () => import('./Device')
-const Materials = () => import('./Materials')
-const Work = () => import('./Work')
-const Preview = () => import('@/components/Preview')
+import TypeOfWork from './TypeOfWork'
+import Device from './Device'
+import Materials from './Materials'
+import Work from './Work'
+import Preview from './Preview'
+
 
 
 // const pause = ms => new Promise(resolve => setTimeout(resolve, ms))
@@ -91,14 +93,9 @@ export default {
       const subSumDevice = this.devices.reduce((total, device) => total + device.quantity * device.price, 0)
       const subSumMaterial = this.materials.reduce((total, material) => total + material.quantity * material.price, 0)
       const subSumWork = this.works.reduce((total, work) => total + work.quantity * work.price, 0)
-      // const p = 'ПРЕДВАРИТЕЛЬНАЯ'
-      // const f = 'ФАКТИЧЕСКАЯ'
-      // const key =  ex ? p : f
-      const key =  0
-
       const totalSum = subSumDevice + subSumMaterial + subSumWork
 
-      // console.log(totalSum)
+      const key = this.ex ? 'ПРЕДВАРИТЕЛЬНАЯ' : 'ФАКТИЧЕСКАЯ'
       return {
         key: key,
         extId: this.extId,

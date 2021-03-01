@@ -6,7 +6,6 @@
 
     <DataContent v-for="item in devices"
                  :key="item.id"
-                 v-on:edit="editDevice"
                  v-on:remove="removeDevice"
                  v-bind:extId="extId"
                  v-bind:item="item"/>
@@ -20,7 +19,6 @@
 
 <script>
 
-
 const ModalForm = () => import('./ModalForm')
 const HeaderTable = () => import('@/components/HeaderTable')
 const DataContent = () => import('@/components/DataContent')
@@ -32,14 +30,15 @@ export default {
   name: "ActiveDevice",
   components: { DataContent, HeaderTable, ModalForm },
   props: ['extId'],
-  computed: mapGetters(['allDevices']),
+  computed: {
+    ...mapGetters(['allDevices']),
+  },
   data() {
     return {
       ...mapActions(['fetchDevices']),
       typeSection: 1,
       devices: [],
       itemName: ''
-
     }
   },
   updated() {
@@ -57,17 +56,12 @@ export default {
       this.devices.push(item)
       this.$emit('transmit', this.devices)
     },
-    // редактироване записи по id
-    editDevice() {
 
-    },
     // удаление записи из массива по id
     removeDevice(id) {
       this.devices = this.devices.filter(o => o.id !== id)
       this.$emit('transmit', this.devices)
     },
-
-
 
     // сортировка по id
     sortById() {

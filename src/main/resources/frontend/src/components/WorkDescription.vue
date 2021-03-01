@@ -7,7 +7,7 @@
                   rows="4"
                   name="input-1"
                   v-model="workDescription"
-                  label=env.workDescription></v-textarea>
+                  label="Описание работ"></v-textarea>
 
       <v-textarea outlined
                   :auto-grow="true"

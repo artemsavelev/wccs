@@ -19,6 +19,12 @@ export default {
   name: 'App',
   components: { NavBar },
   computed: mapGetters(['profile']),
+  mounted() {
+    const theme = localStorage.getItem('darkTheme');
+    if (theme) {
+      this.$vuetify.theme.dark = theme === "true";
+    }
+  },
 
 };
 </script>

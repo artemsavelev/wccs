@@ -36,10 +36,14 @@ export default {
     },
     actions: {
         async fetchOrders({commit}) {
-            const data = await req.request(api.API_ORDER_URL);
-            commit('updateOrdersMutation', data.orders);
-            commit('updateTotalPagesMutation', data.totalPages)
-            commit('updateCurrentPageMutation', Math.min(data.currentPage, data.totalPages))
+            try {
+                const data = await req.request(api.API_ORDER_URL);
+                commit('updateOrdersMutation', data.orders);
+                commit('updateTotalPagesMutation', data.totalPages)
+                commit('updateCurrentPageMutation', Math.min(data.currentPage, data.totalPages))
+            } catch (e) {
+                console.warn(e.message)
+            }
         },
 
         async addOrder({commit}, order) {
@@ -52,13 +56,6 @@ export default {
         async loadPage({commit, state}) {
             try {
                 const data = await req.request(api.API_ORDER_PAGE_URL + (state.currentPage + 1));
-
-                // console.log('currentPage', data.currentPage)
-                // console.log('totalPages', data.totalPages)
-                // console.log('state currentPage', state.currentPage)
-                // console.log('state totalPages', state.totalPages)
-                // console.log('min', Math.min(state.currentPage, state.totalPages))
-
                 commit('fetchOrderPageMutation', data.orders)
                 commit('updateTotalPagesMutation', data.totalPages)
                 commit('updateCurrentPageMutation', Math.min(data.currentPage, data.totalPages))

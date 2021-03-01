@@ -39,7 +39,7 @@
       <div class="section-cols col-action-section">
         <v-card-actions class="ma-0 pa-0">
           <v-btn icon v-on:click="add" :disabled="this.styleAddedItem.key === 1">
-            <v-icon>mdi-plus</v-icon>
+            <v-icon color="iconLight">mdi-plus</v-icon>
           </v-btn>
         </v-card-actions>
       </div>
@@ -55,7 +55,13 @@ import env from "../../env.config.json"
 export default {
   name: "SectionItem",
   props: ['item', 'typeSection', 'extId'],
-  computed: {},
+  computed: {
+
+    // removeStyle() {
+    //   //v-bind:removeStile="removeStyle"
+    //   // return console.log('test')
+    // }
+  },
   data() {
     return {
       env,
@@ -65,15 +71,12 @@ export default {
       key: 0,
     }
   },
-  watch: {
-      // id: console.log("watch SectionItem")
-  },
 
 
   mounted() {
     if (localStorage.getItem(this.extId + '_' + this.item.name) !== null) {
       this.styleAddedItem = JSON.parse(localStorage.getItem(this.extId + '_' + this.item.name))
-      console.log('mounted SectionItem', this.styleAddedItem.key)
+      // console.log('mounted SectionItem', this.styleAddedItem)
     }
   },
 
@@ -87,11 +90,11 @@ export default {
         price: this.item.price,
         quantity: this.quantity === '' ? 1 : this.quantity
       }
+
       this.styleAddedItem = {
         key: this.styleAddedItem.key = 1,
         done: this.styleAddedItem.done = 'color: #F8425F;'
       }
-
 
       localStorage.setItem(this.extId + '_' + this.item.name, JSON.stringify(this.styleAddedItem));
       this.$emit('transmitItemInModalForm', item)
