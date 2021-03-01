@@ -1,5 +1,6 @@
 <template>
   <div>
+
     <div v-if="allOrders.length">
       <OrderItem v-for="order in allOrders"
                  :key="order.id"
@@ -7,9 +8,10 @@
                  v-on:remove="removeOrder"
                  v-on:edit="editOrder"/>
 
+
       <LazyLoader/>
     </div>
-    <div v-else class="no-content"> {{ env.noRecords }}</div>
+    <div v-else-if="profile" class="no-content"> {{ env.noRecords }}</div>
   </div>
 </template>
 
@@ -22,11 +24,12 @@ import {mapActions, mapGetters} from "vuex";
 
 export default {
   name: "OrdersList",
-  computed: mapGetters(['allOrders']),
+  computed: mapGetters(['allOrders', 'profile']),
   components: { LazyLoader, OrderItem },
   data: () => ({
     ...mapActions(['fetchOrders']),
-    env
+    env,
+    loading: false
   }),
   methods: {
     editOrder(id) {
@@ -38,7 +41,9 @@ export default {
     }
   },
   mounted() {
-    this.fetchOrders()
+    this.fetchOrders().then(() => {
+      this.loading = true
+    })
 
   },
 

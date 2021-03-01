@@ -1,5 +1,6 @@
 package com.smart.wccs.model;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -13,7 +14,5 @@ import java.util.List;
 public class Role extends BaseEntity {
 
     private String roles;
-
-
 
 }

@@ -20,7 +20,7 @@
         <v-row>
           <v-col cols="12" sm="6" md="4">
             <v-text-field
-                class="pt-10"
+                class="pt-5"
                 dense
                 label="Номер заявки"
                 v-model="extId"/>
@@ -29,7 +29,7 @@
           <v-col cols="12" sm="6" md="4">
             <v-text-field
                 dense
-                class="pt-10"
+                class="pt-5"
                 label="Заказчик"
                 v-model="customer"/>
           </v-col>
@@ -37,7 +37,7 @@
           <v-col cols="12" sm="6" md="4">
             <v-text-field
                 dense
-                class="pt-10"
+                class="pt-5"
                 label="Адрес"
                 v-model="address" />
           </v-col>

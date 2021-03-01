@@ -69,7 +69,7 @@ public class AuthenticationController {
             response.put("email", user.getEmail());
             response.put("department", user.getDepartment());
             response.put("position", user.getPositions());
-//            response.put("role", RoleDto.roleDtoList(user.getRoles()));
+            response.put("role", user.getRoles());
             response.put("token", token);
 
             return ResponseEntity.ok(response);

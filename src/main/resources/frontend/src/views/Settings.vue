@@ -31,7 +31,7 @@ export default {
     change() {
 
       this.$vuetify.theme.dark = !this.$vuetify.theme.dark;
-      this.$vuetify.theme.dark ? this.nameKey = 'Light Theme' : this.nameKey = 'Dark Theme'
+      this.$vuetify.theme.dark ? this.nameKey = 'Get Light Theme' : this.nameKey = 'Get Dark Theme'
       localStorage.setItem('darkTheme', this.$vuetify.theme.dark.toString());
     },
 
