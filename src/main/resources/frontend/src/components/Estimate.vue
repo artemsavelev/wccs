@@ -167,6 +167,8 @@ export default {
       this.keyEstimate = this.ex ? this.key = 'ПРЕДВАРИТЕЛЬНАЯ' : this.key = 'ФАКТИЧЕСКАЯ'
       this.fileName = this.address + ' ' + this.customer + ' ' + this.extId + ' ' + this.keyEstimate + '.xlsx'
 
+      this.fileName = this.fileName.replace(/[/\\?%*:|"<>]/g, '-')
+      console.log(this.fileName)
 
       // создаем объект для отправки на сервер
       this.estimate = {

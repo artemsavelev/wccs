@@ -24,18 +24,17 @@ export default {
 
     actions: {
 
-        async login({ commit }, { username, password }) {
+        async login({ commit }, user) {
             try {
-                const data = { username, password };
-                // console.log(data)
 
                 const response = await fetch(api.API_AUTH_URL, {
                     method: 'POST',
-                    body: JSON.stringify(data),
+                    body: JSON.stringify(user),
                     headers: {
                         'Content-Type': 'application/json'
                     }
                 });
+
 
                 if (response.ok) {
                     const user = await response.json();
@@ -47,8 +46,7 @@ export default {
                 }
 
             } catch (e) {
-                commit('loginFailure', e);
-                throw e
+                throw new e
             }
         },
 
@@ -62,7 +60,6 @@ export default {
 
     getters: {
         profile(state) {
-            // console.log(state.profile)
             return state.profile
         }
     }

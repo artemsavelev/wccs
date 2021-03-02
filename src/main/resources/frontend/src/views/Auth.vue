@@ -1,19 +1,24 @@
 <template>
   <div class="auth">
     <form @submit.prevent="auth">
-      <v-text-field label="Login" :rules="rules" hide-details="auto" v-model="username" counter></v-text-field>
-      <br/>
-      <v-text-field v-model="password"
-                    :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
-                    :rules="[rules1.required, rules1.min]"
-                    :type="show ? 'text' : 'password'"
-                    name="input-10-1"
-                    label="Password"
-                    hint="At least 3 characters"
-                    counter
-                    @click:append="show = !show"></v-text-field>
+      <v-text-field label="Login"
+                    :rules="rules"
+                    hide-details="auto"
+                    v-model="username"
+                    class="mb-5"
+                    counter></v-text-field>
 
-      <br/>
+      <v-text-field label="Password"
+                    :rules="[rules1.required, rules1.min]"
+                    hint="At least 3 characters"
+                    :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
+                    :type="show ? 'text' : 'password'"
+                    @click:append="show = !show"
+                    v-model="password"
+                    class="mb-5"
+                    counter></v-text-field>
+
+
 
       <v-btn color="primary" type="submit" class="auth-btn">Login</v-btn>
 
@@ -26,7 +31,7 @@
 </template>
 
 <script>
-import {mapGetters} from "vuex";
+import {mapActions, mapGetters} from "vuex";
 import messages from "../utils/messages";
 import Notifier from "../components/Notifier";
 
@@ -40,7 +45,6 @@ export default {
     rules1: {
       required: value => !!value || 'Required.',
       min: v => v.length >= 3 || 'Min 3 characters',
-      emailMatch: () => ('The email and password you entered don\'t match'),
     },
     show: false,
     username: '',
@@ -51,25 +55,38 @@ export default {
 
   components: { Notifier },
 
-  computed: mapGetters(['error']),
+  computed: {
+    ...mapGetters(['error']),
+
+  },
 
   watch: {
-    error(error) {
-      // console.log(messages[error])
-      this.message = messages[error];
-      this.snackbar = true;
+    error(err) {
+      // console.log(error)
+
+      this.message = messages[err];
+      // this.snackbar = true;
+
+
     }
+
+
   },
 
   methods: {
 
+    ...mapActions(['login']),
     async auth() {
-      const formAuth = {
+
+      const data = {
         username: this.username,
         password: this.password
-      };
+      }
+
       try {
-        await this.$store.dispatch('login', formAuth);
+
+        await this.login(data)
+
         await this.$router.push('/')
 
       } catch (e) {

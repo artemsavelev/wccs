@@ -15,6 +15,8 @@ export default {
     },
 
     getters: {
-        error: state => state.error
+        error(state) {
+           return state.error
+        }
     }
 }

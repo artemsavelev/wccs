@@ -131,11 +131,17 @@ public class ExcelDocument implements FileCreator {
                 uploadDir.mkdir();
             }
 
-            File file = new File(uploadPath + File.separator +
-                    estimate.getAddress() + " " +
+            String fileName = estimate.getAddress() + " " +
                     estimate.getCustomer() + " " +
                     estimate.getExtId() + " " +
-                    keyEstimate + ".xlsx");
+                    keyEstimate + ".xlsx";
+            String validFileName = getValidFileName(fileName);
+
+            log.info("Save file in valid file name '{}'", validFileName);
+
+            File file = new File(uploadPath + File.separator + validFileName);
+
+
 
             if (file.createNewFile()) {
                 log.info("IN createFile - create estimate {} : successfully created in {} ", file.getName(), file.getAbsolutePath());
@@ -148,6 +154,14 @@ public class ExcelDocument implements FileCreator {
         } catch (IOException e) {
             log.error("IN createFile - create estimate {} : error {}", e.getMessage(), e.getStackTrace());
         }
+    }
+
+
+    public String getValidFileName(String fileName) {
+        String newFileName = fileName.replace("^\\.+", "").replaceAll("[\\\\/:*?\"<>|]", "-");
+        if(newFileName.length() == 0)
+            throw new IllegalStateException("File Name " + fileName + " results in a empty fileName!");
+        return newFileName;
     }
 
 }
