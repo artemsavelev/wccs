@@ -6,9 +6,11 @@
 }
 
 $border-bottom: var(--v-line-base);
+$border-bottom2: var(--v-line2-base);
 $hover-item: var(--v-hoverItem-base);
 $input-text-color: var(--v-inputTextColor-base);
 $text-color: var(--v-textColor-base);
+$border-color: var(--v-borderColor-base);
 
 .font-s {
   font-size: small;
@@ -27,7 +29,7 @@ $text-color: var(--v-textColor-base);
 
 .section-row-container {
   //border: 1px solid #ff0000;
-  border-bottom: 1px solid $border-bottom;
+  border-bottom: 1px solid $border-bottom2;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -78,7 +80,7 @@ $text-color: var(--v-textColor-base);
 
 .input {
   color: $input-text-color;
-  border: 1px solid gray;
+  border: 1px solid $border-color;
   width: 70px;
   text-align: left;
   padding: 2px;

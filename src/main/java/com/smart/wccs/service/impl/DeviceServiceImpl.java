@@ -1,13 +1,10 @@
 package com.smart.wccs.service.impl;
 
-import com.smart.wccs.model.Department;
 import com.smart.wccs.model.Device;
 import com.smart.wccs.model.Status;
-import com.smart.wccs.model.User;
 import com.smart.wccs.repo.DeviceRepo;
 import com.smart.wccs.repo.UserRepo;
 import com.smart.wccs.service.DeviceService;
-import liquibase.pro.packaged.U;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -15,10 +12,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 @Service
