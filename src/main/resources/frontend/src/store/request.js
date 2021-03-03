@@ -22,7 +22,16 @@ export default {
                 headers,
                 body
             })
-            return await response.json()
+
+            if (response.ok) {
+                return await response.json()
+            } else {
+                console.warn(response.status)
+                // await response.json().then((e) => {
+                //     console.warn(e.message)
+                // })
+            }
+
         } catch (e) {
             console.warn('Error request: ', e.message)
         }

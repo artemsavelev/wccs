@@ -87,7 +87,7 @@ export default {
 
         await this.login(data)
 
-        await this.$router.push('/')
+        await this.$router.push('/orders')
 
       } catch (e) {
         // console.warn('Error auth: ', e.message)

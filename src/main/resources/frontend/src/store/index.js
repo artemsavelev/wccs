@@ -2,9 +2,10 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import auth from './modules/auth'
 import order from './modules/order'
-import errors from "./modules/errors"
-import estimate from "./modules/estimate"
-import components from "@/store/modules/components";
+import errors from './modules/errors'
+import estimate from './modules/estimate'
+import components from './modules/components'
+import registration from './modules/registration'
 
 Vue.use(Vuex);
 
@@ -15,6 +16,7 @@ export default new Vuex.Store({
     auth,
     errors,
     estimate,
-    components
+    components,
+    registration
   }
 })

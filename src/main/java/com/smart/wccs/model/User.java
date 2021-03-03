@@ -16,8 +16,8 @@ public class User extends BaseEntity {
     @JsonView({Views.UserView.class, Views.AdminView.class})
     private String username;
 
-    @JsonView({Views.UserView.class, Views.AdminView.class})
-    private String name;
+//    @JsonView({Views.UserView.class, Views.AdminView.class})
+//    private String name;
 
     @JsonView({Views.UserView.class, Views.AdminView.class})
     private String firstName;
