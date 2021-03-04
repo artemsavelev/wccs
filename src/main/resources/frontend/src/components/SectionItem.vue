@@ -52,15 +52,12 @@
 <script>
 import env from "../../env.config.json"
 
+
 export default {
   name: "SectionItem",
   props: ['item', 'typeSection', 'extId'],
   computed: {
 
-    // removeStyle() {
-    //   //v-bind:removeStile="removeStyle"
-    //   // return console.log('test')
-    // }
   },
   data() {
     return {
@@ -81,6 +78,7 @@ export default {
   },
 
   methods: {
+
     add() {
 
       let item = {

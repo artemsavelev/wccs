@@ -8,16 +8,19 @@
 
       <router-view/>
     </v-main>
+    <Notifier/>
   </v-app>
 </template>
 
 <script>
 import NavBar from "./components/NavBar";
+// import Notifier from "@/components/Notifier";
+const Notifier = () => import('@/components/Notifier');
 import {mapGetters} from "vuex";
 
 export default {
   name: 'App',
-  components: { NavBar },
+  components: { NavBar, Notifier },
   computed: mapGetters(['profile']),
   mounted() {
     const theme = localStorage.getItem('darkTheme');

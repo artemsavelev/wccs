@@ -64,7 +64,6 @@
           </v-card-actions>
         </div>
       </template>
-
     </v-card>
 
   </v-dialog>
@@ -82,11 +81,12 @@ import Preview from './Preview'
 
 
 
+
 // const pause = ms => new Promise(resolve => setTimeout(resolve, ms))
 export default {
   name: "Estimate",
   props: ['extId', 'address', 'customer'],
-  components: { TypeOfWork, Device, Materials, Work, Preview },
+  components: {TypeOfWork, Device, Materials, Work, Preview },
   computed: {
     ...mapGetters(['profile']),
     preview() {
@@ -142,7 +142,7 @@ export default {
   },
 
   methods: {
-    ...mapActions(['addEstimate']),
+    ...mapActions(['addEstimate', 'showSnack']),
     close() {
       this.dialog = false
     },
@@ -189,6 +189,14 @@ export default {
       // отправляем данные на сервер через store
       await this.addEstimate(this.estimate).then(() => {
         this.loading = true
+
+        const data = {
+          message: 'Файл с именем - "' + this.fileName + '" создан.',
+          color: 'success'
+        }
+
+        this.showSnack(data)
+
       })
 
       // проверяем и загружаем файл
@@ -211,6 +219,7 @@ export default {
             a.click();
             a.remove();  //afterwards we remove the element again
             this.loading = false // останавливаем анимацию
+
           }
         })
 

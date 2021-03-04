@@ -14,22 +14,24 @@
                v-bind:typeSection="typeSection"
                v-bind:extId="extId"
                v-bind:data="allDevices"/>
+
+
   </div>
 </template>
 
 <script>
-
 const ModalForm = () => import('./ModalForm')
 const HeaderTable = () => import('@/components/HeaderTable')
 const DataContent = () => import('@/components/DataContent')
+
 
 import {mapActions, mapGetters} from "vuex";
 
 
 export default {
   name: "ActiveDevice",
-  components: { DataContent, HeaderTable, ModalForm },
-  props: ['extId'],
+  components: {DataContent, HeaderTable, ModalForm },
+    props: ['extId'],
   computed: {
     ...mapGetters(['allDevices']),
   },
@@ -50,17 +52,29 @@ export default {
     this.fetchDevices();
   },
   methods: {
+
+
+    ...mapActions(['showSnack']),
+
     // добавление записи в конец массива
     addDevice(item) {
       this.itemName = item.name
       this.devices.push(item)
       this.$emit('transmit', this.devices)
+
     },
 
     // удаление записи из массива по id
-    removeDevice(id) {
+    removeDevice(id, item) {
       this.devices = this.devices.filter(o => o.id !== id)
       this.$emit('transmit', this.devices)
+
+      const data = {
+        message: 'Запись с именем - "' + item + '" удалена из конструктора.',
+        color: 'warning'
+      }
+
+      this.showSnack(data)
     },
 
     // сортировка по id

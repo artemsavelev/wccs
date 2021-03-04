@@ -1,4 +1,4 @@
-
+import store from '@/store'
 
 
 export default {
@@ -24,16 +24,34 @@ export default {
             })
 
             if (response.ok) {
+
+                // const data = {
+                //     message: 'Status code - ' + response.status + ': Данные успешно добавлены.',
+                //     color: 'success'
+                // }
+                //
+                // await store.dispatch('showSnack', data)
+
                 return await response.json()
             } else {
-                console.warn(response.status)
-                // await response.json().then((e) => {
-                //     console.warn(e.message)
-                // })
+
+                await response.json().then((e) => {
+
+                    const dataError = {
+                        message: 'Error code - ' + response.status + ': С сообщением "' + e.message + '".',
+                        color: 'error'
+                    }
+                    store.dispatch('showSnack', dataError)
+
+                })
+
             }
 
+
         } catch (e) {
-            console.warn('Error request: ', e.message)
+
+            throw new e
+
         }
     }
 

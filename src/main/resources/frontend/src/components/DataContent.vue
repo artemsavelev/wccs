@@ -56,13 +56,14 @@ export default {
   },
 
   methods: {
+
     edit() {
       this.editedIndex = true
       this.$emit('edit', this.item.id)
     },
     remove() {
       localStorage.removeItem(this.extId + '_' + this.item.name);
-      this.$emit('remove', this.item.id)
+      this.$emit('remove', this.item.id, this.item.name)
     }
   },
   filters: {

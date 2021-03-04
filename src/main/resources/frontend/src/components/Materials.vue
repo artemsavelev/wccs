@@ -42,6 +42,10 @@ export default {
     this.fetchMaterials();
   },
   methods: {
+
+    ...mapActions(['showSnack']),
+
+
     // добавление записи в конец массива
     addMaterial(item) {
       this.materials.push(item)
@@ -49,9 +53,16 @@ export default {
     },
 
     // удаление записи из массива по id
-    removeMaterial(id) {
+    removeMaterial(id, item) {
       this.materials = this.materials.filter(o => o.id !== id)
       this.$emit('transmit', this.materials)
+
+      const data = {
+        message: 'Запись с именем - "' + item + '" удалена из конструктора.',
+        color: 'warning'
+      }
+
+      this.showSnack(data)
     },
 
     // сортировка по id

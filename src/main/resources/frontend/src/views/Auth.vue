@@ -24,16 +24,15 @@
 
     </form>
 
-    <Notifier v-bind:message="message"
-              v-bind:snackbar="snackbar"/>
+
 
   </div>
 </template>
 
 <script>
 import {mapActions, mapGetters} from "vuex";
-import messages from "../utils/messages";
-import Notifier from "../components/Notifier";
+// import messages from "../utils/messages";
+
 
 export default {
   name: "auth",
@@ -46,36 +45,24 @@ export default {
       required: value => !!value || 'Required.',
       min: v => v.length >= 3 || 'Min 3 characters',
     },
+
     show: false,
     username: '',
     password: '',
-    snackbar: false,
-    message: ''
   }),
-
-  components: { Notifier },
 
   computed: {
     ...mapGetters(['error']),
-
   },
 
   watch: {
-    error(err) {
-      // console.log(error)
-
-      this.message = messages[err];
-      // this.snackbar = true;
-
-
-    }
-
 
   },
 
   methods: {
 
-    ...mapActions(['login']),
+    ...mapActions(['login', 'showSnack']),
+
     async auth() {
 
       const data = {
@@ -90,7 +77,14 @@ export default {
         await this.$router.push('/orders')
 
       } catch (e) {
-        // console.warn('Error auth: ', e.message)
+
+        const dataError = {
+          message: 'Error code - ' + this.error + ': Ошибка авторизации, неверный логин или пароль.',
+          color: 'error'
+        }
+
+        this.showSnack(dataError)
+
       }
     }
   }

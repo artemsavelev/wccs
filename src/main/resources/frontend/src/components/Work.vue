@@ -41,6 +41,10 @@ export default {
     this.fetchWorks()
   },
   methods: {
+
+    ...mapActions(['showSnack']),
+
+
     // добавление записи в конец массива
     addWork(item) {
       this.works.push(item)
@@ -48,9 +52,16 @@ export default {
     },
 
     // удаление записи из массива по id
-    removeWork(id) {
+    removeWork(id, item) {
       this.works = this.works.filter(o => o.id !== id)
       this.$emit('transmit', this.works)
+
+      const data = {
+        message: 'Запись с именем - "' + item + '" удалена из конструктора.',
+        color: 'warning'
+      }
+
+      this.showSnack(data)
     },
 
     // сортировка по id

@@ -1,94 +1,7 @@
 <template>
   <div>
 
-    <div class="registration ml-7 mb-15 mt-3">
-
-      <div class="font-weight-bold ml-3">
-        {{ env.addUser }}
-      </div>
-
-      <v-col cols="12" sm="6" md="4">
-        <v-text-field
-            class="pt-5"
-            dense
-            label="Фамилия"
-            v-model="lastName"
-            clearable/>
-      </v-col>
-
-      <v-col cols="12" sm="6" md="4">
-        <v-text-field
-            dense
-            class="pt-5"
-            label="Имя"
-            v-model="firstName"
-            clearable/>
-      </v-col>
-
-      <v-col cols="12" sm="6" md="4">
-        <v-text-field
-            dense
-            class="pt-5"
-            label="Email"
-            v-model="email"
-            clearable/>
-      </v-col>
-
-      <v-col cols="12" sm="6" md="4">
-        <v-text-field
-            dense
-            class="pt-5"
-            label="Логин"
-            v-model="username"
-            clearable/>
-      </v-col>
-
-      <v-col cols="12" sm="6" md="4">
-        <v-text-field
-            dense
-            class="pt-5"
-            label="Пароль"
-            v-model="password"
-            clearable/>
-      </v-col>
-
-
-
-<!--      <v-col cols="12" sm="6" md="4">-->
-<!--        <v-autocomplete-->
-<!--            v-model="positions"-->
-<!--            :items="items1"-->
-<!--            item-text="name"-->
-<!--            item-value="id"-->
-<!--            chips-->
-<!--            clearable-->
-<!--            label="Должность"-->
-<!--            multiple-->
-<!--        ></v-autocomplete>-->
-<!--      </v-col>-->
-
-<!--      <v-col cols="12" sm="6" md="4">-->
-<!--        <v-autocomplete-->
-<!--            v-model="roles"-->
-<!--            :items="items2"-->
-<!--            item-text="roles"-->
-<!--            item-value="id"-->
-<!--            chips-->
-<!--            clearable-->
-<!--            label="Роли"-->
-<!--            multiple-->
-<!--        ></v-autocomplete>-->
-<!--      </v-col>-->
-
-      <v-btn v-on:click="saveUser" color="primary" class="ml-3" tile>{{ env.keySave }}</v-btn>
-
-
-    </div>
-
-
-
-
-
+    <AddUser/>
 
     <div class="ml-10 mr-10">
 
@@ -171,9 +84,11 @@
 <script>
 import {mapActions, mapGetters} from "vuex";
 import env from "../../env.config.json"
+import AddUser from "@/components/AddUser";
 
 export default {
   name: "Admin",
+  components: {AddUser},
   computed: mapGetters(['allDevices', 'allMaterials', 'allWorks', 'profile']),
 
 
@@ -188,16 +103,6 @@ export default {
         { text: 'id', value: 'id' },
         { text: 'name', value: 'name' },
       ],
-      lastName: '',
-      firstName: '',
-      username: '',
-      password: '',
-      email: '',
-      positions: [],
-      roles: [],
-      items1: ['foo', 'bar', 'fizz', 'buzz'],
-      items2: ['foo', 'bar', 'fizz', 'buzz'],
-      id: ''
     }
   },
 
@@ -209,29 +114,6 @@ export default {
   },
 
 
-  methods: {
-    ...mapActions(['addUser']),
-    saveUser() {
-
-
-      const user = {
-        lastName: this.lastName,
-        firstName: this.firstName,
-        username: this.username,
-        password: this.password,
-        email: this.email,
-        department: {
-          id: this.profile.department.id
-        },
-        position: this.positions,
-        roles: this.roles
-      }
-      console.log(user)
-
-      this.addUser(user)
-    }
-
-  },
 }
 </script>
 

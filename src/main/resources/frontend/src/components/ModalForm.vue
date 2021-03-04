@@ -68,6 +68,7 @@
 
 <script>
 import env from "../../env.config.json";
+import {mapActions} from "vuex";
 const SectionItem = () => import("@/components/SectionItem");
 const HeaderTable = () => import("@/components/HeaderTable");
 const WorkDescription = () => import("@/components/WorkDescription");
@@ -116,9 +117,21 @@ export default {
 
 
   methods: {
+    ...mapActions(['showSnack']),
+
     addItem(item) {
+
       console.log(item)
+
       this.$emit('transmitParentForm', item)
+
+      const data = {
+        message: 'Запись с именем - "' + item.name + '" добавлена в конструктор.',
+        color: 'success'
+      }
+
+      this.showSnack(data)
+
     },
 
     addWorkDescription(item) {

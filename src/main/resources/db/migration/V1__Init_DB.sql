@@ -115,11 +115,11 @@ create table public.users (
     created_date timestamp,
     status varchar(255) not null,
     updated_date timestamp,
-    email varchar(255) unique not null,
-    first_name varchar(255) not null,
-    last_name varchar(255) not null,
-    password varchar(255) not null,
-    username varchar(255) unique not null,
+    email varchar(255) unique not null check ( email != '' ),
+    first_name varchar(255) not null check ( first_name != '' ),
+    last_name varchar(255) not null check ( last_name != '' ),
+    password varchar(255) not null check ( password != '' ),
+    username varchar(255) unique not null check ( username != '' ),
     department_id int8 not null,
     primary key (id)
 );

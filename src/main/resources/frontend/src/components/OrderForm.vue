@@ -1,8 +1,11 @@
 <template>
-  <v-dialog v-if="profile" v-model="dialog" scrollable width="80%">
+  <div>
+  <v-dialog v-if="profile" v-model="dialog" scrollable persistent max-width="600px">
 
     <template v-slot:activator="{ on }" class="mt-10">
-      <v-btn :disabled="$route.path === '/profile' || $route.path === '/admin' || $route.path === '/settings'" dark v-on="on" text tile>
+      <v-btn :disabled="$route.path === '/profile' || $route.path === '/admin' || $route.path === '/settings'"
+             dark v-on="on"
+             text tile>
         {{ env.keyCreate }}
       </v-btn>
     </template>
@@ -16,17 +19,17 @@
         </v-btn>
       </v-card-title>
 
-      <v-card-text style="height: 20vh">
-        <v-row>
-          <v-col cols="12" sm="6" md="4">
+      <v-card-text>
+
+          <v-col cols="12" class="pa-0">
             <v-text-field
-                class="pt-5"
+                class="pt-10"
                 dense
                 label="Номер заявки"
                 v-model="extId"/>
           </v-col>
 
-          <v-col cols="12" sm="6" md="4">
+          <v-col cols="12" class="pa-0">
             <v-text-field
                 dense
                 class="pt-5"
@@ -34,29 +37,33 @@
                 v-model="customer"/>
           </v-col>
 
-          <v-col cols="12" sm="6" md="4">
+          <v-col cols="12" class="pa-0">
             <v-text-field
                 dense
                 class="pt-5"
                 label="Адрес"
                 v-model="address" />
           </v-col>
-        </v-row>
+
 
 
         <v-card-actions class="pa-0">
-          <v-btn v-on:click="save" color="primary" class="" tile>{{ env.keySave }}</v-btn>
+          <v-btn v-on:click="save" color="primary" class="mt-5" tile>{{ env.keySave }}</v-btn>
         </v-card-actions>
       </v-card-text>
 
     </v-card>
   </v-dialog>
 
+
+
+  </div>
 </template>
 
 <script>
 import env from "../../env.config.json"
 import { mapActions, mapGetters } from "vuex";
+
 
 export default {
   name: "OrderForm",
@@ -70,6 +77,8 @@ export default {
   data() {
     return {
       env,
+      message: '',
+      color: '',
       dialog: false,
       orderId: '',
       extId: '',
@@ -81,9 +90,11 @@ export default {
   },
 
   methods: {
-    ...mapActions(['addOrder', 'addOrderMutation']),
+    ...mapActions(['addOrder', 'showSnack']),
+
     // сохранение новой записи
     save() {
+
       const order = {
         extId: this.extId,
         customer: this.customer,
@@ -91,12 +102,26 @@ export default {
       };
 
       if (this.extId && this.customer && this.address) {
-        this.addOrder(order);
-        this.dialog = false;
+
+        this.addOrder(order)
+
+        this.dialog = false
+
+        const data = {
+          message: 'Запись # ' + this.extId  + ' ' + this.customer + ' ' + this.address + ' добавлена',
+          color: 'success'
+        }
+
+        this.showSnack(data)
+
       }
+
     },
+
+
     close() {
       this.dialog = false;
+
     }
   },
   watch: {

@@ -1,5 +1,6 @@
 import req from '../request';
 import api from "../../api/backendApi";
+import store from "@/store";
 
 export default {
     state: {
@@ -37,12 +38,14 @@ export default {
     actions: {
         async fetchOrders({commit}) {
             try {
+
                 const data = await req.request(api.API_ORDER_URL);
                 commit('updateOrdersMutation', data.orders);
                 commit('updateTotalPagesMutation', data.totalPages)
                 commit('updateCurrentPageMutation', Math.min(data.currentPage, data.totalPages))
+
             } catch (e) {
-                console.warn(e.message)
+                throw new e
             }
         },
 
@@ -60,7 +63,14 @@ export default {
                 commit('updateTotalPagesMutation', data.totalPages)
                 commit('updateCurrentPageMutation', Math.min(data.currentPage, data.totalPages))
             } catch (e) {
-                console.warn(e.message)
+                // console.warn(e.message)
+
+                const dataError = {
+                    message: 'Error "' + e.message + '".',
+                    color: 'warning'
+                }
+
+                await store.dispatch('showSnack', dataError)
             }
 
 
