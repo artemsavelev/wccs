@@ -16,6 +16,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final JwtTokenProvider jwtTokenProvider;
 
+    private static final String ROOT_ENDPOINT = "/**";
     private static final String ADMIN_ENDPOINT = "/api/v1/admin/**";
     private static final String SUPERUSER_ENDPOINT = "/api/v1/super/**";
     private static final String USER_ENDPOINT = "/api/v1/user/**";
@@ -27,7 +28,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public SecurityConfig(JwtTokenProvider jwtTokenProvider) {
         this.jwtTokenProvider = jwtTokenProvider;
     }
-
 
 
     @Bean
@@ -44,7 +44,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers(LOGIN_ENDPOINT, FILE_PATH).permitAll()
+                .antMatchers(ROOT_ENDPOINT, LOGIN_ENDPOINT, FILE_PATH).permitAll()
                 .antMatchers(USER_ENDPOINT).hasRole("USER")
                 .antMatchers(ADMIN_ENDPOINT, REGISTRATION_ENDPOINT).hasRole("ADMIN")
                 .antMatchers(SUPERUSER_ENDPOINT).hasRole("SUPERUSER")

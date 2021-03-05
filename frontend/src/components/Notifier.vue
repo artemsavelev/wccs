@@ -12,7 +12,7 @@
 
       <div class="snackbar-container">
         <div class="snackbar-item">
-          <v-icon dark>{{ icon }}</v-icon>
+          <v-icon class="item" dark>{{ icon }}</v-icon>
         </div>
 
         <div class="snackbar-item">
@@ -94,6 +94,9 @@ export default {
 .snackbar-item {
   //border: 1px solid black;
   margin-left: 20px;
+  //display: inline-block;
+  //vertical-align: center;
 }
+
 
 </style>

@@ -12,7 +12,7 @@ const routes = [
     component: () => import('@/views/Auth.vue')
   },
   {
-    path: '/orders',
+    path: '/',
     name: 'OrdersList',
     meta: { auth: true },
     component: () => import('@/views/OrdersList.vue')
@@ -61,7 +61,7 @@ router.beforeEach((to, from, next) => {
       next()
     }
   } catch (e) {
-    console.warn(e.message)
+    //console.warn(e.message)
   }
 
 })

@@ -1,4 +1,4 @@
-const API_BASE_URL = 'http://192.168.88.2:8080/api/v1/';
+const API_BASE_URL = '/api/v1/';
 export default {
     API_REGISTRATION_URL: API_BASE_URL + 'auth/registration',
     API_AUTH_URL: API_BASE_URL + 'auth/login',

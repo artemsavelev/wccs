@@ -70,6 +70,7 @@
       <v-data-table
           dense
           show-select
+          isSelected="true"
           :headers="headers"
           :items="allWorks"
           :items-per-page="10"

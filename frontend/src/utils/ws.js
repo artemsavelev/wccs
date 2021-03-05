@@ -14,8 +14,8 @@ export function connect() {
     stompClient.connect({
         'Content-type': 'application/json',
         'Authorization': 'bearer_' + user.token
-    }, (frame) => {
-        console.log(frame)
+    }, () => {
+        //console.log(frame)
         stompClient.subscribe('/topic/messages', message => {
             handlers.forEach(handler => handler(JSON.parse(message.body)))
         }, {
@@ -35,7 +35,7 @@ export function disconnect() {
     if (stompClient !== null) {
         stompClient.disconnect()
     }
-    console.log("Disconnected")
+    //console.log("Disconnected")
 }
 
 // функция отправки сообщений через websocket

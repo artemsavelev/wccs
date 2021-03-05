@@ -121,7 +121,7 @@ export default {
 
     addItem(item) {
 
-      console.log(item)
+      //console.log(item)
 
       this.$emit('transmitParentForm', item)
 
@@ -142,7 +142,7 @@ export default {
 
     open() {
 
-      console.log('open modal form')
+      //console.log('open modal form')
     },
 
     close() {

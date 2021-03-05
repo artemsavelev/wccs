@@ -15,6 +15,7 @@ export default new Vuetify({
                 table: '#2D4059',
                 form: '#0085ff',
                 line: '#ccc',
+                line2: '#ccc',
                 hoverItem: '#f6f6f6',
                 textColor: '#424242',
                 borderColor: '#9E9E9E'

@@ -32,12 +32,29 @@ export default {
     loading: false
   }),
   methods: {
+
+    ...mapActions(['showSnack']),
+
     editOrder(id) {
-      console.log(id)
+      const data = {
+        message: '"' + id + '" ',
+        color: 'success',
+        icon: 'mdi-check-circle'
+      }
+
+      this.showSnack(data)
+      //console.log(id)
     },
     removeOrder(id) {
+      const data = {
+        message: '"' + id + '" ',
+        color: 'success',
+        icon: 'mdi-check-circle'
+      }
+
+      this.showSnack(data)
       // this.allOrders = this.allOrders.filter(o => o.id !== id)
-      console.log(id)
+      //console.log(id)
     }
   },
   mounted() {

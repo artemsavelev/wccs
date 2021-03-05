@@ -51,7 +51,7 @@ export default {
 
         } catch (e) {
 
-            throw new e
+            // console.warn(e)
 
         }
     }

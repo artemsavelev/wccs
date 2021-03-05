@@ -6,7 +6,7 @@
 
     <OrderForm v-bind:orderVal="ordersList"/>
 
-    <v-btn v-if="profile" v-on:click="orders" :disabled="$route.path === '/orders'" text tile>{{ env.keyOrder }}</v-btn>
+    <v-btn v-if="profile" v-on:click="orders" :disabled="$route.path === '/'" text tile>{{ env.keyOrder }}</v-btn>
     <v-btn v-if="profile" v-on:click="userProfile" :disabled="$route.path === '/profile'" text tile>{{ env.keyProfile }}</v-btn>
     <v-btn v-if="profile" v-on:click="settings" :disabled="$route.path === '/settings'" text tile>{{ env.keySetting }}</v-btn>
     <v-btn class="mr-10" v-if="profile && this.isRoleAdmin"
@@ -53,7 +53,7 @@ export default {
   },
   methods: {
     orders() {
-      this.$router.push('/orders')
+      this.$router.push('/')
     },
     userProfile() {
       this.$router.push('/profile')

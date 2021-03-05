@@ -168,7 +168,7 @@ export default {
       this.fileName = this.address + ' ' + this.customer + ' ' + this.extId + ' ' + this.keyEstimate + '.xlsx'
 
       this.fileName = this.fileName.replace(/[/\\?%*:|"<>]/g, '-')
-      console.log(this.fileName)
+      // console.log(this.fileName)
 
       // создаем объект для отправки на сервер
       this.estimate = {
@@ -192,7 +192,8 @@ export default {
 
         const data = {
           message: 'Файл с именем - "' + this.fileName + '" создан.',
-          color: 'success'
+          color: 'success',
+          icon: 'mdi-check-circle'
         }
 
         this.showSnack(data)
@@ -201,32 +202,39 @@ export default {
 
       // проверяем и загружаем файл
       await fetch(api.API_GET_FILE + this.fileName, {
-          method: 'GET',
-        }).then(response =>
-            response.blob()
-        ).then(blob => {
+        method: 'GET',
+      }).then(response => response.blob()).then((blob) => {
 
-          // проверяем существует ли файл
-          if (blob.size === 0) {
-            //
-
-          } else {
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = this.fileName;
-            document.body.appendChild(a);
-            a.click();
-            a.remove();  //afterwards we remove the element again
-            this.loading = false // останавливаем анимацию
-
+        // проверяем существует ли файл
+        if (blob.size === 0) {
+          //
+          const data = {
+            message: 'Ошибка, файл - "' + this.fileName + '" не создан.',
+            color: 'error',
+            icon: 'mdi-alert-circle'
           }
-        })
+
+          this.showSnack(data)
+          this.loading = false // останавливаем анимацию
+
+        } else {
+
+          const url = window.URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = this.fileName;
+          document.body.appendChild(a);
+          a.click();
+          a.remove();  //afterwards we remove the element again
+          this.loading = false // останавливаем анимацию
+
+        }
+      })
 
     },
 
     get() {
-      console.log('При нажатии на кнопку калькулятор')
+      // console.log('При нажатии на кнопку калькулятор')
     }
 
   }
