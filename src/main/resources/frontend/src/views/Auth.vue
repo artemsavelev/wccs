@@ -80,7 +80,8 @@ export default {
 
         const dataError = {
           message: 'Error code - ' + this.error + ': Ошибка авторизации, неверный логин или пароль.',
-          color: 'error'
+          color: 'error',
+          icon: 'mdi-alert-circle'
         }
 
         this.showSnack(dataError)

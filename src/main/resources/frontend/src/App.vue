@@ -14,14 +14,23 @@
 
 <script>
 import NavBar from "./components/NavBar";
-// import Notifier from "@/components/Notifier";
 const Notifier = () => import('@/components/Notifier');
-import {mapGetters} from "vuex";
+import {mapGetters, mapMutations} from "vuex";
+import {addHandler} from "@/utils/ws";
 
 export default {
   name: 'App',
   components: { NavBar, Notifier },
   computed: mapGetters(['profile']),
+  methods: mapMutations(['addOrderMutation']),
+  created() {
+    addHandler(data => {
+
+
+
+      this.addOrderMutation(data.body)
+    })
+  },
   mounted() {
     const theme = localStorage.getItem('darkTheme');
     if (theme) {

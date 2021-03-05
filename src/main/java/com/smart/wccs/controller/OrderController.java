@@ -13,6 +13,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -54,6 +56,8 @@ public class OrderController {
         return new ResponseEntity<>(order, HttpStatus.OK);
     }
 
+    @MessageMapping("/sendMessage") // websocket endpoint for call saveAll method
+    @SendTo("/topic/messages") // websocket endpoint sending messages for subscribes
     @PostMapping
     @JsonView(Views.UserView.class)
     public ResponseEntity<Order> saveOrder(@RequestBody Order order) {

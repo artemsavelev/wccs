@@ -14,8 +14,8 @@ export default {
     actions: {
         async addUser({commit}, user) {
 
-                const data = await req.request(api.API_REGISTRATION_URL, 'POST', user)
-                commit('addUserMutation', data)
+            const data = await req.request(api.API_REGISTRATION_URL, 'POST', user)
+            commit('addUserMutation', data)
         },
     },
     getters: {

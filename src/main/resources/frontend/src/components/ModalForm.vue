@@ -127,7 +127,8 @@ export default {
 
       const data = {
         message: 'Запись с именем - "' + item.name + '" добавлена в конструктор.',
-        color: 'success'
+        color: 'success',
+        icon: 'mdi-check-circle'
       }
 
       this.showSnack(data)

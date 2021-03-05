@@ -71,7 +71,8 @@ export default {
 
       const data = {
         message: 'Запись с именем - "' + item + '" удалена из конструктора.',
-        color: 'warning'
+        color: 'warning',
+        icon: 'mdi-alert'
       }
 
       this.showSnack(data)

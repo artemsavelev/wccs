@@ -3,20 +3,22 @@
     <v-snackbar v-model="show"
                 :color="color"
                 :multi-line="mode === 'multi-line'"
-                :min-width="1000"
                 :top="y === 'top'"
                 :right="x === 'right'"
                 :bottom="y === 'bottom'"
                 :left="x === 'left'"
                 :timeout="timeout"
                 :vertical="mode === 'vertical'">
-      <v-icon class="ma=3" dark>{{ icon }}</v-icon>
 
-      <template>
+      <div class="snackbar-container">
+        <div class="snackbar-item">
+          <v-icon dark>{{ icon }}</v-icon>
+        </div>
 
-      {{ message }}
-
-      </template>
+        <div class="snackbar-item">
+          {{ message }}
+        </div>
+      </div>
 
       <template v-slot:action="{ attrs }">
         <v-btn dark text @click="show = false" tile v-bind="attrs">
@@ -38,27 +40,23 @@ export default {
 
 
       if (mutation.type === 'setSnack') {
-        // console.log(mutation)
-        // console.log(state)
 
         this.message = state.snackbar.payload.message;
         this.color = state.snackbar.payload.color;
-
-        console.log(this.color)
-
+        this.icon = state.snackbar.payload.icon;
 
 
-        switch (this.color) {
-          case "success":
-            this.icon = 'mdi-check-circle';
-            break;
-          case "warring":
-            this.icon = 'mdi-alert'
-            break;
-          case "error":
-            this.icon = 'mdi-alert-circle'
-            break;
-        }
+        // switch (this.color) {
+        //   case "success":
+        //     this.icon = 'mdi-check-circle';
+        //     break;
+        //   case "warring":
+        //     this.icon = 'mdi-alert'
+        //     break;
+        //   case "error":
+        //     this.icon = 'mdi-alert-circle'
+        //     break;
+        // }
 
 
         this.show = true;
@@ -66,22 +64,10 @@ export default {
 
     });
 
-    // if (this.color === 'success') {
-    //   this.icon = 'mdi-check-circle'
-    // }
-    // if (this.color === 'warring') {
-    //   this.icon = 'mdi-alert'
-    // }
-    // if (this.color === 'error') {
-    //   this.icon = 'mdi-alert-circle'
-    // }
-
   },
 
   data () {
     return {
-      // icon: 'mdi-check-circle',
-      // icon: 'mdi-alert-circle',
       icon: '',
       show: false,
       message: '\t',
@@ -97,6 +83,17 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss">
+
+.snackbar-container {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+}
+
+.snackbar-item {
+  //border: 1px solid black;
+  margin-left: 20px;
+}
 
 </style>

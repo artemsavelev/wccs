@@ -67,7 +67,8 @@ export default {
 
                 const dataError = {
                     message: 'Error "' + e.message + '".',
-                    color: 'warning'
+                    color: 'warning',
+                    icon: 'mdi-alert'
                 }
 
                 await store.dispatch('showSnack', dataError)

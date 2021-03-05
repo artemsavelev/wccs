@@ -63,6 +63,7 @@
 <script>
 import env from "../../env.config.json"
 import { mapActions, mapGetters } from "vuex";
+// import {sendMessage} from "@/utils/ws";
 
 
 export default {
@@ -103,16 +104,22 @@ export default {
 
       if (this.extId && this.customer && this.address) {
 
+
+        // sendMessage(order)
         this.addOrder(order)
 
         this.dialog = false
 
         const data = {
-          message: 'Запись # ' + this.extId  + ' ' + this.customer + ' ' + this.address + ' добавлена',
+          message: 'Запись #' + this.extId  + ' Заказчик:' + this.customer + ' Адрес:' + this.address + ' добавлена',
           color: 'success'
         }
 
         this.showSnack(data)
+
+        this.extId = ''
+        this.customer = ''
+        this.address = ''
 
       }
 

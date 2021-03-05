@@ -39,7 +39,8 @@ export default {
 
                     const dataError = {
                         message: 'Error code - ' + response.status + ': С сообщением "' + e.message + '".',
-                        color: 'error'
+                        color: 'error',
+                        icon: 'mdi-alert-circle'
                     }
                     store.dispatch('showSnack', dataError)
 

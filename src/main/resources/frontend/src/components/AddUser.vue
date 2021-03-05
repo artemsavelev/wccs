@@ -38,7 +38,6 @@
             class="pt-5"
             label="Email*"
             v-model="email"
-            clearable
             counter/>
       </v-col>
 
@@ -113,7 +112,8 @@ export default {
 
         const lastName = {
           message: 'Поле Фамилия не должно быть пустым',
-          color: 'error'
+          color: 'error',
+          icon: 'mdi-alert-circle'
         }
 
         this.showSnack(lastName)
@@ -123,17 +123,30 @@ export default {
 
         const firstName = {
           message: 'Поле Имя не должно быть пустым',
-          color: 'error'
+          color: 'error',
+          icon: 'mdi-alert-circle'
         }
 
         this.showSnack(firstName)
+      }
+
+      if (!this.email) {
+
+        const email = {
+          message: 'Поле email не должно быть пустым',
+          color: 'error',
+          icon: 'mdi-alert-circle'
+        }
+
+        this.showSnack(email)
       }
 
       if (!this.username) {
 
         const username = {
           message: 'Поле логина не должно быть пустым',
-          color: 'error'
+          color: 'error',
+          icon: 'mdi-alert-circle'
         }
 
         this.showSnack(username)
@@ -142,22 +155,12 @@ export default {
       if (!this.password) {
 
         const password = {
-          message: 'Поле логина не должно быть пустым',
-          color: 'error'
+          message: 'Поле пароля не должно быть пустым',
+          color: 'error',
+          icon: 'mdi-alert-circle'
         }
 
         this.showSnack(password)
-      }
-
-      if (!this.email) {
-
-
-        const email = {
-          message: 'Поле логина не должно быть пустым',
-          color: 'error'
-        }
-
-        this.showSnack(email)
       }
 
 
@@ -178,15 +181,21 @@ export default {
         this.addUser(user)
       }
 
+      this.lastName = ''
+      this.firstName = ''
+      this.username = ''
+      this.password = ''
+      this.email = ''
+
     }
 
   },
 
-  filters:{
-    validateEmail(email) {
-      const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-      return re.test(String(email).toLowerCase());
-    }
+  filters: {
+    // validateEmail(email) {
+    //   const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    //   return re.test(String(email).toLowerCase());
+    // }
   }
 
 
