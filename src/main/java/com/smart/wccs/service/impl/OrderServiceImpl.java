@@ -41,7 +41,7 @@ public class OrderServiceImpl implements OrderService {
                 .stream()
                 .filter(o -> o.getDepartment() == userRepo.findByUsername(name).getDepartment())
                 .collect(Collectors.toList());
-        log.info("IN getAllOrder - {} orders found", orders);
+        log.info("IN getAllOrder - {} orders found", orders.size());
         return new PageImpl<>(orders, pageable, orders.size());
     }
 
@@ -61,6 +61,7 @@ public class OrderServiceImpl implements OrderService {
     public void create(Order order) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String name = auth.getName();
+//        String name = order.getAuthor().getUsername();
         User user = userRepo.findByUsername(name);
 
         order.setCreatedDate(LocalDateTime.now());

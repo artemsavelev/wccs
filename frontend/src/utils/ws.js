@@ -7,15 +7,18 @@ const handlers = []
 
 // функция коннекта websocket
 export function connect() {
+
     const user = JSON.parse(localStorage.getItem('user'));
-    const socket = new SockJS('http://192.168.88.2/gs-guide-websocket')
+
+    const socket = new SockJS('http://192.168.88.2:8080/gs-guide-websocket')
+
     stompClient = Stomp.over(socket)
     stompClient.debug = () => {}
     stompClient.connect({
         'Content-type': 'application/json',
         'Authorization': 'bearer_' + user.token
     }, () => {
-        //console.log(frame)
+        // console.log(frame)
         stompClient.subscribe('/topic/messages', message => {
             handlers.forEach(handler => handler(JSON.parse(message.body)))
         }, {
@@ -40,10 +43,19 @@ export function disconnect() {
 
 // функция отправки сообщений через websocket
 export function sendMessage(message) {
+
     const user = JSON.parse(localStorage.getItem('user'));
-    // console.log(message)
+
+    const username = user.username
+    const order = {
+        ...message,
+        author: {
+            username,
+        }
+    }
+
     stompClient.send("/app/sendMessage", {
         'Content-type': 'application/json',
         'Authorization': 'bearer_' + user.token
-    }, JSON.stringify(message))
+    }, JSON.stringify(order))
 }

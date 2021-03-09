@@ -20,7 +20,7 @@
             <div class="id">{{ env.request }}: {{ preview.extId }}</div>
             <div class="address">{{ env.address }}: {{ preview.address }}</div>
             <div class="customer">{{ env.customer }}: {{ preview.customer }}</div>
-            <div class="owner">с{{ env.owner }}: {{ preview.owner }}</div>
+            <div class="owner">{{ env.owner }}: {{ preview.owner }}</div>
             <div class="empty"></div>
             <div class="type">{{ env.typeWork }}:</div>
             <div class="description">{{ preview.workDescription }}</div>

@@ -34,7 +34,7 @@
       </div>
 
       <div class="section-cols col-comment" v-if="type === 123">
-        Комментарий
+        {{ env.comment }}
       </div>
       <div class="section-cols col-action-section" v-if="type === 123">
       </div>

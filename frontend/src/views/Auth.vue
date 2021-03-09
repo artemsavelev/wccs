@@ -1,15 +1,15 @@
 <template>
   <div class="auth">
     <form @submit.prevent="auth">
-      <v-text-field label="Login"
+      <v-text-field :label="env.login"
                     :rules="rules"
                     hide-details="auto"
                     v-model="username"
                     class="mb-5"
                     counter></v-text-field>
 
-      <v-text-field label="Password"
-                    :rules="[rules1.required, rules1.min]"
+      <v-text-field :label="env.password"
+                    :rules="rules"
                     hint="At least 3 characters"
                     :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
                     :type="show ? 'text' : 'password'"
@@ -20,7 +20,7 @@
 
 
 
-      <v-btn color="primary" type="submit" class="auth-btn">Login</v-btn>
+      <v-btn color="primary" type="submit" class="auth-btn">{{ env.singIn }}</v-btn>
 
     </form>
 
@@ -32,19 +32,16 @@
 <script>
 import {mapActions, mapGetters} from "vuex";
 // import messages from "../utils/messages";
-
+import env from "../../env.config.json"
 
 export default {
   name: "auth",
   data: () => ({
+    env,
     rules: [
-      value => !!value || 'Required.',
-      value => (value && value.length >= 3) || 'Min 3 characters',
+      value => !!value || env.rules[0],
+      value => (value && value.length >= 3) || env.rules[1],
     ],
-    rules1: {
-      required: value => !!value || 'Required.',
-      min: v => v.length >= 3 || 'Min 3 characters',
-    },
 
     show: false,
     username: '',
@@ -74,7 +71,7 @@ export default {
 
         await this.login(data)
 
-        await this.$router.push('/orders')
+        await this.$router.push('/')
 
       } catch (e) {
 

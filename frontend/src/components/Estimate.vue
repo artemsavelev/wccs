@@ -2,7 +2,7 @@
   <v-dialog v-if="profile" v-model="dialog" scrollable persistent>
     <template v-slot:activator="{ on }" class="">
       <v-btn icon v-on="on" class="" @click="get">
-        <v-icon color="iconLight">mdi-calculator</v-icon>
+        <v-icon dark>mdi-calculator</v-icon>
       </v-btn>
     </template>
 
@@ -12,7 +12,7 @@
         <v-checkbox v-model="ex"
                     class="pt-0 pb-0 mt-0 mb-0 ml-5 "
                     color="success"
-                    label="смета предварительная"
+                    :label="env.estimate + ' ' + env.estimatePreliminary"
                     hide-details></v-checkbox>
         <v-spacer></v-spacer>
         <v-btn small text tile v-on:click="close">

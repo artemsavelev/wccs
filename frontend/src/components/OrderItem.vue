@@ -59,7 +59,7 @@
 
         <div class="order-cols col-action-order">
           <v-btn icon v-on:click="edit">
-            <v-icon color="iconLight">mdi-pencil</v-icon>
+            <v-icon dark>mdi-pencil</v-icon>
           </v-btn>
 
           <Estimate v-bind:extId="order.extId"
@@ -67,7 +67,7 @@
                     v-bind:address="order.address"/>
 
           <v-btn icon v-on:click="del">
-            <v-icon color="iconLight">mdi-delete</v-icon>
+            <v-icon dark>mdi-delete</v-icon>
           </v-btn>
         </div>
       </div>
@@ -76,29 +76,25 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
 import Estimate from '@/components/Estimate'
 
 export default {
   name: 'OrderItem',
   props: ['order', 'editOrder', 'delOrder'],
-  computed: mapGetters(['allOrders']),
   components: { Estimate },
   methods: {
-    ...mapActions(['fetchOrders']),
 
     edit() {
       this.$emit('edit', this.order.id)
     },
     del() {
-      this.$emit('remove', this.order.id)
+      this.$emit('removeOrder', this.order.id)
     },
 
   },
   data: () => ({
     customer: '',
     address: '',
-    dataOrder: {},
     selection: 'addEstimate'
 
   }),
@@ -108,7 +104,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import "../assets/styles/styles";
+@import "src/assets/styles/styles";
 .order-row {
   color: $text-color;
   border-bottom: 1px solid $border-bottom;

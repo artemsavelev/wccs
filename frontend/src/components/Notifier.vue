@@ -41,24 +41,30 @@ export default {
 
       if (mutation.type === 'setSnack') {
 
-        this.message = state.snackbar.payload.message;
-        this.color = state.snackbar.payload.color;
-        this.icon = state.snackbar.payload.icon;
 
 
-        // switch (this.color) {
+        // switch (state.snackbar.payload.color) {
         //   case "success":
-        //     this.icon = 'mdi-check-circle';
-        //     break;
+        //
+        //     console.log(state.snackbar.payload.color)
+        //     this.icon = 'mdi-check-circle'
+        //     break
         //   case "warring":
+        //     console.log(state.snackbar.payload.color)
         //     this.icon = 'mdi-alert'
-        //     break;
+        //     break
         //   case "error":
+        //     console.log(state.snackbar.payload.color)
         //     this.icon = 'mdi-alert-circle'
-        //     break;
+        //     break
+        //     // default: this.icon = ''
+        //     //     break
         // }
 
 
+        this.message = state.snackbar.payload.message;
+        this.color = state.snackbar.payload.color;
+        this.icon = state.snackbar.payload.icon;
         this.show = true;
       }
 
@@ -89,13 +95,11 @@ export default {
   display: flex;
   flex-wrap: nowrap;
   justify-content: space-between;
+  align-items: center;
 }
 
 .snackbar-item {
-  //border: 1px solid black;
   margin-left: 20px;
-  //display: inline-block;
-  //vertical-align: center;
 }
 
 

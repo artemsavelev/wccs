@@ -10,11 +10,13 @@ export default {
         updateOrdersMutation(state, orders) {
             state.orders = orders;
         },
+
         addOrderMutation(state, orders) {
             state.orders = [
                 ...state.orders,
                 orders
             ];
+            // console.log(state.orders)
         },
 
         fetchOrderPageMutation(state, orders) {
@@ -31,13 +33,15 @@ export default {
         updateTotalPagesMutation(state, totalPages) {
             state.totalPages = totalPages
         },
+
         updateCurrentPageMutation(state, currentPage) {
             state.currentPage = currentPage
         }
     },
     actions: {
         async fetchOrders({commit}) {
-            try {
+
+            try{
 
                 const data = await req.request(api.API_ORDER_URL);
                 commit('updateOrdersMutation', data.orders);
@@ -45,35 +49,58 @@ export default {
                 commit('updateCurrentPageMutation', Math.min(data.currentPage, data.totalPages))
 
             } catch (e) {
-                throw new e
-            }
-        },
-
-        async addOrder({commit}, order) {
-            const data = await req.request(api.API_ORDER_URL, 'POST', order);
-            // const index = state.orders.findIndex(item => item.id === data.id);
-            // console.log(index);
-            commit('addOrderMutation', data)
-        },
-
-        async loadPage({commit, state}) {
-            try {
-                const data = await req.request(api.API_ORDER_PAGE_URL + (state.currentPage + 1));
-                commit('fetchOrderPageMutation', data.orders)
-                commit('updateTotalPagesMutation', data.totalPages)
-                commit('updateCurrentPageMutation', Math.min(data.currentPage, data.totalPages))
-            } catch (e) {
-                // console.warn(e.message)
 
                 const dataError = {
-                    message: 'Error "' + e.message + '".',
-                    color: 'warning',
-                    icon: 'mdi-alert'
+                    message: 'Error "' + e.message + '"',
+                    color: 'error',
+                    icon: 'mdi-alert-circle'
                 }
 
                 await store.dispatch('showSnack', dataError)
             }
 
+        },
+
+        async addOrder({commit}, order) {
+
+            try {
+
+                const data = await req.request(api.API_ORDER_URL, 'POST', order)
+                // const index = state.orders.findIndex(item => item.id === data.id);
+                // console.log(index);
+                commit('addOrderMutation', data)
+
+            } catch (e) {
+
+                const dataError = {
+                    message: 'Error "' + e.message + '"',
+                    color: 'error',
+                    icon: 'mdi-alert-circle'
+                }
+
+                await store.dispatch('showSnack', dataError)
+            }
+
+        },
+
+        async loadPage({commit, state}) {
+            try {
+
+                const data = await req.request(api.API_ORDER_PAGE_URL + (state.currentPage + 1))
+                commit('fetchOrderPageMutation', data.orders)
+                commit('updateTotalPagesMutation', data.totalPages)
+                commit('updateCurrentPageMutation', Math.min(data.currentPage, data.totalPages))
+
+            } catch (e) {
+
+                const dataError = {
+                    message: 'Error "' + e.message + '". Записей больше нет.',
+                    color: 'info',
+                    icon: 'mdi-information-variant'
+                }
+
+                await store.dispatch('showSnack', dataError)
+            }
 
         }
 

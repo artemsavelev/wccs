@@ -3,80 +3,82 @@
 
     <AddUser/>
 
+    <AddComponent/>
+
     <div class="ml-10 mr-10">
 
-      <div class="font-weight-bold">
-        {{ env.sectionDevice }}
-      </div>
+<!--      <div class="font-weight-bold">-->
+<!--        {{ env.sectionDevice }}-->
+<!--      </div>-->
 
-      <v-col cols="4">
-        <v-text-field
-            v-model="searchDevice"
-            append-icon="mdi-magnify"
-            label="Поиск"
-            single-line
-            clearable
-            hide-details
-        ></v-text-field>
-      </v-col>
-      <v-data-table
-          dense
-          show-select
-          :headers="headers"
-          :items="allDevices"
-          :items-per-page="10"
-          :search="searchDevice"
-          class="elevation-1 mb-10"
-      ></v-data-table>
+<!--      <v-col cols="4">-->
+<!--        <v-text-field-->
+<!--            v-model="searchDevice"-->
+<!--            append-icon="mdi-magnify"-->
+<!--            label="Поиск"-->
+<!--            single-line-->
+<!--            clearable-->
+<!--            hide-details-->
+<!--        ></v-text-field>-->
+<!--      </v-col>-->
+<!--      <v-data-table-->
+<!--          dense-->
+<!--          show-select-->
+<!--          :headers="headers"-->
+<!--          :items="allDevices"-->
+<!--          :items-per-page="10"-->
+<!--          :search="searchDevice"-->
+<!--          class="elevation-1 mb-10"-->
+<!--      ></v-data-table>-->
 
-      <div class="font-weight-bold">
-        {{ env.sectionMaterial }}
-      </div>
+<!--      <div class="font-weight-bold">-->
+<!--        {{ env.sectionMaterial }}-->
+<!--      </div>-->
 
-      <v-col cols="4">
-        <v-text-field
-            v-model="searchMaterial"
-            append-icon="mdi-magnify"
-            label="Поиск"
-            single-line
-            clearable
-            hide-details
-        ></v-text-field>
-      </v-col>
-      <v-data-table
-          dense
-          show-select
-          :headers="headers"
-          :items="allMaterials"
-          :items-per-page="10"
-          :search="searchMaterial"
-          class="elevation-1 mb-10"
-      ></v-data-table>
+<!--      <v-col cols="4">-->
+<!--        <v-text-field-->
+<!--            v-model="searchMaterial"-->
+<!--            append-icon="mdi-magnify"-->
+<!--            label="Поиск"-->
+<!--            single-line-->
+<!--            clearable-->
+<!--            hide-details-->
+<!--        ></v-text-field>-->
+<!--      </v-col>-->
+<!--      <v-data-table-->
+<!--          dense-->
+<!--          show-select-->
+<!--          :headers="headers"-->
+<!--          :items="allMaterials"-->
+<!--          :items-per-page="10"-->
+<!--          :search="searchMaterial"-->
+<!--          class="elevation-1 mb-10"-->
+<!--      ></v-data-table>-->
 
-      <div class="font-weight-bold">
-        {{ env.sectionWork }}
-      </div>
+<!--      <div class="font-weight-bold">-->
+<!--        {{ env.sectionWork }}-->
+<!--      </div>-->
 
-      <v-col cols="4">
-        <v-text-field
-            v-model="searchWork"
-            append-icon="mdi-magnify"
-            label="Поиск"
-            single-line
-            clearable
-            hide-details
-        ></v-text-field>
-      </v-col>
-      <v-data-table
-          dense
-          show-select
-          isSelected="true"
-          :headers="headers"
-          :items="allWorks"
-          :items-per-page="10"
-          :search="searchWork"
-          class="elevation-1"
-      ></v-data-table>
+<!--      <v-col cols="4">-->
+<!--        <v-text-field-->
+<!--            v-model="searchWork"-->
+<!--            append-icon="mdi-magnify"-->
+<!--            label="Поиск"-->
+<!--            single-line-->
+<!--            clearable-->
+<!--            hide-details-->
+<!--        ></v-text-field>-->
+<!--      </v-col>-->
+<!--      <v-data-table-->
+<!--          dense-->
+<!--          show-select-->
+<!--          isSelected="true"-->
+<!--          :headers="headers"-->
+<!--          :items="allWorks"-->
+<!--          :items-per-page="10"-->
+<!--          :search="searchWork"-->
+<!--          class="elevation-1"-->
+<!--      ></v-data-table>-->
 
     </div>
   </div>
@@ -86,10 +88,11 @@
 import {mapActions, mapGetters} from "vuex";
 import env from "../../env.config.json"
 import AddUser from "@/components/AddUser";
+import AddComponent from "@/components/AddComponent";
 
 export default {
   name: "Admin",
-  components: {AddUser},
+  components: {AddComponent, AddUser},
   computed: mapGetters(['allDevices', 'allMaterials', 'allWorks', 'profile']),
 
 

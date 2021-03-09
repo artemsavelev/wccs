@@ -7,13 +7,13 @@
                   rows="4"
                   name="input-1"
                   v-model="workDescription"
-                  label="Описание работ"></v-textarea>
+                  :label="env.typeWork"></v-textarea>
 
       <v-textarea outlined
                   :auto-grow="true"
                   rows="3"
                   name="input-2"
-                  label="Примечание"
+                  :label="env.note"
                   v-model="visibleComment"></v-textarea>
       <v-btn class="" v-on:click="add" small color="primary" tile>{{ env.keyAdd }}</v-btn>
     </v-col>
@@ -40,9 +40,9 @@ export default {
       comment: this.visibleComment
     }
   },
+
   methods: {
     add() {
-
 
       const description = {
         workDescription: this.workDescription,
@@ -50,6 +50,7 @@ export default {
       }
 
       this.$emit('add', description)
+
     },
   }
 }

@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 
@@ -16,13 +17,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final JwtTokenProvider jwtTokenProvider;
 
-    private static final String ROOT_ENDPOINT = "/**";
+    private static final String ROOT_FRONT_ENDPOINT = "/**";
+    private static final String ADMIN_FRONT_ENDPOINT = "**/admin";
+
     private static final String ADMIN_ENDPOINT = "/api/v1/admin/**";
     private static final String SUPERUSER_ENDPOINT = "/api/v1/super/**";
     private static final String USER_ENDPOINT = "/api/v1/user/**";
     private static final String LOGIN_ENDPOINT = "/api/v1/auth/login";
     private static final String REGISTRATION_ENDPOINT = "/api/v1/auth/registration";
     private static final String FILE_PATH = "/api/v1/estimate/files/**";
+    private static final String WS_ENDPOINT = "/gs-guide-websocket/**";
+
 
     @Autowired
     public SecurityConfig(JwtTokenProvider jwtTokenProvider) {
@@ -41,10 +46,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .httpBasic().disable()
                 .csrf().disable()
+                .cors().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers(ROOT_ENDPOINT, LOGIN_ENDPOINT, FILE_PATH).permitAll()
+                .antMatchers(ROOT_FRONT_ENDPOINT).permitAll()
+                .antMatchers(LOGIN_ENDPOINT, FILE_PATH).permitAll()
                 .antMatchers(USER_ENDPOINT).hasRole("USER")
                 .antMatchers(ADMIN_ENDPOINT, REGISTRATION_ENDPOINT).hasRole("ADMIN")
                 .antMatchers(SUPERUSER_ENDPOINT).hasRole("SUPERUSER")
@@ -53,6 +60,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .apply(new JwtConfigurer(jwtTokenProvider));
 
     }
+
+
 
 
 }

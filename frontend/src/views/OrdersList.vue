@@ -5,7 +5,7 @@
       <OrderItem v-for="order in allOrders"
                  :key="order.id"
                  v-bind:order="order"
-                 v-on:remove="removeOrder"
+                 v-on:removeOrder="removeOrder"
                  v-on:edit="editOrder"/>
 
 
@@ -26,14 +26,17 @@ export default {
   name: "OrdersList",
   computed: mapGetters(['allOrders', 'profile']),
   components: { LazyLoader, OrderItem },
+
+
   data: () => ({
-    ...mapActions(['fetchOrders']),
+
+    ...mapActions(['fetchOrders', 'showSnack']),
+
     env,
     loading: false
   }),
   methods: {
 
-    ...mapActions(['showSnack']),
 
     editOrder(id) {
       const data = {
@@ -58,6 +61,7 @@ export default {
     }
   },
   mounted() {
+
     this.fetchOrders().then(() => {
       this.loading = true
     })

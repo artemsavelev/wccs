@@ -16,21 +16,19 @@
 import NavBar from "./components/NavBar";
 const Notifier = () => import('@/components/Notifier');
 import {mapGetters, mapMutations} from "vuex";
-import {addHandler} from "@/utils/ws";
+// import {addHandler} from "@/utils/ws";
 
 export default {
   name: 'App',
   components: { NavBar, Notifier },
   computed: mapGetters(['profile']),
   methods: mapMutations(['addOrderMutation']),
-  created() {
-    addHandler(data => {
-
-
-
-      this.addOrderMutation(data.body)
-    })
-  },
+  // created() {
+  //   addHandler(data => {
+  //     console.log(data)
+  //     this.addOrderMutation(data.body)
+  //   })
+  // },
   mounted() {
     const theme = localStorage.getItem('darkTheme');
     if (theme) {
@@ -42,7 +40,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import "./assets/styles/styles";
+@import "src/assets/styles/styles";
 
 #app {
   @include font-montserrat;

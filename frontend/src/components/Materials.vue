@@ -58,7 +58,7 @@ export default {
       this.$emit('transmit', this.materials)
 
       const data = {
-        message: 'Запись с именем - "' + item + '" удалена из конструктора.',
+        message: 'Запись с наименованием - "' + item + '" удалена из конструктора.',
         color: 'warning',
         icon: 'mdi-alert'
       }

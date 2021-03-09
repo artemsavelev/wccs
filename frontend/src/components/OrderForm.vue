@@ -21,48 +21,60 @@
 
       <v-card-text>
 
+        <div class="font-weight-light">
+          {{ env.fields }}
+        </div>
+
+        <v-form
+            ref="form"
+            v-model="valid"
+            lazy-validation>
+
           <v-col cols="12" class="pa-0">
             <v-text-field
+                :rules="rules"
                 class="pt-10"
                 dense
-                label="Номер заявки"
+                :label="env.numberOrder + '*'"
+                required
                 v-model="extId"/>
           </v-col>
 
           <v-col cols="12" class="pa-0">
             <v-text-field
+                :rules="rules"
                 dense
                 class="pt-5"
-                label="Заказчик"
+                :label="env.customer + '*'"
+                required
                 v-model="customer"/>
           </v-col>
 
           <v-col cols="12" class="pa-0">
             <v-text-field
+                :rules="rules"
                 dense
                 class="pt-5"
-                label="Адрес"
-                v-model="address" />
+                :label="env.address + '*'"
+                required
+                v-model="address"/>
           </v-col>
-
-
 
         <v-card-actions class="pa-0">
           <v-btn v-on:click="save" color="primary" class="mt-5" tile>{{ env.keySave }}</v-btn>
         </v-card-actions>
+        </v-form>
       </v-card-text>
 
     </v-card>
   </v-dialog>
-
-
 
   </div>
 </template>
 
 <script>
 import env from "../../env.config.json"
-import { mapActions, mapGetters } from "vuex";
+import {mapActions, mapGetters} from "vuex";
 // import {sendMessage} from "@/utils/ws";
 
 
@@ -72,12 +84,14 @@ export default {
     ...mapGetters(['profile']),
 
     formTitle() {
-      return this.editedIndex === -1 ? env.title[0] : 'Редактирование записи '
+      return this.editedIndex === -1 ? env.title[0] : env.title[3]
     },
   },
   data() {
     return {
       env,
+      valid: true,
+      rules: [value => !!value || env.rules[0]],
       message: '',
       color: '',
       dialog: false,
@@ -104,22 +118,19 @@ export default {
 
       if (this.extId && this.customer && this.address) {
 
-
+        this.$refs.form.resetValidation()
         // sendMessage(order)
         this.addOrder(order)
 
         this.dialog = false
 
-        const data = {
-          message: 'Запись #' + this.extId  + ' Заказчик:' + this.customer + ' Адрес:' + this.address + ' добавлена',
-          color: 'success'
-        }
-
-        this.showSnack(data)
-
         this.extId = ''
         this.customer = ''
         this.address = ''
+
+      } else {
+
+        this.$refs.form.validate()
 
       }
 

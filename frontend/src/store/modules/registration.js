@@ -1,5 +1,5 @@
-import req from "@/store/request";
-import api from "@/api/backendApi";
+import req from '@/store/request'
+import api from '@/api/backendApi'
 
 
 export default {
@@ -16,6 +16,7 @@ export default {
 
             const data = await req.request(api.API_REGISTRATION_URL, 'POST', user)
             commit('addUserMutation', data)
+
         },
     },
     getters: {

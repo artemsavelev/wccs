@@ -3,18 +3,24 @@ import store from '@/store'
 
 export default {
     async request(url, method = 'GET', data = null) {
+
         try {
+
             const user = JSON.parse(localStorage.getItem('user'));
             const headers = {}
             let body
 
             if (data) {
+
                 headers['Content-type'] = 'application/json'
                 headers['Authorization'] = 'bearer_' + user.token
                 body = JSON.stringify(data)
+
             } else {
+
                 headers['Content-type'] = 'application/json'
                 headers['Authorization'] = 'bearer_' + user.token
+
             }
 
             const response = await fetch(url, {
@@ -23,16 +29,22 @@ export default {
                 body
             })
 
+
             if (response.ok) {
 
-                // const data = {
-                //     message: 'Status code - ' + response.status + ': Данные успешно добавлены.',
-                //     color: 'success'
-                // }
-                //
-                // await store.dispatch('showSnack', data)
+                if (data) {
+                    const dataSuccess = {
+                        message: 'Status code - ' + response.status + ': Данные ' + Object.values(data) + ' успешно добавлены.',
+                        color: 'success',
+                        icon: 'mdi-check-circle'
+                    }
+
+                    await store.dispatch('showSnack', dataSuccess)
+                }
 
                 return await response.json()
+
+
             } else {
 
                 await response.json().then((e) => {
@@ -42,6 +54,7 @@ export default {
                         color: 'error',
                         icon: 'mdi-alert-circle'
                     }
+
                     store.dispatch('showSnack', dataError)
 
                 })
@@ -51,9 +64,18 @@ export default {
 
         } catch (e) {
 
-            // console.warn(e)
 
+            const dataError = {
+                message: 'Error code - ' + e.status + ': С сообщением "' + e.message + '".',
+                color: 'error',
+                icon: 'mdi-alert-circle'
+            }
+
+            await store.dispatch('showSnack', dataError)
+            // console.log(e)
+            throw new e
         }
+
     }
 
 

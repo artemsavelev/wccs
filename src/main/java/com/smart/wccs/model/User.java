@@ -37,7 +37,7 @@ public class User extends BaseEntity {
     @JsonView(Views.AdminView.class)
     private List<Role> roles;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "department_id")
     @JsonView({Views.UserView.class, Views.AdminView.class})
     private Department department;
@@ -50,4 +50,8 @@ public class User extends BaseEntity {
     private List<Position> positions;
 
 
+    @Override
+    public String toString() {
+        return username;
+    }
 }
