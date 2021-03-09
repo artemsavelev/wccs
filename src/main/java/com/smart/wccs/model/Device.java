@@ -30,7 +30,7 @@ public class Device extends BaseEntity implements Components {
     @JsonView({Views.UserView.class, Views.AdminView.class})
     private String note;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "devices_departments",
             joinColumns = @JoinColumn(name = "device_id"),
             inverseJoinColumns = @JoinColumn(name = "department_id"))

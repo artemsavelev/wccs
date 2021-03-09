@@ -14,7 +14,10 @@ export default {
             state.devices = devices;
         },
         addDeviceMutation(state, device) {
-            state.devices = device
+            state.devices = [
+                ...state.devices,
+                device
+            ]
         },
 
         // materials
@@ -22,7 +25,10 @@ export default {
             state.materials = materials;
         },
         addMaterialMutation(state, materials) {
-            state.materials = materials
+            state.materials = [
+                ...state.materials,
+                materials
+            ]
         },
 
         // works
@@ -30,7 +36,10 @@ export default {
             state.works = works;
         },
         addWorkMutation(state, works) {
-            state.works = works
+            state.works = [
+                ...state.works,
+                works
+            ]
         }
     },
     actions: {

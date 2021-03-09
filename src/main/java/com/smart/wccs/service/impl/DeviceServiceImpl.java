@@ -1,7 +1,10 @@
 package com.smart.wccs.service.impl;
 
+import com.smart.wccs.model.Department;
 import com.smart.wccs.model.Device;
+import com.smart.wccs.model.Role;
 import com.smart.wccs.model.Status;
+import com.smart.wccs.repo.DepartmentRepo;
 import com.smart.wccs.repo.DeviceRepo;
 import com.smart.wccs.repo.UserRepo;
 import com.smart.wccs.service.DeviceService;
@@ -12,6 +15,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,13 +25,14 @@ public class DeviceServiceImpl implements DeviceService {
 
     private final DeviceRepo deviceRepo;
     private final UserRepo userRepo;
+    private final DepartmentRepo departmentRepo;
 
     @Autowired
-    public DeviceServiceImpl(DeviceRepo deviceRepo, UserRepo userRepo) {
+    public DeviceServiceImpl(DeviceRepo deviceRepo, UserRepo userRepo, DepartmentRepo departmentRepo) {
         this.deviceRepo = deviceRepo;
         this.userRepo = userRepo;
+        this.departmentRepo = departmentRepo;
     }
-
 
     @Override
     public List<Device> getAllDevice() {
@@ -55,10 +60,19 @@ public class DeviceServiceImpl implements DeviceService {
 
     @Override
     public void create(Device device) {
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String name = auth.getName();
+
+        Department department = departmentRepo.findDepartmentById(userRepo.findByUsername(name).getDepartment().getId());
+        List<Department> devicesDepartments = new ArrayList<>();
+        devicesDepartments.add(department);
+
         device.setCreatedDate(LocalDateTime.now());
         device.setStatus(Status.ACTIVE);
+        device.setDepartments(devicesDepartments);
         Device createdDevice = deviceRepo.save(device);
-        log.info("IN create - device: {} successfully added", createdDevice);
+        log.info("IN create - device: {} successfully added for department: {}", createdDevice, createdDevice.getDepartments());
     }
 
     @Override

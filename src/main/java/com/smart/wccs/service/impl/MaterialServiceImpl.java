@@ -1,7 +1,9 @@
 package com.smart.wccs.service.impl;
 
+import com.smart.wccs.model.Department;
 import com.smart.wccs.model.Material;
 import com.smart.wccs.model.Status;
+import com.smart.wccs.repo.DepartmentRepo;
 import com.smart.wccs.repo.MaterialRepo;
 import com.smart.wccs.repo.UserRepo;
 import com.smart.wccs.service.MaterialService;
@@ -12,6 +14,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,11 +24,13 @@ public class MaterialServiceImpl implements MaterialService {
 
     private final MaterialRepo materialRepo;
     private final UserRepo userRepo;
+    private final DepartmentRepo departmentRepo;
 
     @Autowired
-    public MaterialServiceImpl(MaterialRepo materialRepo, UserRepo userRepo) {
+    public MaterialServiceImpl(MaterialRepo materialRepo, UserRepo userRepo, DepartmentRepo departmentRepo) {
         this.materialRepo = materialRepo;
         this.userRepo = userRepo;
+        this.departmentRepo = departmentRepo;
     }
 
 
@@ -55,10 +60,19 @@ public class MaterialServiceImpl implements MaterialService {
 
     @Override
     public void create(Material material) {
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String name = auth.getName();
+
+        Department department = departmentRepo.findDepartmentById(userRepo.findByUsername(name).getDepartment().getId());
+        List<Department> materialsDepartments = new ArrayList<>();
+        materialsDepartments.add(department);
+
         material.setCreatedDate(LocalDateTime.now());
         material.setStatus(Status.ACTIVE);
+        material.setDepartments(materialsDepartments);
         Material createdMaterial = materialRepo.save(material);
-        log.info("IN create - material: {} successfully added", createdMaterial);
+        log.info("IN create - material: {} successfully added  for department: {}", createdMaterial, createdMaterial.getDepartments());
 
     }
 

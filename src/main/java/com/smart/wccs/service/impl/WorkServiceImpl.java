@@ -1,7 +1,9 @@
 package com.smart.wccs.service.impl;
 
+import com.smart.wccs.model.Department;
 import com.smart.wccs.model.Status;
 import com.smart.wccs.model.Work;
+import com.smart.wccs.repo.DepartmentRepo;
 import com.smart.wccs.repo.UserRepo;
 import com.smart.wccs.repo.WorkRepo;
 import com.smart.wccs.service.WorkService;
@@ -12,6 +14,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,11 +24,13 @@ public class WorkServiceImpl implements WorkService {
 
     private final WorkRepo workRepo;
     private final UserRepo userRepo;
+    private final DepartmentRepo departmentRepo;
 
     @Autowired
-    public WorkServiceImpl(WorkRepo workRepo, UserRepo userRepo) {
+    public WorkServiceImpl(WorkRepo workRepo, UserRepo userRepo, DepartmentRepo departmentRepo) {
         this.workRepo = workRepo;
         this.userRepo = userRepo;
+        this.departmentRepo = departmentRepo;
     }
 
     @Override
@@ -55,10 +60,20 @@ public class WorkServiceImpl implements WorkService {
 
     @Override
     public void create(Work work) {
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String name = auth.getName();
+
+        Department department = departmentRepo.findDepartmentById(userRepo.findByUsername(name).getDepartment().getId());
+        List<Department> workDepartments = new ArrayList<>();
+        workDepartments.add(department);
+
+
         work.setCreatedDate(LocalDateTime.now());
         work.setStatus(Status.ACTIVE);
+        work.setDepartments(workDepartments);
         Work createdWork = workRepo.save(work);
-        log.info("IN create - work: {} successfully added", createdWork);
+        log.info("IN create - work: {} successfully added for department: {}", createdWork, createdWork.getDepartments());
 
     }
 

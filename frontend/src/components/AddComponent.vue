@@ -54,10 +54,8 @@
 
             <v-col cols="2" sm="1" md="1">
               <v-text-field
-                  return-masked-value
                   :disabled="!select"
                   :rules="rulesPrice"
-                  mask="### ### ###.##"
                   dense
                   class="pt-5"
                   :label="env.price + '*'"
@@ -77,7 +75,10 @@
             </v-col>
           </v-row>
 
-          <v-btn v-on:click="saveUser" color="primary" class="ml-3" tile>{{ env.keySave }}</v-btn>
+          <v-btn v-on:click="saveUser"
+                 :disabled="!select"
+                 color="primary"
+                 class="ml-3" tile>{{ env.keySave }}</v-btn>
         </v-form>
 
       </div>
@@ -123,11 +124,7 @@ export default {
         value => (value && value.length >= 3) || env.rules[1],
       ],
 
-  // :rules="{
-  //   required: true,
-  //       digits: 7,
-  //       regex: '^(71|72|74|76|81|82|84|85|86|87|88|89)\\d{5}$'
-  // }"
+
 
     }
   },
@@ -145,7 +142,6 @@ export default {
       }
 
 
-      console.log(this.select)
 
       if (this.name && this.dimension && this.price) {
 
