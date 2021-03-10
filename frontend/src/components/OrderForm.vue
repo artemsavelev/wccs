@@ -3,7 +3,11 @@
   <v-dialog v-if="profile" v-model="dialog" scrollable persistent max-width="600px">
 
     <template v-slot:activator="{ on }" class="mt-10">
-      <v-btn :disabled="$route.path === '/profile' || $route.path === '/admin' || $route.path === '/settings'"
+      <v-btn
+          :disabled="$route.path === '/profile' ||
+                     $route.path === '/admin' ||
+                     $route.path === '/settings' ||
+                     $route.path === '/system'"
              dark v-on="on"
              text tile>
         {{ env.keyCreate }}

@@ -11,6 +11,8 @@
     <v-btn v-if="profile" v-on:click="settings" :disabled="$route.path === '/settings'" text tile>{{ env.keySetting }}</v-btn>
     <v-btn class="mr-10" v-if="profile && this.isRoleAdmin"
            v-on:click="admin" :disabled="$route.path === '/admin'" text tile>{{ env.keyAdministration }}</v-btn>
+    <v-btn class="mr-10" v-if="profile && this.isRoleSuper"
+           v-on:click="system" :disabled="$route.path === '/system'" text tile>{{ env.keySystem }}</v-btn>
     <v-btn v-if="profile" v-on:click="logout" text tile>
       <v-icon>mdi-exit-to-app</v-icon>
     </v-btn>
@@ -38,7 +40,8 @@ export default {
       ordersList: [],
       dialog: false,
       search:'',
-      isRoleAdmin: false
+      isRoleAdmin: false,
+      isRoleSuper: false
     }
   },
 
@@ -47,6 +50,14 @@ export default {
       this.profile.role.filter(r => {
         if (r.id === 2) {
           return this.isRoleAdmin = true
+        }
+      })
+    }
+
+    if (this.profile) {
+      this.profile.role.filter(r => {
+        if (r.id === 3) {
+          return this.isRoleSuper = true
         }
       })
     }
@@ -63,6 +74,9 @@ export default {
     },
     admin() {
       this.$router.push('/admin')
+    },
+    system() {
+      this.$router.push('/system')
     },
     async logout() {
       await this.$store.dispatch('logout');

@@ -94,7 +94,7 @@
               </div>
 
               <div class="col-action-section">
-                <v-btn icon v-on:click="add">
+                <v-btn icon v-on:click="add(item)">
                   <v-icon color="iconLight">mdi-plus</v-icon>
                 </v-btn>
               </div>
@@ -148,9 +148,8 @@ export default {
     }
   },
   methods: {
-    add() {
-
-
+    add(item) {
+      console.log(item.id)
     }
   }
 }

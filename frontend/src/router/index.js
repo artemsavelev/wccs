@@ -40,6 +40,12 @@ const routes = [
     name: 'Admin',
     meta: { auth: true },
     component: () => import('@/views/Admin.vue')
+  },
+  {
+    path: '/system',
+    name: 'System',
+    meta: { auth: true },
+    component: () => import('@/views/System.vue')
   }
 
 ];
