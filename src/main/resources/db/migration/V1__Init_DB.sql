@@ -189,8 +189,8 @@ INSERT INTO public.department (created_date, status, updated_date, name) VALUES 
 
 
 -- create user
-INSERT INTO public.users (username, first_name, last_name, email, password, created_date, updated_date, status, department_id) VALUES ('artem', 'Артем', 'Савельев', 'test@test.com', '$2y$12$3mufhhEhusW.Ccyx60xKq.5ncQUAXT3G9Xg/KyQU8vKogpR7nj2qW', CURRENT_TIMESTAMP AT TIME ZONE 'Europe/Moscow', CURRENT_TIMESTAMP AT TIME ZONE 'Europe/Moscow', 'ACTIVE', 1);
-
+INSERT INTO public.users (username, first_name, last_name, email, password, created_date, updated_date, status, department_id) VALUES ('artem', 'Артем', 'Савельев', 'savelev@smart.spb.ru', '$2y$12$3mufhhEhusW.Ccyx60xKq.5ncQUAXT3G9Xg/KyQU8vKogpR7nj2qW', CURRENT_TIMESTAMP AT TIME ZONE 'Europe/Moscow', CURRENT_TIMESTAMP AT TIME ZONE 'Europe/Moscow', 'ACTIVE', 1);
+INSERT INTO public.users (created_date, status, updated_date, email, first_name, last_name, password, username, department_id) VALUES (CURRENT_TIMESTAMP AT TIME ZONE 'Europe/Moscow', 'ACTIVE', CURRENT_TIMESTAMP AT TIME ZONE 'Europe/Moscow', 'popov.a@smart.spb.ru', 'Алексей', 'Попов', '$2a$10$pK.VuAcBYRzLvDKvd.OUsOjeXPaWEYTYoSqoRyOgBdvs1f.WzoB8K', 'ПоповАВ', 1);
 
 -- create roles
 INSERT INTO public.roles (roles, created_date, updated_date, status) VALUES ('ROLE_USER', CURRENT_TIMESTAMP AT TIME ZONE 'Europe/Moscow', CURRENT_TIMESTAMP AT TIME ZONE 'Europe/Moscow', 'ACTIVE');
@@ -201,7 +201,7 @@ INSERT INTO public.roles (roles, created_date, updated_date, status) VALUES ('RO
 INSERT INTO public.users_roles (user_id, role_id) VALUES (1, 1);
 INSERT INTO public.users_roles (user_id, role_id) VALUES (1, 2);
 INSERT INTO public.users_roles (user_id, role_id) VALUES (1, 3);
-
+INSERT INTO public.users_roles (user_id, role_id) VALUES (2, 1);
 
 -- create positions
 INSERT INTO public.positions (created_date, status, updated_date, name) VALUES (CURRENT_TIMESTAMP AT TIME ZONE 'Europe/Moscow', 'ACTIVE', null, 'Старший инженер');

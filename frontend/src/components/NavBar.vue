@@ -9,7 +9,7 @@
     <v-btn v-if="profile" v-on:click="orders" :disabled="$route.path === '/'" text tile>{{ env.keyOrder }}</v-btn>
     <v-btn v-if="profile" v-on:click="userProfile" :disabled="$route.path === '/profile'" text tile>{{ env.keyProfile }}</v-btn>
     <v-btn v-if="profile" v-on:click="settings" :disabled="$route.path === '/settings'" text tile>{{ env.keySetting }}</v-btn>
-    <v-btn class="mr-10" v-if="profile && this.isRoleAdmin"
+    <v-btn v-if="profile && this.isRoleAdmin"
            v-on:click="admin" :disabled="$route.path === '/admin'" text tile>{{ env.keyAdministration }}</v-btn>
     <v-btn class="mr-10" v-if="profile && this.isRoleSuper"
            v-on:click="system" :disabled="$route.path === '/system'" text tile>{{ env.keySystem }}</v-btn>

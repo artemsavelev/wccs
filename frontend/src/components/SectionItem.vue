@@ -94,7 +94,7 @@ export default {
         done: this.styleAddedItem.done = 'color: #F8425F;'
       }
 
-      localStorage.setItem(this.extId + '_' + this.item.name, JSON.stringify(this.styleAddedItem));
+      // localStorage.setItem(this.extId + '_' + this.item.name, JSON.stringify(this.styleAddedItem));
       this.$emit('transmitItemInModalForm', item)
     }
   },
