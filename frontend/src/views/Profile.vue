@@ -21,13 +21,18 @@
             <v-list-item-content>
               <v-list-item-title class="title">{{profile.lastName}} {{profile.firstName}}</v-list-item-title>
               <v-list-item-subtitle>{{ env.login }}: {{ profile.username }}</v-list-item-subtitle>
-              <v-list-item-subtitle>{{ env.email }}: {{ profile.email }}</v-list-item-subtitle>
               <v-list-item-subtitle>{{ env.department }}: {{ profile.department.name }}</v-list-item-subtitle>
               <v-list-item-subtitle>{{ env.position }}:
                 <span v-for="(pos, i) in profile.position"
                       :key="i + 1">
                   <span>{{ pos.name }} </span>
                 </span></v-list-item-subtitle>
+              <v-list-item-subtitle>{{ env.email }}:
+                <a class="blue--text"
+                   :href="`mailto:${profile.email}`"
+                   target="_blank"
+                >{{ profile.email }}</a>
+              </v-list-item-subtitle>
               <v-list-item-subtitle>{{profile.roles}}</v-list-item-subtitle>
             </v-list-item-content>
 

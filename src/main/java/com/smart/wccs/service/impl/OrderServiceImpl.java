@@ -15,6 +15,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
@@ -79,7 +80,7 @@ public class OrderServiceImpl implements OrderService {
         Order orderFromDb = orderRepo.findById(order.getId()).orElse(null);
         assert orderFromDb != null;
         orderFromDb.setExtId(order.getExtId());
-        orderFromDb.setUpdatedDate(new Date());
+        orderFromDb.setUpdatedDate(LocalDateTime.now());
         orderFromDb.setCustomer(order.getCustomer());
         orderFromDb.setAddress(order.getAddress());
 

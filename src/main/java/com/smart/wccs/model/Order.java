@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @EqualsAndHashCode(callSuper = true)
@@ -31,7 +32,7 @@ public class Order extends BaseEntity {
 
     @JsonView({Views.UserView.class, Views.AdminView.class})
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date verificationDate;
+    private LocalDateTime verificationDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "verification_name_id")

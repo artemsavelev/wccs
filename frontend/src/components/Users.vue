@@ -57,9 +57,6 @@
             <h3 class="headline mb-2">
               {{ selected.name }}
             </h3>
-            <div class="blue--text mb-2">
-              {{ selected.email }}
-            </div>
             <div class="blue--text subheading font-weight-bold">
               {{ selected.username }}
             </div>
@@ -74,30 +71,37 @@
                 tag="strong"
                 cols="5"
             >
-              Company:
+              Отдел:
             </v-col>
-            <v-col>{{ selected.company.name }}</v-col>
+            <v-col>{{ selected.department.name }}</v-col>
             <v-col
                 class="text-right mr-4 mb-2"
                 tag="strong"
                 cols="5"
             >
-              Website:
+              Должность:
             </v-col>
             <v-col>
-              <a
-                  :href="`//${selected.website}`"
-                  target="_blank"
-              >{{ selected.website }}</a>
+              <span v-for="(pos, i) in selected.positions"
+                    :key="i">
+
+                <span>{{ pos.name }} </span>
+              </span>
             </v-col>
             <v-col
                 class="text-right mr-4 mb-2"
                 tag="strong"
                 cols="5"
             >
-              Phone:
+              Email:
             </v-col>
-            <v-col>{{ selected.phone }}</v-col>
+            <v-col>
+              <a class="blue--text"
+                 :href="`mailto:${selected.email}`"
+                 target="_blank"
+              >{{ selected.email }}</a>
+            </v-col>
+
           </v-row>
         </v-card>
       </v-scroll-y-transition>
@@ -107,6 +111,7 @@
 </template>
 
 <script>
+import env from '../../env.config.json'
 
 const avatars = [
   '?accessoriesType=Blank&avatarStyle=Circle&clotheColor=PastelGreen&clotheType=ShirtScoopNeck&eyeType=Wink&eyebrowType=UnibrowNatural&facialHairColor=Black&facialHairType=MoustacheMagnum&hairColor=Platinum&mouthType=Concerned&skinColor=Tanned&topType=Turban',
@@ -122,6 +127,7 @@ export default {
 
 
     data: () => ({
+      env,
       active: [],
       avatar: null,
       open: [],
@@ -130,10 +136,13 @@ export default {
 
     computed: {
       items () {
+
+
+
         return [
           {
-            name: 'Users',
-            children: this.users,
+            name:  env.listUsers,
+            children: this.users
           },
         ]
       },
@@ -156,9 +165,23 @@ export default {
         // you've made optimizations! :)
         await pause(1)
 
-        return fetch('https://jsonplaceholder.typicode.com/users')
-            .then(res => res.json())
-            .then(json => (item.children.push(...json)))
+        const user = JSON.parse(localStorage.getItem('user'));
+        const headers = {}
+        headers['Content-type'] = 'application/json'
+        headers['Authorization'] = 'bearer_' + user.token
+
+
+        return fetch('http://localhost:8080/api/v1/super/users', {
+          headers
+        })
+            .then(res =>
+              res.json()
+            )
+            .then(json => {
+              (item.children.push(...json))
+              // console.log(json)
+            })
+
             .catch(err => console.warn(err))
       },
       randomAvatar () {

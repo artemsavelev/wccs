@@ -7,15 +7,12 @@ import com.smart.wccs.repo.RoleRepo;
 import com.smart.wccs.repo.UserRepo;
 import com.smart.wccs.service.UserService;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -43,7 +40,7 @@ public class UserServiceImpl implements UserService {
         user.setRoles(userRoles);
         user.setStatus(Status.ACTIVE);
         user.setCreatedDate(LocalDateTime.now());
-        user.setUpdatedDate(new Date());
+        user.setUpdatedDate(LocalDateTime.now());
 
         User registeredUser = userRepo.save(user);
 

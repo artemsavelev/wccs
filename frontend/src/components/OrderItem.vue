@@ -15,7 +15,7 @@
           ID: {{ order.extId }}
         </div>
 
-        <div v-if="order.updatedDate === null" class="order-cols col-created-date pa-0">
+        <div v-if="!order.updatedDate" class="order-cols col-created-date pa-0">
           <v-tooltip bottom>
             <template v-slot:activator="{ on }">
               <span v-on="on">{{ order.createdDate }}</span>
@@ -29,7 +29,7 @@
             <template v-slot:activator="{ on }">
               <span v-on="on">{{ order.updatedDate }}</span>
             </template>
-            <span>Дата создания: {{ order.updatedDate }}</span>
+            <span>Дата обновления: {{ order.updatedDate }}</span>
           </v-tooltip>
         </div>
 
@@ -103,6 +103,8 @@ import Estimate from '@/components/Estimate'
 export default {
   name: 'OrderItem',
   props: ['order', 'editOrder', 'delOrder'],
+  computed: {
+  },
   components: { Estimate },
   methods: {
 

@@ -21,8 +21,6 @@ export default {
                 state.orders = orders
             }
 
-            console.log(orders)
-
         },
 
         addOrderMutation(state, orders) {
