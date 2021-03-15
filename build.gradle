@@ -19,23 +19,23 @@ configurations {
 	}
 }
 
-node {
-	// Set the work directory for Yarn
-	yarnWorkDir = file("${project.buildDir}/frontend")
-
-	// Set the work directory where node_modules should be located
-	nodeModulesDir = file("${project.projectDir}/frontend")
-}
-
-
-task buildFront(type: YarnTask) {
-	args = ['build']
-}
-
-// build front
-yarn_install.dependsOn(yarn_cache_clean)
-buildFront.dependsOn(yarn_install)
-processResources.dependsOn(buildFront)
+//node {
+//	// Set the work directory for Yarn
+//	yarnWorkDir = file("${project.buildDir}/frontend")
+//
+//	// Set the work directory where node_modules should be located
+//	nodeModulesDir = file("${project.projectDir}/frontend")
+//}
+//
+//
+//task buildFront(type: YarnTask) {
+//	args = ['build']
+//}
+//
+//// build front
+//yarn_install.dependsOn(yarn_cache_clean)
+//buildFront.dependsOn(yarn_install)
+//processResources.dependsOn(buildFront)
 
 
 

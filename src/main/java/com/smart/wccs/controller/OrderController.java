@@ -72,4 +72,21 @@ public class OrderController {
         return new ResponseEntity<>(order, HttpStatus.OK);
 
     }
+
+    @RequestMapping(value = "/", method = RequestMethod.PUT)
+    @JsonView(Views.UserView.class)
+    public ResponseEntity<Order> updateOrder(@RequestBody Order order) {
+
+        if (order == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+
+        orderService.update(order);
+
+        Order orderFromDb = orderService.getById(order.getId());
+
+        return new ResponseEntity<>(orderFromDb, HttpStatus.OK);
+
+    }
 }

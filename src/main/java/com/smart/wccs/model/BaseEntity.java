@@ -25,7 +25,7 @@ public class BaseEntity {
     private LocalDateTime createdDate;
 
     @LastModifiedDate
-    @JsonView(Views.AdminView.class)
+    @JsonView({Views.UserView.class, Views.AdminView.class})
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updatedDate;
 

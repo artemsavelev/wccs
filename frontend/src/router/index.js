@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import store from '@/store/modules/auth'
+import store from '@/store'
 
 
 Vue.use(VueRouter);
@@ -35,17 +35,41 @@ const routes = [
     meta: { auth: true },
     component: () => import('@/views/Settings.vue')
   },
+  // {
+  //   path: '/admin',
+  //   name: 'Admin',
+  //   meta: { auth: true },
+  //   component: () => import('@/views/Admin.vue')
+  // },
+  // {
+  //   path: '/system',
+  //   name: 'System',
+  //   meta: { auth: true },
+  //   component: () => import('@/views/System.vue')
+  // },
   {
-    path: '/admin',
-    name: 'Admin',
+    path: '/admin/add-user',
+    name: 'AddUser',
     meta: { auth: true },
-    component: () => import('@/views/Admin.vue')
+    component: () => import('@/components/AddUser.vue')
   },
   {
-    path: '/system',
-    name: 'System',
+    path: '/admin/users',
+    name: 'Users',
     meta: { auth: true },
-    component: () => import('@/views/System.vue')
+    component: () => import('@/components/Users.vue')
+  },
+  {
+    path: '/admin/add-component',
+    name: 'AddComponent',
+    meta: { auth: true },
+    component: () => import('@/components/AddComponent.vue')
+  },
+  {
+    path: '/admin/components',
+    name: 'ListComponents',
+    meta: { auth: true },
+    component: () => import('@/components/ListComponents.vue')
   }
 
 ];
@@ -58,17 +82,16 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
 
-  try {
-    const requireAuth = to.matched.some(record => record.meta.auth)
+  const requireAuth = to.matched.some(record => record.meta.auth)
 
-    if (requireAuth && store.state.profile.user) {
-      next('/login')
-    } else {
-      next()
-    }
-  } catch (e) {
-    //console.warn(e.message)
+  if (requireAuth && !store.getters.profile) {
+    next('/login')
+  } else {
+    next()
   }
+
+
+
 
 })
 

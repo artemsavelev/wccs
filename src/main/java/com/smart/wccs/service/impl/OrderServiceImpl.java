@@ -16,6 +16,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -74,8 +75,16 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void update(Long id) {
+    public void update(Order order) {
+        Order orderFromDb = orderRepo.findById(order.getId()).orElse(null);
+        assert orderFromDb != null;
+        orderFromDb.setExtId(order.getExtId());
+        orderFromDb.setUpdatedDate(new Date());
+        orderFromDb.setCustomer(order.getCustomer());
+        orderFromDb.setAddress(order.getAddress());
 
+        Order createdOrder = orderRepo.save(orderFromDb);
+        log.info("IN update - order: {} successfully updated", createdOrder);
     }
 
     @Override

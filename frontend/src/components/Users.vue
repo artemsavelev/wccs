@@ -10,6 +10,7 @@
           :items="items"
           :load-children="fetchUsers"
           :open.sync="open"
+          open-all
           activatable
           color="warning"
           open-on-click

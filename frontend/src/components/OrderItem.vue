@@ -1,16 +1,21 @@
 <template>
 
-    <div class="order-row">
+  <div class="order-row">
+
+
+
+
+
       <div class="order-row-container">
         <div class="order-cols col-id pa-0">
-          {{ order.id }}
+          # {{ order.id }}
         </div>
 
         <div class="order-cols col-ext-id pa-0">
-          {{ order.extId }}
+          ID: {{ order.extId }}
         </div>
 
-        <div class="order-cols col-created-date pa-0">
+        <div v-if="order.updatedDate === null" class="order-cols col-created-date pa-0">
           <v-tooltip bottom>
             <template v-slot:activator="{ on }">
               <span v-on="on">{{ order.createdDate }}</span>
@@ -19,21 +24,12 @@
           </v-tooltip>
         </div>
 
-        <div class="order-cols col-customer pa-0">
+        <div v-else class="order-cols col-created-date pa-0">
           <v-tooltip bottom>
             <template v-slot:activator="{ on }">
-              <span v-on="on">{{ order.customer }}</span>
+              <span v-on="on">{{ order.updatedDate }}</span>
             </template>
-            <span>{{ order.customer }}</span>
-          </v-tooltip>
-        </div>
-
-        <div class="order-cols col-address pa-0">
-          <v-tooltip bottom>
-            <template v-slot:activator="{ on }">
-              <span v-on="on">{{ order.address }}</span>
-            </template>
-            <span>{{ order.address }}</span>
+            <span>Дата создания: {{ order.updatedDate }}</span>
           </v-tooltip>
         </div>
 
@@ -71,7 +67,33 @@
           </v-btn>
         </div>
       </div>
-    </div>
+
+      <div class="order-row-container font-weight-bold">
+        <div class="order-cols col-customer py-1">
+          <v-tooltip bottom>
+            <template v-slot:activator="{ on }">
+              <span v-on="on">{{ order.customer }}</span>
+            </template>
+            <span>{{ order.customer }}</span>
+          </v-tooltip>
+        </div>
+
+        <div class="order-cols col-address py-1">
+          <v-tooltip bottom>
+            <template v-slot:activator="{ on }">
+              <span v-on="on">{{ order.address }}</span>
+            </template>
+            <span>{{ order.address }}</span>
+          </v-tooltip>
+        </div>
+      </div>
+
+
+
+
+
+
+  </div>
 
 </template>
 
@@ -85,7 +107,7 @@ export default {
   methods: {
 
     edit() {
-      this.$emit('edit', this.order.id)
+      this.$emit('edit', this.order)
     },
     del() {
       this.$emit('removeOrder', this.order.id)
@@ -119,7 +141,7 @@ export default {
   justify-content: space-between;
   align-items: center;
 }
-.order-row-container:hover {
+.order-row:hover {
   background: $hover-item;
 }
 
@@ -131,31 +153,33 @@ export default {
 }
 
 .col-id {
-  flex-basis: 3%;
-}
-
-.col-ext-id {
-  flex-basis: 5%;
-}
-
-.col-created-date {
   flex-basis: 10%;
 }
 
+.col-ext-id {
+  flex-basis: 10%;
+}
+
+.col-created-date {
+  flex-basis: 20%;
+}
+
 .col-customer {
-  flex-basis: 30%;
+  flex-basis: 50%;
 }
 
 .col-address {
-  flex-basis: 40%;
+  flex-basis: 50%;
 }
 
 .col-verif {
-  flex-basis: 3%;
+  text-align: right;
+  flex-basis: 50%;
 }
 
 .col-action-order {
   text-align: right;
+  flex-basis: 15%;
 }
 
 .text-red {

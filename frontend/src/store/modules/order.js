@@ -8,15 +8,28 @@ export default {
     },
     mutations: {
         updateOrdersMutation(state, orders) {
-            state.orders = orders;
+
+            const updateIndex = state.orders.findIndex(item => item.id === orders.id)
+
+            if (updateIndex > -1) {
+                state.orders = [
+                    ...state.orders.slice(0, updateIndex),
+                    orders,
+                    ...state.orders.slice(updateIndex + 1)
+                ]
+            } else {
+                state.orders = orders
+            }
+
+            console.log(orders)
+
         },
 
         addOrderMutation(state, orders) {
             state.orders = [
                 ...state.orders,
                 orders
-            ];
-            // console.log(state.orders)
+            ]
         },
 
         fetchOrderPageMutation(state, orders) {
@@ -44,9 +57,14 @@ export default {
             try{
 
                 const data = await req.request(api.API_ORDER_URL);
+
+
+
                 commit('updateOrdersMutation', data.orders);
                 commit('updateTotalPagesMutation', data.totalPages)
                 commit('updateCurrentPageMutation', Math.min(data.currentPage, data.totalPages))
+
+
 
             } catch (e) {
 
@@ -61,14 +79,22 @@ export default {
 
         },
 
-        async addOrder({commit}, order) {
+        async addOrder({commit, state}, order) {
 
             try {
 
                 const data = await req.request(api.API_ORDER_URL, 'POST', order)
-                // const index = state.orders.findIndex(item => item.id === data.id);
+                const index = state.orders.findIndex(item => item.id === data.id)
                 // console.log(index);
-                commit('addOrderMutation', data)
+
+                if (index > -1) {
+                    commit('updateOrdersMutation', data)
+                } else {
+                    commit('addOrderMutation', data)
+                }
+
+
+
 
             } catch (e) {
 
@@ -80,6 +106,15 @@ export default {
 
                 await store.dispatch('showSnack', dataError)
             }
+
+        },
+
+        async updateOrder({ commit }, order) {
+
+            const data = await req.request(api.API_ORDER_URL, 'PUT', order)
+
+
+            commit('updateOrdersMutation', data)
 
         },
 

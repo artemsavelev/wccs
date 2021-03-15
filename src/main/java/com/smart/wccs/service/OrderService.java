@@ -12,7 +12,7 @@ public interface OrderService {
 
     void create(Order order);
 
-    void update(Long id);
+    void update(Order order);
 
     void delete(Long id);
 }
