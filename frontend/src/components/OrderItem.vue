@@ -1,5 +1,6 @@
 <template>
 
+
   <div class="order-row">
 
 
@@ -15,7 +16,7 @@
           ID: {{ order.extId }}
         </div>
 
-        <div v-if="!order.updatedDate" class="order-cols col-created-date pa-0">
+        <div class="order-cols col-created-date pa-0">
           <v-tooltip bottom>
             <template v-slot:activator="{ on }">
               <span v-on="on">{{ order.createdDate }}</span>
@@ -24,7 +25,7 @@
           </v-tooltip>
         </div>
 
-        <div v-else class="order-cols col-created-date pa-0">
+        <div class="order-cols col-created-date pa-0">
           <v-tooltip bottom>
             <template v-slot:activator="{ on }">
               <span v-on="on">{{ order.updatedDate }}</span>
@@ -159,7 +160,7 @@ export default {
 }
 
 .col-ext-id {
-  flex-basis: 10%;
+  flex-basis: 15%;
 }
 
 .col-created-date {
@@ -176,7 +177,7 @@ export default {
 
 .col-verif {
   text-align: right;
-  flex-basis: 50%;
+  flex-basis: 35%;
 }
 
 .col-action-order {

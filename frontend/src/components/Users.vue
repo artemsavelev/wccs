@@ -1,117 +1,90 @@
 <template>
-<div>
-  <v-row
-      class="pa-4"
-      justify="space-between"
-  >
-    <v-col cols="5">
-      <v-treeview
-          :active.sync="active"
-          :items="items"
-          :load-children="fetchUsers"
-          :open.sync="open"
-          open-all
-          activatable
-          color="warning"
-          open-on-click
-          transition
-      >
-        <template v-slot:prepend="{ item }">
-          <v-icon v-if="!item.children">
-            mdi-account
-          </v-icon>
-        </template>
-      </v-treeview>
-    </v-col>
+  <div>
+    <v-row class="pa-4" justify="space-between">
+      <v-col cols="5">
+        <v-treeview :active.sync="active"
+                    :items="items"
+                    :load-children="fetch"
+                    :open.sync="open"
+                    open-all
+                    activatable
+                    color="warning"
+                    open-on-click
+                    transition>
+          <template v-slot:prepend="{ item }">
+            <v-icon v-if="!item.children">
+              mdi-account
+            </v-icon>
+          </template>
+        </v-treeview>
+      </v-col>
 
-    <v-divider vertical></v-divider>
+      <v-divider vertical></v-divider>
 
-    <v-col
-        class="d-flex text-center"
-    >
-      <v-scroll-y-transition mode="out-in">
-        <div
-            v-if="!selected"
-            class="title grey--text text--lighten-1 font-weight-light"
-            style="align-self: center;"
-        >
-          Select a User
-        </div>
-        <v-card
-            v-else
-            :key="selected.id"
-            class="pt-6 mx-auto"
-            flat
-            max-width="400"
-        >
-          <v-card-text>
-            <v-avatar
-                v-if="avatar"
-                size="88"
-            >
-              <v-img
-                  :src="`https://avataaars.io/${avatar}`"
-                  class="mb-6"
-              ></v-img>
-            </v-avatar>
-            <h3 class="headline mb-2">
-              {{ selected.name }}
-            </h3>
-            <div class="blue--text subheading font-weight-bold">
-              {{ selected.username }}
-            </div>
-          </v-card-text>
-          <v-divider></v-divider>
-          <v-row
-              class="text-left"
-              tag="v-card-text"
-          >
-            <v-col
-                class="text-right mr-4 mb-2"
-                tag="strong"
-                cols="5"
-            >
-              Отдел:
-            </v-col>
-            <v-col>{{ selected.department.name }}</v-col>
-            <v-col
-                class="text-right mr-4 mb-2"
-                tag="strong"
-                cols="5"
-            >
-              Должность:
-            </v-col>
-            <v-col>
-              <span v-for="(pos, i) in selected.positions"
-                    :key="i">
+      <v-col class="d-flex text-center">
+        <v-scroll-y-transition mode="out-in">
+          <div v-if="!selected"
+               class="title grey--text text--lighten-1 font-weight-light"
+               style="align-self: center;">
+            Select a User
+          </div>
+          <v-card v-else
+                  :key="selected.id"
+                  class="pt-6 mx-auto"
+                  flat
+                  max-width="400">
 
-                <span>{{ pos.name }} </span>
-              </span>
-            </v-col>
-            <v-col
-                class="text-right mr-4 mb-2"
-                tag="strong"
-                cols="5"
-            >
-              Email:
-            </v-col>
-            <v-col>
-              <a class="blue--text"
-                 :href="`mailto:${selected.email}`"
-                 target="_blank"
-              >{{ selected.email }}</a>
-            </v-col>
+            <v-card-text>
+              <v-avatar v-if="avatar" size="88">
+                <v-img :src="`https://avataaars.io/${avatar}`" class="mb-6"></v-img>
+              </v-avatar>
+              <h3 class="headline mb-2">
+                {{ selected.name }}
+              </h3>
+              <div class="blue--text subheading font-weight-bold">
+                {{ env.login }}: {{ selected.username }}
+              </div>
+            </v-card-text>
 
-          </v-row>
-        </v-card>
-      </v-scroll-y-transition>
-    </v-col>
-  </v-row>
-</div>
+            <v-divider></v-divider>
+
+            <v-row class="text-left" tag="v-card-text">
+
+              <v-col class="text-right mr-4 mb-2" tag="strong" cols="5">
+                {{ env.department }}:
+              </v-col>
+              <v-col>{{ selected.department.name }}</v-col>
+
+              <v-col class="text-right mr-4 mb-2" tag="strong" cols="5">
+                {{ env.position }}:
+              </v-col>
+              <v-col>
+                <span v-for="(pos, i) in selected.positions" :key="i">
+                  <span>{{ pos.name }} </span>
+                </span>
+              </v-col>
+
+              <v-col class="text-right mr-4 mb-2" tag="strong" cols="5">
+                {{ env.email }}:
+              </v-col>
+              <v-col>
+                <a class="blue--text"
+                   :href="`mailto:${selected.email}`"
+                   target="_blank">{{ selected.email }}</a>
+              </v-col>
+
+            </v-row>
+          </v-card>
+        </v-scroll-y-transition>
+      </v-col>
+    </v-row>
+  </div>
 </template>
 
 <script>
 import env from '../../env.config.json'
+// import api from "@/api/backendApi";
+import {mapActions, mapGetters} from "vuex";
 
 const avatars = [
   '?accessoriesType=Blank&avatarStyle=Circle&clotheColor=PastelGreen&clotheType=ShirtScoopNeck&eyeType=Wink&eyebrowType=UnibrowNatural&facialHairColor=Black&facialHairType=MoustacheMagnum&hairColor=Platinum&mouthType=Concerned&skinColor=Tanned&topType=Turban',
@@ -126,69 +99,75 @@ export default {
   name: "Users",
 
 
-    data: () => ({
-      env,
-      active: [],
-      avatar: null,
-      open: [],
-      users: [],
-    }),
+  data: () => ({
 
-    computed: {
-      items () {
+    ...mapActions(['fetchUsers']),
 
+    env,
+    active: [],
+    avatar: null,
+    open: [],
+    users: [],
+  }),
 
+  computed: {
 
-        return [
-          {
-            name:  env.listUsers,
-            children: this.users
-          },
-        ]
-      },
-      selected () {
-        if (!this.active.length) return undefined
+    ...mapGetters(['allUsers']),
 
-        const id = this.active[0]
+    items () {
+      return [
+        {
+          name:  env.listUsers,
+          children: this.allUsers
+        },
+      ]
+    },
+    selected () {
+      if (!this.active.length) return undefined
 
-        return this.users.find(user => user.id === id)
-      },
+      const id = this.active[0]
+
+      return this.allUsers.find(user => user.id === id)
+    },
+  },
+
+  watch: {
+    selected: 'randomAvatar',
+  },
+
+  methods: {
+    async fetch (item) {
+      // Remove in 6 months and say
+      // you've made optimizations! :)
+      await pause(2000)
+
+      // const user = JSON.parse(localStorage.getItem('user'));
+      // const headers = {}
+      // headers['Content-type'] = 'application/json'
+      // headers['Authorization'] = 'bearer_' + user.token
+
+      // return fetch(api.API_ADMIN_URL, {
+      //   headers
+      // }).then(res =>
+      //     res.json()
+      // ).then(json => {
+      //   (item.children.push(...json))
+      //   // console.log(json)
+      // }).catch(err => console.warn(err))
+
+      const data = this.allUsers
+      return item.children.push(...data)
     },
 
-    watch: {
-      selected: 'randomAvatar',
+    randomAvatar () {
+      this.avatar = avatars[Math.floor(Math.random() * avatars.length)]
     },
-
-    methods: {
-      async fetchUsers (item) {
-        // Remove in 6 months and say
-        // you've made optimizations! :)
-        await pause(1)
-
-        const user = JSON.parse(localStorage.getItem('user'));
-        const headers = {}
-        headers['Content-type'] = 'application/json'
-        headers['Authorization'] = 'bearer_' + user.token
+  },
 
 
-        return fetch('http://localhost:8080/api/v1/super/users', {
-          headers
-        })
-            .then(res =>
-              res.json()
-            )
-            .then(json => {
-              (item.children.push(...json))
-              // console.log(json)
-            })
-
-            .catch(err => console.warn(err))
-      },
-      randomAvatar () {
-        this.avatar = avatars[Math.floor(Math.random() * avatars.length)]
-      },
-    },
-
+  mounted() {
+    this.fetchUsers()
+  },
 }
 </script>
 

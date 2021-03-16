@@ -6,14 +6,23 @@ import com.smart.wccs.model.User;
 import com.smart.wccs.repo.RoleRepo;
 import com.smart.wccs.repo.UserRepo;
 import com.smart.wccs.service.UserService;
+import com.sun.istack.NotNull;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -41,6 +50,7 @@ public class UserServiceImpl implements UserService {
         user.setStatus(Status.ACTIVE);
         user.setCreatedDate(LocalDateTime.now());
         user.setUpdatedDate(LocalDateTime.now());
+        user.setDepartment(user.getDepartment());
 
         User registeredUser = userRepo.save(user);
 
@@ -51,7 +61,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> getAllUsers() {
-        List<User> result = userRepo.findAll();
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String name = auth.getName();
+
+        List<User> result = userRepo.findAll()
+                .stream()
+                .filter(o -> o.getDepartment() == userRepo.findByUsername(name).getDepartment())
+                .filter(o -> o.getStatus() == Status.ACTIVE)
+                .collect(Collectors.toList());
         log.info("IN getAll - {} users found", result.size());
         return result;
     }
@@ -77,14 +94,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void delete(Long id) {
-        userRepo.deleteById(id);
+        User user = userRepo.findById(id).orElseThrow();
+
+        user.setStatus(Status.DELETED);
+
+//        userRepo.deleteById(id);
         log.info("IN delete - user with id: {} successfully deleted", id);
     }
 
     @Override
-    public void logout() {
-
-//        SecurityContextHolder.getContext().getAuthentication().setAuthenticated(false);
-        log.info("IN logout - user: {} logout is successfully");
+    public void logout(User user) {
+        log.info("IN logout - user: {} logout is successfully", user.getUsername());
     }
 }

@@ -81,8 +81,15 @@ public class AuthenticationController {
 
     @PostMapping("registration")
     @JsonView(Views.AdminView.class)
-    public ResponseEntity<?> login(@RequestBody User user) {
+    public ResponseEntity<?> registration(@RequestBody User user) {
         return ResponseEntity.ok(userService.register(user));
+    }
+
+    @PostMapping("logout")
+    @JsonView(Views.AdminView.class)
+    public ResponseEntity<?> logout(@RequestBody User user) {
+        userService.logout(user);
+        return ResponseEntity.ok("OK");
     }
 
 

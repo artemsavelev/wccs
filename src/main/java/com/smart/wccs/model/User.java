@@ -1,5 +1,7 @@
 package com.smart.wccs.model;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,8 +18,9 @@ public class User extends BaseEntity {
     @JsonView({Views.UserView.class, Views.AdminView.class})
     private String username;
 
-//    @JsonView({Views.UserView.class, Views.AdminView.class})
-//    private String name;
+    @JsonView({Views.UserView.class, Views.AdminView.class})
+    @Transient
+    private String name;
 
     @JsonView({Views.UserView.class, Views.AdminView.class})
     private String firstName;
@@ -49,6 +52,11 @@ public class User extends BaseEntity {
     @JsonView({Views.UserView.class, Views.AdminView.class})
     private List<Position> positions;
 
+
+    public String getName() {
+        name = this.getLastName() + " " + this.getFirstName();
+        return name;
+    }
 
     @Override
     public String toString() {

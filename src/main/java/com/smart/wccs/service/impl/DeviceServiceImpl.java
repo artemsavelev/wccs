@@ -60,7 +60,6 @@ public class DeviceServiceImpl implements DeviceService {
 
     @Override
     public void create(Device device) {
-
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String name = auth.getName();
 

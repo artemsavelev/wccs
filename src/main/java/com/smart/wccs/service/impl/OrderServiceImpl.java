@@ -42,6 +42,7 @@ public class OrderServiceImpl implements OrderService {
         List<Order> orders =  orderRepo.findAll(pageable)
                 .stream()
                 .filter(o -> o.getDepartment() == userRepo.findByUsername(name).getDepartment())
+                .filter(o -> o.getStatus() == Status.ACTIVE)
                 .collect(Collectors.toList());
         log.info("IN getAllOrder - {} orders found", orders.size());
         return new PageImpl<>(orders, pageable, orders.size());

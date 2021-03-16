@@ -6,6 +6,7 @@ import errors from './modules/errors'
 import estimate from './modules/estimate'
 import components from './modules/components'
 import registration from './modules/registration'
+import users from './modules/users'
 import snackbar from './modules/snackbar'
 
 Vue.use(Vuex);
@@ -19,6 +20,7 @@ export default new Vuex.Store({
     estimate,
     components,
     registration,
+    users,
     snackbar
   }
 })

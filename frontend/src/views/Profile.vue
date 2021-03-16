@@ -7,12 +7,11 @@
       <v-row align="end" class="fill-height">
         <v-col align-self="start" class="pa-0" cols="12">
           <v-avatar class="profile"
-                    color="grey"
+                    color="white"
                     size="364"
                     tile>
 
-<!--            <v-img src="https://cdn.vuetifyjs.com/images/profiles/marcus.jpg"></v-img>-->
-            <v-img src=""></v-img>
+            <v-img :src="`https://avataaars.io/${avatar}`"></v-img>
           </v-avatar>
 
         </v-col>
@@ -30,8 +29,7 @@
               <v-list-item-subtitle>{{ env.email }}:
                 <a class="blue--text"
                    :href="`mailto:${profile.email}`"
-                   target="_blank"
-                >{{ profile.email }}</a>
+                   target="_blank">{{ profile.email }}</a>
               </v-list-item-subtitle>
               <v-list-item-subtitle>{{profile.roles}}</v-list-item-subtitle>
             </v-list-item-content>
@@ -52,7 +50,8 @@ export default {
   computed: mapGetters(['profile']),
   data() {
     return {
-      env
+      env,
+      avatar: '?clotheType=BlazerShirt&eyeType=Default&mouthType=Smile&skinColor=Pale&topType=ShortHairShortRound',
     }
   }
 

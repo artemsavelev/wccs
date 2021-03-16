@@ -8292,6 +8292,11 @@ vue@^2.6.10, vue@^2.6.11:
   resolved "https://registry.npmjs.org/vue/-/vue-2.6.12.tgz"
   integrity sha512-uhmLFETqPPNyuLLbsKz6ioJ4q7AZHzD8ZVFNATNyICSZouqP2Sz0rotWQC8UNBF6VGSCs5abnKJoStA6JbCbfg==
 
+vuejs-avataaars@^4.0.1:
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/vuejs-avataaars/-/vuejs-avataaars-4.0.1.tgz#024d6b2dc4eefe97ffa4a05e2e288d4b95034d2c"
+  integrity sha512-XFpPtk1EJ8DRhJlLwEogCpOf7DMQdMjQgii2nJjZLLLaOqtOzSO4XCWklgwcd/xzjG2OGmuhvlIp3BoX5vZBMg==
+
 vuetify-datetime-picker@^2.1.1:
   version "2.1.1"
   resolved "https://registry.npmjs.org/vuetify-datetime-picker/-/vuetify-datetime-picker-2.1.1.tgz"

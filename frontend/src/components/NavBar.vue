@@ -8,15 +8,19 @@
         <v-list-group
             v-for="item in showItems"
             :key="item.title"
+            active-class="grey darken-2 rounded-0"
+            color="white"
+            class="mt-1"
             v-model="item.active">
 
           <template v-slot:activator>
-            <v-list-item-content>
+            <v-list-item-content active-class="rounded-0">
               <v-list-item-title v-text="item.title"></v-list-item-title>
             </v-list-item-content>
           </template>
 
           <v-list-item
+              active-class="pink--text"
               v-for="child in item.items"
               :key="child.title"
               :to="child.route"
@@ -44,7 +48,22 @@
 
       <v-toolbar-title>WCCS</v-toolbar-title>
 
+<!--      <v-spacer ></v-spacer>-->
+
+<!--      <v-col cols="12" sm="6" md="3">-->
+<!--        <v-text-field v-model="search"-->
+<!--                      :label="env.search"-->
+<!--                      dense-->
+<!--                      v-show="$route.path === '/'"-->
+<!--                      class="mt-5">-->
+<!--        </v-text-field>-->
+<!--      </v-col>-->
+
       <v-spacer ></v-spacer>
+
+
+
+
 
 <!--      <OrderForm v-bind:orderVal="ordersList"/>-->
 
@@ -78,9 +97,16 @@ export default {
 
 
       let items = [
+        // { title: env.keyOrder,
+        //   active: true,
+        //   items: [
+        //     { title: env.keyOrder, icon: 'mdi-view-list', route: '/' },
+        //   ]
+        // },
         { title: env.keyProfile,
           active: true,
           items: [
+            { title: env.keyOrder, icon: 'mdi-view-list', route: '/' },
             { title: env.keyProfile, icon: 'mdi-view-dashboard', route: '/profile' },
             { title: env.keySetting, icon: 'mdi-cog', route: '/settings' },
           ],
@@ -98,7 +124,7 @@ export default {
               { title: env.listUsers, icon: 'mdi-account-multiple', route: '/admin/users' },
               { title: env.addComponent, icon: 'mdi-database-plus', route: '/admin/add-component' },
               { title: env.listComponents, icon: 'mdi-database', route: '/admin/components' },
-            ],
+            ]
           },
           { title: env.keySystem,
             active: true,
@@ -123,7 +149,7 @@ export default {
               { title: env.listUsers, icon: 'mdi-account-multiple', route: '/admin/users' },
               { title: env.addComponent, icon: 'mdi-database-plus', route: '/admin/add-component' },
               { title: env.listComponents, icon: 'mdi-database', route: '/admin/components' },
-            ],
+            ]
           },
         ]
 
@@ -146,34 +172,7 @@ export default {
       isRoleAdmin: false,
       isRoleSuper: false,
       drawer: true,
-      items: [
-        // { title: env.keyProfile,
-        //   active: true,
-        //   items: [
-        //     { title: env.keyProfile, icon: 'mdi-view-dashboard', route: '/profile' },
-        //     { title: env.keySetting, icon: 'mdi-cog', route: '/settings' },
-        //   ],
-        // },
-        // { title: env.keyAdministration,
-        //   active: true,
-        //   items: [
-        //     { title: env.addUser, icon: 'mdi-account-plus', route: '/admin/add-user' },
-        //     { title: env.listUsers, icon: 'mdi-account-multiple', route: '/admin/users' },
-        //     { title: env.addComponent, icon: 'mdi-database-plus', route: '/admin/add-component' },
-        //     { title: env.listComponents, icon: 'mdi-database', route: '/admin/components' },
-        //   ],
-        // },
-        // { title: env.keySystem,
-        //   active: true,
-        //   items: [
-        //     { title: env.addUser, icon: 'mdi-account-plus', route: '/system/add-account' },
-        //     { title: env.listUsers, icon: 'mdi-account-multiple', route: '/system/accounts' },
-        //     { title: env.addComponent, icon: 'mdi-database-plus', route: '/system/add-component' },
-        //     { title: env.listComponents, icon: 'mdi-database', route: '/system/components' },
-        //     { title: env.keySystem, icon: 'mdi-database-cog', route: '/system/test-1' },
-        //   ],
-        // },
-      ],
+      items: [],
       right: null,
     }
   },
