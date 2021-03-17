@@ -1,7 +1,7 @@
-const API_BASE_URL = 'http://127.0.0.1:8080/api/v1/';
+const API_BASE_URL = 'http://localhost:8080/api/v1/';
 // const API_BASE_URL = '/api/v1/';
 export default {
-    API_REGISTRATION_URL: API_BASE_URL + 'auth/registration',
+    API_REGISTRATION_URL: API_BASE_URL + 'admin/registration',
     API_AUTH_URL: API_BASE_URL + 'auth/login',
     API_ADMIN_URL: API_BASE_URL + 'admin/users',
     API_ORDER_URL: API_BASE_URL + 'order/',

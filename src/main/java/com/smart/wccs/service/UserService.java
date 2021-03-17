@@ -2,6 +2,8 @@ package com.smart.wccs.service;
 
 import com.smart.wccs.model.User;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 public interface UserService {
@@ -16,5 +18,5 @@ public interface UserService {
 
     void delete(Long id);
 
-    void logout(User user);
+    void logout(HttpServletRequest request, HttpServletResponse response);
 }

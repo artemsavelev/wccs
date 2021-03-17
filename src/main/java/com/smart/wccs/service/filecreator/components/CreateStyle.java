@@ -2,10 +2,12 @@ package com.smart.wccs.service.filecreator.components;
 
 import org.apache.poi.ss.usermodel.*;
 
+
 public class CreateStyle {
 
     private final Workbook workbook;
     private final Font font;
+
 
 
     public CreateStyle(Workbook workbook, Font font) {
@@ -33,14 +35,12 @@ public class CreateStyle {
         return style;
     }
 
-
     public CellStyle getStyle(IndexedColors color, FillPatternType fill, HorizontalAlignment hAlign, VerticalAlignment vAlign) {
         CellStyle style = getStyle(hAlign, vAlign);
         style.setFillForegroundColor(color.getIndex());
         style.setFillPattern(fill);
         return style;
     }
-
 
 
 }

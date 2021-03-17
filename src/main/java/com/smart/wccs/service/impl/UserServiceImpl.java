@@ -6,25 +6,22 @@ import com.smart.wccs.model.User;
 import com.smart.wccs.repo.RoleRepo;
 import com.smart.wccs.repo.UserRepo;
 import com.smart.wccs.service.UserService;
-import com.sun.istack.NotNull;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.HttpClientErrorException;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Service
+@Service("userServiceImpl")
 @Slf4j
 public class UserServiceImpl implements UserService {
 
@@ -103,7 +100,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void logout(User user) {
-        log.info("IN logout - user: {} logout is successfully", user.getUsername());
+    public void logout(HttpServletRequest request, HttpServletResponse response) {
+        SecurityContextLogoutHandler securityContextLogoutHandler = new SecurityContextLogoutHandler();
+        securityContextLogoutHandler.logout(request, response, null);
     }
 }

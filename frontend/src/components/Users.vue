@@ -10,6 +10,7 @@
                     activatable
                     color="warning"
                     open-on-click
+                    dense
                     transition>
           <template v-slot:prepend="{ item }">
             <v-icon v-if="!item.children">

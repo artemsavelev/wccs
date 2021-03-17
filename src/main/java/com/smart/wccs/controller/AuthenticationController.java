@@ -3,26 +3,24 @@ package com.smart.wccs.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.smart.wccs.dto.*;
-import com.smart.wccs.model.Department;
 import com.smart.wccs.model.User;
 import com.smart.wccs.model.Views;
-import com.smart.wccs.security.jwt.JwtTokenProvider;
+import com.smart.wccs.security.JwtTokenProvider;
 import com.smart.wccs.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -61,7 +59,6 @@ public class AuthenticationController {
 
             Map<Object, Object> response = new HashMap<>();
 
-
             // передаем данные на фронтенд в профиль
             response.put("username", username);
             response.put("lastName", user.getLastName());
@@ -79,16 +76,11 @@ public class AuthenticationController {
         }
     }
 
-    @PostMapping("registration")
-    @JsonView(Views.AdminView.class)
-    public ResponseEntity<?> registration(@RequestBody User user) {
-        return ResponseEntity.ok(userService.register(user));
-    }
 
-    @PostMapping("logout")
-    @JsonView(Views.AdminView.class)
-    public ResponseEntity<?> logout(@RequestBody User user) {
-        userService.logout(user);
+    @GetMapping("logout")
+    @JsonView(Views.UserView.class)
+    public ResponseEntity<?> logout(HttpServletRequest request, HttpServletResponse response) {
+        userService.logout(request, response);
         return ResponseEntity.ok("OK");
     }
 

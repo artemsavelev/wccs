@@ -3,28 +3,29 @@
 
     <v-navigation-drawer v-if="profile" v-model="drawer" width="400" app clipped>
 
-      <v-list dense nav>
+      <v-list dense class="pa-0 font-weight-light">
 
-        <v-list-group
-            v-for="item in showItems"
-            :key="item.title"
-            active-class="grey darken-2 rounded-0"
-            color="white"
-            class="mt-1"
-            v-model="item.active">
+        <v-list-group v-for="item in showItems"
+                      :key="item.title"
+                      active-class="grey darken-2 rounded-0"
+                      color="white"
+                      class=""
+                      v-model="item.active">
 
-          <template v-slot:activator>
-            <v-list-item-content active-class="rounded-0">
+          <template v-slot:activator >
+            <v-list-item-icon>
+              <v-icon>{{ item.icon }}</v-icon>
+            </v-list-item-icon>
+            <v-list-item-content>
               <v-list-item-title v-text="item.title"></v-list-item-title>
             </v-list-item-content>
           </template>
 
-          <v-list-item
-              active-class="pink--text"
-              v-for="child in item.items"
-              :key="child.title"
-              :to="child.route"
-              link>
+          <v-list-item class="pink--text rounded-0"
+                       v-for="child in item.items"
+                       :key="child.title"
+                       :to="child.route"
+                       link>
 
             <v-list-item-icon>
               <v-icon>{{ child.icon }}</v-icon>
@@ -61,10 +62,6 @@
 
       <v-spacer ></v-spacer>
 
-
-
-
-
 <!--      <OrderForm v-bind:orderVal="ordersList"/>-->
 
       <v-btn v-if="profile" v-on:click="orders" :disabled="$route.path === '/'" text tile>{{ env.keyOrder }}</v-btn>
@@ -97,17 +94,12 @@ export default {
 
 
       let items = [
-        // { title: env.keyOrder,
-        //   active: true,
-        //   items: [
-        //     { title: env.keyOrder, icon: 'mdi-view-list', route: '/' },
-        //   ]
-        // },
-        { title: env.keyProfile,
+        { title: env.main,
+          icon: 'mdi-home',
           active: true,
           items: [
             { title: env.keyOrder, icon: 'mdi-view-list', route: '/' },
-            { title: env.keyProfile, icon: 'mdi-view-dashboard', route: '/profile' },
+            { title: env.keyProfile, icon: 'mdi-account', route: '/profile' },
             { title: env.keySetting, icon: 'mdi-cog', route: '/settings' },
           ],
         },
@@ -118,6 +110,7 @@ export default {
         items = [
           ...items,
           { title: env.keyAdministration,
+            icon: 'mdi-tune',
             active: true,
             items: [
               { title: env.addUser, icon: 'mdi-account-plus', route: '/admin/add-user' },
@@ -127,6 +120,7 @@ export default {
             ]
           },
           { title: env.keySystem,
+            icon: 'mdi-database-settings',
             active: true,
             items: [
               { title: env.addUser, icon: 'mdi-account-plus', route: '/system/add-account' },
@@ -143,6 +137,7 @@ export default {
         items = [
           ...items,
           { title: env.keyAdministration,
+            icon: 'mdi-tune',
             active: true,
             items: [
               { title: env.addUser, icon: 'mdi-account-plus', route: '/admin/add-user' },

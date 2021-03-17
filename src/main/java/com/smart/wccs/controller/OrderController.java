@@ -36,13 +36,9 @@ public class OrderController {
     public ResponseEntity<OrderPageDto> listOrders(@PageableDefault(size = MESSAGES_PER_PAGE, sort = { "id" }, direction = Sort.Direction.DESC) Pageable pageable) {
 
         Page<Order> orders = orderService.getAllOrders(pageable);
-
-
-
         if (orders.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-
         return new ResponseEntity<>(new OrderPageDto(orders.getContent(), pageable.getPageNumber(), orders.getTotalPages()), HttpStatus.OK);
     }
 

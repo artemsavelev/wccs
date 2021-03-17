@@ -1,37 +1,27 @@
 package com.smart.wccs.config;
 
-import com.smart.wccs.security.jwt.JwtConfigurer;
-import com.smart.wccs.security.jwt.JwtTokenProvider;
+import com.smart.wccs.security.JwtConfigurer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 
 @Configuration
+@EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final JwtTokenProvider jwtTokenProvider;
-
-    private static final String ROOT_FRONT_ENDPOINT = "/**";
-    private static final String ADMIN_FRONT_ENDPOINT = "**/admin";
-
-    private static final String ADMIN_ENDPOINT = "/api/v1/admin/**";
-    private static final String SUPERUSER_ENDPOINT = "/api/v1/super/**";
-    private static final String USER_ENDPOINT = "/api/v1/user/**";
-    private static final String LOGIN_ENDPOINT = "/api/v1/auth/login";
-    private static final String REGISTRATION_ENDPOINT = "/api/v1/auth/registration";
-    private static final String FILE_PATH = "/api/v1/estimate/files/**";
-    private static final String WS_ENDPOINT = "/gs-guide-websocket/**";
-
+//    private final JwtTokenProvider jwtTokenProvider;
+    private final JwtConfigurer jwtConfigurer;
 
     @Autowired
-    public SecurityConfig(JwtTokenProvider jwtTokenProvider) {
-        this.jwtTokenProvider = jwtTokenProvider;
+    public SecurityConfig(JwtConfigurer jwtConfigurer) {
+        this.jwtConfigurer = jwtConfigurer;
     }
 
 
@@ -46,18 +36,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .httpBasic().disable()
                 .csrf().disable()
-                .cors().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers(ROOT_FRONT_ENDPOINT).permitAll()
-                .antMatchers(LOGIN_ENDPOINT, FILE_PATH).permitAll()
-                .antMatchers(USER_ENDPOINT).hasRole("USER")
-                .antMatchers(ADMIN_ENDPOINT, REGISTRATION_ENDPOINT).hasRole("ADMIN")
-                .antMatchers(SUPERUSER_ENDPOINT).hasRole("SUPERUSER")
-                .anyRequest().authenticated()
+//                .antMatchers("/wccs/**").permitAll()
+                .antMatchers("/api/v1/auth/login").permitAll()
+                .antMatchers("/api/v1/estimate/files/**").permitAll()
+                .antMatchers("/api/v1/user/**", "/api/v1/auth/logout").hasRole("USER")
+                .antMatchers("/api/v1/admin/**", "/api/v1/auth/registration").hasRole("ADMIN")
+                .antMatchers("/api/v1/super/**").hasRole("SUPERUSER")
+                .anyRequest()
+                .authenticated()
                 .and()
-                .apply(new JwtConfigurer(jwtTokenProvider));
+                .apply(jwtConfigurer);
 
     }
 

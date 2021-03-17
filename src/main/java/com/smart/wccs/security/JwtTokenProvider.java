@@ -1,12 +1,11 @@
-package com.smart.wccs.security.jwt;
+package com.smart.wccs.security;
 
 import com.smart.wccs.model.Role;
 import io.jsonwebtoken.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Lazy;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -32,14 +31,13 @@ public class JwtTokenProvider {
 
     private final UserDetailsService userDetailsService;
 
-    @Autowired
-    public JwtTokenProvider(@Lazy UserDetailsService userDetailsService) {
+    public JwtTokenProvider(@Qualifier("jwtUserDetailsService") UserDetailsService userDetailsService) {
         this.userDetailsService = userDetailsService;
     }
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+        return new BCryptPasswordEncoder( 12);
     }
 
     @PostConstruct
@@ -94,7 +92,7 @@ public class JwtTokenProvider {
             return !claimsJws.getBody().getExpiration().before(new Date());
 
         } catch (ExpiredJwtException | UnsupportedJwtException | IllegalArgumentException | SignatureException | MalformedJwtException e) {
-            throw new JwtAuthenticationException("JWT token is expired or invalid", e.fillInStackTrace());
+            throw new JwtAuthenticationException("JWT token is expired or invalid", e.fillInStackTrace(), HttpStatus.UNAUTHORIZED);
         }
     }
 }

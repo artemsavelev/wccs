@@ -179,8 +179,8 @@ export default {
     }
   },
   methods: {
-    add(item) {
-      console.log(item.id)
+    add() {
+      // console.log(item.id)
     }
   }
 }

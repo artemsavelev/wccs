@@ -1,4 +1,4 @@
-package com.smart.wccs.security.jwt;
+package com.smart.wccs.security;
 
 import com.smart.wccs.model.Role;
 import com.smart.wccs.model.Status;

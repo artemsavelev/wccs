@@ -19,13 +19,9 @@
 
     </div>
 
-    <v-navigation-drawer
-        width="400"
-        app
-        clipped
-        right>
+    <v-navigation-drawer width="400" app clipped right>
 
-      <v-list>
+      <v-list dense>
 
         <v-card-text>
 
