@@ -50,7 +50,7 @@ public class ExcelDocument implements FileCreator {
                 HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
         CellStyle styleEmpty = createStyle.getStyle();
         CellStyle styleAlignCenter = createStyle.getStyle(HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
-//        CellStyle styleAlignCenter2 = createStyle.getStyle(HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+        CellStyle styleAlignCenter2 = createStyle.getStyle(HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
         CellStyle styleAlignCenterTop = createStyle.getStyle(HorizontalAlignment.LEFT, VerticalAlignment.TOP);
         CellStyle styleAlignLeft = createStyle.getStyle(HorizontalAlignment.LEFT, VerticalAlignment.CENTER);
 
@@ -76,10 +76,10 @@ public class ExcelDocument implements FileCreator {
 
         createCell.getCell(styleAlignCenter3,0, 0, 5, 30,
                 "ФАКТИЧЕСКАЯ".equals(keyEstimate) ? "Смета" : "Смета " + keyEstimate);
-        createCell.getCell(styleAlignCenter,1, 0, 5, 15, "№: " + estimate.getExtId());
-        createCell.getCell(styleAlignCenter,2, 0, 5, 15, "адрес: " + estimate.getAddress());
-        createCell.getCell(styleAlignCenter,3, 0, 5, 15, "заказчик: " + estimate.getCustomer());
-        createCell.getCell(styleAlignCenter,4, 0, 5, 15, "составил: " +
+        createCell.getCell(styleAlignCenter2,1, 0, 5, 15, "№: " + estimate.getExtId());
+        createCell.getCell(styleAlignCenter2,2, 0, 5, 15, "адрес: " + estimate.getAddress());
+        createCell.getCell(styleAlignCenter2,3, 0, 5, 15, "заказчик: " + estimate.getCustomer());
+        createCell.getCell(styleAlignCenter2,4, 0, 5, 15, "составил: " +
                 estimate.getAuthor().getLastName() + " " + estimate.getAuthor().getFirstName() + " " +
                 estimate.getCreatedDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
         createCell.getCell(styleEmpty, 5, 0, 5, 15, "");

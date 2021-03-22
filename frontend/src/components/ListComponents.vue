@@ -144,7 +144,7 @@ export default {
       } else if (this.select === this.env.sectionWork) {
         return this.allWorks.length
       }
-      return []
+      return [1]
     },
   },
 

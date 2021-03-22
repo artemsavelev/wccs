@@ -9,9 +9,9 @@
       <v-card-title class="form">
         <span class="font-xl">{{formTitle}}</span>
         <v-spacer></v-spacer>
-        <v-btn small text tile v-on:click="close">
-          <v-icon>mdi-close</v-icon>
-        </v-btn>
+<!--        <v-btn small text tile v-on:click="close">-->
+          <v-icon v-on:click="close">mdi-close</v-icon>
+<!--        </v-btn>-->
       </v-card-title>
 
       <div v-if="typeSection !== 0">

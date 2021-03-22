@@ -77,7 +77,6 @@ public class OrderController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
-
         orderService.update(order);
 
         Order orderFromDb = orderService.getById(order.getId());

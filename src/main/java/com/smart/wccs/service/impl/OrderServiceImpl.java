@@ -7,6 +7,7 @@ import com.smart.wccs.repo.OrderRepo;
 import com.smart.wccs.repo.UserRepo;
 import com.smart.wccs.service.OrderService;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -15,6 +16,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -50,7 +52,8 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Order getById(Long id) {
-        Order order = orderRepo.findById(id).orElse(null);
+        Order order = orderRepo.findById(id).orElseThrow(() ->
+                new ObjectNotFoundException(id, "IN findById - no order found by id: " + id + ". Order not found "));
 
         if (order == null) {
             log.warn("IN findById - no order found by id: {}", id);
@@ -78,8 +81,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public void update(Order order) {
-        Order orderFromDb = orderRepo.findById(order.getId()).orElse(null);
-        assert orderFromDb != null;
+        Order orderFromDb = orderRepo.findById(order.getId()).orElseThrow(() ->
+                new ObjectNotFoundException(order.getId(),
+                        "IN update - order with id: " + order.getId() + " not updated. Order not found "));
         orderFromDb.setExtId(order.getExtId());
         orderFromDb.setUpdatedDate(LocalDateTime.now());
         orderFromDb.setCustomer(order.getCustomer());
@@ -91,7 +95,13 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public void delete(Long id) {
-        orderRepo.deleteById(id);
+
+        Order order = orderRepo.findById(id).orElseThrow(() ->
+                new ObjectNotFoundException(id, "IN delete - delete: " + id + " not deleted. Order not found "));
+
+//        orderRepo.deleteById(id);
+
+        order.setStatus(Status.DELETED);
         log.info("IN delete - order with id: {} successfully deleted", id);
     }
 }

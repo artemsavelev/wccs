@@ -15,9 +15,9 @@
                     :label="env.estimate + ' ' + env.estimatePreliminary"
                     hide-details></v-checkbox>
         <v-spacer></v-spacer>
-        <v-btn small text tile v-on:click="close">
-          <v-icon>mdi-window-close</v-icon>
-        </v-btn>
+<!--        <v-btn small text tile v-on:click="close">-->
+          <v-icon @click="close">mdi-window-close</v-icon>
+<!--        </v-btn>-->
       </v-card-title>
 
       <v-card-text>

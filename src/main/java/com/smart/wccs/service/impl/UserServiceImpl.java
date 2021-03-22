@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Service;
@@ -51,7 +52,7 @@ public class UserServiceImpl implements UserService {
 
         User registeredUser = userRepo.save(user);
 
-        log.info("IN register - user: {} successfully registered", registeredUser);
+        log.info("IN register - user with username: {} successfully registered", registeredUser);
 
         return registeredUser;
     }
@@ -79,7 +80,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findById(Long id) {
-        User result = userRepo.findById(id).orElse(null);
+        User result = userRepo.findById(id).orElseThrow(() ->
+                new UsernameNotFoundException("User doesn't exists"));
 
         if (result == null) {
             log.warn("IN findById - no user found by id: {}", id);
@@ -91,7 +93,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void delete(Long id) {
-        User user = userRepo.findById(id).orElseThrow();
+        User user = userRepo.findById(id).orElseThrow(() ->
+                new UsernameNotFoundException("User doesn't exists"));
 
         user.setStatus(Status.DELETED);
 

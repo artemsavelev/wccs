@@ -4,12 +4,15 @@
 
     <div>
 
+
       <div v-if="allOrders.length" class="left">
         <OrderItem v-for="order in allOrders"
                    :key="order.id"
                    v-bind:order="order"
                    v-on:removeOrder="removeOrder"
                    v-on:edit="editOrder"/>
+
+
 
 
         <LazyLoader/>
@@ -19,7 +22,9 @@
 
     </div>
 
-    <v-navigation-drawer width="400" app clipped right>
+
+
+    <v-navigation-drawer width="400" v-model="drawerRight" app clipped right>
 
       <v-list dense>
 
@@ -217,10 +222,10 @@
             <v-card-actions class="pa-0">
               <v-row>
                 <v-col cols="12" sm="6" md="6">
-                  <v-btn v-on:click="save" color="primary" class="mt-5" tile>{{ env.keySave }}</v-btn>
+                  <v-btn v-on:click="save" :color="colorSave" class="mt-5" tile>{{ env.keySave }}</v-btn>
                 </v-col>
                 <v-col cols="12" sm="6" md="6" class="d-flex justify-md-end">
-                  <v-btn v-on:click="clear" color="primary" class="mt-5" tile>{{ env.keyClear }}</v-btn>
+                  <v-btn v-on:click="clear" :color="colorClear" class="mt-5" tile>{{ env.keyClear }}</v-btn>
                 </v-col>
               </v-row>
             </v-card-actions>
@@ -228,6 +233,9 @@
         </v-card-text>
 
       </v-list>
+
+
+
     </v-navigation-drawer>
 
 
@@ -238,9 +246,10 @@
 
 <script>
 import env from '../../env.config.json'
-import LazyLoader from "@/components/LazyLoader";
-import OrderItem from "@/components/OrderItem";
-import {mapActions, mapGetters} from "vuex";
+import LazyLoader from "@/components/LazyLoader"
+import OrderItem from "@/components/OrderItem"
+import {mapActions, mapGetters} from "vuex"
+import { bus } from "@/utils/bus"
 
 
 export default {
@@ -261,10 +270,12 @@ export default {
     env,
     valid: true,
     loading: false,
-    drawer: false,
+    drawerRight: true,
     rules: [value => !!value || env.rules[0]],
     message: '',
     color: '',
+    colorSave: 'primary',
+    colorClear: 'primary',
     id: '',
     extId: '',
     customer: '',
@@ -291,6 +302,7 @@ export default {
     description: '',
 
   }),
+
   methods: {
 
     ...mapActions(['addOrder', 'updateOrder']),
@@ -319,16 +331,18 @@ export default {
         this.extId = ''
         this.customer = ''
         this.address = ''
+        this.colorSave = 'primary'
+        this.colorClear = 'primary'
 
       } else {
-
         this.$refs.form.validate()
-
       }
 
     },
 
     clear() {
+      this.colorSave = 'primary'
+      this.colorClear = 'primary'
       this.editedIndex = -1
       this.$refs.form.resetValidation()
       this.id = ''
@@ -338,12 +352,16 @@ export default {
     },
 
     editOrder(item) {
+      this.colorSave = 'success'
+      this.colorClear = 'error'
+      this.drawerRight = true
       this.id = item.id
       this.editedIndex = 1
       this.extId =  item.extId
       this.customer = item.customer
       this.address = item.address
     },
+
     removeOrder(id) {
       const data = {
         message: '"' + id + '" ',
@@ -356,6 +374,22 @@ export default {
       //console.log(id)
     }
   },
+
+  updated() {
+    bus.$on('show-drawer', data => {
+      this.drawerRight = data
+      // console.log(data)
+    })
+
+
+    if (this.extId && this.customer && this.address) {
+      this.colorSave = 'success'
+      this.colorClear = 'error'
+    }
+
+
+  },
+
   mounted() {
 
     this.fetchOrders()

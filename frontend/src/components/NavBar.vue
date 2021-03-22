@@ -45,7 +45,7 @@
 
     <v-app-bar app color="primary" dark dense flat clipped-right clipped-left>
 
-      <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
+      <v-app-bar-nav-icon v-if="profile" @click="drawer = !drawer"></v-app-bar-nav-icon>
 
       <v-toolbar-title>WCCS</v-toolbar-title>
 
@@ -62,18 +62,14 @@
 
       <v-spacer ></v-spacer>
 
-<!--      <OrderForm v-bind:orderVal="ordersList"/>-->
+
+      <v-icon v-if="profile && $route.path === '/'" class="ml-5 pa-1 offset" @click="showDrawer">{{ iconVisibleDrawer }}</v-icon>
 
       <v-btn v-if="profile" v-on:click="orders" :disabled="$route.path === '/'" text tile>{{ env.keyOrder }}</v-btn>
-      <!--      <v-btn v-if="profile" v-on:click="userProfile" :disabled="$route.path === '/profile'" text tile>{{ env.keyProfile }}</v-btn>-->
-      <!--      <v-btn v-if="profile" v-on:click="settings" :disabled="$route.path === '/settings'" text tile>{{ env.keySetting }}</v-btn>-->
-      <!--      <v-btn v-if="profile && this.isRoleAdmin"-->
-      <!--             v-on:click="admin" :disabled="$route.path === '/admin'" text tile>{{ env.keyAdministration }}</v-btn>-->
-      <!--      <v-btn class="mr-10" v-if="profile && this.isRoleSuper"-->
-      <!--             v-on:click="system" :disabled="$route.path === '/system'" text tile>{{ env.keySystem }}</v-btn>-->
-      <v-btn v-if="profile" v-on:click="logout" text tile>
-        <v-icon>mdi-exit-to-app</v-icon>
-      </v-btn>
+
+<!--      <v-btn v-if="profile" v-on:click="logout" text tile>-->
+        <v-icon v-if="profile" class="ml-5 mr-5 pa-1" @click="logout">mdi-exit-to-app</v-icon>
+<!--      </v-btn>-->
 
 
     </v-app-bar>
@@ -84,6 +80,7 @@
 <script>
 import env from "../../env.config.json"
 import { mapGetters } from "vuex";
+import { bus } from "@/utils/bus";
 
 export default {
   name: "NavBar",
@@ -91,7 +88,6 @@ export default {
     ...mapGetters(['profile']),
 
     showItems() {
-
 
       let items = [
         { title: env.main,
@@ -150,8 +146,6 @@ export default {
 
 
       }
-
-
       return items;
     }
 
@@ -160,6 +154,7 @@ export default {
     return {
       env,
       icon: 'mdi-magnify',
+      iconVisibleDrawer: 'mdi-arrow-expand-horizontal',
       selection: 'addOrder',
       ordersList: [],
       dialog: false,
@@ -167,6 +162,7 @@ export default {
       isRoleAdmin: false,
       isRoleSuper: false,
       drawer: true,
+      drawerRight: true,
       items: [],
       right: null,
     }
@@ -188,23 +184,23 @@ export default {
         }
       })
     }
+
+
+
   },
   methods: {
     orders() {
       this.$router.push('/')
     },
-    // userProfile() {
-    //   this.$router.push('/profile')
-    // },
-    // settings() {
-    //   this.$router.push('/settings')
-    // },
-    // admin() {
-    //   this.$router.push('/admin')
-    // },
-    // system() {
-    //   this.$router.push('/system')
-    // },
+
+    showDrawer() {
+
+      this.drawerRight = !this.drawerRight
+      // this.drawerRight ? this.iconVisibleDrawer = 'mdi-arrow-expand-right' : this.iconVisibleDrawer ='mdi-arrow-expand-left'
+
+      bus.$emit('show-drawer', this.drawerRight)
+    },
+
     async logout() {
       await this.$store.dispatch('logout');
       await this.$router.push('/login')
@@ -219,5 +215,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-
+.offset {
+  margin-right: 127px;
+}
 </style>
