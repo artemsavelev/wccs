@@ -31,6 +31,7 @@
               <v-text-field
                   :disabled="!select"
                   :rules="rules"
+                  :hint="env.rules[1]"
                   hide-details="auto"
                   class="pt-5"
                   dense
@@ -44,6 +45,7 @@
               <v-text-field
                   :disabled="!select"
                   :rules="rules"
+                  :hint="env.rules[1]"
                   dense
                   class="pt-5"
                   :label="env.dimension + '*'"
@@ -56,6 +58,7 @@
               <v-text-field
                   :disabled="!select"
                   :rules="rulesPrice"
+                  :hint="env.rules[1]"
                   dense
                   class="pt-5"
                   :label="env.price + '*'"
@@ -75,10 +78,16 @@
             </v-col>
           </v-row>
 
-          <v-btn v-on:click="saveUser"
+          <v-btn @click="saveComponent"
                  :disabled="!select"
-                 color="primary"
+                 :color="colorSave"
                  class="ml-3" tile>{{ env.keySave }}</v-btn>
+
+          <v-btn @click="clear"
+                 :disabled="!select"
+                 :color="colorClear"
+                 class="ml-5" tile>{{ env.keyClear }}</v-btn>
+
         </v-form>
 
       </div>
@@ -87,11 +96,11 @@
 </template>
 
 <script>
-import {mapActions, mapGetters} from "vuex";
-import env from "../../env.config.json";
+import { mapActions, mapGetters } from 'vuex'
+import env from '../../env.config.json'
 
 export default {
-  name: "AddComponent",
+  name: 'AddComponent',
   computed: {
     ...mapGetters(['profile']),
 
@@ -102,6 +111,8 @@ export default {
       env,
       valid: true,
       show: false,
+      colorSave: 'primary',
+      colorClear: 'primary',
 
       select: '',
       name: '',
@@ -124,15 +135,26 @@ export default {
         value => (value && value.length >= 3) || env.rules[1],
       ],
 
-
-
     }
   },
+
+  updated() {
+
+
+
+    if (this.name && this.dimension && this.price) {
+      this.colorSave = 'success'
+      this.colorClear = 'error'
+    }
+
+
+  },
+
   methods: {
 
     ...mapActions(['addDevice', 'addMaterial', 'addWork', 'showSnack']),
 
-    saveUser() {
+    saveComponent() {
 
       const component = {
         name: this.name,
@@ -140,8 +162,6 @@ export default {
         price: this.price,
         note: this.comment,
       }
-
-
 
       if (this.name && this.dimension && this.price) {
 
@@ -166,9 +186,17 @@ export default {
 
         this.showSnack(data)
       }
+    },
 
-
-    }
+    clear() {
+      this.colorSave = 'primary'
+      this.colorClear = 'primary'
+      this.$refs.form.resetValidation()
+      this.name = ''
+      this.dimension = ''
+      this.price = ''
+      this.comment = ''
+    },
 
   }
 }

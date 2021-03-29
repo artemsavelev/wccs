@@ -1,5 +1,5 @@
-import req from "@/store/request";
-import api from "@/api/backendApi";
+import req from '@/store/request'
+import api from '@/api/backendApi'
 
 
 export default {
@@ -14,13 +14,16 @@ export default {
         }
     },
     actions: {
-        async fetchEstimate() {
-            // const data = await req.request(api.API_GET_ESTIMATE_URL);
+        async fetchEstimate({commit}, file) {
+            console.log(file)
+            const data = await req.request(api.API_GET_FILE + file)
+            console.log(data)
+            commit('addEstimateMutation', data)
         },
 
 
         async addEstimate({commit}, estimate) {
-            const data = await req.request(api.API_CREATE_ESTIMATE_URL, 'POST', estimate);
+            const data = await req.request(api.API_CREATE_ESTIMATE_URL, 'POST', estimate)
             commit('addEstimateMutation', data)
         },
 

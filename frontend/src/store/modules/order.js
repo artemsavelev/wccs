@@ -1,6 +1,6 @@
-import req from '../request';
-import api from "../../api/backendApi";
-import store from "@/store";
+import req from '../request'
+import api from '../../api/backendApi'
+import store from '@/store'
 
 export default {
     state: {
@@ -54,11 +54,11 @@ export default {
 
             try{
 
-                const data = await req.request(api.API_ORDER_URL);
+                const data = await req.request(api.API_ORDER_URL)
 
 
 
-                commit('updateOrdersMutation', data.orders);
+                commit('updateOrdersMutation', data.orders)
                 commit('updateTotalPagesMutation', data.totalPages)
                 commit('updateCurrentPageMutation', Math.min(data.currentPage, data.totalPages))
 
@@ -83,7 +83,7 @@ export default {
 
                 const data = await req.request(api.API_ORDER_URL, 'POST', order)
                 const index = state.orders.findIndex(item => item.id === data.id)
-                // console.log(index);
+                // console.log(index)
 
                 if (index > -1) {
                     commit('updateOrdersMutation', data)

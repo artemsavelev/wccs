@@ -78,12 +78,12 @@
 </template>
 
 <script>
-import env from "../../env.config.json"
-import { mapGetters } from "vuex";
-import { bus } from "@/utils/bus";
+import env from '../../env.config.json'
+import { mapGetters } from 'vuex'
+import { bus } from '@/utils/bus'
 
 export default {
-  name: "NavBar",
+  name: 'NavBar',
   computed: {
     ...mapGetters(['profile']),
 
@@ -146,7 +146,7 @@ export default {
 
 
       }
-      return items;
+      return items
     }
 
   },
@@ -202,12 +202,12 @@ export default {
     },
 
     async logout() {
-      await this.$store.dispatch('logout');
+      await this.$store.dispatch('logout')
       await this.$router.push('/login')
     },
 
     close() {
-      this.dialog = false;
+      this.dialog = false
     }
 
   }

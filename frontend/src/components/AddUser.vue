@@ -18,6 +18,7 @@
         <v-col cols="12" sm="6" md="4">
           <v-text-field
               :rules="rules"
+              :hint="env.rules[1]"
               hide-details="auto"
               class="pt-5"
               dense
@@ -30,6 +31,7 @@
         <v-col cols="12" sm="6" md="4">
           <v-text-field
               :rules="rules"
+              :hint="env.rules[1]"
               dense
               class="pt-5"
               :label="env.firstName + '*'"
@@ -51,6 +53,7 @@
         <v-col cols="12" sm="6" md="4">
           <v-text-field
               :rules="rules"
+              :hint="env.rules[1]"
               dense
               class="pt-5"
               :label="env.login + '*'"
@@ -62,6 +65,7 @@
         <v-col cols="12" sm="6" md="4">
           <v-text-field
               :rules="rules"
+              :hint="env.rules[1]"
               dense
               class="pt-5"
               :label="env.password + '*'"

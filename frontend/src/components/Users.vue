@@ -84,8 +84,8 @@
 
 <script>
 import env from '../../env.config.json'
-// import api from "@/api/backendApi";
-import {mapActions, mapGetters} from "vuex";
+// import api from '@/api/backendApi'
+import {mapActions, mapGetters} from 'vuex'
 
 const avatars = [
   '?accessoriesType=Blank&avatarStyle=Circle&clotheColor=PastelGreen&clotheType=ShirtScoopNeck&eyeType=Wink&eyebrowType=UnibrowNatural&facialHairColor=Black&facialHairType=MoustacheMagnum&hairColor=Platinum&mouthType=Concerned&skinColor=Tanned&topType=Turban',
@@ -97,7 +97,7 @@ const avatars = [
 
 const pause = ms => new Promise(resolve => setTimeout(resolve, ms))
 export default {
-  name: "Users",
+  name: 'Users',
 
 
   data: () => ({

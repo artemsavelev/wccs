@@ -1,7 +1,7 @@
-import Vue from 'vue';
-import Vuetify from 'vuetify/lib';
+import Vue from 'vue'
+import Vuetify from 'vuetify/lib'
 
-Vue.use(Vuetify);
+Vue.use(Vuetify)
 
 export default new Vuetify({
 
@@ -12,8 +12,8 @@ export default new Vuetify({
         themes: {
             light: {
                 primary: '#7D30FA',
-                table: '#2D4059',
                 form: '#0085ff',
+                table: '#2D4059',
                 line: '#ccc',
                 line2: '#ccc',
                 hoverItem: '#f6f6f6',
@@ -28,9 +28,9 @@ export default new Vuetify({
                 line2: '#393939',
                 iconLight: '#757575',
                 hoverItem: '#212121',
-                inputTextColor: '#fff',
                 textColor: '#BDBDBD',
-                borderColor: '#424242'
+                borderColor: '#424242',
+                inputTextColor: '#fff'
             },
         },
     },

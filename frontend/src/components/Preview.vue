@@ -114,12 +114,12 @@
 
 <script>
 
-import env from "../../env.config.json"
+import env from '../../env.config.json'
 const Section = () => import('@/components/Section')
 const HeaderTable = () => import('@/components/HeaderTable')
 
 export default {
-  name: "Preview",
+  name: 'Preview',
   props: ['preview'],
   components: { Section, HeaderTable },
   computed: {},

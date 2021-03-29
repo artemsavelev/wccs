@@ -1,41 +1,41 @@
 <template>
   <div class="auth">
-    <form @submit.prevent="auth">
-      <v-text-field :label="env.login"
-                    :rules="rules"
-                    hide-details="auto"
-                    v-model="username"
-                    class="mb-5"
-                    counter></v-text-field>
+    <div>
 
-      <v-text-field :label="env.password"
-                    :rules="rules"
-                    hint="At least 3 characters"
-                    :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
-                    :type="show ? 'text' : 'password'"
-                    @click:append="show = !show"
-                    v-model="password"
-                    class="mb-5"
-                    counter></v-text-field>
+        <v-text-field :label="env.login"
+                      :rules="rules"
+                      :hint="env.rules[1]"
+                      hide-details="auto"
+                      v-model="username"
+                      class="mb-5"
+                      counter></v-text-field>
 
-
-
-      <v-btn color="primary" type="submit" class="auth-btn">{{ env.singIn }}</v-btn>
-
-    </form>
+        <v-text-field :label="env.password"
+                      :rules="rules"
+                      :hint="env.rules[1]"
+                      :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
+                      :type="show ? 'text' : 'password'"
+                      @click:append="show = !show"
+                      v-model="password"
+                      class="mb-5"
+                      counter></v-text-field>
 
 
 
+        <v-btn tile color="primary" @click="auth" class="auth-btn">{{ env.singIn }}</v-btn>
+
+
+    </div>
   </div>
 </template>
 
 <script>
-import {mapActions, mapGetters} from "vuex";
-// import messages from "../utils/messages";
-import env from "../../env.config.json"
+import { mapActions, mapGetters } from 'vuex'
+// import messages from '../utils/messages'
+import env from '../../env.config.json'
 
 export default {
-  name: "auth",
+  name: 'auth',
   data: () => ({
     env,
     rules: [
@@ -91,8 +91,14 @@ export default {
 
 <style scoped lang="scss">
 .auth {
-  width: 400px;
-  margin: 25vh auto;
+  //border: 1px solid black;
+  display: flex;
+  justify-content: center;
+  //width: 400px;
+  height: 90%;
+
+  //margin: 25vh auto;
+  align-items: center;
 
   &-btn{
     width: 400px;

@@ -1,6 +1,6 @@
-import api from "../../api/backendApi";
+import api from '../../api/backendApi'
 
-const user = JSON.parse(localStorage.getItem('user'));
+const user = JSON.parse(localStorage.getItem('user'))
 // console.log(user)
 
 export default {
@@ -10,15 +10,15 @@ export default {
 
     mutations: {
         loginSuccess(state, profile) {
-            state.profile = profile;
+            state.profile = profile
         },
         loginFailure(state) {
-            localStorage.removeItem('user');
-            state.profile = null;
+            localStorage.removeItem('user')
+            state.profile = null
         },
         logout(state) {
-            localStorage.removeItem('user');
-            state.profile = null;
+            localStorage.removeItem('user')
+            state.profile = null
         }
     },
 
@@ -33,15 +33,15 @@ export default {
                     headers: {
                         'Content-Type': 'application/json'
                     }
-                });
+                })
 
 
                 if (response.ok) {
-                    const user = await response.json();
-                    commit('loginSuccess', user);
-                    localStorage.setItem('user', JSON.stringify(user));
+                    const user = await response.json()
+                    commit('loginSuccess', user)
+                    localStorage.setItem('user', JSON.stringify(user))
                 } else {
-                    commit('setError', response.status);
+                    commit('setError', response.status)
                     await this.$router.push('/login')
                 }
 
@@ -52,8 +52,8 @@ export default {
 
 
         async logout({ commit }) {
-            localStorage.removeItem('user');
-            await commit('logout');
+            localStorage.removeItem('user')
+            await commit('logout')
         }
 
     },

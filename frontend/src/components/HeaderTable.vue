@@ -44,7 +44,7 @@
 </template>
 
 <script>
-import env from "../../env.config.json"
+import env from '../../env.config.json'
 
 export default {
   name: "HeaderTable",

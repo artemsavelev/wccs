@@ -21,7 +21,7 @@
 const ModalForm = () => import('./ModalForm')
 const HeaderTable = () => import('@/components/HeaderTable')
 const DataContent = () => import('@/components/DataContent')
-import {mapActions, mapGetters} from "vuex";
+import { mapActions, mapGetters } from "vuex";
 
 export default {
   name: "Work",
@@ -40,10 +40,10 @@ export default {
     // получаем данные с сервера (список работ)
     this.fetchWorks()
   },
+
   methods: {
 
     ...mapActions(['showSnack']),
-
 
     // добавление записи в конец массива
     addWork(item) {

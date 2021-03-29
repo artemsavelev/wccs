@@ -14,7 +14,7 @@ export default {
     },
     actions: {
         showSnack({ commit }, payload) {
-            commit('setSnack', payload);
+            commit('setSnack', payload)
         },
     },
     getters: {

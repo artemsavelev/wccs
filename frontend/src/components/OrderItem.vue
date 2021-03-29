@@ -7,7 +7,7 @@
 
 
 
-      <div class="order-row-container">
+      <div class="order-row-container ml-3">
         <div class="order-cols col-id pa-0">
           # {{ order.id }}
         </div>
@@ -19,19 +19,23 @@
         <div class="order-cols col-created-date pa-0">
           <v-tooltip bottom>
             <template v-slot:activator="{ on }">
-              <span v-on="on">{{ order.createdDate }}</span>
+              <span v-on="on">Дата создания: {{ order.createdDate }}</span>
             </template>
             <span>Дата создания: {{ order.createdDate }}</span>
           </v-tooltip>
         </div>
 
-        <div class="order-cols col-created-date pa-0">
+        <div v-if="order.updatedDate" class="order-cols col-created-date pa-0">
           <v-tooltip bottom>
             <template v-slot:activator="{ on }">
-              <span v-on="on">{{ order.updatedDate }}</span>
+              <span v-on="on">Дата обновления: {{ order.updatedDate }}</span>
             </template>
             <span>Дата обновления: {{ order.updatedDate }}</span>
           </v-tooltip>
+        </div>
+
+        <div v-else class="order-cols col-created-date pa-0">
+
         </div>
 
         <div class="order-cols col-verif pa-0">
@@ -69,10 +73,11 @@
         </div>
       </div>
 
-      <div class="order-row-container font-weight-bold">
+      <div class="order-col-container font-weight-bold ml-3">
         <div class="order-cols col-customer py-1">
           <v-tooltip bottom>
             <template v-slot:activator="{ on }">
+              <span class="font-weight-regular">{{ env.customer }}: </span>
               <span v-on="on">{{ order.customer }}</span>
             </template>
             <span>{{ order.customer }}</span>
@@ -82,6 +87,7 @@
         <div class="order-cols col-address py-1">
           <v-tooltip bottom>
             <template v-slot:activator="{ on }">
+              <span class="font-weight-regular">{{ env.address }}: </span>
               <span v-on="on">{{ order.address }}</span>
             </template>
             <span>{{ order.address }}</span>
@@ -99,6 +105,7 @@
 
 <script>
 import Estimate from '@/components/Estimate'
+import env from '../../env.config.json'
 
 export default {
   name: 'OrderItem',
@@ -117,6 +124,7 @@ export default {
 
   },
   data: () => ({
+    env,
     customer: '',
     address: '',
     selection: 'addEstimate'
@@ -143,8 +151,17 @@ export default {
   justify-content: space-between;
   align-items: center;
 }
+
 .order-row:hover {
   background: $hover-item;
+}
+
+.order-col-container {
+  //border: 1px solid #ff0000;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+
 }
 
 .order-cols {
@@ -176,7 +193,7 @@ export default {
 
 .col-verif {
   text-align: right;
-  flex-basis: 35%;
+  flex-basis: 5%;
 }
 
 .col-action-order {

@@ -18,7 +18,7 @@
         <v-col class="py-0">
           <v-list-item color="rgba(0, 0, 0, .4)" dark>
             <v-list-item-content>
-              <v-list-item-title class="title">{{profile.lastName}} {{profile.firstName}}</v-list-item-title>
+              <v-list-item-title class="title">{{ profile.lastName }} {{ profile.firstName }}</v-list-item-title>
               <v-list-item-subtitle>{{ env.login }}: {{ profile.username }}</v-list-item-subtitle>
               <v-list-item-subtitle>{{ env.department }}: {{ profile.department.name }}</v-list-item-subtitle>
               <v-list-item-subtitle>{{ env.position }}:
@@ -31,7 +31,7 @@
                    :href="`mailto:${profile.email}`"
                    target="_blank">{{ profile.email }}</a>
               </v-list-item-subtitle>
-              <v-list-item-subtitle>{{profile.roles}}</v-list-item-subtitle>
+              <v-list-item-subtitle>{{ profile.roles }}</v-list-item-subtitle>
             </v-list-item-content>
 
           </v-list-item>
@@ -42,8 +42,8 @@
 </template>
 
 <script>
-import env from "../../env.config.json"
-import {mapGetters} from "vuex";
+import env from '../../env.config.json'
+import { mapGetters } from 'vuex'
 
 export default {
   name: "Profile",

@@ -355,8 +355,8 @@ export default {
       this.colorSave = 'success'
       this.colorClear = 'error'
       this.drawerRight = true
-      this.id = item.id
       this.editedIndex = 1
+      this.id = item.id
       this.extId =  item.extId
       this.customer = item.customer
       this.address = item.address

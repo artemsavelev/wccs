@@ -43,14 +43,17 @@ export default {
       itemName: ''
     }
   },
+
   updated() {
     //
     // console.log('device', JSON.parse(localStorage.getItem(this.extId + '_' + this.itemName)))
   },
+
   mounted() {
     // получаем данные с сервера (список оборудования)
     this.fetchDevices();
   },
+
   methods: {
 
 

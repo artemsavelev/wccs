@@ -33,7 +33,7 @@ import env from '../../env.config.json'
 
 
 export default {
-  name: "Section",
+  name: 'Section',
   props: ['item', 'idx'],
   computed: {},
   data() {

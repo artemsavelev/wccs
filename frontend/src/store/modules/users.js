@@ -1,5 +1,5 @@
-import req from "@/store/request";
-import api from "@/api/backendApi";
+import req from '@/store/request'
+import api from '@/api/backendApi'
 
 export default {
     state: {

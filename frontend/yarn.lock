@@ -907,15 +907,15 @@
     cssnano-preset-default "^4.0.0"
     postcss "^7.0.0"
 
-"@mdi/font@^5.0.45":
-  version "5.8.55"
-  resolved "https://registry.npmjs.org/@mdi/font/-/font-5.8.55.tgz"
-  integrity sha512-8mrwfFBsmj+D67ZiGQSe5TU/lcWCtDyli2eshQ2fvLCZGRPqFMM23YQp4+JMOTpk5yMZKTeAwNWIYfITy76OHA==
+"@mdi/font@^5.9.55":
+  version "5.9.55"
+  resolved "https://registry.yarnpkg.com/@mdi/font/-/font-5.9.55.tgz#41acd50b88073ded7095fc3029d8712b6e12f38e"
+  integrity sha512-jswRF6q3eq8NWpWiqct6q+6Fg/I7nUhrxYJfiEM8JJpap0wVJLQdbKtyS65GdlK7S7Ytnx3TTi/bmw+tBhkGmg==
 
-"@mdi/js@^5.0.45":
-  version "5.8.55"
-  resolved "https://registry.npmjs.org/@mdi/js/-/js-5.8.55.tgz"
-  integrity sha512-2bvln56SW6V/nSDC/0/NTu1bMF/CgSyZox8mcWbAPWElBN3UYIrukKDUckEER8ifr8X2YJl1RLKQqi7T7qLzmg==
+"@mdi/js@^5.9.55":
+  version "5.9.55"
+  resolved "https://registry.yarnpkg.com/@mdi/js/-/js-5.9.55.tgz#8f5bc4d924c23f30dab20545ddc768e778bbc882"
+  integrity sha512-BbeHMgeK2/vjdJIRnx12wvQ6s8xAYfvMmEAVsUx9b+7GiQGQ9Za8jpwp17dMKr9CgKRvemlAM4S7S3QOtEbp4A==
 
 "@mrmlnc/readdir-enhanced@^2.2.1":
   version "2.2.1"
@@ -1004,6 +1004,11 @@
   dependencies:
     "@types/minimatch" "*"
     "@types/node" "*"
+
+"@types/google.fonts@^1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@types/google.fonts/-/google.fonts-1.0.2.tgz#c9461afe3638877a372546c327f442f5d9351f60"
+  integrity sha512-V1bkKifXl7wN8Jrmsyh+nALf311P0jFUGVZ4tEGqSdwpIx9o2E6u4mJyeSpNC/e/7spH0GzMhElIcQWBQC0HRg==
 
 "@types/http-proxy-middleware@*":
   version "0.19.3"

@@ -6,7 +6,7 @@ export default {
 
         try {
 
-            const user = JSON.parse(localStorage.getItem('user'));
+            const user = JSON.parse(localStorage.getItem('user'))
             const headers = {}
             let body
 

@@ -22,7 +22,7 @@
 
 
 export default {
-  name: "Settings",
+  name: 'Settings',
   computed: {
   },
   data: () => ({

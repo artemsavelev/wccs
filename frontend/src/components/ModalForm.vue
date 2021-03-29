@@ -2,9 +2,9 @@
   <v-dialog v-model="dialog" width="80%" scrollable persistent>
 
     <template v-slot:activator="{ on }" class="mt-1">
-      <v-btn v-on="on" v-on:click="open" small class="mb-10 mt-1" color="primary" tile>{{ env.keyAdd }}</v-btn>
+      <v-btn v-on="on" @click="open" small class="mb-10 mt-1" color="primary" tile>{{ env.keyAdd }}</v-btn>
     </template>
-    <v-card style="height: 90vh">
+    <v-card style="height: 90vh" class="rounded-0">
 
       <v-card-title class="form">
         <span class="font-xl">{{formTitle}}</span>
@@ -34,7 +34,7 @@
         </v-container>
       </div>
 
-      <v-card-text class="ma-0 pa-0" style="height: 50vh">
+      <v-card-text class="ma-0 pa-0 scroll" style="height: 50vh">
         <v-container>
           <div v-if="typeSection === 0">
             <!--   load component add work description   -->
@@ -67,14 +67,14 @@
 </template>
 
 <script>
-import env from "../../env.config.json";
-import {mapActions} from "vuex";
-const SectionItem = () => import("@/components/SectionItem");
-const HeaderTable = () => import("@/components/HeaderTable");
-const WorkDescription = () => import("@/components/WorkDescription");
+import env from '../../env.config.json'
+import {mapActions} from 'vuex'
+const SectionItem = () => import('@/components/SectionItem')
+const HeaderTable = () => import('@/components/HeaderTable')
+const WorkDescription = () => import('@/components/WorkDescription')
 
 export default {
-  name: "ModalWin",
+  name: 'ModalWin',
   components: { WorkDescription, HeaderTable, SectionItem },
   props: ['typeSection', 'data', 'ex', 'extId'],
   computed: {
@@ -164,5 +164,18 @@ export default {
 
 <style lang="scss">
 
+.scroll::-webkit-scrollbar {
+  width: 7px;
+}
+
+::-webkit-scrollbar-thumb {
+  //border-radius: 7px;
+  background-color: #ccc;
+}
+
+.scroll::-webkit-scrollbar-track {
+  -webkit-box-shadow: 5px 5px 5px -5px rgba(34, 60, 80, 0.2) inset;
+  background-color: #f9f9fd;
+}
 
 </style>

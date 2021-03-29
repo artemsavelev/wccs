@@ -1,5 +1,5 @@
-import req from "@/store/request";
-import api from "@/api/backendApi";
+import req from "@/store/request"
+import api from "@/api/backendApi"
 
 
 export default {
@@ -11,7 +11,7 @@ export default {
     mutations: {
         // devices
         updateDeviceMutation(state, devices) {
-            state.devices = devices;
+            state.devices = devices
         },
         addDeviceMutation(state, device) {
             state.devices = [
@@ -22,7 +22,7 @@ export default {
 
         // materials
         updateMaterialMutation(state, materials) {
-            state.materials = materials;
+            state.materials = materials
         },
         addMaterialMutation(state, materials) {
             state.materials = [
@@ -33,7 +33,7 @@ export default {
 
         // works
         updateWorkMutation(state, works) {
-            state.works = works;
+            state.works = works
         },
         addWorkMutation(state, works) {
             state.works = [
@@ -46,7 +46,7 @@ export default {
         // get devices list from backend
         async fetchDevices({commit}) {
             const data = await req.request(api.API_DEVICE_URL)
-            commit('updateDeviceMutation', data);
+            commit('updateDeviceMutation', data)
 
         },
         async addDevice({commit}, device) {
@@ -58,7 +58,7 @@ export default {
         // get materials list from backend
         async fetchMaterials({commit}) {
             const data = await req.request(api.API_MATERIAL_URL)
-            commit('updateMaterialMutation', data);
+            commit('updateMaterialMutation', data)
         },
         async addMaterial({commit}, material) {
             const data = await req.request(api.API_MATERIAL_URL, 'POST', material)
@@ -69,7 +69,7 @@ export default {
         // get works list from backend
         async fetchWorks({commit}) {
             const data = await req.request(api.API_WORK_URL)
-            commit('updateWorkMutation', data);
+            commit('updateWorkMutation', data)
         },
         async addWork({commit}, work) {
             const data = await req.request(api.API_WORK_URL, 'POST', work)

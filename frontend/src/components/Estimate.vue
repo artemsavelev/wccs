@@ -6,7 +6,7 @@
       </v-btn>
     </template>
 
-    <v-card>
+    <v-card class="rounded-0">
       <v-card-title class="form">
         <div class="font-xl color">{{formTitle}}</div>
         <v-checkbox v-model="ex"
@@ -70,9 +70,9 @@
 </template>
 
 <script>
-import {mapActions, mapGetters} from "vuex"
-import api from "@/api/backendApi"
-import env from "../../env.config.json"
+import { mapActions, mapGetters } from 'vuex'
+import api from '@/api/backendApi'
+import env from '../../env.config.json'
 import TypeOfWork from './TypeOfWork'
 import Device from './Device'
 import Materials from './Materials'
@@ -82,9 +82,9 @@ import Preview from './Preview'
 
 
 
-// const pause = ms => new Promise(resolve => setTimeout(resolve, ms))
+const pause = ms => new Promise(resolve => setTimeout(resolve, ms))
 export default {
-  name: "Estimate",
+  name: 'Estimate',
   props: ['extId', 'address', 'customer'],
   components: {TypeOfWork, Device, Materials, Work, Preview },
   computed: {
@@ -142,7 +142,7 @@ export default {
   },
 
   methods: {
-    ...mapActions(['addEstimate', 'showSnack']),
+    ...mapActions(['addEstimate', 'fetchEstimate', 'showSnack']),
     close() {
       this.dialog = false
     },
@@ -200,38 +200,54 @@ export default {
 
       })
 
+
+
+
+
+
       // проверяем и загружаем файл
+
+      await pause(2000)
       await fetch(api.API_GET_FILE + this.fileName, {
+
         method: 'GET',
-      }).then(response => response.blob()).then((blob) => {
+      }).then(response => {
 
-        // проверяем существует ли файл
-        if (blob.size === 0) {
-          //
-          const data = {
-            message: 'Ошибка, файл - "' + this.fileName + '" не создан.',
-            color: 'error',
-            icon: 'mdi-alert-circle'
-          }
+        response.blob()
+            .then((blob) => {
 
-          this.showSnack(data)
-          this.loading = false // останавливаем анимацию
+              // проверяем существует ли файл
+              if (blob.size !== 0 && response.ok) {
 
-        } else {
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = this.fileName;
+                document.body.appendChild(a);
+                a.click();
+                a.remove();  //afterwards we remove the element again
+                this.loading = false // останавливаем анимацию
 
-          const url = window.URL.createObjectURL(blob);
-          const a = document.createElement('a');
-          a.href = url;
-          a.download = this.fileName;
-          document.body.appendChild(a);
-          a.click();
-          a.remove();  //afterwards we remove the element again
-          this.loading = false // останавливаем анимацию
+              } else {
 
-        }
+                const data = {
+                  message: 'Ошибка, файл - "' + this.fileName + '" не создан.',
+                  color: 'error',
+                  icon: 'mdi-alert-circle'
+                }
+
+                this.showSnack(data)
+                this.loading = false // останавливаем анимацию
+
+              }
+            })
       })
 
+
     },
+
+
+
 
     get() {
       // console.log('При нажатии на кнопку калькулятор')

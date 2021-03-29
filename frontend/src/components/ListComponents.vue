@@ -114,11 +114,11 @@
 </template>
 
 <script>
-import {mapActions, mapGetters, mapMutations} from "vuex";
-import env from "../../env.config.json";
+import { mapActions, mapGetters, mapMutations } from 'vuex'
+import env from '../../env.config.json'
 
 export default {
-  name: "ListComponents",
+  name: 'ListComponents',
   computed:  {
     ...mapGetters(['allDevices', 'allMaterials', 'allWorks', 'profile']),
     ...mapMutations(['addDeviceMutation', 'addMaterialMutation', 'addWorkMutation']),
