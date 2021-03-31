@@ -9,13 +9,13 @@
       <v-card-title class="form">
         <span class="font-xl">{{formTitle}}</span>
         <v-spacer></v-spacer>
-        <v-btn small text tile v-on:click="close">
-          <v-icon>mdi-close</v-icon>
-        </v-btn>
+<!--        <v-btn small text tile v-on:click="close">-->
+          <v-icon v-on:click="close">mdi-close</v-icon>
+<!--        </v-btn>-->
       </v-card-title>
-      <v-card-text>
+      <v-card-text class="scroll">
 
-          <div style="height: 120vh">
+          <div style="height: 140vh">
             <div class="title-estimate mt-5">{{ env.estimate + ' ' + preview.key }}</div>
             <div class="id">{{ env.request }}: {{ preview.extId }}</div>
             <div class="address">{{ env.address }}: {{ preview.address }}</div>
@@ -260,19 +260,19 @@ export default {
 
 .subtotal-price {
   //border: green 1px solid;
-  flex-basis: 13.5%;
+  flex-basis: 15.4%;
   text-align: left;
 }
 
 .tax-price {
   //border: green 1px solid;
-  flex-basis: 13.5%;
+  flex-basis: 15.4%;
   text-align: left;
 }
 
 .total-price {
   //border: green 1px solid;
-  flex-basis: 13.5%;
+  flex-basis: 15.4%;
   text-align: left;
 }
 

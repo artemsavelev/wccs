@@ -80,10 +80,10 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void update(Order order) {
-        Order orderFromDb = orderRepo.findById(order.getId()).orElseThrow(() ->
-                new ObjectNotFoundException(order.getId(),
-                        "IN update - order with id: " + order.getId() + " not updated. Order not found "));
+    public void update(Long id, Order order) {
+        Order orderFromDb = orderRepo.findById(id).orElseThrow(() ->
+                new ObjectNotFoundException(id,
+                        "IN update - order with id: " + id + " not updated. Order not found "));
         orderFromDb.setExtId(order.getExtId());
         orderFromDb.setUpdatedDate(LocalDateTime.now());
         orderFromDb.setCustomer(order.getCustomer());
@@ -102,6 +102,7 @@ public class OrderServiceImpl implements OrderService {
 //        orderRepo.deleteById(id);
 
         order.setStatus(Status.DELETED);
+        orderRepo.save(order);
         log.info("IN delete - order with id: {} successfully deleted", id);
     }
 }

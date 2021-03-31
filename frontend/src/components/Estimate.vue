@@ -20,7 +20,7 @@
 <!--        </v-btn>-->
       </v-card-title>
 
-      <v-card-text>
+      <v-card-text class="scroll">
 
         <div class="font-s">
           <div class="ext-id">

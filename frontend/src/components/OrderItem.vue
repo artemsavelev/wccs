@@ -109,17 +109,16 @@ import env from '../../env.config.json'
 
 export default {
   name: 'OrderItem',
-  props: ['order', 'editOrder', 'delOrder'],
-  computed: {
-  },
+  props: ['order'],
   components: { Estimate },
   methods: {
 
     edit() {
-      this.$emit('edit', this.order)
+      this.$emit('editOrder', this.order)
     },
+
     del() {
-      this.$emit('removeOrder', this.order.id)
+      this.$emit('removeOrder', this.order)
     },
 
   },

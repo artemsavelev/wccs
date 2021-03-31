@@ -21,9 +21,9 @@
       </div>
 
       <template v-slot:action="{ attrs }">
-        <v-btn dark text @click="show = false" tile v-bind="attrs">
-          <v-icon>mdi-close</v-icon>
-        </v-btn>
+<!--        <v-btn dark text @click="show = false" tile v-bind="attrs">-->
+          <v-icon @click="show = false" v-bind="attrs" class="mr-5">mdi-close</v-icon>
+<!--        </v-btn>-->
       </template>
     </v-snackbar>
   </v-card>

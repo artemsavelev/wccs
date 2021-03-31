@@ -4,22 +4,17 @@
 
     <div>
 
-
       <div v-if="allOrders.length" class="left">
         <OrderItem v-for="order in allOrders"
                    :key="order.id"
                    v-bind:order="order"
-                   v-on:removeOrder="removeOrder"
-                   v-on:edit="editOrder"/>
-
-
-
+                   @removeOrder="removeOrder"
+                   @editOrder="editOrder"/>
 
         <LazyLoader/>
 
       </div>
       <div v-else class="no-content mr-16"> {{ env.noRecords }}</div>
-
     </div>
 
 
@@ -305,7 +300,7 @@ export default {
 
   methods: {
 
-    ...mapActions(['addOrder', 'updateOrder']),
+    ...mapActions(['addOrder', 'updateOrder', 'deleteOrder']),
 
     // сохранение новой записи
     save() {
@@ -315,7 +310,7 @@ export default {
         extId: this.extId,
         customer: this.customer,
         address: this.address,
-      };
+      }
 
       if (this.extId && this.customer && this.address) {
 
@@ -362,23 +357,24 @@ export default {
       this.address = item.address
     },
 
-    removeOrder(id) {
+    removeOrder(item) {
+
+      this.deleteOrder(item)
+
       const data = {
-        message: '"' + id + '" ',
-        color: 'success',
-        icon: 'mdi-check-circle'
+        message: 'Запись с # "' + item.id + '" удалена ',
+        color: 'warning',
+        icon: 'mdi-alert'
       }
 
       this.showSnack(data)
-      // this.allOrders = this.allOrders.filter(o => o.id !== id)
-      //console.log(id)
+
     }
   },
 
   updated() {
     bus.$on('show-drawer', data => {
       this.drawerRight = data
-      // console.log(data)
     })
 
 

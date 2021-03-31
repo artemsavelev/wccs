@@ -18,7 +18,8 @@ export default new Vuetify({
                 line2: '#ccc',
                 hoverItem: '#f6f6f6',
                 textColor: '#424242',
-                borderColor: '#9E9E9E'
+                borderColor: '#9E9E9E',
+                scrollbarTrack: '#fff'
             },
             dark: {
                 primary: '#512DA8',
@@ -30,7 +31,8 @@ export default new Vuetify({
                 hoverItem: '#212121',
                 textColor: '#BDBDBD',
                 borderColor: '#424242',
-                inputTextColor: '#fff'
+                inputTextColor: '#fff',
+                scrollbarTrack: '#424242'
             },
         },
     },

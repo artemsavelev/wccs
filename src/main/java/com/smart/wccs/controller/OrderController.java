@@ -6,7 +6,6 @@ import com.smart.wccs.dto.OrderPageDto;
 import com.smart.wccs.model.Order;
 import com.smart.wccs.model.Views;
 import com.smart.wccs.service.OrderService;
-import com.smart.wccs.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,7 +15,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -69,19 +67,32 @@ public class OrderController {
 
     }
 
-    @RequestMapping(value = "/", method = RequestMethod.PUT)
+    @RequestMapping(value = "{id}", method = RequestMethod.PUT)
     @JsonView(Views.UserView.class)
-    public ResponseEntity<Order> updateOrder(@RequestBody Order order) {
+    public ResponseEntity<Order> updateOrder(@PathVariable(name = "id") Long id, @RequestBody Order order) {
 
         if (order == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
-        orderService.update(order);
+        orderService.update(id, order);
 
-        Order orderFromDb = orderService.getById(order.getId());
+        Order orderFromDb = orderService.getById(id);
 
         return new ResponseEntity<>(orderFromDb, HttpStatus.OK);
 
+    }
+
+    @RequestMapping(value = "{id}", method = RequestMethod.DELETE)
+    @JsonView(Views.UserView.class)
+    public ResponseEntity<?> deleteOrder(@PathVariable(name = "id") Long id) {
+        Order orderFromDb = orderService.getById(id);
+
+        if (orderFromDb == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        orderService.delete(orderFromDb.getId());
+        return new ResponseEntity<>(orderFromDb, HttpStatus.OK);
     }
 }
