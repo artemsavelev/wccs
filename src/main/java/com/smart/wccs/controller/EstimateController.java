@@ -61,12 +61,11 @@ public class EstimateController {
     }
 
     @RequestMapping(value = "/files/{file_name:.+}", method = RequestMethod.GET)
-//    @RequestHeader String referer
-    public void getFile(@PathVariable("file_name") String fileName,  HttpServletResponse response) {
-        // Прежде всего стоит проверить, если необходимо, авторизован ли пользователь и имеет достаточно прав на скачивание файла. Если нет, то выбрасываем здесь Exception
+    public void getFile(@PathVariable("file_name") String fileName, @RequestHeader String referer, HttpServletResponse response) {
+        // стоит проверить, если необходимо, авторизован ли пользователь и имеет достаточно прав на скачивание файла. Если нет, то выбрасываем здесь Exception
 
-//        if (referer == null || referer.isEmpty())
-//            throw new RuntimeException("Missing header 'referer' when try download file: " + fileName);
+        if (referer == null || referer.isEmpty())
+            throw new RuntimeException("Missing header 'referer' when try download file: " + fileName);
 
         // Авторизованные пользователи смогут скачать файл
         Path file = Paths.get(uploadPath, fileName);

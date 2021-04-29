@@ -12,11 +12,11 @@ public class Data {
     private final Font font;
     private final CellStyle style;
 
-    public Data(Workbook workbook, Sheet sheet, Font font, CellStyle style) {
+    public Data(Workbook workbook, Sheet sheet, Font font) {
         this.workbook = workbook;
         this.sheet = sheet;
         this.font = font;
-        this.style = style;
+        this.style = new CreateStyle(workbook, font).getStyle(HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
     }
 
 
@@ -44,22 +44,27 @@ public class Data {
             i++;
             row = sheet.createRow(rowNum);
 //            row.setHeightInPoints(-1);
+
             // # (A)
             cell = row.createCell(0, CellType.NUMERIC);
             cell.setCellValue(i);
             cell.setCellStyle(styleLocal);
+
             // name (B)
             cell = row.createCell(1, CellType.STRING);
             cell.setCellValue(comp.getName());
             cell.setCellStyle(styleLocal);
+
             // dimension (C)
             cell = row.createCell(2, CellType.STRING);
             cell.setCellValue(comp.getDimension());
             cell.setCellStyle(styleLocal);
+
             // quantity (D)
             cell = row.createCell(3, CellType.NUMERIC);
             cell.setCellValue(comp.getQuantity());
             cell.setCellStyle(styleLocal);
+
             // price (E)
             cell = row.createCell(4, CellType.NUMERIC);
             cell.setCellValue(comp.getPrice());
@@ -67,6 +72,7 @@ public class Data {
             style.setBottomBorderColor(IndexedColors.GREY_25_PERCENT.getIndex());
             style.setDataFormat((short) 0x27);
             cell.setCellStyle(style);
+
             // sum (F)
             String formula = "E" + (rowNum + 1) + "*D" + (rowNum + 1);
             cell = row.createCell(5, CellType.FORMULA);

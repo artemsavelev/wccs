@@ -6,9 +6,11 @@ import org.apache.poi.ss.usermodel.*;
 public class CreateStyle {
 
     private final Workbook workbook;
-    private final Font font;
+    private Font font;
 
-
+    public CreateStyle(Workbook workbook) {
+        this.workbook = workbook;
+    }
 
     public CreateStyle(Workbook workbook, Font font) {
         this.workbook = workbook;

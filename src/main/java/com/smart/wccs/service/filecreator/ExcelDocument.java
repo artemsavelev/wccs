@@ -26,141 +26,403 @@ public class ExcelDocument implements FileCreator {
     @Value("${tax.percent}")
     private int tax;
 
+    private String keyEstimate;
+
+    // font size
+    private final int fontDefaultSize = 8;
+
+    private int fontTitleSize = 12;
+
+    private Workbook workbook;
+
+    private Sheet sheet;
+
+    private Font font;
+
 
     @Override
     public void createFile(Estimate estimate) {
 
-        String keyEstimate;
+
+
         if ("ПРЕДВАРИТЕЛЬНАЯ".equals(estimate.getKey())) {
             keyEstimate = "ПРЕДВАРИТЕЛЬНАЯ";
         } else {
             keyEstimate = "ФАКТИЧЕСКАЯ";
         }
 
+        workbook =  new XSSFWorkbook();
 
-        Workbook workbook = new XSSFWorkbook();
-        Sheet sheet = workbook.createSheet("Смета " + keyEstimate);
-        Font font = new CreateFont(workbook).getFont(8, false);
+        sheet = workbook.createSheet("Смета " + keyEstimate);
+
+        font = new CreateFont(workbook).getFont(fontDefaultSize, false);
+
         List<Components> listDevice = new ArrayList<>(estimate.getDevices());
         List<Components> listMaterial = new ArrayList<>(estimate.getMaterials());
         List<Components> listWork = new ArrayList<>(estimate.getWorks());
 
-        CreateStyle createStyle = new CreateStyle(workbook, font);
-        CellStyle styleHeaderTable = createStyle.getStyle(IndexedColors.GREY_25_PERCENT, FillPatternType.SOLID_FOREGROUND,
-                HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
-        CellStyle styleEmpty = createStyle.getStyle();
-        CellStyle styleAlignCenter = createStyle.getStyle(HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
-        CellStyle styleAlignCenter2 = createStyle.getStyle(HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
-        CellStyle styleAlignCenterTop = createStyle.getStyle(HorizontalAlignment.LEFT, VerticalAlignment.TOP);
-        CellStyle styleAlignLeft = createStyle.getStyle(HorizontalAlignment.LEFT, VerticalAlignment.CENTER);
 
-
-        CellStyle styleAlignCenter3 = createStyle.getStyle(new CreateFont(workbook)
-                .getFont(12, false), HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
-
-        CellStyle styleAlignLeftColor = createStyle.getStyle(new CreateFont(workbook)
-                .getFont(IndexedColors.RED, 8, false), HorizontalAlignment.LEFT, VerticalAlignment.CENTER);
-
-        CellStyle styleAlignCenterBold = createStyle.getStyle(new CreateFont(workbook)
-                .getFont(8, true), HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
-        CellStyle styleAlignRightBold = createStyle.getStyle(new CreateFont(workbook)
-                .getFont(8, true), HorizontalAlignment.RIGHT, VerticalAlignment.CENTER);
-        CellStyle styleAlignLeftBottomBold = createStyle.getStyle(new CreateFont(workbook)
-                .getFont(8, true), HorizontalAlignment.LEFT, VerticalAlignment.BOTTOM);
 
         new SheetSettings(sheet).getSettings();
 
-        CreateCell createCell = new CreateCell(sheet, CellType.STRING);
-        CreateHeaderTable headerTable = new CreateHeaderTable(sheet, CellType.STRING);
-        Data data = new Data(workbook, sheet, font, styleAlignCenter);
 
-        createCell.getCell(styleAlignCenter3,0, 0, 5, 30,
-                "ФАКТИЧЕСКАЯ".equals(keyEstimate) ? "Смета" : "Смета " + keyEstimate);
-        createCell.getCell(styleAlignCenter2,1, 0, 5, 15, "№: " + estimate.getExtId());
-        createCell.getCell(styleAlignCenter2,2, 0, 5, 15, "адрес: " + estimate.getAddress());
-        createCell.getCell(styleAlignCenter2,3, 0, 5, 15, "заказчик: " + estimate.getCustomer());
-        createCell.getCell(styleAlignCenter2,4, 0, 5, 15, "составил: " +
-                estimate.getAuthor().getLastName() + " " + estimate.getAuthor().getFirstName() + " " +
-                estimate.getCreatedDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-        createCell.getCell(styleEmpty, 5, 0, 5, 15, "");
-        createCell.getCell(styleAlignLeft, 6, 0, 5, 15, "Описание работ :");
-        createCell.getCell(styleAlignCenterTop, 7, 0, 5, 100, estimate.getWorkDescription());
-        createCell.getCell(styleAlignLeftColor, 8, 0, 5, 70, estimate.getSimpleText());
+        // первая строка
+        new CreateCell(sheet, CellType.STRING).getCell(
+                new CreateStyle(workbook).getStyle(
+                        new CreateFont(workbook).getFont(fontTitleSize, false),
+                        HorizontalAlignment.CENTER,
+                        VerticalAlignment.CENTER
+                ),
+                Rows.FIRST_ROW.getRow(),
+                Cols.FIRST_COL.getCol(),
+                Cols.SIXTH_COL.getCol(),
+                HeightCell.HEIGHT_CELL_TITLE.getIndex(),
+                "ФАКТИЧЕСКАЯ".equals(keyEstimate) ? "Смета" : "Смета " + keyEstimate
+        );
 
-        createCell.getCell(styleAlignLeftBottomBold, 9, 0, 5, 25, "1. Активное оборудование");
-        headerTable.getHeader(styleHeaderTable, 9);
+        // вторая строка
+        new CreateCell(sheet, CellType.STRING).getCell(
+                new CreateStyle(workbook, font).getStyle(HorizontalAlignment.CENTER, VerticalAlignment.CENTER),
+                Rows.SECOND_ROW.getRow(),
+                Cols.FIRST_COL.getCol(),
+                Cols.SIXTH_COL.getCol(),
+                HeightCell.HEIGHT_CELL_DEFAULT.getIndex(),
+                "№: " + estimate.getExtId()
+        );
+
+        // третья строка
+        new CreateCell(sheet, CellType.STRING).getCell(
+                new CreateStyle(workbook, font).getStyle(HorizontalAlignment.CENTER, VerticalAlignment.CENTER),
+                Rows.THIRD_ROW.getRow(),
+                Cols.FIRST_COL.getCol(),
+                Cols.SIXTH_COL.getCol(),
+                HeightCell.HEIGHT_CELL_DEFAULT.getIndex(),
+                "адрес: " + estimate.getAddress()
+        );
+
+        // четвертая строка
+        new CreateCell(sheet, CellType.STRING).getCell(
+                new CreateStyle(workbook, font).getStyle(HorizontalAlignment.CENTER, VerticalAlignment.CENTER),
+                Rows.FOURTH_ROW.getRow(),
+                Cols.FIRST_COL.getCol(),
+                Cols.SIXTH_COL.getCol(),
+                HeightCell.HEIGHT_CELL_DEFAULT.getIndex(),
+                "заказчик: " + estimate.getCustomer()
+        );
+
+        // пятая строка
+        new CreateCell(sheet, CellType.STRING).getCell(
+                new CreateStyle(workbook, font).getStyle(HorizontalAlignment.CENTER, VerticalAlignment.CENTER),
+                Rows.FIFTH_ROW.getRow(),
+                Cols.FIRST_COL.getCol(),
+                Cols.SIXTH_COL.getCol(),
+                HeightCell.HEIGHT_CELL_DEFAULT.getIndex(),
+                "составил: " +
+                        estimate.getAuthor().getLastName() + " " + estimate.getAuthor().getFirstName() + " " +
+                        estimate.getCreatedDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
+        );
+
+        // шестая строка
+        cellEmpty(Rows.SIXTH_ROW.getRow(), HeightCell.HEIGHT_CELL_DEFAULT.getIndex());
+
+
+        // седьмая строка
+        new CreateCell(sheet, CellType.STRING).getCell(
+                new CreateStyle(workbook, font).getStyle(HorizontalAlignment.LEFT, VerticalAlignment.CENTER),
+                Rows.SEVENTH_ROW.getRow(),
+                Cols.FIRST_COL.getCol(),
+                Cols.SIXTH_COL.getCol(),
+                HeightCell.HEIGHT_CELL_DEFAULT.getIndex(),
+                "Описание работ :"
+        );
+
+        // восьмая строка
+        new CreateCell(sheet, CellType.STRING).getCell(
+                new CreateStyle(workbook, font).getStyle(
+                        HorizontalAlignment.LEFT,
+                        VerticalAlignment.TOP
+                ),
+                Rows.EIGHTH_ROW.getRow(),
+                Cols.FIRST_COL.getCol(),
+                Cols.SIXTH_COL.getCol(),
+                HeightCell.HEIGHT_CELL_DESCRIPTION.getIndex(),
+                estimate.getWorkDescription()
+        );
+
+        // девятая строка
+        new CreateCell(sheet, CellType.STRING).getCell(
+                new CreateStyle(workbook).getStyle(
+                        new CreateFont(workbook).getFont(
+                                IndexedColors.RED,
+                                fontDefaultSize,
+                                false
+                        ),
+                        HorizontalAlignment.LEFT,
+                        VerticalAlignment.CENTER
+                ),
+                Rows.NINTH_ROW.getRow(),
+                Cols.FIRST_COL.getCol(),
+                Cols.SIXTH_COL.getCol(),
+                HeightCell.HEIGHT_CELL_TEXT.getIndex(),
+                estimate.getSimpleText()
+        );
+
+
+
+
+        // секция (Активное оборудование)
+        nameSection(Rows.TENTH_ROW.getRow(), "1. Активное оборудование");
+
+        headerTable(Rows.TENTH_ROW.getRow());
 
         // Data device
-        int row1 = 10;
-        row1 = data.getData(row1, listDevice);
+        int rowDevice = new Data(workbook, sheet, font).getData(Rows.ELEVENTH_ROW.getRow(), listDevice);
 
-        createCell.getCell(styleAlignRightBold, row1 + 1, 0, 4, 15, "ИТОГО за активное оборудование: ");
-        createCell.cellFormula(styleAlignCenterBold, row1-listDevice.size()+2, row1 + 1, 15);
-        createCell.getCell(styleAlignLeftBottomBold, row1 + 2, 0, 5, 25, "2. Материалы и оборудование");
-        headerTable.getHeader(styleHeaderTable,row1 + 2);
+        //
+        int firstRowDevice = listDevice.size() + Rows.ELEVENTH_ROW.getRow() + 1;
+        int lastRowDevice = firstRowDevice + 1;
+        int nextRowDevice = lastRowDevice + 1;
+        int firstRowFormulaDevice = firstRowDevice - listDevice.size() + 1;
+        int lastRowFormulaDevice = firstRowDevice;
+
+        // sub total device
+        totalName(firstRowDevice, "ИТОГО за активное оборудование: ");
+
+        totalPrice(firstRowFormulaDevice, lastRowFormulaDevice);
+        // конец секции (Активное оборудование)
+
+
+
+
+        nameSection(lastRowDevice, "2. Материалы и оборудование");
+
+        // header table
+        headerTable(lastRowDevice);
 
         // Data material
-        int row2 = row1 + 3;
-        row2 = data.getData(row2, listMaterial);
+        int rowMaterial = new Data(workbook, sheet, font).getData(nextRowDevice, listMaterial);
 
-        createCell.getCell(styleAlignRightBold, row2 + 1, 0, 4, 15, "ИТОГО за материалы и оборудование: ");
-        createCell.cellFormula(styleAlignCenterBold,row2-listMaterial.size()+2, row2 + 1, 15);
-        createCell.getCell(styleAlignLeftBottomBold, row2 + 2, 0, 5, 25, "3. Работы");
-        headerTable.getHeader(styleHeaderTable,row2 + 2);
+        //
+        int firstRowMaterial = rowMaterial + 1;
+        int lastRowMaterial = rowMaterial + 2;
+        int nextRowMaterial = rowMaterial + 3;
+        int firstRowFormulaMaterial = rowMaterial - listMaterial.size() + 2;
+        int lastRowFormulaMaterial = rowMaterial + 1;
+
+        // sub total material
+
+        totalName(firstRowMaterial, "ИТОГО за материалы и оборудование: ");
+
+        totalPrice(firstRowFormulaMaterial, lastRowFormulaMaterial);
+
+
+
+
+        nameSection(lastRowMaterial, "3. Работы");
+
+        // header table
+        headerTable(lastRowMaterial);
 
         // Data work
-        int row3 = row2 + 3;
-        row3 = data.getData(row3, listWork);
+        int rowWork = new Data(workbook, sheet, font).getData(nextRowMaterial, listWork);
 
-        createCell.getCell(styleAlignRightBold, row3 + 1, 0, 4, 15, "ИТОГО за работы: ");
-        createCell.cellFormula(styleAlignCenterBold,row3-listWork.size()+2, row3 + 1, 15);
-        createCell.getCell(styleEmpty,row3 + 2, 0, 5, 7, "");
+        //
+        int firstRowWork = rowWork + 1;
+        int lastRowWork = rowWork + 2;
+        int nextRowWork = rowWork + 3;
+        int firstRowFormulaWork = rowWork - listWork.size() + 2;
+        int lastRowFormulaWork = rowWork + 1;
 
-        createCell.getCell(styleAlignRightBold,row3 + 3, 0, 4, 15, "В том числе НДС " + tax + "%: ");
-        createCell.cellFormula(styleAlignCenterBold,row1 + 2, row2 + 2, row3 + 2, tax,row3 + 3, 15);
+        // sub total work
+        totalName(firstRowWork, "ИТОГО за работы: ");
 
-        createCell.getCell(styleAlignRightBold,row3 + 4, 0, 4, 15, "ИТОГО ОБЩАЯ СУММА: ");
-        createCell.cellFormula(styleAlignCenterBold,row1 + 2, row2 + 2, row3 + 2, row3 + 4, 15);
-
-
-        try {
-
-            // проверяем существует ли папка
-            File uploadDir = new File(uploadPath);
-            if (!uploadDir.exists()) {
-                uploadDir.mkdir();
-            }
-
-            String fileName = estimate.getAddress() + " " +
-                    estimate.getCustomer() + " " +
-                    estimate.getExtId() + " " +
-                    keyEstimate + ".xlsx";
-            String validFileName = getValidFileName(fileName);
-
-            log.info("Save file in valid file name '{}'", validFileName);
-
-            File file = new File(uploadPath + File.separator + validFileName);
+        totalPrice(firstRowFormulaWork, lastRowFormulaWork);
 
 
 
-            if (file.createNewFile()) {
-                log.info("IN createFile - create estimate {} : successfully created in {} ", file.getName(), file.getAbsolutePath());
-            } else {
-                log.info("IN createFile - create estimate {} : error created", file.getName());
-            }
-            FileOutputStream outFile = new FileOutputStream(file);
+
+
+
+
+
+
+
+        cellEmpty(lastRowWork, HeightCell.HEIGHT_CELL_EMPTY.getIndex());
+
+
+        // total tax
+        totalName(nextRowWork, "В том числе НДС " + tax + "%: ");
+
+        new CreateCell(sheet, CellType.STRING).cellFormula(
+                new CreateStyle(workbook).getStyle(
+                        new CreateFont(workbook).getFont(
+                                fontDefaultSize,
+                                true
+                        ),
+                        HorizontalAlignment.CENTER,
+                        VerticalAlignment.CENTER
+                ),
+                rowDevice + 2,
+                rowMaterial + 2,
+                rowWork + 2, tax,
+                rowWork + 3,
+                HeightCell.HEIGHT_CELL_DEFAULT.getIndex()
+        );
+
+        // total estimate
+        totalName(rowWork + 4, "ИТОГО ОБЩАЯ СУММА: ");
+
+        new CreateCell(sheet, CellType.STRING).cellFormula(
+                new CreateStyle(workbook).getStyle(
+                        new CreateFont(workbook).getFont(
+                                fontDefaultSize,
+                                true
+                        ),
+                        HorizontalAlignment.CENTER,
+                        VerticalAlignment.CENTER
+                ),
+                rowDevice + 2,
+                rowMaterial + 2,
+                rowWork + 2,
+                rowWork + 4,
+                HeightCell.HEIGHT_CELL_DEFAULT.getIndex()
+        );
+
+
+
+
+
+        String fileName = estimate.getAddress() + " " +
+                estimate.getCustomer() + " " +
+                estimate.getExtId() + " " +
+                keyEstimate + ".xlsx";
+
+
+
+
+        try (FileOutputStream outFile = new FileOutputStream(getFile(fileName))) {
+
             workbook.write(outFile);
-            outFile.close();
+
         } catch (IOException e) {
             log.error("IN createFile - create estimate {} : error {}", e.getMessage(), e.getStackTrace());
         }
     }
 
 
-    public String getValidFileName(String fileName) {
+    private void nameSection(int row, String name) {
+        new CreateCell(sheet, CellType.STRING).getCell(
+                new CreateStyle(workbook).getStyle(
+                        new CreateFont(workbook).getFont(
+                                fontDefaultSize,
+                                true
+                        ),
+                        HorizontalAlignment.LEFT,
+                        VerticalAlignment.BOTTOM
+                ),
+                row,
+                Cols.FIRST_COL.getCol(),
+                Cols.SIXTH_COL.getCol(),
+                HeightCell.HEIGHT_CELL_SECTION.getIndex(),
+                name
+        );
+    }
+
+
+    private void headerTable(int row) {
+        new CreateHeaderTable(sheet, CellType.STRING).getHeader(
+                new CreateStyle(workbook, font).getStyle(
+                        IndexedColors.GREY_25_PERCENT,
+                        FillPatternType.SOLID_FOREGROUND,
+                        HorizontalAlignment.CENTER,
+                        VerticalAlignment.CENTER
+                ),
+                row
+        );
+    }
+
+
+    private void totalName(int row, String name) {
+        new CreateCell(sheet, CellType.STRING).getCell(
+                new CreateStyle(workbook).getStyle(
+                        new CreateFont(workbook).getFont(
+                                fontDefaultSize,
+                                true
+                        ),
+                        HorizontalAlignment.RIGHT,
+                        VerticalAlignment.CENTER
+                ),
+                row,
+                Cols.FIRST_COL.getCol(),
+                Cols.FIFTH_COL.getCol(),
+                HeightCell.HEIGHT_CELL_DEFAULT.getIndex(),
+                name
+        );
+    }
+
+
+    private void totalPrice(int startRow, int endRow) {
+        new CreateCell(sheet, CellType.STRING).cellFormula(
+                new CreateStyle(workbook).getStyle(
+                        new CreateFont(workbook).getFont(
+                                fontDefaultSize,
+                                true
+                        ),
+                        HorizontalAlignment.CENTER,
+                        VerticalAlignment.CENTER
+                ),
+                startRow,
+                endRow,
+                HeightCell.HEIGHT_CELL_DEFAULT.getIndex()
+        );
+    }
+
+
+    private void cellEmpty(int row, int heightCell) {
+        new CreateCell(sheet, CellType.STRING).getCell(
+                new CreateStyle(workbook, font).getStyle(),
+                row,
+                Cols.FIRST_COL.getCol(),
+                Cols.FIFTH_COL.getCol(),
+                heightCell,
+                ""
+        );
+    }
+
+
+    private File getDir() {
+        // проверяем существует ли папка
+        File uploadDir = new File(uploadPath);
+
+        if (!uploadDir.exists()) {
+
+            uploadDir.mkdir();
+
+            log.info("Dir '{}' is created", uploadDir);
+        }
+
+        return uploadDir;
+    }
+
+
+
+    private File getFile(String fileName) throws IOException {
+
+        String validFileName = getValidFileName(fileName);
+
+        log.info("Save file in valid file name '{}'", validFileName);
+
+        return new File(getDir() + File.separator + validFileName);
+    }
+
+
+    private String getValidFileName(String fileName) {
+
         String newFileName = fileName.replace("^\\.+", "").replaceAll("[\\\\/:*?\"<>|]", "-");
+
         if(newFileName.length() == 0)
             throw new IllegalStateException("File Name " + fileName + " results in a empty fileName!");
+
         return newFileName;
     }
 
