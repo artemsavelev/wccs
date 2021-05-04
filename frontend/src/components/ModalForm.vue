@@ -19,6 +19,7 @@
           <!--  search in component -->
           <v-col cols="5" class="pa-0 mt-0 mr-0 mb-0 ml-3">
             <v-text-field dense
+                          class="rounded-0"
                           :label="env.search"
                           outlined
                           clearable

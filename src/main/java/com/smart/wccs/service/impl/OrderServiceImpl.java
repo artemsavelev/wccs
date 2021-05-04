@@ -16,10 +16,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.io.Serializable;
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,21 +26,22 @@ public class OrderServiceImpl implements OrderService {
 
     private final OrderRepo orderRepo;
     private final UserRepo userRepo;
+    private final Utils utils;
 
 
     @Autowired
-    public OrderServiceImpl(OrderRepo orderRepo, UserRepo userRepo) {
+    public OrderServiceImpl(OrderRepo orderRepo, UserRepo userRepo, Utils utils) {
         this.orderRepo = orderRepo;
         this.userRepo = userRepo;
+        this.utils = utils;
     }
 
     @Override
     public Page<Order> getAllOrders(Pageable pageable) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String name = auth.getName();
+
         List<Order> orders =  orderRepo.findAll(pageable)
                 .stream()
-                .filter(o -> o.getDepartment() == userRepo.findByUsername(name).getDepartment())
+                .filter(o -> o.getDepartment() == userRepo.findByUsername(utils.getAuthUserName()).getDepartment())
                 .filter(o -> o.getStatus() == Status.ACTIVE)
                 .collect(Collectors.toList());
         log.info("IN getAllOrder - {} orders found", orders.size());
@@ -65,10 +63,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public void create(Order order) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String name = auth.getName();
+
 //        String name = order.getAuthor().getUsername();
-        User user = userRepo.findByUsername(name);
+        User user = userRepo.findByUsername(utils.getAuthUserName());
 
         order.setCreatedDate(LocalDateTime.now());
         order.setAuthor(user);

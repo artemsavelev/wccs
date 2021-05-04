@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service("userServiceImpl")
+//@Service
 @Slf4j
 public class UserServiceImpl implements UserService {
 

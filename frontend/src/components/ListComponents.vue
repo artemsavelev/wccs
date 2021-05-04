@@ -9,15 +9,26 @@
 
 
 
-        <v-col cols="12" sm="6" md="5">
-          <v-autocomplete
-              :items="items"
-              item-text="key"
-              v-model="select"
-              :label="env.sectionItem"
-              required
-          ></v-autocomplete>
-        </v-col>
+      <v-row class="ml-1">
+      <v-col cols="12" sm="6" md="5">
+        <v-autocomplete
+            :items="items"
+            item-text="key"
+            v-model="select"
+            :label="env.sectionItem"
+            required
+        ></v-autocomplete>
+      </v-col>
+
+      <v-col cols="12" sm="6" md="5">
+        <v-text-field dense
+                      class="rounded-0 mt-2"
+                      :label="env.search"
+                      outlined
+                      clearable
+                      v-model="search"/>
+      </v-col>
+      </v-row>
 
         <v-row class="ml-4 pa-0">
 
@@ -123,6 +134,19 @@ export default {
     ...mapGetters(['allDevices', 'allMaterials', 'allWorks', 'profile']),
     ...mapMutations(['addDeviceMutation', 'addMaterialMutation', 'addWorkMutation']),
 
+    // поиск по данным
+    filteredData() {
+      let result = this.visiblePages
+      if (this.search && this.search.length >= 3) {
+        result = result.filter(item => {
+          if (item.name.toLowerCase().indexOf(this.search.toLowerCase()) !== -1) {
+            return item
+          }
+        })
+      }
+      return result;
+    },
+
     visiblePages() {
 
       if (this.select === this.env.sectionDevice) {
@@ -164,8 +188,9 @@ export default {
 
       env,
       page: 1,
-      perPage: 15,
+      perPage: 18,
       valid: true,
+      search: '',
       select: '',
       headers: [
         { text: 'id', value: 'id' },
@@ -188,6 +213,7 @@ export default {
 
 <style scoped>
 .main-container {
+  font-size: small;
   display: flex;
   flex-direction: column;
   height: 100%;

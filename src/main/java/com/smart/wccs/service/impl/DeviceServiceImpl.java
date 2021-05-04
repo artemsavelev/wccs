@@ -1,21 +1,15 @@
 package com.smart.wccs.service.impl;
 
-import com.smart.wccs.model.Department;
 import com.smart.wccs.model.Device;
-import com.smart.wccs.model.Role;
 import com.smart.wccs.model.Status;
-import com.smart.wccs.repo.DepartmentRepo;
 import com.smart.wccs.repo.DeviceRepo;
 import com.smart.wccs.repo.UserRepo;
 import com.smart.wccs.service.DeviceService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,23 +19,23 @@ public class DeviceServiceImpl implements DeviceService {
 
     private final DeviceRepo deviceRepo;
     private final UserRepo userRepo;
-    private final DepartmentRepo departmentRepo;
+    private final Utils utils;
 
     @Autowired
-    public DeviceServiceImpl(DeviceRepo deviceRepo, UserRepo userRepo, DepartmentRepo departmentRepo) {
+    public DeviceServiceImpl(DeviceRepo deviceRepo, UserRepo userRepo, Utils utils) {
         this.deviceRepo = deviceRepo;
         this.userRepo = userRepo;
-        this.departmentRepo = departmentRepo;
+        this.utils = utils;
     }
 
     @Override
     public List<Device> getAllDevice() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String name = auth.getName();
+//        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+//        String name = auth.getName();
 
         List<Device> devices = deviceRepo.findAll()
                 .stream()
-                .filter(o -> o.getDepartments().contains(userRepo.findByUsername(name).getDepartment()))
+                .filter(o -> o.getDepartments().contains(userRepo.findByUsername(utils.getAuthUserName()).getDepartment()))
                 .collect(Collectors.toList());
         log.info("IN getAllDevices - {} devices found", devices.size());
         return devices;
@@ -60,16 +54,16 @@ public class DeviceServiceImpl implements DeviceService {
 
     @Override
     public void create(Device device) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String name = auth.getName();
-
-        Department department = departmentRepo.findDepartmentById(userRepo.findByUsername(name).getDepartment().getId());
-        List<Department> devicesDepartments = new ArrayList<>();
-        devicesDepartments.add(department);
+//        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+//        String name = auth.getName();
+//
+//        Department department = departmentRepo.findDepartmentById(userRepo.findByUsername(name).getDepartment().getId());
+//        List<Department> devicesDepartments = new ArrayList<>();
+//        devicesDepartments.add(department);
 
         device.setCreatedDate(LocalDateTime.now());
         device.setStatus(Status.ACTIVE);
-        device.setDepartments(devicesDepartments);
+        device.setDepartments(utils.getDepartmentWithUser());
         Device createdDevice = deviceRepo.save(device);
         log.info("IN create - device: {} successfully added for department: {}", createdDevice, createdDevice.getDepartments());
     }

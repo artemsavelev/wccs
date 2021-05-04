@@ -13,7 +13,7 @@
           <v-icon v-on:click="close">mdi-close</v-icon>
 <!--        </v-btn>-->
       </v-card-title>
-      <v-card-text class="scroll">
+      <v-card-text class="scroll font-s">
 
           <div style="height: 140vh">
             <div class="title-estimate mt-5">{{ env.estimate + ' ' + preview.key }}</div>
@@ -26,7 +26,7 @@
             <div class="description">{{ preview.workDescription }}</div>
             <div class="comment">{{ preview.comment }}</div>
 
-            <div class="section-device font-weight-bold">{{ env.sectionDevice }}</div>
+            <div class="section-device font-weight-bold font-s">{{ env.sectionDevice }}</div>
             <HeaderTable
                 v-bind:sortName="sortByName"
                 v-bind:sortId="sortById"/>
@@ -35,7 +35,7 @@
                      v-bind:idx="idx"
                      v-bind:item="item"/>
 
-            <div class="subtotal-container">
+            <div class="subtotal-container font-s">
               <div class="subtotal font-weight-bold">
                 {{ env.subTotal[0] }}:
               </div>
@@ -44,7 +44,7 @@
               </div>
             </div>
 
-            <div class="section-material font-weight-bold">{{ env.sectionMaterial }}</div>
+            <div class="section-material font-weight-bold font-s">{{ env.sectionMaterial }}</div>
             <HeaderTable
                 v-bind:sortName="sortByName"
                 v-bind:sortId="sortById"/>
@@ -53,7 +53,7 @@
                      v-bind:idx="idx"
                      v-bind:item="item"/>
 
-            <div class="subtotal-container">
+            <div class="subtotal-container font-s">
               <div class="subtotal font-weight-bold">
                 {{ env.subTotal[1] }}:
               </div>
@@ -63,7 +63,7 @@
             </div>
 
 
-            <div class="section-work font-weight-bold">{{ env.sectionWork }}</div>
+            <div class="section-work font-weight-bold font-s">{{ env.sectionWork }}</div>
             <HeaderTable
                 v-bind:sortName="sortByName"
                 v-bind:sortId="sortById"/>
@@ -73,7 +73,7 @@
                      v-bind:item="item"/>
 
 
-            <div class="subtotal-container">
+            <div class="subtotal-container font-s">
               <div class="subtotal font-weight-bold">
                 {{ env.subTotal[2] }}:
               </div>
@@ -86,7 +86,7 @@
             <div class="empty"></div>
 
 
-            <div class="tax-container">
+            <div class="tax-container font-s">
               <div class="tax font-weight-bold">
                 {{ env.tax + ' ' + env.taxPercent }}%:
               </div>
@@ -96,7 +96,7 @@
             </div>
 
 
-            <div class="total-container">
+            <div class="total-container font-s">
               <div class="total font-weight-bold">
                 {{ env.total }}:
               </div>

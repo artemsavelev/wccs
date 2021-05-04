@@ -36,4 +36,9 @@ public class Material extends BaseEntity implements Components {
             inverseJoinColumns = @JoinColumn(name = "department_id"))
     @JsonView({Views.UserView.class, Views.AdminView.class})
     private List<Department> departments;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "group_id")
+    @JsonView({Views.UserView.class, Views.AdminView.class})
+    private Group group;
 }

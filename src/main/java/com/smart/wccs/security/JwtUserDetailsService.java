@@ -2,6 +2,7 @@ package com.smart.wccs.security;
 
 import com.smart.wccs.model.User;
 import com.smart.wccs.repo.UserRepo;
+import com.smart.wccs.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -10,6 +11,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service("jwtUserDetailsService")
+//@Service
 @Slf4j
 public class JwtUserDetailsService implements UserDetailsService {
 
@@ -22,7 +24,7 @@ public class JwtUserDetailsService implements UserDetailsService {
     }
 
 //    private final UserService userService;
-
+//
 //    @Autowired
 //    public JwtUserDetailsService(UserService userService) {
 //        this.userService = userService;

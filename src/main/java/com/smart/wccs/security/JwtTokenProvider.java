@@ -2,6 +2,7 @@ package com.smart.wccs.security;
 
 import com.smart.wccs.model.Role;
 import io.jsonwebtoken.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

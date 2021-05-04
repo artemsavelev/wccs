@@ -1,6 +1,5 @@
 package com.smart.wccs.service.impl;
 
-import com.smart.wccs.model.Department;
 import com.smart.wccs.model.Material;
 import com.smart.wccs.model.Status;
 import com.smart.wccs.repo.DepartmentRepo;
@@ -9,12 +8,9 @@ import com.smart.wccs.repo.UserRepo;
 import com.smart.wccs.service.MaterialService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,23 +21,25 @@ public class MaterialServiceImpl implements MaterialService {
     private final MaterialRepo materialRepo;
     private final UserRepo userRepo;
     private final DepartmentRepo departmentRepo;
+    private final Utils utils;
 
     @Autowired
-    public MaterialServiceImpl(MaterialRepo materialRepo, UserRepo userRepo, DepartmentRepo departmentRepo) {
+    public MaterialServiceImpl(MaterialRepo materialRepo, UserRepo userRepo, DepartmentRepo departmentRepo, Utils utils) {
         this.materialRepo = materialRepo;
         this.userRepo = userRepo;
         this.departmentRepo = departmentRepo;
+        this.utils = utils;
     }
 
 
     @Override
     public List<Material> getAllMaterial() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String name = auth.getName();
+//        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+//        String name = auth.getName();
 
         List<Material> materials = materialRepo.findAll()
                 .stream()
-                .filter(o -> o.getDepartments().contains(userRepo.findByUsername(name).getDepartment()))
+                .filter(o -> o.getDepartments().contains(userRepo.findByUsername(utils.getAuthUserName()).getDepartment()))
                 .collect(Collectors.toList());
         log.info("IN getAllMaterials - {} materials found", materials.size());
         return materials;
@@ -61,16 +59,16 @@ public class MaterialServiceImpl implements MaterialService {
     @Override
     public void create(Material material) {
 
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String name = auth.getName();
-
-        Department department = departmentRepo.findDepartmentById(userRepo.findByUsername(name).getDepartment().getId());
-        List<Department> materialsDepartments = new ArrayList<>();
-        materialsDepartments.add(department);
+//        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+//        String name = auth.getName();
+//
+//        Department department = departmentRepo.findDepartmentById(userRepo.findByUsername(name).getDepartment().getId());
+//        List<Department> materialsDepartments = new ArrayList<>();
+//        materialsDepartments.add(department);
 
         material.setCreatedDate(LocalDateTime.now());
         material.setStatus(Status.ACTIVE);
-        material.setDepartments(materialsDepartments);
+        material.setDepartments(utils.getDepartmentWithUser());
         Material createdMaterial = materialRepo.save(material);
         log.info("IN create - material: {} successfully added  for department: {}", createdMaterial, createdMaterial.getDepartments());
 

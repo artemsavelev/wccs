@@ -1,0 +1,1 @@
+alter table public.material ADD COLUMN group_id int8;

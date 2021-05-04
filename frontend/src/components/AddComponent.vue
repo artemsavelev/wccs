@@ -1,7 +1,7 @@
 <template>
   <div>
 
-      <div class="registration ml-7 mb-15 mt-3">
+      <div class="ml-7 mb-15 mt-3 font-s">
 
         <div class="font-weight-bold ml-3">
           {{ env.addComponent }}

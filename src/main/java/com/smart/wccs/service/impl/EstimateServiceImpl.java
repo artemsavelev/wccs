@@ -10,8 +10,6 @@ import com.smart.wccs.service.filecreator.FileCreator;
 import com.smart.wccs.service.filecreator.FileFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -24,20 +22,21 @@ public class EstimateServiceImpl implements EstimateService {
     private final FileCreator fileCreator;
     private final FileFactory fileFactory;
     private final UserRepo userRepo;
+    private final Utils utils;
 
     @Autowired
-    public EstimateServiceImpl(EstimateRepo estimateRepo, FileCreator fileCreator, FileFactory fileFactory, UserRepo userRepo) {
+    public EstimateServiceImpl(EstimateRepo estimateRepo, FileCreator fileCreator, FileFactory fileFactory, UserRepo userRepo, Utils utils) {
         this.estimateRepo = estimateRepo;
         this.fileCreator = fileCreator;
         this.fileFactory = fileFactory;
         this.userRepo = userRepo;
+        this.utils = utils;
     }
 
     @Override
     public Estimate create(Estimate estimate) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String name = auth.getName();
-        User user = userRepo.findByUsername(name);
+
+        User user = userRepo.findByUsername(utils.getAuthUserName());
 
         estimate.setCreatedDate(LocalDateTime.now());
         estimate.setStatus(Status.ACTIVE);

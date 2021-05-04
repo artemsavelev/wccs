@@ -62,15 +62,13 @@
 
       <v-spacer ></v-spacer>
 
-
-      <v-icon v-if="profile && $route.path === '/'" class="ml-5 pa-1 offset" @click="showDrawer">{{ iconVisibleDrawer }}</v-icon>
-
       <v-btn v-if="profile" v-on:click="orders" :disabled="$route.path === '/'" text tile>{{ env.keyOrder }}</v-btn>
+
+      <v-icon v-if="profile && $route.path === '/'" @click="showDrawer">{{ iconVisibleDrawer }}</v-icon>
 
 <!--      <v-btn v-if="profile" v-on:click="logout" text tile>-->
         <v-icon v-if="profile" class="ml-5 mr-5 pa-1" @click="logout">mdi-exit-to-app</v-icon>
 <!--      </v-btn>-->
-
 
     </v-app-bar>
 

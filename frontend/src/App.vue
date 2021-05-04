@@ -43,6 +43,7 @@ export default {
   //     this.addOrderMutation(data.body)
   //   })
   // },
+
   mounted() {
     const theme = localStorage.getItem('darkTheme');
     if (theme) {
