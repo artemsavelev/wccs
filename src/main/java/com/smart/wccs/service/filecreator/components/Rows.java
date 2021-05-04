@@ -7,13 +7,15 @@ public enum Rows {
     SECOND_ROW(1),
     THIRD_ROW(2),
     FOURTH_ROW(3),
-    FIFTH_ROW(5),
-    SIXTH_ROW(6),
-    SEVENTH_ROW(7),
-    EIGHTH_ROW(8),
-    NINTH_ROW(9),
-    TENTH_ROW(10),
-    ELEVENTH_ROW(11);
+    FIFTH_ROW(4),
+    SIXTH_ROW(5),
+    SEVENTH_ROW(6),
+    EIGHTH_ROW(7),
+    NINTH_ROW(8),
+    TENTH_ROW(9),
+    ELEVENTH_ROW(10),
+    TWELFTH_ROW(11);
+
 
     private final int row;
 

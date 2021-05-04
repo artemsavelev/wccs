@@ -28,7 +28,6 @@ public class ExcelDocument implements FileCreator {
 
     private String keyEstimate;
 
-    // font size
     private final int fontDefaultSize = 8;
 
     private int fontTitleSize = 12;
@@ -37,13 +36,8 @@ public class ExcelDocument implements FileCreator {
 
     private Sheet sheet;
 
-    private Font font;
-
-
     @Override
     public void createFile(Estimate estimate) {
-
-
 
         if ("ПРЕДВАРИТЕЛЬНАЯ".equals(estimate.getKey())) {
             keyEstimate = "ПРЕДВАРИТЕЛЬНАЯ";
@@ -51,244 +45,223 @@ public class ExcelDocument implements FileCreator {
             keyEstimate = "ФАКТИЧЕСКАЯ";
         }
 
-        workbook =  new XSSFWorkbook();
+        workbook = new XSSFWorkbook();
 
         sheet = workbook.createSheet("Смета " + keyEstimate);
 
-        font = new CreateFont(workbook).getFont(fontDefaultSize, false);
+        if (workbook instanceof XSSFWorkbook) {
+            ((XSSFWorkbook) workbook).getProperties().getCoreProperties().setCreator(estimate.getAuthor().toString());
+        }
 
         List<Components> listDevice = new ArrayList<>(estimate.getDevices());
         List<Components> listMaterial = new ArrayList<>(estimate.getMaterials());
         List<Components> listWork = new ArrayList<>(estimate.getWorks());
 
-
-
         new SheetSettings(sheet).getSettings();
 
+        new CellBuilder(sheet)
+                // первая строка
+                .mergedRegion(Rows.FIRST_ROW, Cols.SIXTH_COL)
+                .row(Rows.FIRST_ROW.getRow())
+                .heightRow(HeightCell.HEIGHT_CELL_TITLE.getIndex())
+                .cell()
+                .value("ФАКТИЧЕСКАЯ".equals(keyEstimate) ? "Смета" : "Смета " + keyEstimate)
+                .style(getStyle(fontTitleSize))
 
-        // первая строка
-        new CreateCell(sheet, CellType.STRING).getCell(
-                new CreateStyle(workbook).getStyle(
-                        new CreateFont(workbook).getFont(fontTitleSize, false),
-                        HorizontalAlignment.CENTER,
-                        VerticalAlignment.CENTER
-                ),
-                Rows.FIRST_ROW.getRow(),
-                Cols.FIRST_COL.getCol(),
-                Cols.SIXTH_COL.getCol(),
-                HeightCell.HEIGHT_CELL_TITLE.getIndex(),
-                "ФАКТИЧЕСКАЯ".equals(keyEstimate) ? "Смета" : "Смета " + keyEstimate
-        );
+                // вторая строка
+                .mergedRegion(Rows.SECOND_ROW, Cols.SIXTH_COL)
+                .row(Rows.SECOND_ROW.getRow())
+                .heightRow(HeightCell.HEIGHT_CELL_DEFAULT.getIndex())
+                .cell()
+                .value("№: " + estimate.getExtId())
+                .style(getStyle(fontDefaultSize))
 
-        // вторая строка
-        new CreateCell(sheet, CellType.STRING).getCell(
-                new CreateStyle(workbook, font).getStyle(HorizontalAlignment.CENTER, VerticalAlignment.CENTER),
-                Rows.SECOND_ROW.getRow(),
-                Cols.FIRST_COL.getCol(),
-                Cols.SIXTH_COL.getCol(),
-                HeightCell.HEIGHT_CELL_DEFAULT.getIndex(),
-                "№: " + estimate.getExtId()
-        );
+                // третья строка
+                .mergedRegion(Rows.THIRD_ROW, Cols.SIXTH_COL)
+                .row(Rows.THIRD_ROW.getRow())
+                .cell()
+                .value("адрес: " + estimate.getAddress())
+                .style(getStyle(fontDefaultSize))
 
-        // третья строка
-        new CreateCell(sheet, CellType.STRING).getCell(
-                new CreateStyle(workbook, font).getStyle(HorizontalAlignment.CENTER, VerticalAlignment.CENTER),
-                Rows.THIRD_ROW.getRow(),
-                Cols.FIRST_COL.getCol(),
-                Cols.SIXTH_COL.getCol(),
-                HeightCell.HEIGHT_CELL_DEFAULT.getIndex(),
-                "адрес: " + estimate.getAddress()
-        );
+                // четвертая строка
+                .mergedRegion(Rows.FOURTH_ROW, Cols.SIXTH_COL)
+                .row(Rows.FOURTH_ROW.getRow())
+                .cell()
+                .value("заказчик: " + estimate.getCustomer())
+                .style(getStyle(fontDefaultSize))
 
-        // четвертая строка
-        new CreateCell(sheet, CellType.STRING).getCell(
-                new CreateStyle(workbook, font).getStyle(HorizontalAlignment.CENTER, VerticalAlignment.CENTER),
-                Rows.FOURTH_ROW.getRow(),
-                Cols.FIRST_COL.getCol(),
-                Cols.SIXTH_COL.getCol(),
-                HeightCell.HEIGHT_CELL_DEFAULT.getIndex(),
-                "заказчик: " + estimate.getCustomer()
-        );
+                // пятая строка
+                .mergedRegion(Rows.FIFTH_ROW, Cols.SIXTH_COL)
+                .row(Rows.FIFTH_ROW.getRow())
+                .cell()
+                .value("составил: " +
+                        estimate.getAuthor().getLastName() + " " +
+                        estimate.getAuthor().getFirstName() + " " +
+                        estimate.getCreatedDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
+                .style(getStyle(fontDefaultSize))
 
-        // пятая строка
-        new CreateCell(sheet, CellType.STRING).getCell(
-                new CreateStyle(workbook, font).getStyle(HorizontalAlignment.CENTER, VerticalAlignment.CENTER),
-                Rows.FIFTH_ROW.getRow(),
-                Cols.FIRST_COL.getCol(),
-                Cols.SIXTH_COL.getCol(),
-                HeightCell.HEIGHT_CELL_DEFAULT.getIndex(),
-                "составил: " +
-                        estimate.getAuthor().getLastName() + " " + estimate.getAuthor().getFirstName() + " " +
-                        estimate.getCreatedDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
-        );
+                // шестая строка
+                .mergedRegion(Rows.SIXTH_ROW, Cols.SIXTH_COL)
+                .row(Rows.SIXTH_ROW.getRow())
+                .cell()
+                .value("")
+                .style(getStyle(fontDefaultSize))
 
-        // шестая строка
-        cellEmpty(Rows.SIXTH_ROW.getRow(), HeightCell.HEIGHT_CELL_DEFAULT.getIndex());
+                // седьмая строка
+                .mergedRegion(Rows.SEVENTH_ROW, Cols.SIXTH_COL)
+                .row(Rows.SEVENTH_ROW.getRow())
+                .cell()
+                .value("Описание работ :")
+                .style(new StyleBuilder(workbook)
+                        .font(new FontBuilder(workbook)
+                                .fontName()
+                                .fontSize(fontDefaultSize)
+                                .buildFont())
+                        .verticalAlign(VerticalAlignment.CENTER)
+                        .horizontalAlign(HorizontalAlignment.LEFT)
+                        .buildStyle())
 
+                // восьмая строка
+                .mergedRegion(Rows.EIGHTH_ROW, Cols.SIXTH_COL)
+                .row(Rows.EIGHTH_ROW.getRow())
+                .heightRow(HeightCell.HEIGHT_CELL_DESCRIPTION.getIndex())
+                .cell()
+                .value(estimate.getWorkDescription())
+                .style(new StyleBuilder(workbook)
+                        .font(new FontBuilder(workbook)
+                                .fontName()
+                                .fontSize(fontDefaultSize)
+                                .buildFont())
+                        .verticalAlign(VerticalAlignment.TOP)
+                        .horizontalAlign(HorizontalAlignment.LEFT)
+                        .wrapText(true)
+                        .buildStyle())
 
-        // седьмая строка
-        new CreateCell(sheet, CellType.STRING).getCell(
-                new CreateStyle(workbook, font).getStyle(HorizontalAlignment.LEFT, VerticalAlignment.CENTER),
-                Rows.SEVENTH_ROW.getRow(),
-                Cols.FIRST_COL.getCol(),
-                Cols.SIXTH_COL.getCol(),
-                HeightCell.HEIGHT_CELL_DEFAULT.getIndex(),
-                "Описание работ :"
-        );
-
-        // восьмая строка
-        new CreateCell(sheet, CellType.STRING).getCell(
-                new CreateStyle(workbook, font).getStyle(
-                        HorizontalAlignment.LEFT,
-                        VerticalAlignment.TOP
-                ),
-                Rows.EIGHTH_ROW.getRow(),
-                Cols.FIRST_COL.getCol(),
-                Cols.SIXTH_COL.getCol(),
-                HeightCell.HEIGHT_CELL_DESCRIPTION.getIndex(),
-                estimate.getWorkDescription()
-        );
-
-        // девятая строка
-        new CreateCell(sheet, CellType.STRING).getCell(
-                new CreateStyle(workbook).getStyle(
-                        new CreateFont(workbook).getFont(
-                                IndexedColors.RED,
-                                fontDefaultSize,
-                                false
-                        ),
-                        HorizontalAlignment.LEFT,
-                        VerticalAlignment.CENTER
-                ),
-                Rows.NINTH_ROW.getRow(),
-                Cols.FIRST_COL.getCol(),
-                Cols.SIXTH_COL.getCol(),
-                HeightCell.HEIGHT_CELL_TEXT.getIndex(),
-                estimate.getSimpleText()
-        );
-
-
+                // девятая строка
+                .mergedRegion(Rows.NINTH_ROW, Cols.SIXTH_COL)
+                .row(Rows.NINTH_ROW.getRow())
+                .heightRow(HeightCell.HEIGHT_CELL_TEXT.getIndex())
+                .cell()
+                .value(estimate.getSimpleText())
+                .style(new StyleBuilder(workbook)
+                        .font(new FontBuilder(workbook)
+                                .fontName()
+                                .fontSize(fontDefaultSize)
+                                .fontColor(IndexedColors.RED)
+                                .buildFont())
+                        .verticalAlign(VerticalAlignment.CENTER)
+                        .horizontalAlign(HorizontalAlignment.LEFT)
+                        .wrapText(true)
+                        .buildStyle());
 
 
         // секция (Активное оборудование)
-        nameSection(Rows.TENTH_ROW.getRow(), "1. Активное оборудование");
-
-        headerTable(Rows.TENTH_ROW.getRow());
+        sectionHeader(Rows.TENTH_ROW.getRow(), "1. Активное оборудование");
+        headerTable(Rows.ELEVENTH_ROW.getRow());
 
         // Data device
-        int rowDevice = new Data(workbook, sheet, font).getData(Rows.ELEVENTH_ROW.getRow(), listDevice);
-
-        //
-        int firstRowDevice = listDevice.size() + Rows.ELEVENTH_ROW.getRow() + 1;
-        int lastRowDevice = firstRowDevice + 1;
-        int nextRowDevice = lastRowDevice + 1;
-        int firstRowFormulaDevice = firstRowDevice - listDevice.size() + 1;
-        int lastRowFormulaDevice = firstRowDevice;
-
-        // sub total device
-        totalName(firstRowDevice, "ИТОГО за активное оборудование: ");
-
-        totalPrice(firstRowFormulaDevice, lastRowFormulaDevice);
-        // конец секции (Активное оборудование)
+        new Data(workbook, sheet).getData(Rows.ELEVENTH_ROW.getRow(), listDevice);
+        int startRowDevice = Rows.TWELFTH_ROW.getRow() + listDevice.size();
+        totalSum(Rows.TWELFTH_ROW.getRow(), startRowDevice, "ИТОГО за активное оборудование: ");
+        int lastRowDevice = startRowDevice + 1;
 
 
 
 
-        nameSection(lastRowDevice, "2. Материалы и оборудование");
-
-        // header table
-        headerTable(lastRowDevice);
+        // секция (Материалы и оборудование)
+        sectionHeader(lastRowDevice, "2. Материалы и оборудование");
+        headerTable(lastRowDevice + 1);
 
         // Data material
-        int rowMaterial = new Data(workbook, sheet, font).getData(nextRowDevice, listMaterial);
-
-        //
-        int firstRowMaterial = rowMaterial + 1;
-        int lastRowMaterial = rowMaterial + 2;
-        int nextRowMaterial = rowMaterial + 3;
-        int firstRowFormulaMaterial = rowMaterial - listMaterial.size() + 2;
-        int lastRowFormulaMaterial = rowMaterial + 1;
-
-        // sub total material
-
-        totalName(firstRowMaterial, "ИТОГО за материалы и оборудование: ");
-
-        totalPrice(firstRowFormulaMaterial, lastRowFormulaMaterial);
+        new Data(workbook, sheet).getData(lastRowDevice + 1, listMaterial);
+        int startRowMaterial = lastRowDevice + listMaterial.size() + 2;
+        totalSum(lastRowDevice + 2, startRowMaterial, "ИТОГО за материалы и оборудование: ");
+        int lastRowMaterial = startRowMaterial + 1;
 
 
 
 
-        nameSection(lastRowMaterial, "3. Работы");
-
-        // header table
-        headerTable(lastRowMaterial);
+        // секция (Работы)
+        sectionHeader(lastRowMaterial, "3. Работы");
+        headerTable(lastRowMaterial + 1);
 
         // Data work
-        int rowWork = new Data(workbook, sheet, font).getData(nextRowMaterial, listWork);
-
-        //
-        int firstRowWork = rowWork + 1;
-        int lastRowWork = rowWork + 2;
-        int nextRowWork = rowWork + 3;
-        int firstRowFormulaWork = rowWork - listWork.size() + 2;
-        int lastRowFormulaWork = rowWork + 1;
-
-        // sub total work
-        totalName(firstRowWork, "ИТОГО за работы: ");
-
-        totalPrice(firstRowFormulaWork, lastRowFormulaWork);
+        new Data(workbook, sheet).getData(lastRowMaterial + 1, listWork);
+        int startRowWork = lastRowMaterial + listWork.size() + 2;
+        totalSum(lastRowMaterial + 2, startRowWork, "ИТОГО за работы: ");
+        int lastRowWork = startRowWork + 1;
 
 
 
 
+        new CellBuilder(sheet)
+                .mergedRegion(lastRowWork, Cols.SIXTH_COL)
+                .row(lastRowWork)
+                .heightRow(HeightCell.HEIGHT_CELL_EMPTY.getIndex())
+                .cell()
+                .value("")
+                .style(getStyle(fontDefaultSize));
 
 
 
+        new CellBuilder(sheet)
+                // total tax
+                .mergedRegion(lastRowWork + 1, Cols.FIFTH_COL)
+                .row(lastRowWork + 1)
+                .heightRow(HeightCell.HEIGHT_CELL_DEFAULT.getIndex())
+                .cell()
+                .value("В том числе НДС " + tax + "%: ")
+                .style(new StyleBuilder(workbook)
+                        .font(new FontBuilder(workbook)
+                                .fontName()
+                                .fontSize(fontDefaultSize)
+                                .fontWeight(true)
+                                .buildFont())
+                        .verticalAlign(VerticalAlignment.CENTER)
+                        .horizontalAlign(HorizontalAlignment.RIGHT)
+                        .buildStyle())
 
+                .cell(Cols.SIXTH_COL.getCol(), CellType.FORMULA)
+                .cellFormula(lastRowDevice, lastRowMaterial, lastRowWork, tax)
+                .style(new StyleBuilder(workbook)
+                        .font(new FontBuilder(workbook)
+                                .fontName()
+                                .fontSize(fontDefaultSize)
+                                .fontWeight(true)
+                                .buildFont())
+                        .verticalAlign(VerticalAlignment.CENTER)
+                        .horizontalAlign(HorizontalAlignment.CENTER)
+                        .dataFormat((short) 0x27)
+                        .buildStyle())
 
+                // total estimate
+                .mergedRegion(lastRowWork + 2, Cols.FIFTH_COL)
+                .row(lastRowWork + 2)
+                .heightRow(HeightCell.HEIGHT_CELL_DEFAULT.getIndex())
+                .cell()
+                .value("ИТОГО ОБЩАЯ СУММА: ")
+                .style(new StyleBuilder(workbook)
+                        .font(new FontBuilder(workbook)
+                                .fontName()
+                                .fontSize(fontDefaultSize)
+                                .fontWeight(true)
+                                .buildFont())
+                        .verticalAlign(VerticalAlignment.CENTER)
+                        .horizontalAlign(HorizontalAlignment.RIGHT)
+                        .buildStyle())
 
-        cellEmpty(lastRowWork, HeightCell.HEIGHT_CELL_EMPTY.getIndex());
-
-
-        // total tax
-        totalName(nextRowWork, "В том числе НДС " + tax + "%: ");
-
-        new CreateCell(sheet, CellType.STRING).cellFormula(
-                new CreateStyle(workbook).getStyle(
-                        new CreateFont(workbook).getFont(
-                                fontDefaultSize,
-                                true
-                        ),
-                        HorizontalAlignment.CENTER,
-                        VerticalAlignment.CENTER
-                ),
-                rowDevice + 2,
-                rowMaterial + 2,
-                rowWork + 2, tax,
-                rowWork + 3,
-                HeightCell.HEIGHT_CELL_DEFAULT.getIndex()
-        );
-
-        // total estimate
-        totalName(rowWork + 4, "ИТОГО ОБЩАЯ СУММА: ");
-
-        new CreateCell(sheet, CellType.STRING).cellFormula(
-                new CreateStyle(workbook).getStyle(
-                        new CreateFont(workbook).getFont(
-                                fontDefaultSize,
-                                true
-                        ),
-                        HorizontalAlignment.CENTER,
-                        VerticalAlignment.CENTER
-                ),
-                rowDevice + 2,
-                rowMaterial + 2,
-                rowWork + 2,
-                rowWork + 4,
-                HeightCell.HEIGHT_CELL_DEFAULT.getIndex()
-        );
-
-
+                .cell(Cols.SIXTH_COL.getCol(), CellType.FORMULA)
+                .cellFormula(lastRowDevice, lastRowMaterial, lastRowWork)
+                .style(new StyleBuilder(workbook)
+                        .font(new FontBuilder(workbook)
+                                .fontName()
+                                .fontSize(fontDefaultSize)
+                                .fontWeight(true)
+                                .buildFont())
+                        .verticalAlign(VerticalAlignment.CENTER)
+                        .horizontalAlign(HorizontalAlignment.CENTER)
+                        .dataFormat((short) 0x27)
+                        .buildStyle());
 
 
 
@@ -301,92 +274,123 @@ public class ExcelDocument implements FileCreator {
 
 
         try (FileOutputStream outFile = new FileOutputStream(getFile(fileName))) {
-
             workbook.write(outFile);
-
         } catch (IOException e) {
             log.error("IN createFile - create estimate {} : error {}", e.getMessage(), e.getStackTrace());
         }
     }
 
+    private CellStyle getStyle() {
 
-    private void nameSection(int row, String name) {
-        new CreateCell(sheet, CellType.STRING).getCell(
-                new CreateStyle(workbook).getStyle(
-                        new CreateFont(workbook).getFont(
-                                fontDefaultSize,
-                                true
-                        ),
-                        HorizontalAlignment.LEFT,
-                        VerticalAlignment.BOTTOM
-                ),
-                row,
-                Cols.FIRST_COL.getCol(),
-                Cols.SIXTH_COL.getCol(),
-                HeightCell.HEIGHT_CELL_SECTION.getIndex(),
-                name
-        );
+        return new StyleBuilder(workbook)
+                .font(new FontBuilder(workbook)
+                        .fontName()
+                        .fontSize(fontDefaultSize)
+                        .buildFont())
+                .fillPattern(FillPatternType.SOLID_FOREGROUND)
+                .color(IndexedColors.GREY_25_PERCENT)
+                .verticalAlign(VerticalAlignment.CENTER)
+                .horizontalAlign(HorizontalAlignment.CENTER)
+                .buildStyle();
+    }
+
+
+    private CellStyle getStyle(int fontSize) {
+
+        return new StyleBuilder(workbook)
+                .font(new FontBuilder(workbook)
+                        .fontName()
+                        .fontSize(fontSize)
+                        .buildFont())
+                .verticalAlign(VerticalAlignment.CENTER)
+                .horizontalAlign(HorizontalAlignment.CENTER)
+                .buildStyle();
+    }
+
+
+    private void sectionHeader(int row, String value) {
+        new CellBuilder(sheet)
+                .mergedRegion(row, Cols.SIXTH_COL)
+                .row(row)
+                .heightRow(HeightCell.HEIGHT_CELL_SECTION.getIndex())
+                .cell()
+                .value(value)
+                .style(new StyleBuilder(workbook)
+                        .font(new FontBuilder(workbook)
+                                .fontName()
+                                .fontSize(fontDefaultSize)
+                                .fontWeight(true)
+                                .buildFont())
+                        .verticalAlign(VerticalAlignment.BOTTOM)
+                        .horizontalAlign(HorizontalAlignment.LEFT)
+                        .buildStyle());
+
     }
 
 
     private void headerTable(int row) {
-        new CreateHeaderTable(sheet, CellType.STRING).getHeader(
-                new CreateStyle(workbook, font).getStyle(
-                        IndexedColors.GREY_25_PERCENT,
-                        FillPatternType.SOLID_FOREGROUND,
-                        HorizontalAlignment.CENTER,
-                        VerticalAlignment.CENTER
-                ),
-                row
-        );
+
+        new CellBuilder(sheet)
+                .row(row)
+                .heightRow(HeightCell.HEIGHT_CELL_DEFAULT.getIndex())
+                .cell(Cols.FIRST_COL.getCol())
+                .value("#")
+                .style(getStyle())
+
+                .cell(Cols.SECOND_COL.getCol())
+                .value("Наименование")
+                .style(getStyle())
+
+                .cell(Cols.THIRD_COL.getCol())
+                .value("Ед. изм.")
+                .style(getStyle())
+
+                .cell(Cols.FOURTH_COL.getCol())
+                .value("Кол-во")
+                .style(getStyle())
+
+                .cell(Cols.FIFTH_COL.getCol())
+                .value("Цена")
+                .style(getStyle())
+
+                .cell(Cols.SIXTH_COL.getCol())
+                .value("Сумма")
+                .style(getStyle());
+
     }
 
 
-    private void totalName(int row, String name) {
-        new CreateCell(sheet, CellType.STRING).getCell(
-                new CreateStyle(workbook).getStyle(
-                        new CreateFont(workbook).getFont(
-                                fontDefaultSize,
-                                true
-                        ),
-                        HorizontalAlignment.RIGHT,
-                        VerticalAlignment.CENTER
-                ),
-                row,
-                Cols.FIRST_COL.getCol(),
-                Cols.FIFTH_COL.getCol(),
-                HeightCell.HEIGHT_CELL_DEFAULT.getIndex(),
-                name
-        );
-    }
 
+    private void totalSum(int startRow, int lastRowComponent, String value) {
+        new CellBuilder(sheet)
+                .mergedRegion(lastRowComponent, Cols.FIFTH_COL)
+                .row(lastRowComponent)
+                .heightRow(HeightCell.HEIGHT_CELL_DEFAULT.getIndex())
+                .cell()
+                .value(value)
+                .style(new StyleBuilder(workbook)
+                        .font(new FontBuilder(workbook)
+                                .fontName()
+                                .fontSize(fontDefaultSize)
+                                .fontWeight(true)
+                                .buildFont())
+                        .verticalAlign(VerticalAlignment.CENTER)
+                        .horizontalAlign(HorizontalAlignment.RIGHT)
+                        .buildStyle())
 
-    private void totalPrice(int startRow, int endRow) {
-        new CreateCell(sheet, CellType.STRING).cellFormula(
-                new CreateStyle(workbook).getStyle(
-                        new CreateFont(workbook).getFont(
-                                fontDefaultSize,
-                                true
-                        ),
-                        HorizontalAlignment.CENTER,
-                        VerticalAlignment.CENTER
-                ),
-                startRow,
-                endRow,
-                HeightCell.HEIGHT_CELL_DEFAULT.getIndex()
-        );
-    }
+                .cell(Cols.SIXTH_COL.getCol(), CellType.FORMULA)
+                .cellFormula(startRow + 1, lastRowComponent)
+                .style(new StyleBuilder(workbook)
+                        .font(new FontBuilder(workbook)
+                                .fontName()
+                                .fontSize(fontDefaultSize)
+                                .fontWeight(true)
+                                .buildFont())
+                        .verticalAlign(VerticalAlignment.CENTER)
+                        .horizontalAlign(HorizontalAlignment.CENTER)
+                        .dataFormat((short) 0x27)
+                        .buildStyle());
 
-
-    private void cellEmpty(int row, int heightCell) {
-        new CreateCell(sheet, CellType.STRING).getCell(
-                new CreateStyle(workbook, font).getStyle(),
-                row,
-                Cols.FIRST_COL.getCol(),
-                Cols.FIFTH_COL.getCol(),
-                heightCell,
-                ""
-        );
     }
 
 
@@ -395,9 +399,7 @@ public class ExcelDocument implements FileCreator {
         File uploadDir = new File(uploadPath);
 
         if (!uploadDir.exists()) {
-
             uploadDir.mkdir();
-
             log.info("Dir '{}' is created", uploadDir);
         }
 

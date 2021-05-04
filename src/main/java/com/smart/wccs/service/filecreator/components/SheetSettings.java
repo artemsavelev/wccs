@@ -11,14 +11,14 @@ public class SheetSettings {
     }
 
     public void getSettings() {
-        sheet.setFitToPage(true);
-        sheet.setDisplayGridlines(false);
-        sheet.getPrintSetup().setPaperSize(PrintSetup.A4_PAPERSIZE);
-        sheet.setColumnWidth(0, 1000);
-        sheet.setColumnWidth(1, 15000);
-        sheet.setColumnWidth(2, 3000);
-        sheet.setColumnWidth(3, 3500);
-        sheet.setColumnWidth(4, 3500);
-        sheet.setColumnWidth(5, 3500);
+        this.sheet.setFitToPage(true);
+        this.sheet.setDisplayGridlines(false);
+        this.sheet.getPrintSetup().setPaperSize(PrintSetup.A4_PAPERSIZE);
+        this.sheet.setColumnWidth(0, 1000);
+        this.sheet.setColumnWidth(1, 15000);
+        this.sheet.setColumnWidth(2, 3000);
+        this.sheet.setColumnWidth(3, 3500);
+        this.sheet.setColumnWidth(4, 3500);
+        this.sheet.setColumnWidth(5, 3500);
     }
 }

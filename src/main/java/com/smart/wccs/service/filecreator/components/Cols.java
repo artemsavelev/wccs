@@ -11,9 +11,6 @@ public enum Cols {
     SEVENTH_COL(6),
     EIGHTH_COL(7);
 
-//    LAST_COL(5),
-//    LAST_COL_TOTAL(4),
-//    LAST_COL_TAX(4);
 
     private final int col;
 

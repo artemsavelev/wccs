@@ -9,29 +9,13 @@ public class Data {
 
     private final Workbook workbook;
     private final Sheet sheet;
-    private final Font font;
-    private final CellStyle style;
 
-    public Data(Workbook workbook, Sheet sheet, Font font) {
+    public Data(Workbook workbook, Sheet sheet) {
         this.workbook = workbook;
         this.sheet = sheet;
-        this.font = font;
-        this.style = new CreateStyle(workbook, font).getStyle(HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
     }
 
-
-
-    public int getData(int rowNum, List<Components> list) {
-        Row row;
-        Cell cell;
-
-        CellStyle styleLocal = workbook.createCellStyle();
-        styleLocal.setWrapText(true);
-        styleLocal.setFont(font);
-        styleLocal.setAlignment(HorizontalAlignment.CENTER_SELECTION);
-        styleLocal.setVerticalAlignment(VerticalAlignment.CENTER);
-        styleLocal.setBorderBottom(BorderStyle.HAIR);
-        styleLocal.setBottomBorderColor(IndexedColors.GREY_25_PERCENT.getIndex());
+    public void getData(int row, List<Components> list) {
 
         if (list.size() == 0) {
             list.add(emptyComponent());
@@ -40,52 +24,76 @@ public class Data {
         int i = 0;
         for (Components comp: list) {
 
-            rowNum++;
+            row++;
             i++;
-            row = sheet.createRow(rowNum);
-//            row.setHeightInPoints(-1);
 
-            // # (A)
-            cell = row.createCell(0, CellType.NUMERIC);
-            cell.setCellValue(i);
-            cell.setCellStyle(styleLocal);
+            new CellBuilder(sheet)
+                    .row(row)
+                    .heightRow(HeightCell.HEIGHT_CELL_DEFAULT.getIndex())
+                    .cell()
+                    .value(i)
+                    .style(getStyle())
 
-            // name (B)
-            cell = row.createCell(1, CellType.STRING);
-            cell.setCellValue(comp.getName());
-            cell.setCellStyle(styleLocal);
+                    .cell(Cols.SECOND_COL.getCol())
+                    .value(comp.getName())
+                    .style(getStyle())
 
-            // dimension (C)
-            cell = row.createCell(2, CellType.STRING);
-            cell.setCellValue(comp.getDimension());
-            cell.setCellStyle(styleLocal);
+                    .cell(Cols.THIRD_COL.getCol())
+                    .value(comp.getDimension())
+                    .style(getStyle())
 
-            // quantity (D)
-            cell = row.createCell(3, CellType.NUMERIC);
-            cell.setCellValue(comp.getQuantity());
-            cell.setCellStyle(styleLocal);
+                    .cell(Cols.FOURTH_COL.getCol(), CellType.NUMERIC)
+                    .value(comp.getQuantity())
+                    .style(getStyle())
 
-            // price (E)
-            cell = row.createCell(4, CellType.NUMERIC);
-            cell.setCellValue(comp.getPrice());
-            style.setBorderBottom(BorderStyle.HAIR);
-            style.setBottomBorderColor(IndexedColors.GREY_25_PERCENT.getIndex());
-            style.setDataFormat((short) 0x27);
-            cell.setCellStyle(style);
+                    .cell(Cols.FIFTH_COL.getCol(), CellType.NUMERIC)
+                    .value(comp.getPrice())
+                    .style(new StyleBuilder(workbook)
+                            .font(new FontBuilder(workbook)
+                                    .fontName()
+                                    .fontSize(8)
+                                    .buildFont())
+                            .verticalAlign(VerticalAlignment.CENTER)
+                            .horizontalAlign(HorizontalAlignment.CENTER)
+                            .border(BorderStyle.HAIR)
+                            .borderColor(IndexedColors.GREY_25_PERCENT)
+                            .dataFormat((short) 0x27)
+                            .buildStyle())
 
-            // sum (F)
-            String formula = "E" + (rowNum + 1) + "*D" + (rowNum + 1);
-            cell = row.createCell(5, CellType.FORMULA);
-            cell.setCellFormula(formula);
-            style.setBorderBottom(BorderStyle.HAIR);
-            style.setBottomBorderColor(IndexedColors.GREY_25_PERCENT.getIndex());
-            style.setDataFormat((short) 0x27);
-            cell.setCellStyle(style);
-
-
+                    .cell(Cols.SIXTH_COL.getCol(), CellType.FORMULA)
+                    .cellFormula(row + 1)
+                    .style(new StyleBuilder(workbook)
+                            .font(new FontBuilder(workbook)
+                                    .fontName()
+                                    .fontSize(8)
+                                    .buildFont())
+                            .verticalAlign(VerticalAlignment.CENTER)
+                            .horizontalAlign(HorizontalAlignment.CENTER)
+                            .border(BorderStyle.HAIR)
+                            .borderColor(IndexedColors.GREY_25_PERCENT)
+                            .dataFormat((short) 0x27)
+                            .buildStyle());
 
         }
-        return rowNum;
+
+    }
+
+
+
+
+    private CellStyle getStyle() {
+
+        return new StyleBuilder(workbook)
+                .font(new FontBuilder(workbook)
+                        .fontName()
+                        .fontSize(8)
+                        .buildFont())
+                .verticalAlign(VerticalAlignment.CENTER)
+                .horizontalAlign(HorizontalAlignment.CENTER)
+                .border(BorderStyle.HAIR)
+                .borderColor(IndexedColors.GREY_25_PERCENT)
+                .wrapText(true)
+                .buildStyle();
     }
 
     private Components emptyComponent() {
