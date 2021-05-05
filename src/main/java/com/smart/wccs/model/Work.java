@@ -36,4 +36,9 @@ public class Work extends BaseEntity implements Components {
             inverseJoinColumns = @JoinColumn(name = "department_id"))
     @JsonView({Views.UserView.class, Views.AdminView.class})
     private List<Department> departments;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "section_group_id")
+    @JsonView({Views.UserView.class, Views.AdminView.class})
+    private SectionGroup group;
 }

@@ -79,15 +79,15 @@ export default {
     },
     getters: {
         allDevices(state) {
-            return state.devices
+            return (state.devices || []).sort((a, b) => (a.id - b.id))
         },
 
         allMaterials(state) {
-            return state.materials
+            return (state.materials || []).sort((a, b) => (a.id - b.id))
         },
 
         allWorks(state) {
-            return state.works
+            return (state.works || []).sort((a, b) => (a.id - b.id))
         }
 
     }

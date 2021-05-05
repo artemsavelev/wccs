@@ -48,11 +48,14 @@
             <v-row class="pl-3">
               <v-col>
                 <!--   load module add device, material, work    -->
-                <SectionItem v-for="item of filteredData"
-                             :key="item.id"
-                             v-on:transmitItemInModalForm="addItem"
-                             v-bind:extId="extId"
-                             v-bind:item="item"/>
+                <div class="mb-10" v-for="group of groupBy"
+                     :key="group.id">
+                  <SectionItem v-for="item of group"
+                               :key="item.id"
+                               v-on:transmitItemInModalForm="addItem"
+                               v-bind:extId="extId"
+                               v-bind:item="item"/>
+                </div>
                 <!--  // load module add device, material, work  -->
               </v-col>
 
@@ -71,6 +74,7 @@
 <script>
 import env from '../../env.config.json'
 import {mapActions} from 'vuex'
+
 const SectionItem = () => import('@/components/SectionItem')
 const HeaderTable = () => import('@/components/HeaderTable')
 const WorkDescription = () => import('@/components/WorkDescription')
@@ -80,9 +84,31 @@ export default {
   components: { WorkDescription, HeaderTable, SectionItem },
   props: ['typeSection', 'data', 'ex', 'extId'],
   computed: {
+
+     groupBy() {
+
+
+      return Object.values(this.filteredData).reduce((acc, obj) => {
+
+        let key = obj['group']
+
+        if (!acc[key.name]) {
+          acc[key.name] = []
+        }
+
+        acc[key.name].push(obj)
+        return acc
+      }, {})
+    },
+
+
+
+
     // поиск по данным
     filteredData() {
+
       let result = this.data
+      // let result = this.groupBy(this.data, 'group')
       if (this.search && this.search.length >= 3) {
         result = result.filter(item => {
           if (item.name.toLowerCase().indexOf(this.search.toLowerCase()) !== -1) {
@@ -114,6 +140,13 @@ export default {
       search: '',
       type: 123,
     }
+  },
+
+  updated() {
+    // console.log(Object.values(this.groupBy))
+
+
+
   },
 
 
@@ -165,5 +198,8 @@ export default {
 </script>
 
 <style lang="scss">
+.group {
+
+}
 
 </style>

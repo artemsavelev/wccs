@@ -8,12 +8,22 @@ create table public.section_group (
 );
 
 -- added group
-INSERT INTO public.section_group (created_date, status, updated_date, name) VALUES (CURRENT_TIMESTAMP AT TIME ZONE 'Europe/Moscow', 'ACTIVE', null, 'Медные кабели');
-INSERT INTO public.section_group (created_date, status, updated_date, name) VALUES (CURRENT_TIMESTAMP AT TIME ZONE 'Europe/Moscow', 'ACTIVE', null, 'ВОК Кабели');
-INSERT INTO public.section_group (created_date, status, updated_date, name) VALUES (CURRENT_TIMESTAMP AT TIME ZONE 'Europe/Moscow', 'ACTIVE', null, 'Кабельная инфруструктура');
-INSERT INTO public.section_group (created_date, status, updated_date, name) VALUES (CURRENT_TIMESTAMP AT TIME ZONE 'Europe/Moscow', 'ACTIVE', null, 'Оборудование');
-
-
-
--- alter table public.material ADD COLUMN group_id int8;
-
+INSERT INTO public.section_group (created_date, status, updated_date, name) VALUES (CURRENT_TIMESTAMP AT TIME ZONE 'Europe/Moscow', 'ACTIVE', null, 'Без группы');
+INSERT INTO public.section_group (created_date, status, updated_date, name) VALUES (CURRENT_TIMESTAMP AT TIME ZONE 'Europe/Moscow', 'ACTIVE', null, 'Коммутаторы');
+INSERT INTO public.section_group (created_date, status, updated_date, name) VALUES (CURRENT_TIMESTAMP AT TIME ZONE 'Europe/Moscow', 'ACTIVE', null, 'Маршрутизаторы');
+INSERT INTO public.section_group (created_date, status, updated_date, name) VALUES (CURRENT_TIMESTAMP AT TIME ZONE 'Europe/Moscow', 'ACTIVE', null, 'ИБП');
+INSERT INTO public.section_group (created_date, status, updated_date, name) VALUES (CURRENT_TIMESTAMP AT TIME ZONE 'Europe/Moscow', 'ACTIVE', null, 'Wi-Fi');
+INSERT INTO public.section_group (created_date, status, updated_date, name) VALUES (CURRENT_TIMESTAMP AT TIME ZONE 'Europe/Moscow', 'ACTIVE', null, 'VOIP');
+INSERT INTO public.section_group (created_date, status, updated_date, name) VALUES (CURRENT_TIMESTAMP AT TIME ZONE 'Europe/Moscow', 'ACTIVE', null, 'АТС');
+INSERT INTO public.section_group (created_date, status, updated_date, name) VALUES (CURRENT_TIMESTAMP AT TIME ZONE 'Europe/Moscow', 'ACTIVE', null, 'Медный кабель');
+INSERT INTO public.section_group (created_date, status, updated_date, name) VALUES (CURRENT_TIMESTAMP AT TIME ZONE 'Europe/Moscow', 'ACTIVE', null, 'ВОК кабель');
+INSERT INTO public.section_group (created_date, status, updated_date, name) VALUES (CURRENT_TIMESTAMP AT TIME ZONE 'Europe/Moscow', 'ACTIVE', null, 'Кабель-канал');
+INSERT INTO public.section_group (created_date, status, updated_date, name) VALUES (CURRENT_TIMESTAMP AT TIME ZONE 'Europe/Moscow', 'ACTIVE', null, 'Гофра');
+INSERT INTO public.section_group (created_date, status, updated_date, name) VALUES (CURRENT_TIMESTAMP AT TIME ZONE 'Europe/Moscow', 'ACTIVE', null, 'Лоток');
+INSERT INTO public.section_group (created_date, status, updated_date, name) VALUES (CURRENT_TIMESTAMP AT TIME ZONE 'Europe/Moscow', 'ACTIVE', null, 'Телекоммуникационные шкафы и стойки');
+INSERT INTO public.section_group (created_date, status, updated_date, name) VALUES (CURRENT_TIMESTAMP AT TIME ZONE 'Europe/Moscow', 'ACTIVE', null, 'Патч-панели');
+INSERT INTO public.section_group (created_date, status, updated_date, name) VALUES (CURRENT_TIMESTAMP AT TIME ZONE 'Europe/Moscow', 'ACTIVE', null, 'Кроссы');
+INSERT INTO public.section_group (created_date, status, updated_date, name) VALUES (CURRENT_TIMESTAMP AT TIME ZONE 'Europe/Moscow', 'ACTIVE', null, 'Прочее оборудование');
+INSERT INTO public.section_group (created_date, status, updated_date, name) VALUES (CURRENT_TIMESTAMP AT TIME ZONE 'Europe/Moscow', 'ACTIVE', null, 'Крепеж');
+INSERT INTO public.section_group (created_date, status, updated_date, name) VALUES (CURRENT_TIMESTAMP AT TIME ZONE 'Europe/Moscow', 'ACTIVE', null, 'Разъемы');
+INSERT INTO public.section_group (created_date, status, updated_date, name) VALUES (CURRENT_TIMESTAMP AT TIME ZONE 'Europe/Moscow', 'ACTIVE', null, 'Работы');
