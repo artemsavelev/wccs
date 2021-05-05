@@ -55,6 +55,7 @@
                              v-bind:item="item"/>
                 <!--  // load module add device, material, work  -->
               </v-col>
+
             </v-row>
           </div>
           <div v-else class="no-content">

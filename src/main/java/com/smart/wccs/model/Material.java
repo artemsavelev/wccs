@@ -37,8 +37,8 @@ public class Material extends BaseEntity implements Components {
     @JsonView({Views.UserView.class, Views.AdminView.class})
     private List<Department> departments;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "group_id")
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "section_group_id")
     @JsonView({Views.UserView.class, Views.AdminView.class})
-    private Group group;
+    private SectionGroup group;
 }

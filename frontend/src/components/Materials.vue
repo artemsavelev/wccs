@@ -40,6 +40,7 @@ export default {
   mounted() {
     // получаем данные с сервера (список материалов)
     this.fetchMaterials();
+    console.log(this.allMaterials)
   },
   methods: {
 

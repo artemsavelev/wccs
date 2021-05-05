@@ -31,7 +31,7 @@ import {mapActions, mapGetters} from "vuex";
 export default {
   name: "ActiveDevice",
   components: {DataContent, HeaderTable, ModalForm },
-    props: ['extId'],
+  props: ['extId'],
   computed: {
     ...mapGetters(['allDevices']),
   },

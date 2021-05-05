@@ -9,9 +9,9 @@ import javax.persistence.Table;
 
 @EqualsAndHashCode(callSuper = true)
 @Entity
-@Table(name = "group")
+@Table(name = "section_group")
 @Data
-public class Group extends BaseEntity {
+public class SectionGroup extends BaseEntity {
 
 
     @JsonView({Views.UserView.class, Views.AdminView.class})

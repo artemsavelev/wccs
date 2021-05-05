@@ -20,8 +20,9 @@
               :rules="rules"
               :hint="env.rules[1]"
               hide-details="auto"
-              class="pt-5"
+              class="rounded-0"
               dense
+              outlined
               :label="env.lastName + '*'"
               v-model="lastName"
               required
@@ -33,7 +34,8 @@
               :rules="rules"
               :hint="env.rules[1]"
               dense
-              class="pt-5"
+              outlined
+              class="rounded-0"
               :label="env.firstName + '*'"
               v-model="firstName"
               counter/>
@@ -43,7 +45,8 @@
           <v-text-field
               :rules="emailRules"
               dense
-              class="pt-5"
+              outlined
+              class="rounded-0"
               :label="env.email + '*'"
               v-model="email"
               required
@@ -55,7 +58,8 @@
               :rules="rules"
               :hint="env.rules[1]"
               dense
-              class="pt-5"
+              outlined
+              class="rounded-0"
               :label="env.login + '*'"
               v-model="username"
               required
@@ -67,7 +71,8 @@
               :rules="rules"
               :hint="env.rules[1]"
               dense
-              class="pt-5"
+              outlined
+              class="rounded-0"
               :label="env.password + '*'"
               :type="show ? 'text' : 'password'"
               @click:append="show = !show"
