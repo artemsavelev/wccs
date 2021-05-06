@@ -140,7 +140,7 @@ export default {
     async fetch (item) {
       // Remove in 6 months and say
       // you've made optimizations! :)
-      await pause(2000)
+      await pause(1000)
 
       // const user = JSON.parse(localStorage.getItem('user'));
       // const headers = {}

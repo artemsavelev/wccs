@@ -48,13 +48,15 @@
             <v-row class="pl-3">
               <v-col>
                 <!--   load module add device, material, work    -->
-                <div class="mb-10" v-for="group of groupBy"
-                     :key="group.id">
+                <div class="mb-10 ml-1 mr-3" v-for="(group, i) of Object.values(groupBy)"
+                     :key="group.id"> <span class="font-weight-light font-xl"> {{ Object.keys(groupBy)[i] }} </span>
+
                   <SectionItem v-for="item of group"
                                :key="item.id"
                                v-on:transmitItemInModalForm="addItem"
                                v-bind:extId="extId"
                                v-bind:item="item"/>
+
                 </div>
                 <!--  // load module add device, material, work  -->
               </v-col>
@@ -97,6 +99,9 @@ export default {
         }
 
         acc[key.name].push(obj)
+
+        // console.log(acc)
+
         return acc
       }, {})
     },
