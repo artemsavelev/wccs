@@ -9,36 +9,40 @@
 
 
 
-        <v-row class="ml-1">
-          <v-col cols="12" sm="6" md="5">
-            <v-autocomplete
-                :items="items"
-                item-text="key"
-                v-model="select"
-                :label="env.sectionItem"
-                required
-                outlined
-                dense
-                class="rounded-0 mt-4"
-            ></v-autocomplete>
-          </v-col>
+      <v-row class="ml-1">
+        <v-col cols="12" sm="6" md="5">
+          <v-autocomplete
+              :items="items"
+              item-text="key"
+              v-model="select"
+              :label="env.sectionItem"
+              required
+              outlined
+              dense
+              class="rounded-0 mt-4"
+          ></v-autocomplete>
+        </v-col>
 
-          <v-col cols="12" sm="6" md="5">
-            <v-text-field dense
-                          :disabled="!select"
-                          class="rounded-0 mt-4"
-                          :label="env.search"
-                          outlined
-                          clearable
-                          v-model="search"/>
-          </v-col>
-        </v-row>
+        <v-col cols="12" sm="6" md="5">
+          <v-text-field dense
+                        :disabled="!select"
+                        class="rounded-0 mt-4"
+                        :label="env.search"
+                        outlined
+                        clearable
+                        v-model="search"/>
+        </v-col>
+      </v-row>
 
 
-        <v-row class="ml-4 pa-0" v-if="filteredData && filteredData.length">
+      <v-row class="ml-4 pa-0" v-if="filteredData && filteredData.length">
 
-          <div v-if="this.select === this.env.sectionDevice" class="width-container">
-            <div v-for="item in filteredData"
+        <div v-if="this.select === this.env.sectionDevice" class="width-container">
+
+          <div class="mb-10 ml-1 mr-3" v-for="(group, i) of Object.values(groupBy)"
+               :key="group.id"> <span class="font-weight-light font-xl"> {{ Object.keys(groupBy)[i] }} </span>
+
+            <div v-for="item in group"
                  :key="item.id" class="section-row-container">
               <div class="col-idx">
                 {{ item.id }}
@@ -59,13 +63,19 @@
                 </v-btn>
               </div>
             </div>
+
           </div>
 
+        </div>
 
 
-          <div v-if="this.select === this.env.sectionMaterial" class="width-container">
 
-            <div v-for="item in filteredData"
+        <div v-if="this.select === this.env.sectionMaterial" class="width-container">
+
+          <div class="mb-10 ml-1 mr-3" v-for="(group, i) of Object.values(groupBy)"
+               :key="group.id"> <span class="font-weight-light font-xl"> {{ Object.keys(groupBy)[i] }} </span>
+
+            <div v-for="item in group"
                  :key="item.id" class="section-row-container">
               <div class="col-idx">
                 {{ item.id }}
@@ -86,12 +96,18 @@
                 </v-btn>
               </div>
             </div>
+
           </div>
 
+        </div>
 
-          <div v-if="this.select === this.env.sectionWork" class="width-container">
 
-            <div v-for="item in filteredData"
+        <div v-if="this.select === this.env.sectionWork" class="width-container">
+
+          <div class="mb-10 ml-1 mr-3" v-for="(group, i) of Object.values(groupBy)"
+               :key="group.id"> <span class="font-weight-light font-xl"> {{ Object.keys(groupBy)[i] }} </span>
+
+            <div v-for="item in group"
                  :key="item.id" class="section-row-container">
               <div class="col-idx">
                 {{ item.id }}
@@ -112,10 +128,13 @@
                 </v-btn>
               </div>
             </div>
+
           </div>
 
+        </div>
 
-        </v-row>
+
+      </v-row>
 
 
 
@@ -128,13 +147,13 @@
     </div>
 
 
-<!--    <div class="pagination-container">-->
-<!--      <v-pagination-->
-<!--          v-model="page"-->
-<!--          :length="Math.ceil(length / perPage)"-->
-<!--          :total-visible="7"-->
-<!--      ></v-pagination>-->
-<!--    </div>-->
+    <!--    <div class="pagination-container">-->
+    <!--      <v-pagination-->
+    <!--          v-model="page"-->
+    <!--          :length="Math.ceil(length / perPage)"-->
+    <!--          :total-visible="7"-->
+    <!--      ></v-pagination>-->
+    <!--    </div>-->
 
   </div>
 </template>
@@ -148,6 +167,24 @@ export default {
   computed:  {
     ...mapGetters(['allDevices', 'allMaterials', 'allWorks', 'profile']),
     ...mapMutations(['addDeviceMutation', 'addMaterialMutation', 'addWorkMutation']),
+
+
+    //
+    groupBy() {
+
+      return Object.values(this.filteredData).reduce((acc, obj) => {
+
+        let key = obj['group']
+
+        if (!acc[key.name]) {
+          acc[key.name] = []
+        }
+
+        acc[key.name].push(obj)
+
+        return acc
+      }, {})
+    },
 
     // поиск по данным
     filteredData() {
@@ -171,7 +208,7 @@ export default {
       } else if (this.select === this.env.sectionWork) {
         return this.allWorks
       }
-      return null
+
 
       // if (this.select === this.env.sectionDevice) {
       //   return this.allDevices.slice((this.page - 1) * this.perPage, this.page * this.perPage)
@@ -180,7 +217,9 @@ export default {
       // } else if (this.select === this.env.sectionWork) {
       //   return this.allWorks.slice((this.page - 1) * this.perPage, this.page * this.perPage)
       // }
-      // return null
+
+      return null
+
     },
 
     length() {
@@ -198,11 +237,11 @@ export default {
 
   mounted() {
 
-      this.fetchDevices()
+    this.fetchDevices()
 
-      this.fetchMaterials()
+    this.fetchMaterials()
 
-      this.fetchWorks()
+    this.fetchWorks()
 
   },
 

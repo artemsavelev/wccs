@@ -5,6 +5,7 @@
       <v-textarea outlined
                   :auto-grow="true"
                   rows="4"
+                  class="rounded-0"
                   name="input-1"
                   v-model="workDescription"
                   :label="env.typeWork"></v-textarea>
@@ -12,6 +13,7 @@
       <v-textarea outlined
                   :auto-grow="true"
                   rows="3"
+                  class="rounded-0"
                   name="input-2"
                   :label="env.note"
                   v-model="visibleComment"></v-textarea>

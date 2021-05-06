@@ -87,8 +87,8 @@ export default {
   props: ['typeSection', 'data', 'ex', 'extId'],
   computed: {
 
+    //
      groupBy() {
-
 
       return Object.values(this.filteredData).reduce((acc, obj) => {
 
@@ -100,13 +100,9 @@ export default {
 
         acc[key.name].push(obj)
 
-        // console.log(acc)
-
         return acc
       }, {})
     },
-
-
 
 
     // поиск по данным
