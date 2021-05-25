@@ -3,10 +3,10 @@
 
       <div class="ml-7 mb-15 mt-3 font-s">
 
-        <div class="font-weight-bold ml-3">
+        <div class="font-weight-bold">
           {{ env.addComponent }}
         </div>
-        <div class="ml-3  font-weight-thin">
+        <div class="font-weight-thin">
           {{ env.fields }}
         </div>
 
@@ -15,78 +15,101 @@
             v-model="valid"
             lazy-validation>
 
-          <v-col cols="12" sm="6" md="5">
-            <v-autocomplete
-                :items="items"
-                item-text="key"
-                v-model="select"
-                :label="env.sectionItem + '*'"
-                required
-            ></v-autocomplete>
-          </v-col>
-
-          <v-row class="ma-0 pa-0">
+          <v-row class="mt-5">
+            <v-col cols="12" sm="6" md="5">
+              <v-autocomplete
+                  class="rounded-0"
+                  :items="items"
+                  item-text="key"
+                  v-model="select"
+                  :label="env.sectionItem + '*'"
+                  required
+                  outlined
+                  dense
+              ></v-autocomplete>
+            </v-col>
 
             <v-col cols="12" sm="6" md="5">
-              <v-text-field
+              <v-autocomplete
+                  class="rounded-0"
                   :disabled="!select"
+                  :items="groups"
+                  item-text="id"
+                  v-model="group"
+                  :label="env.sectionGroup + '*'"
+                  required
+                  outlined
+                  dense
+              ></v-autocomplete>
+            </v-col>
+          </v-row>
+
+          <v-row class="mt-0">
+            <v-col cols="12" sm="6" md="5">
+              <v-text-field
+                  :disabled="!group"
                   :rules="rules"
                   :hint="env.rules[1]"
                   hide-details="auto"
-                  class="pt-5"
-                  dense
+                  class="rounded-0"
                   :label="env.name + '*'"
                   v-model="name"
                   required
+                  outlined
+                  dense
                   counter/>
             </v-col>
 
             <v-col cols="2" sm="1" md="1">
               <v-text-field
-                  :disabled="!select"
+                  :disabled="!group"
                   :rules="rules"
                   :hint="env.rules[1]"
-                  dense
-                  class="pt-5"
+                  class="rounded-0"
                   :label="env.dimension + '*'"
                   v-model="dimension"
                   required
+                  outlined
+                  dense
                   counter/>
             </v-col>
 
             <v-col cols="2" sm="1" md="1">
               <v-text-field
-                  :disabled="!select"
+                  :disabled="!group"
                   :rules="rulesPrice"
                   :hint="env.rules[1]"
-                  dense
-                  class="pt-5"
+                  class="rounded-0"
                   :label="env.price + '*'"
                   v-model="price"
                   required
+                  outlined
+                  dense
                   counter/>
             </v-col>
 
             <v-col cols="12" sm="6" md="4">
               <v-text-field
-                  :disabled="!select"
-                  dense
-                  class="pt-5"
+                  :disabled="!group"
+                  class="rounded-0"
                   :label="env.comment"
                   v-model="comment"
+                  required
+                  outlined
+                  dense
                   counter/>
             </v-col>
           </v-row>
 
           <v-btn @click="saveComponent"
-                 :disabled="!select"
+                 :disabled="!group"
                  :color="colorSave"
-                 class="ml-3" tile>{{ env.keySave }}</v-btn>
+                 class="ml-0" tile>{{ env.keySave }}</v-btn>
 
           <v-btn @click="clear"
-                 :disabled="!select"
+                 :disabled="!group"
                  :color="colorClear"
-                 class="ml-5" tile>{{ env.keyClear }}</v-btn>
+                 class="ml-3" tile>{{ env.keyClear }}</v-btn>
 
         </v-form>
 
@@ -115,6 +138,7 @@ export default {
       colorClear: 'primary',
 
       select: '',
+      group: '',
       name: '',
       dimension: '',
       price: '',
@@ -123,6 +147,11 @@ export default {
         { key: env.sectionDevice },
         { key: env.sectionMaterial },
         { key: env.sectionWork }
+      ],
+      groups: [
+        { id: 1 },
+        { id: 2 },
+        { id: 3 }
       ],
 
       rules: [
@@ -161,9 +190,13 @@ export default {
         dimension: this.dimension,
         price: this.price,
         note: this.comment,
+        group: {
+          id: this.groups.id
+        }
       }
+      console.log(component)
 
-      if (this.name && this.dimension && this.price) {
+      if (this.name && this.group && this.dimension && this.price) {
 
 
         if (this.select === this.env.sectionDevice) {
@@ -193,6 +226,7 @@ export default {
       this.colorClear = 'primary'
       this.$refs.form.resetValidation()
       this.name = ''
+      this.group = ''
       this.dimension = ''
       this.price = ''
       this.comment = ''
@@ -204,4 +238,7 @@ export default {
 
 <style scoped>
 
+input {
+  font-size: 13px;
+}
 </style>

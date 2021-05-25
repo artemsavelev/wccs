@@ -9,33 +9,35 @@
 
 
 
-      <v-row class="ml-1">
-        <v-col cols="12" sm="6" md="5">
-          <v-autocomplete
-              :items="items"
-              item-text="key"
-              v-model="select"
-              :label="env.sectionItem"
-              required
-              outlined
-              dense
-              class="rounded-0 mt-4"
-          ></v-autocomplete>
-        </v-col>
+      <div style="position: fixed; width: 75%; height: 5em; background-color: white;">
+        <v-row class="ml-1">
+          <v-col cols="12" sm="6" md="5">
+            <v-autocomplete
+                :items="items"
+                item-text="key"
+                v-model="select"
+                :label="env.sectionItem"
+                required
+                outlined
+                dense
+                class="rounded-0 mt-4"
+            ></v-autocomplete>
+          </v-col>
 
-        <v-col cols="12" sm="6" md="5">
-          <v-text-field dense
-                        :disabled="!select"
-                        class="rounded-0 mt-4"
-                        :label="env.search"
-                        outlined
-                        clearable
-                        v-model="search"/>
-        </v-col>
-      </v-row>
+          <v-col cols="12" sm="6" md="5">
+            <v-text-field dense
+                          :disabled="!select"
+                          class="rounded-0 mt-4"
+                          :label="env.search"
+                          outlined
+                          clearable
+                          v-model="search"/>
+          </v-col>
+        </v-row>
+      </div>
 
 
-      <v-row class="ml-4 pa-0" v-if="filteredData && filteredData.length">
+      <v-row class="mt-16 ml-4 pa-0" v-if="filteredData && filteredData.length">
 
         <div v-if="this.select === this.env.sectionDevice" class="width-container">
 
@@ -58,7 +60,7 @@
               </div>
 
               <div class="col-action-section">
-                <v-btn icon v-on:click="add">
+                <v-btn icon v-on:click="add" class="content">
                   <v-icon color="iconLight">mdi-plus</v-icon>
                 </v-btn>
               </div>
@@ -91,7 +93,7 @@
               </div>
 
               <div class="col-action-section">
-                <v-btn icon v-on:click="add">
+                <v-btn icon v-on:click="add" >
                   <v-icon color="iconLight">mdi-plus</v-icon>
                 </v-btn>
               </div>
@@ -294,6 +296,16 @@ export default {
   align-items: flex-end;
   width: 100%;
   height: 100%
+}
+
+.no-content {
+  margin-top: 15em;
+
+}
+
+.content {
+  z-index: 0;
+
 }
 
 

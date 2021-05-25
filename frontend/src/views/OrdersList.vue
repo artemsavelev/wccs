@@ -25,11 +25,11 @@
 
         <v-card-text>
 
-          <div class="font-weight-bold">
+          <div class="font-weight-bold font-s">
             {{ formTitle }}
           </div>
 
-          <div class="font-weight-light">
+          <div class="font-weight-light font-s">
             {{ env.fields }}
           </div>
 
@@ -95,10 +95,11 @@
             <v-col cols="12" class="pa-0">
               <v-text-field
                   :rules="rules"
-                  class="pt-5"
+                  class="pt-5 rounded-0"
                   dense
                   :label="env.numberOrder + '*'"
                   required
+                  outlined
                   v-model="extId"/>
             </v-col>
 
@@ -106,9 +107,10 @@
               <v-text-field
                   :rules="rules"
                   dense
-                  class="pt-5"
+                  class="pt-5 rounded-0"
                   :label="env.customer + '*'"
                   required
+                  outlined
                   v-model="customer"/>
             </v-col>
 
@@ -116,9 +118,10 @@
               <v-text-field
                   :rules="rules"
                   dense
-                  class="pt-5"
+                  class="pt-5 rounded-0"
                   :label="env.address + '*'"
                   required
+                  outlined
                   v-model="address"/>
             </v-col>
 
@@ -129,7 +132,7 @@
                               label="Тип работ"
                               item-text="groupList"
                               item-value="id"
-                              class="mt-5"
+                              class="mt-5 rounded-0"
                               dense
                               disabled
                               v-show="false"
@@ -142,7 +145,7 @@
                             label="Исполнители"
                             item-text="name"
                             item-value="userId"
-                            class="mt-5"
+                            class="mt-5 rounded-0"
                             dense
                             required
                             disabled
@@ -154,7 +157,7 @@
               <v-text-field
                   :rules="rules"
                   dense
-                  class="pt-5"
+                  class="pt-5 rounded-0"
                   :label="env.typeWork + '*'"
                   disabled
                   v-show="false"
