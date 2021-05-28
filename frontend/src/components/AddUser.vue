@@ -1,7 +1,7 @@
 <template>
   <div>
 
-    <div class="registration ml-7 mb-15 mt-3 font-s">
+    <div class="registration mb-15 mt-3 font-s">
 
       <div class="font-weight-bold ml-3">
         {{ env.addUser }}
@@ -13,9 +13,10 @@
       <v-form
           ref="form"
           v-model="valid"
+
           lazy-validation>
 
-        <v-col cols="12" sm="6" md="4">
+        <v-col cols="12" sm="6" md="12">
           <v-text-field
               :rules="rules"
               :hint="env.rules[1]"
@@ -29,7 +30,7 @@
               counter/>
         </v-col>
 
-        <v-col cols="12" sm="6" md="4">
+        <v-col cols="12" sm="6" md="12">
           <v-text-field
               :rules="rules"
               :hint="env.rules[1]"
@@ -41,7 +42,7 @@
               counter/>
         </v-col>
 
-        <v-col cols="12" sm="6" md="4">
+        <v-col cols="12" sm="6" md="12">
           <v-text-field
               :rules="emailRules"
               dense
@@ -53,7 +54,7 @@
               counter/>
         </v-col>
 
-        <v-col cols="12" sm="6" md="4">
+        <v-col cols="12" sm="6" md="12">
           <v-text-field
               :rules="rules"
               :hint="env.rules[1]"
@@ -66,7 +67,7 @@
               counter/>
         </v-col>
 
-        <v-col cols="12" sm="6" md="4">
+        <v-col cols="12" sm="6" md="12">
           <v-text-field
               :rules="rules"
               :hint="env.rules[1]"

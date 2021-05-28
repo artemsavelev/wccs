@@ -9,7 +9,7 @@
 
 
 
-      <div style="position: fixed; width: 75%; height: 5em; background-color: white;">
+      <div style="position: fixed; width: 60%; height: 5em; background-color: white; z-index: 1;">
         <v-row class="ml-1">
           <v-col cols="12" sm="6" md="5">
             <v-autocomplete
@@ -17,6 +17,7 @@
                 item-text="key"
                 v-model="select"
                 :label="env.sectionItem"
+                :change="$emit('selectedItem', this.select)"
                 required
                 outlined
                 dense
@@ -60,9 +61,16 @@
               </div>
 
               <div class="col-action-section">
-                <v-btn icon v-on:click="add" class="content">
-                  <v-icon color="iconLight">mdi-plus</v-icon>
-                </v-btn>
+                <v-checkbox
+                    class="ml-0 mr-0 mb-0 mt-0 pa-0"
+                    color="success"
+                    value="success"
+                    hide-details
+                    dense></v-checkbox>
+
+<!--                <v-btn icon v-on:click="add" class="content">-->
+<!--                  <v-icon color="iconLight">mdi-plus</v-icon>-->
+<!--                </v-btn>-->
               </div>
             </div>
 
@@ -93,9 +101,18 @@
               </div>
 
               <div class="col-action-section">
-                <v-btn icon v-on:click="add" >
-                  <v-icon color="iconLight">mdi-plus</v-icon>
-                </v-btn>
+
+                <v-checkbox
+                    class="ml-0 mr-0 mb-0 mt-0 pa-0"
+                    color="success"
+                    value="success"
+                    hint="Добавить к себе в набор"
+                    hide-details
+                    dense></v-checkbox>
+
+                <!--                <v-btn icon v-on:click="add" >-->
+                <!--                  <v-icon color="iconLight">mdi-pencil</v-icon>-->
+                <!--                </v-btn>-->
               </div>
             </div>
 
@@ -125,9 +142,17 @@
               </div>
 
               <div class="col-action-section">
-                <v-btn icon v-on:click="add(item)">
-                  <v-icon color="iconLight">mdi-plus</v-icon>
-                </v-btn>
+
+                <v-checkbox
+                    class="ml-0 mr-0 mb-0 mt-0 pa-0"
+                    color="success"
+                    value="success"
+                    hide-details
+                    dense></v-checkbox>
+
+<!--                <v-btn icon v-on:click="add(item)" class="ma-0 pa-0">-->
+<!--                  <v-icon color="iconLight">mdi-plus</v-icon>-->
+<!--                </v-btn>-->
               </div>
             </div>
 
@@ -157,15 +182,28 @@
     <!--      ></v-pagination>-->
     <!--    </div>-->
 
+
+    <v-navigation-drawer width="400" v-model="drawerRight" app clipped right>
+
+      <AddComponent :selectedItem="this.select"/>
+
+    </v-navigation-drawer>
+
+
+
+
   </div>
 </template>
 
 <script>
 import { mapActions, mapGetters, mapMutations } from 'vuex'
 import env from '../../env.config.json'
+import AddComponent from "@/components/AddComponent"
+// import {bus} from '@/utils/bus'
 
 export default {
   name: 'ListComponents',
+  components: {AddComponent},
   computed:  {
     ...mapGetters(['allDevices', 'allMaterials', 'allWorks', 'profile']),
     ...mapMutations(['addDeviceMutation', 'addMaterialMutation', 'addWorkMutation']),
@@ -237,6 +275,7 @@ export default {
     },
   },
 
+
   mounted() {
 
     this.fetchDevices()
@@ -245,6 +284,11 @@ export default {
 
     this.fetchWorks()
 
+
+  },
+
+  updated() {
+
   },
 
   data() {
@@ -252,6 +296,8 @@ export default {
       ...mapActions(['fetchDevices', 'fetchMaterials', 'fetchWorks']),
 
       env,
+      drawerRight: true,
+      val: false,
       page: 1,
       perPage: 18,
       valid: true,
@@ -271,7 +317,12 @@ export default {
   methods: {
     add() {
       // console.log(item.id)
-    }
+    },
+
+    // changeItem() {
+    //   // bus.$emit('selected-item', this.select)
+    //
+    // },
   }
 }
 </script>
@@ -287,6 +338,12 @@ export default {
 
 .width-container {
   width: 98%;
+}
+
+.col-action-section {
+
+  z-index: 0;
+  flex-basis: 5%;
 }
 
 .pagination-container {

@@ -17,6 +17,7 @@
               mdi-account
             </v-icon>
           </template>
+
         </v-treeview>
       </v-col>
 
@@ -27,7 +28,7 @@
           <div v-if="!selected"
                class="title grey--text text--lighten-1 font-weight-light"
                style="align-self: center;">
-            Select a User
+            {{ env.selectUser }}
           </div>
           <v-card v-else
                   :key="selected.id"
@@ -79,6 +80,16 @@
         </v-scroll-y-transition>
       </v-col>
     </v-row>
+
+
+    <v-navigation-drawer width="400" v-model="drawerRight" app clipped right>
+
+      <AddUser/>
+
+    </v-navigation-drawer>
+
+
+
   </div>
 </template>
 
@@ -86,6 +97,7 @@
 import env from '../../env.config.json'
 // import api from '@/api/backendApi'
 import {mapActions, mapGetters} from 'vuex'
+import AddUser from "@/components/AddUser";
 
 const avatars = [
   '?accessoriesType=Blank&avatarStyle=Circle&clotheColor=PastelGreen&clotheType=ShirtScoopNeck&eyeType=Wink&eyebrowType=UnibrowNatural&facialHairColor=Black&facialHairType=MoustacheMagnum&hairColor=Platinum&mouthType=Concerned&skinColor=Tanned&topType=Turban',
@@ -98,13 +110,13 @@ const avatars = [
 const pause = ms => new Promise(resolve => setTimeout(resolve, ms))
 export default {
   name: 'Users',
-
-
+  components: {AddUser},
   data: () => ({
 
     ...mapActions(['fetchUsers']),
 
     env,
+    drawerRight: true,
     active: [],
     avatar: null,
     open: [],

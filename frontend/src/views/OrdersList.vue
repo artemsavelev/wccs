@@ -21,9 +21,8 @@
 
     <v-navigation-drawer width="400" v-model="drawerRight" app clipped right>
 
-      <v-list dense>
 
-        <v-card-text>
+        <div class="ma-3">
 
           <div class="font-weight-bold font-s">
             {{ formTitle }}
@@ -39,7 +38,7 @@
               lazy-validation>
 
 
-            <v-row class="pt-5">
+            <v-row class="pt-0">
               <v-col cols="12" sm="6" md="6">
                 <v-menu v-model="menuStartDate"
                         :close-on-content-click="false"
@@ -228,9 +227,7 @@
               </v-row>
             </v-card-actions>
           </v-form>
-        </v-card-text>
-
-      </v-list>
+        </div>
 
 
 
@@ -378,6 +375,7 @@ export default {
   updated() {
     bus.$on('show-drawer', data => {
       this.drawerRight = data
+      console.log(data)
     })
 
 

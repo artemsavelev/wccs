@@ -2,7 +2,7 @@ package com.smart.wccs.service.impl;
 
 import com.smart.wccs.model.Status;
 import com.smart.wccs.model.Work;
-import com.smart.wccs.repo.DepartmentRepo;
+import com.smart.wccs.repo.SectionGroupRepo;
 import com.smart.wccs.repo.UserRepo;
 import com.smart.wccs.repo.WorkRepo;
 import com.smart.wccs.service.WorkService;
@@ -20,14 +20,14 @@ public class WorkServiceImpl implements WorkService {
 
     private final WorkRepo workRepo;
     private final UserRepo userRepo;
-    private final DepartmentRepo departmentRepo;
+    private final SectionGroupRepo sectionGroupRepo;
     private final Utils utils;
 
     @Autowired
-    public WorkServiceImpl(WorkRepo workRepo, UserRepo userRepo, DepartmentRepo departmentRepo, Utils utils) {
+    public WorkServiceImpl(WorkRepo workRepo, UserRepo userRepo, SectionGroupRepo sectionGroupRepo, Utils utils) {
         this.workRepo = workRepo;
         this.userRepo = userRepo;
-        this.departmentRepo = departmentRepo;
+        this.sectionGroupRepo = sectionGroupRepo;
         this.utils = utils;
     }
 
@@ -70,6 +70,7 @@ public class WorkServiceImpl implements WorkService {
         work.setCreatedDate(LocalDateTime.now());
         work.setStatus(Status.ACTIVE);
         work.setDepartments(utils.getDepartmentWithUser());
+        work.setGroup(sectionGroupRepo.findSectionGroupById(work.getGroup().getId()));
         Work createdWork = workRepo.save(work);
         log.info("IN create - work: {} successfully added for department: {}", createdWork, createdWork.getDepartments());
 

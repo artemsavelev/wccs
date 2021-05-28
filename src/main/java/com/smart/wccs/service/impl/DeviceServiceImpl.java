@@ -3,6 +3,7 @@ package com.smart.wccs.service.impl;
 import com.smart.wccs.model.Device;
 import com.smart.wccs.model.Status;
 import com.smart.wccs.repo.DeviceRepo;
+import com.smart.wccs.repo.SectionGroupRepo;
 import com.smart.wccs.repo.UserRepo;
 import com.smart.wccs.service.DeviceService;
 import lombok.extern.slf4j.Slf4j;
@@ -19,12 +20,14 @@ public class DeviceServiceImpl implements DeviceService {
 
     private final DeviceRepo deviceRepo;
     private final UserRepo userRepo;
+    private final SectionGroupRepo sectionGroupRepo;
     private final Utils utils;
 
     @Autowired
-    public DeviceServiceImpl(DeviceRepo deviceRepo, UserRepo userRepo, Utils utils) {
+    public DeviceServiceImpl(DeviceRepo deviceRepo, UserRepo userRepo, SectionGroupRepo sectionGroupRepo, Utils utils) {
         this.deviceRepo = deviceRepo;
         this.userRepo = userRepo;
+        this.sectionGroupRepo = sectionGroupRepo;
         this.utils = utils;
     }
 
@@ -64,6 +67,7 @@ public class DeviceServiceImpl implements DeviceService {
         device.setCreatedDate(LocalDateTime.now());
         device.setStatus(Status.ACTIVE);
         device.setDepartments(utils.getDepartmentWithUser());
+        device.setGroup(sectionGroupRepo.findSectionGroupById(device.getGroup().getId()));
         Device createdDevice = deviceRepo.save(device);
         log.info("IN create - device: {} successfully added for department: {}", createdDevice, createdDevice.getDepartments());
     }

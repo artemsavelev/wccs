@@ -107,9 +107,9 @@ export default {
             icon: 'mdi-tune',
             active: true,
             items: [
-              { title: env.addUser, icon: 'mdi-account-plus', route: '/admin/add-user' },
+              // { title: env.addUser, icon: 'mdi-account-plus', route: '/admin/add-user' },
               { title: env.listUsers, icon: 'mdi-account-multiple', route: '/admin/users' },
-              { title: env.addComponent, icon: 'mdi-database-plus', route: '/admin/add-component' },
+              // { title: env.addComponent, icon: 'mdi-database-plus', route: '/admin/add-component' },
               { title: env.listComponents, icon: 'mdi-database', route: '/admin/components' },
             ]
           },
@@ -134,9 +134,9 @@ export default {
             icon: 'mdi-tune',
             active: true,
             items: [
-              { title: env.addUser, icon: 'mdi-account-plus', route: '/admin/add-user' },
+              // { title: env.addUser, icon: 'mdi-account-plus', route: '/admin/add-user' },
               { title: env.listUsers, icon: 'mdi-account-multiple', route: '/admin/users' },
-              { title: env.addComponent, icon: 'mdi-database-plus', route: '/admin/add-component' },
+              // { title: env.addComponent, icon: 'mdi-database-plus', route: '/admin/add-component' },
               { title: env.listComponents, icon: 'mdi-database', route: '/admin/components' },
             ]
           },

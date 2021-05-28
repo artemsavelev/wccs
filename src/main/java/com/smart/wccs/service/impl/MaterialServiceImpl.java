@@ -20,12 +20,14 @@ public class MaterialServiceImpl implements MaterialService {
 
     private final MaterialRepo materialRepo;
     private final UserRepo userRepo;
+    private final SectionGroupRepo sectionGroupRepo;
     private final Utils utils;
 
     @Autowired
-    public MaterialServiceImpl(MaterialRepo materialRepo, UserRepo userRepo, Utils utils) {
+    public MaterialServiceImpl(MaterialRepo materialRepo, UserRepo userRepo, SectionGroupRepo sectionGroupRepo, Utils utils) {
         this.materialRepo = materialRepo;
         this.userRepo = userRepo;
+        this.sectionGroupRepo = sectionGroupRepo;
         this.utils = utils;
     }
 
@@ -59,6 +61,7 @@ public class MaterialServiceImpl implements MaterialService {
         material.setCreatedDate(LocalDateTime.now());
         material.setStatus(Status.ACTIVE);
         material.setDepartments(utils.getDepartmentWithUser());
+        material.setGroup(sectionGroupRepo.findSectionGroupById(material.getGroup().getId()));
         Material createdMaterial = materialRepo.save(material);
         log.info("IN create - material: {} successfully added  for department: {}", createdMaterial, createdMaterial.getDepartments());
 
