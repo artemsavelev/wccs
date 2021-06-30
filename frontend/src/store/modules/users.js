@@ -20,7 +20,7 @@ export default {
     },
     getters: {
         allUsers(state) {
-            return state.users
+            return (state.users || []).sort((a, b) => (a.id - b.id))
         }
     }
 }

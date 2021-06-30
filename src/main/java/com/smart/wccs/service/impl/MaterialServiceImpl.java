@@ -1,12 +1,15 @@
 package com.smart.wccs.service.impl;
 
+import com.smart.wccs.model.Department;
 import com.smart.wccs.model.Material;
+import com.smart.wccs.model.SectionGroup;
 import com.smart.wccs.model.Status;
-import com.smart.wccs.repo.SectionGroupRepo;
 import com.smart.wccs.repo.MaterialRepo;
+import com.smart.wccs.repo.SectionGroupRepo;
 import com.smart.wccs.repo.UserRepo;
 import com.smart.wccs.service.MaterialService;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,12 +38,33 @@ public class MaterialServiceImpl implements MaterialService {
     @Override
     public List<Material> getAllMaterial() {
 
-
         List<Material> materials = materialRepo.findAll()
                 .stream()
                 .filter(o -> o.getDepartments().contains(userRepo.findByUsername(utils.getAuthUserName()).getDepartment()))
                 .collect(Collectors.toList());
         log.info("IN getAllMaterials - {} materials found", materials.size());
+
+        return materials;
+    }
+
+    @Override
+    public List<Material> getAllMaterialForAdmin() {
+        Department department = userRepo.findByUsername(utils.getAuthUserName()).getDepartment();
+
+        List<Material> materials = materialRepo.findAll()
+                .stream()
+                .filter(dep -> {
+                    List<Department> departmentFromDb = dep.getDepartments();
+
+                    if (departmentFromDb.contains(department) || departmentFromDb.size() == 0  || !departmentFromDb.contains(department)) {
+                        departmentFromDb.removeIf(d -> !d.equals(department));
+                        return true;
+                    }
+                    return false;
+                })
+                .collect(Collectors.toList());
+
+        log.info("IN getAllMaterialNoDepartment - {} materials found", materials.size());
         return materials;
     }
 
@@ -60,6 +84,7 @@ public class MaterialServiceImpl implements MaterialService {
 
         material.setCreatedDate(LocalDateTime.now());
         material.setStatus(Status.ACTIVE);
+        material.setAuthor(userRepo.findByUsername(utils.getAuthUserName()).getDepartment());
         material.setDepartments(utils.getDepartmentWithUser());
         material.setGroup(sectionGroupRepo.findSectionGroupById(material.getGroup().getId()));
         Material createdMaterial = materialRepo.save(material);
@@ -74,6 +99,24 @@ public class MaterialServiceImpl implements MaterialService {
         List<Material> createdMaterials = materialRepo.saveAll(materials);
         log.info("IN createAll - materials: {} successfully added", createdMaterials);
         return createdMaterials;
+    }
+
+    @Override
+    public void update(Long id, Material material) {
+        Material materialFromDb = materialRepo.findById(id).orElseThrow(() ->
+                new ObjectNotFoundException(id,
+                        "IN update - material with id: " + id + " not updated. Material not found "));
+        SectionGroup sectionGroupFromDb = sectionGroupRepo.findSectionGroupById(material.getGroup().getId());
+
+        materialFromDb.setGroup(sectionGroupFromDb);
+        materialFromDb.setUpdatedDate(LocalDateTime.now());
+        materialFromDb.setName(material.getName());
+        materialFromDb.setDimension(material.getDimension());
+        materialFromDb.setPrice(material.getPrice());
+        materialFromDb.setNote(material.getNote());
+
+        Material updatedMaterial = materialRepo.save(materialFromDb);
+        log.info("IN update - material: {} successfully updated", updatedMaterial);
     }
 
     @Override

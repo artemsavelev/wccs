@@ -420,7 +420,7 @@ public class ExcelDocument implements FileCreator {
 
     private String getValidFileName(String fileName) {
 
-        String newFileName = fileName.replace("^\\.+", "").replaceAll("[\\\\/:*?\"<>|]", "-");
+        String newFileName = fileName.replace("^\\.+", "").replaceAll("[\\\\/:*%,?\"<>|]", " ");
 
         if(newFileName.length() == 0)
             throw new IllegalStateException("File Name " + fileName + " results in a empty fileName!");

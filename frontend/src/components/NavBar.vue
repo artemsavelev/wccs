@@ -64,11 +64,15 @@
 
       <v-btn v-if="profile" v-on:click="orders" :disabled="$route.path === '/'" text tile>{{ env.keyOrder }}</v-btn>
 
-      <v-icon v-if="profile && $route.path === '/'" @click="showDrawer">{{ iconVisibleDrawer }}</v-icon>
 
-<!--      <v-btn v-if="profile" v-on:click="logout" text tile>-->
-        <v-icon v-if="profile" class="ml-5 mr-5 pa-1" @click="logout">mdi-exit-to-app</v-icon>
-<!--      </v-btn>-->
+
+      <div v-if="profile" class="font-m ml-10">Вы вошли под именем: {{ profile.lastName }} {{ profile.firstName }}</div>
+
+      <v-btn v-if="profile" class="ml-5 mr-5" @click="logout" text tile>
+        <v-icon>mdi-exit-to-app</v-icon>
+      </v-btn>
+
+      <v-icon v-if="profile && $route.path === '/'" @click="showDrawer">{{ iconVisibleDrawer }}</v-icon>
 
     </v-app-bar>
 
@@ -152,7 +156,7 @@ export default {
     return {
       env,
       icon: 'mdi-magnify',
-      iconVisibleDrawer: 'mdi-arrow-expand-horizontal',
+      iconVisibleDrawer: 'mdi-dots-vertical',
       selection: 'addOrder',
       ordersList: [],
       dialog: false,

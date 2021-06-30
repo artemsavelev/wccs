@@ -8,9 +8,13 @@ public interface DeviceService {
 
     List<Device> getAllDevice();
 
+    List<Device> getAllDeviceForAdmin();
+
     Device getById(Long id);
 
     void create(Device device);
+
+    void update(Long id, Device device);
 
     List<Device> createAll(List<Device> devices);
 

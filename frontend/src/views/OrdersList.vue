@@ -258,7 +258,7 @@ export default {
   components: { LazyLoader, OrderItem },
 
 
-  data: () => ({
+  data: () => ( {
 
     ...mapActions(['fetchOrders', 'showSnack']),
 

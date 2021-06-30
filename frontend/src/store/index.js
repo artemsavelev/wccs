@@ -8,6 +8,7 @@ import components from './modules/components'
 import registration from './modules/registration'
 import users from './modules/users'
 import snackbar from './modules/snackbar'
+import group from './modules/group'
 
 Vue.use(Vuex);
 
@@ -21,6 +22,7 @@ export default new Vuex.Store({
     components,
     registration,
     users,
-    snackbar
+    snackbar,
+    group
   }
 })

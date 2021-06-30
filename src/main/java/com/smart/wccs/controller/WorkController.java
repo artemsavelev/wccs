@@ -1,6 +1,7 @@
 package com.smart.wccs.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import com.smart.wccs.model.Device;
 import com.smart.wccs.model.Views;
 import com.smart.wccs.model.Work;
 import com.smart.wccs.service.WorkService;
@@ -26,6 +27,18 @@ public class WorkController {
     @JsonView(Views.UserView.class)
     public ResponseEntity<List<Work>> listWork() {
         List<Work> works = workService.getAllWork();
+
+        if (works.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+
+        return new ResponseEntity<>(works, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/addToSet", method = RequestMethod.GET)
+    @JsonView(Views.AdminView.class)
+    public ResponseEntity<List<Work>> listMaterialForAdmin() {
+        List<Work> works = workService.getAllWorkForAdmin();
 
         if (works.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -63,5 +76,21 @@ public class WorkController {
     public ResponseEntity<List<Work>> saveWorkAll(@RequestBody List<Work> works) {
         List<Work> result =  workService.createAll(works);
         return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "{id}", method = RequestMethod.PUT)
+    @JsonView(Views.UserView.class)
+    public ResponseEntity<Work> updateWork(@PathVariable(name = "id") Long id, @RequestBody Work work) {
+
+        if (work == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        workService.update(id, work);
+
+        Work workFromDb = workService.getById(id);
+
+        return new ResponseEntity<>(workFromDb, HttpStatus.OK);
+
     }
 }

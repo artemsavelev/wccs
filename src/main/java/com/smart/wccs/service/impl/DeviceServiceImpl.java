@@ -1,12 +1,12 @@
 package com.smart.wccs.service.impl;
 
-import com.smart.wccs.model.Device;
-import com.smart.wccs.model.Status;
+import com.smart.wccs.model.*;
 import com.smart.wccs.repo.DeviceRepo;
 import com.smart.wccs.repo.SectionGroupRepo;
 import com.smart.wccs.repo.UserRepo;
 import com.smart.wccs.service.DeviceService;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,14 +33,34 @@ public class DeviceServiceImpl implements DeviceService {
 
     @Override
     public List<Device> getAllDevice() {
-//        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-//        String name = auth.getName();
 
         List<Device> devices = deviceRepo.findAll()
                 .stream()
                 .filter(o -> o.getDepartments().contains(userRepo.findByUsername(utils.getAuthUserName()).getDepartment()))
                 .collect(Collectors.toList());
         log.info("IN getAllDevices - {} devices found", devices.size());
+        return devices;
+    }
+
+    @Override
+    public List<Device> getAllDeviceForAdmin() {
+        Department department = userRepo.findByUsername(utils.getAuthUserName()).getDepartment();
+
+        List<Device> devices = deviceRepo.findAll()
+                .stream()
+                .filter(dep -> {
+                    List<Department> departmentFromDb = dep.getDepartments();
+
+                    if (departmentFromDb.contains(department) || departmentFromDb.size() == 0  || !departmentFromDb.contains(department)) {
+                        departmentFromDb.removeIf(d -> !d.equals(department));
+                        return true;
+                    }
+                    return false;
+                })
+                .collect(Collectors.toList());
+
+        log.info("IN getAllDevisesForAdmin - {} devises found", devices.size());
+
         return devices;
     }
 
@@ -57,15 +77,10 @@ public class DeviceServiceImpl implements DeviceService {
 
     @Override
     public void create(Device device) {
-//        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-//        String name = auth.getName();
-//
-//        Department department = departmentRepo.findDepartmentById(userRepo.findByUsername(name).getDepartment().getId());
-//        List<Department> devicesDepartments = new ArrayList<>();
-//        devicesDepartments.add(department);
 
         device.setCreatedDate(LocalDateTime.now());
         device.setStatus(Status.ACTIVE);
+        device.setAuthor(userRepo.findByUsername(utils.getAuthUserName()).getDepartment());
         device.setDepartments(utils.getDepartmentWithUser());
         device.setGroup(sectionGroupRepo.findSectionGroupById(device.getGroup().getId()));
         Device createdDevice = deviceRepo.save(device);
@@ -79,6 +94,24 @@ public class DeviceServiceImpl implements DeviceService {
         List<Device> createdDevices = deviceRepo.saveAll(devices);
         log.info("IN createAll - device: {} successfully added", createdDevices);
         return createdDevices;
+    }
+
+    @Override
+    public void update(Long id, Device device) {
+        Device deviceFromDb = deviceRepo.findById(id).orElseThrow(() ->
+                new ObjectNotFoundException(id,
+                        "IN update - device with id: " + id + " not updated. Device not found "));
+        SectionGroup sectionGroupFromDb = sectionGroupRepo.findSectionGroupById(device.getGroup().getId());
+
+        deviceFromDb.setGroup(sectionGroupFromDb);
+        deviceFromDb.setUpdatedDate(LocalDateTime.now());
+        deviceFromDb.setName(device.getName());
+        deviceFromDb.setDimension(device.getDimension());
+        deviceFromDb.setPrice(device.getPrice());
+        deviceFromDb.setNote(device.getNote());
+
+        Device updatedDevice = deviceRepo.save(deviceFromDb);
+        log.info("IN update - device: {} successfully updated", updatedDevice);
     }
 
     @Override

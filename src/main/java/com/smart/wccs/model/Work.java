@@ -41,4 +41,9 @@ public class Work extends BaseEntity implements Components {
     @JoinColumn(name = "section_group_id")
     @JsonView({Views.UserView.class, Views.AdminView.class})
     private SectionGroup group;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "author_id")
+    @JsonView({Views.UserView.class, Views.AdminView.class})
+    private Department author;
 }

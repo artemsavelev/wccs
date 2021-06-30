@@ -9,9 +9,9 @@
 
 
 
-      <div style="position: fixed; width: 60%; height: 5em; background-color: white; z-index: 1;">
+      <div style="position: fixed; width: 100%; height: 5em; background-color: white; z-index: 1;">
         <v-row class="ml-1">
-          <v-col cols="12" sm="6" md="5">
+          <v-col cols="12" sm="6" md="2">
             <v-autocomplete
                 :items="items"
                 item-text="key"
@@ -25,7 +25,7 @@
             ></v-autocomplete>
           </v-col>
 
-          <v-col cols="12" sm="6" md="5">
+          <v-col cols="12" sm="6" md="3">
             <v-text-field dense
                           :disabled="!select"
                           class="rounded-0 mt-4"
@@ -42,8 +42,8 @@
 
         <div v-if="this.select === this.env.sectionDevice" class="width-container">
 
-          <div class="mb-10 ml-1 mr-3" v-for="(group, i) of Object.values(groupBy)"
-               :key="group.id"> <span class="font-weight-light font-xl"> {{ Object.keys(groupBy)[i] }} </span>
+          <div class="mb-10 ml-1 mr-3" v-for="(group, i) of Object.values(groupBy)" :key="group.id">
+            <span class="font-weight-light font-xl"> {{ Object.keys(groupBy)[i] }} </span>
 
             <div v-for="item in group"
                  :key="item.id" class="section-row-container">
@@ -61,16 +61,24 @@
               </div>
 
               <div class="col-action-section">
-                <v-checkbox
-                    class="ml-0 mr-0 mb-0 mt-0 pa-0"
-                    color="success"
-                    value="success"
-                    hide-details
-                    dense></v-checkbox>
 
-<!--                <v-btn icon v-on:click="add" class="content">-->
-<!--                  <v-icon color="iconLight">mdi-plus</v-icon>-->
-<!--                </v-btn>-->
+                <v-btn v-if="item.author.id === key.department.id" icon class="ma-1 pa-0" @click="editComponent(item)">
+                  <v-icon color="iconLight">mdi-pencil</v-icon>
+                </v-btn>
+                <v-btn  v-if="item.author.id === key.department.id" icon class="ma-1 pa-0" @click="deleteComponent(item)">
+                  <v-icon color="iconLight">mdi-delete</v-icon>
+                </v-btn>
+
+
+                <div v-if="!item.departments.length">
+                  <v-btn v-on:click="del(item)" class="ma-1 rounded-0" color="red" width="110" outlined>Добавить</v-btn>
+                </div>
+
+                <div v-for="dep of item.departments" :key="dep.id">
+                  <div v-if="dep.name === key.department.name">
+                    <v-btn v-on:click="add(item)" class="ma-1 rounded-0" color="green" width="110" outlined>Убрать</v-btn>
+                  </div>
+                </div>
               </div>
             </div>
 
@@ -82,8 +90,8 @@
 
         <div v-if="this.select === this.env.sectionMaterial" class="width-container">
 
-          <div class="mb-10 ml-1 mr-3" v-for="(group, i) of Object.values(groupBy)"
-               :key="group.id"> <span class="font-weight-light font-xl"> {{ Object.keys(groupBy)[i] }} </span>
+          <div class="mb-10 ml-1 mr-3" v-for="(group, i) of Object.values(groupBy)" :key="group.id">
+            <span class="font-weight-light font-xl"> {{ Object.keys(groupBy)[i] }} </span>
 
             <div v-for="item in group"
                  :key="item.id" class="section-row-container">
@@ -102,18 +110,27 @@
 
               <div class="col-action-section">
 
-                <v-checkbox
-                    class="ml-0 mr-0 mb-0 mt-0 pa-0"
-                    color="success"
-                    value="success"
-                    hint="Добавить к себе в набор"
-                    hide-details
-                    dense></v-checkbox>
+                <v-btn  v-if="item.author.id === key.department.id" icon class="ma-1 pa-0" @click="editComponent(item)">
+                  <v-icon color="iconLight">mdi-pencil</v-icon>
+                </v-btn>
 
-                <!--                <v-btn icon v-on:click="add" >-->
-                <!--                  <v-icon color="iconLight">mdi-pencil</v-icon>-->
-                <!--                </v-btn>-->
+                <v-btn  v-if="item.author.id === key.department.id" icon class="ma-1 pa-0" @click="deleteComponent(item)">
+                  <v-icon color="iconLight">mdi-delete</v-icon>
+                </v-btn>
+
+                <div v-if="!item.departments.length">
+                  <v-btn v-on:click="del(item)" class="ma-1 rounded-0" color="red" width="110" outlined>Добавить</v-btn>
+                </div>
+
+                <div v-for="dep of item.departments" :key="dep.id">
+                  <div v-if="dep.name === key.department.name">
+                    <v-btn v-on:click="add(item)" class="ma-1 rounded-0" color="green" width="110" outlined>Убрать</v-btn>
+                  </div>
+                </div>
+
+
               </div>
+
             </div>
 
           </div>
@@ -123,8 +140,8 @@
 
         <div v-if="this.select === this.env.sectionWork" class="width-container">
 
-          <div class="mb-10 ml-1 mr-3" v-for="(group, i) of Object.values(groupBy)"
-               :key="group.id"> <span class="font-weight-light font-xl"> {{ Object.keys(groupBy)[i] }} </span>
+          <div class="mb-10 ml-1 mr-3" v-for="(group, i) of Object.values(groupBy)" :key="group.id">
+            <span class="font-weight-light font-xl"> {{ Object.keys(groupBy)[i] }} </span>
 
             <div v-for="item in group"
                  :key="item.id" class="section-row-container">
@@ -143,16 +160,23 @@
 
               <div class="col-action-section">
 
-                <v-checkbox
-                    class="ml-0 mr-0 mb-0 mt-0 pa-0"
-                    color="success"
-                    value="success"
-                    hide-details
-                    dense></v-checkbox>
+                <v-btn v-if="item.author.id === key.department.id" icon class="ma-1 pa-0" @click="editComponent(item)">
+                  <v-icon color="iconLight">mdi-pencil</v-icon>
+                </v-btn>
+                <v-btn  v-if="item.author.id === key.department.id" icon class="ma-1 pa-0" @click="deleteComponent(item)">
+                  <v-icon color="iconLight">mdi-delete</v-icon>
+                </v-btn>
 
-<!--                <v-btn icon v-on:click="add(item)" class="ma-0 pa-0">-->
-<!--                  <v-icon color="iconLight">mdi-plus</v-icon>-->
-<!--                </v-btn>-->
+
+                <div v-if="!item.departments.length">
+                  <v-btn v-on:click="del(item)" class="ma-1 rounded-0" color="red" width="110" outlined>Добавить</v-btn>
+                </div>
+
+                <div v-for="dep of item.departments" :key="dep.id">
+                  <div v-if="dep.name === key.department.name">
+                    <v-btn v-on:click="add(item)" class="ma-1 rounded-0" color="green" width="110" outlined>Убрать</v-btn>
+                  </div>
+                </div>
               </div>
             </div>
 
@@ -185,7 +209,8 @@
 
     <v-navigation-drawer width="400" v-model="drawerRight" app clipped right>
 
-      <AddComponent :selectedItem="this.select"/>
+      <AddComponent :selectedItem="this.select"
+                    :edit-component="obj"/>
 
     </v-navigation-drawer>
 
@@ -200,6 +225,8 @@ import { mapActions, mapGetters, mapMutations } from 'vuex'
 import env from '../../env.config.json'
 import AddComponent from "@/components/AddComponent"
 // import {bus} from '@/utils/bus'
+
+
 
 export default {
   name: 'ListComponents',
@@ -242,11 +269,17 @@ export default {
     visiblePages() {
 
       if (this.select === this.env.sectionDevice) {
+
         return this.allDevices
+
       } else if (this.select === this.env.sectionMaterial) {
+
         return this.allMaterials
+
       } else if (this.select === this.env.sectionWork) {
+
         return this.allWorks
+
       }
 
 
@@ -261,6 +294,7 @@ export default {
       return null
 
     },
+
 
     length() {
 
@@ -278,11 +312,11 @@ export default {
 
   mounted() {
 
-    this.fetchDevices()
+    this.fetchDevicesForAdmin()
 
-    this.fetchMaterials()
+    this.fetchMaterialsForAdmin()
 
-    this.fetchWorks()
+    this.fetchWorksForAdmin()
 
 
   },
@@ -293,10 +327,12 @@ export default {
 
   data() {
     return {
-      ...mapActions(['fetchDevices', 'fetchMaterials', 'fetchWorks']),
+      ...mapActions(['fetchDevicesForAdmin', 'fetchMaterialsForAdmin', 'fetchWorksForAdmin']),
+      obj: {},
 
       env,
       drawerRight: true,
+      key: JSON.parse(localStorage.getItem('user')),
       val: false,
       page: 1,
       perPage: 18,
@@ -314,10 +350,25 @@ export default {
       ],
     }
   },
+
   methods: {
-    add() {
-      // console.log(item.id)
+    add(item) {
+      console.log(item.id)
     },
+
+    editComponent(item) {
+      this.obj = item
+    },
+
+    deleteComponent(item) {
+      console.log(item.id)
+    },
+
+
+
+    del(item) {
+      console.log(item.id)
+    }
 
     // changeItem() {
     //   // bus.$emit('selected-item', this.select)
@@ -341,8 +392,10 @@ export default {
 }
 
 .col-action-section {
+  display: flex;
 
-  z-index: 0;
+
+  /*z-index: 0;*/
   flex-basis: 5%;
 }
 

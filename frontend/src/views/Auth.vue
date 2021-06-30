@@ -3,6 +3,7 @@
     <div>
 
         <v-text-field :label="env.login"
+                      @keypress.enter="auth"
                       :rules="rules"
                       :hint="env.rules[1]"
                       hide-details="auto"
@@ -11,6 +12,7 @@
                       counter></v-text-field>
 
         <v-text-field :label="env.password"
+                      @keypress.enter="auth"
                       :rules="rules"
                       :hint="env.rules[1]"
                       :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
@@ -31,7 +33,6 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
-// import messages from '../utils/messages'
 import env from '../../env.config.json'
 
 export default {
@@ -84,7 +85,9 @@ export default {
         this.showSnack(dataError)
 
       }
-    }
+    },
+
+
   }
 }
 </script>

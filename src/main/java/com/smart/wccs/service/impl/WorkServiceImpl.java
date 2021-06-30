@@ -1,12 +1,12 @@
 package com.smart.wccs.service.impl;
 
-import com.smart.wccs.model.Status;
-import com.smart.wccs.model.Work;
+import com.smart.wccs.model.*;
 import com.smart.wccs.repo.SectionGroupRepo;
 import com.smart.wccs.repo.UserRepo;
 import com.smart.wccs.repo.WorkRepo;
 import com.smart.wccs.service.WorkService;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,15 +33,33 @@ public class WorkServiceImpl implements WorkService {
 
     @Override
     public List<Work> getAllWork() {
-//        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-//        String name = auth.getName();
-
 
         List<Work> works = workRepo.findAll()
                 .stream()
                 .filter(o -> o.getDepartments().contains(userRepo.findByUsername(utils.getAuthUserName()).getDepartment()))
                 .collect(Collectors.toList());
         log.info("IN getAllWorks - {} works found", works.size());
+        return works;
+    }
+
+    @Override
+    public List<Work> getAllWorkForAdmin() {
+        Department department = userRepo.findByUsername(utils.getAuthUserName()).getDepartment();
+
+        List<Work> works = workRepo.findAll()
+                .stream()
+                .filter(dep -> {
+                    List<Department> departmentFromDb = dep.getDepartments();
+
+                    if (departmentFromDb.contains(department) || departmentFromDb.size() == 0  || !departmentFromDb.contains(department)) {
+                        departmentFromDb.removeIf(d -> !d.equals(department));
+                        return true;
+                    }
+                    return false;
+                })
+                .collect(Collectors.toList());
+
+        log.info("IN getAllWorksForAdmin - {} works found", works.size());
         return works;
     }
 
@@ -59,16 +77,9 @@ public class WorkServiceImpl implements WorkService {
     @Override
     public void create(Work work) {
 
-//        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-//        String name = auth.getName();
-//
-//        Department department = departmentRepo.findDepartmentById(userRepo.findByUsername(name).getDepartment().getId());
-//        List<Department> workDepartments = new ArrayList<>();
-//        workDepartments.add(department);
-
-
         work.setCreatedDate(LocalDateTime.now());
         work.setStatus(Status.ACTIVE);
+        work.setAuthor(userRepo.findByUsername(utils.getAuthUserName()).getDepartment());
         work.setDepartments(utils.getDepartmentWithUser());
         work.setGroup(sectionGroupRepo.findSectionGroupById(work.getGroup().getId()));
         Work createdWork = workRepo.save(work);
@@ -83,6 +94,24 @@ public class WorkServiceImpl implements WorkService {
         List<Work> createdWorks = workRepo.saveAll(works);
         log.info("IN createAll - works: {} successfully added", createdWorks);
         return createdWorks;
+    }
+
+    @Override
+    public void update(Long id, Work work) {
+        Work workFromDb = workRepo.findById(id).orElseThrow(() ->
+                new ObjectNotFoundException(id,
+                        "IN update - work with id: " + id + " not updated. Device not found "));
+        SectionGroup sectionGroupFromDb = sectionGroupRepo.findSectionGroupById(work.getGroup().getId());
+
+        workFromDb.setGroup(sectionGroupFromDb);
+        workFromDb.setUpdatedDate(LocalDateTime.now());
+        workFromDb.setName(work.getName());
+        workFromDb.setDimension(work.getDimension());
+        workFromDb.setPrice(work.getPrice());
+        workFromDb.setNote(work.getNote());
+
+        Work updatedWork = workRepo.save(workFromDb);
+        log.info("IN update - work: {} successfully updated", updatedWork);
     }
 
     @Override

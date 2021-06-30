@@ -8,9 +8,13 @@ public interface WorkService {
 
     List<Work> getAllWork();
 
+    List<Work> getAllWorkForAdmin();
+
     Work getById(Long id);
 
     void create(Work work);
+
+    void update(Long id, Work work);
 
     List<Work> createAll(List<Work> works);
 

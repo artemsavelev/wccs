@@ -67,6 +67,7 @@ export default {
     actions: {
         async fetchOrders({commit}) {
             try{
+
                 const data = await req.request(api.API_ORDER_URL)
 
                 commit('fetchOrderPageMutation', data.orders)

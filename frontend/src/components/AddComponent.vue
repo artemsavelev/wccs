@@ -4,8 +4,10 @@
       <div class="ml-0 mb-15 mt-3 font-s">
 
         <div class="font-weight-bold ml-3">
-          {{ env.addComponent }}
+          {{ formTitle }}
         </div>
+
+
         <div class="font-weight-thin ml-3">
           {{ env.fields }}
         </div>
@@ -33,7 +35,7 @@
             <v-autocomplete
                 class="rounded-0"
                 :disabled="!selectedItem"
-                :items="group"
+                :items="allGroups"
                 item-text="name"
                 item-value="id"
                 v-model="group.id"
@@ -134,20 +136,32 @@ import env from '../../env.config.json'
 
 export default {
   name: 'AddComponent',
-  props: ['selectedItem'],
+  props: ['selectedItem', 'editComponent'],
   computed: {
-    ...mapGetters(['profile']),
+    ...mapGetters(['profile', 'allGroups']),
+    formTitle() {
+      return this.editedIndex === -1 ? env.addComponent : env.editComponent + ' # ' + this.id
+    },
+  },
+
+  mounted() {
+
+    // fetch section group from backend
+    this.fetchGroup();
 
   },
 
   data() {
     return {
+      ...mapActions(['fetchGroup']),
       env,
       valid: true,
       show: false,
       colorSave: 'primary',
       colorClear: 'primary',
+      editedIndex: -1,
 
+      id: '',
       select: '',
       name: '',
       dimension: '',
@@ -166,15 +180,32 @@ export default {
 
       rules: [
         value => !!value || env.rules[0],
-        value => (value && value.length >= 3) || env.rules[1],
+        value => (value && value.length >= 2) || env.rules[1],
       ],
 
       rulesPrice: [
         value => !!value || env.rules[0],
-        value => (value && value.length >= 3) || env.rules[1],
+        value => (value && value.length >= 2) || env.rules[1],
       ],
 
     }
+  },
+
+  watch: {
+    editComponent(newVal) {
+      this.editedIndex = 1
+      this.id = newVal.id
+      this.group.id = newVal.group.id
+      this.name = newVal.name
+      this.dimension = newVal.dimension
+      this.price = newVal.price
+      this.comment = newVal.comment
+
+      console.log(newVal.group.id)
+
+
+    }
+
   },
 
   updated() {
@@ -196,17 +227,27 @@ export default {
 
   methods: {
 
-    ...mapActions(['addDevice', 'addMaterial', 'addWork', 'showSnack']),
+    ...mapActions([
+      'addDevice',
+      'addMaterial',
+      'addWork',
+      'showSnack',
+      'updateDevice',
+      'updateMaterial',
+      'updateWork'
+    ]),
 
     saveComponent() {
 
       const component = {
+        id: this.id,
         name: this.name,
         dimension: this.dimension,
         price: this.price,
         note: this.comment,
         group: {
-          id: this.group.id
+          id: this.group.id,
+          name: this.group.name
         }
       }
 
@@ -215,13 +256,33 @@ export default {
 
 
         if (this.select === this.env.sectionDevice) {
-          this.addDevice(component)
+
+          if (this.id) {
+            this.updateDevice(component)
+          } else {
+            this.addDevice(component)
+          }
+
         } else if (this.select === this.env.sectionMaterial) {
-          this.addMaterial(component)
+
+          if (this.id) {
+            this.updateMaterial(component)
+          } else {
+            this.addMaterial(component)
+          }
+
         } else {
-          this.addWork(component)
+
+          if (this.id) {
+            this.updateWork(component)
+          } else {
+            this.addWork(component)
+          }
+
         }
 
+
+        this.editedIndex = -1
         this.colorSave = 'primary'
         this.colorClear = 'primary'
         this.$refs.form.resetValidation()
@@ -250,6 +311,7 @@ export default {
     },
 
     clear() {
+      this.editedIndex = -1
       this.colorSave = 'primary'
       this.colorClear = 'primary'
       this.$refs.form.resetValidation()

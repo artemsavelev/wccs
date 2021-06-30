@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import store from '@/store'
+// import store from '@/store'
 
 
 Vue.use(VueRouter);
@@ -35,24 +35,24 @@ const routes = [
     meta: { auth: true },
     component: () => import('@/views/Settings.vue')
   },
-  {
-    path: '/admin/add-user',
-    name: 'AddUser',
-    meta: { auth: true },
-    component: () => import('@/components/AddUser.vue')
-  },
+  // {
+  //   path: '/admin/add-user',
+  //   name: 'AddUser',
+  //   meta: { auth: true },
+  //   component: () => import('@/components/AddUser.vue')
+  // },
   {
     path: '/admin/users',
     name: 'Users',
     meta: { auth: true },
     component: () => import('@/components/Users.vue')
   },
-  {
-    path: '/admin/add-component',
-    name: 'AddComponent',
-    meta: { auth: true },
-    component: () => import('@/components/AddComponent.vue')
-  },
+  // {
+  //   path: '/admin/add-component',
+  //   name: 'AddComponent',
+  //   meta: { auth: true },
+  //   component: () => import('@/components/AddComponent.vue')
+  // },
   {
     path: '/admin/components',
     name: 'ListComponents',
@@ -70,24 +70,24 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
 
-  const requireAuth = to.matched.some(record => record.meta.auth)
+  // const requireAuth = to.matched.some(record => record.meta.auth)
+  //
+  // if (requireAuth && !store.getters.profile) {
+  //   next('/login')
+  // } else {
+  //   next()
+  // }
 
-  if (requireAuth && !store.getters.profile) {
-    next('/login')
-  } else {
-    next()
+
+  const publicPages = ['/login'];
+  const authRequired = !publicPages.includes(to.path);
+  const loggedIn = localStorage.getItem('user');
+
+  if (authRequired && !loggedIn) {
+    return next('/login');
   }
 
-
-  // const publicPages = ['/login', '/register'];
-  // const authRequired = !publicPages.includes(to.path);
-  // const loggedIn = localStorage.getItem('user');
-  //
-  // if (authRequired && !loggedIn) {
-  //   return next('/login');
-  // }
-  //
-  // next();
+  next();
 
 
 

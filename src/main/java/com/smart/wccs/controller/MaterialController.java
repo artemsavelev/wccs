@@ -34,6 +34,18 @@ public class MaterialController {
         return new ResponseEntity<>(materials, HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/addToSet", method = RequestMethod.GET)
+    @JsonView(Views.AdminView.class)
+    public ResponseEntity<List<Material>> listMaterialForAdmin() {
+        List<Material> materials = materialService.getAllMaterialForAdmin();
+
+        if (materials.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+
+        return new ResponseEntity<>(materials, HttpStatus.OK);
+    }
+
     @GetMapping(value = "{id}")
     @JsonView(Views.UserView.class)
     public ResponseEntity<Material> getMaterial(@PathVariable(name = "id") Long id) {
@@ -64,5 +76,21 @@ public class MaterialController {
     public ResponseEntity<List<Material>> saveMaterialAll(@RequestBody List<Material> materials) {
         List<Material> result = materialService.createAll(materials);
         return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "{id}", method = RequestMethod.PUT)
+    @JsonView(Views.UserView.class)
+    public ResponseEntity<Material> updateMaterial(@PathVariable(name = "id") Long id, @RequestBody Material material) {
+
+        if (material == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        materialService.update(id, material);
+
+        Material materialFromDb = materialService.getById(id);
+
+        return new ResponseEntity<>(materialFromDb, HttpStatus.OK);
+
     }
 }

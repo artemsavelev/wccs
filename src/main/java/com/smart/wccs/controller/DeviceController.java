@@ -34,6 +34,18 @@ public class DeviceController {
         return new ResponseEntity<>(devices, HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/addToSet", method = RequestMethod.GET)
+    @JsonView(Views.AdminView.class)
+    public ResponseEntity<List<Device>> listMaterialForAdmin() {
+        List<Device> devices = deviceService.getAllDeviceForAdmin();
+
+        if (devices.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+
+        return new ResponseEntity<>(devices, HttpStatus.OK);
+    }
+
     @GetMapping(value = "{id}")
     @JsonView(Views.UserView.class)
     public ResponseEntity<Device> getDevice(@PathVariable(name = "id") Long id) {
@@ -42,8 +54,6 @@ public class DeviceController {
         if (device == null) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-
-//        DeviceDto result = DeviceDto.fromDevice(device);
 
         return new ResponseEntity<>(device, HttpStatus.OK);
     }
@@ -65,6 +75,22 @@ public class DeviceController {
     public ResponseEntity<List<Device>> saveDeviceAll(@RequestBody List<Device> devices) {
         List<Device> result = deviceService.createAll(devices);
         return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "{id}", method = RequestMethod.PUT)
+    @JsonView(Views.UserView.class)
+    public ResponseEntity<Device> updateDevice(@PathVariable(name = "id") Long id, @RequestBody Device device) {
+
+        if (device == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        deviceService.update(id, device);
+
+        Device deviceFromDb = deviceService.getById(id);
+
+        return new ResponseEntity<>(deviceFromDb, HttpStatus.OK);
+
     }
 
 }
