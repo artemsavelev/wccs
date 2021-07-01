@@ -285,3 +285,5 @@ UPDATE public.work SET author_id = 1 WHERE id = 25;
 UPDATE public.work SET author_id = 1 WHERE id = 26;
 UPDATE public.work SET author_id = 1 WHERE id = 27;
 UPDATE public.work SET author_id = 1 WHERE id = 28;
+UPDATE public.work SET author_id = 1 WHERE id = 29;
+UPDATE public.work SET author_id = 1 WHERE id = 30;
