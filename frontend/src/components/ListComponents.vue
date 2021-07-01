@@ -65,7 +65,13 @@
                 <v-btn v-if="item.author.id === key.department.id" icon class="ma-1 pa-0" @click="editComponent(item)">
                   <v-icon color="iconLight">mdi-pencil</v-icon>
                 </v-btn>
+                <v-btn v-else icon class="ma-1 pa-0" @click="editComponent(item)" disabled>
+                  <v-icon color="iconLight">mdi-pencil</v-icon>
+                </v-btn>
                 <v-btn  v-if="item.author.id === key.department.id" icon class="ma-1 pa-0" @click="deleteComponent(item)">
+                  <v-icon color="iconLight">mdi-delete</v-icon>
+                </v-btn>
+                <v-btn  v-else icon class="ma-1 pa-0" @click="deleteComponent(item)" disabled>
                   <v-icon color="iconLight">mdi-delete</v-icon>
                 </v-btn>
 
@@ -110,11 +116,16 @@
 
               <div class="col-action-section">
 
-                <v-btn  v-if="item.author.id === key.department.id" icon class="ma-1 pa-0" @click="editComponent(item)">
+                <v-btn v-if="item.author.id === key.department.id" icon class="ma-1 pa-0" @click="editComponent(item)">
                   <v-icon color="iconLight">mdi-pencil</v-icon>
                 </v-btn>
-
+                <v-btn v-else icon class="ma-1 pa-0" @click="editComponent(item)" disabled>
+                  <v-icon color="iconLight">mdi-pencil</v-icon>
+                </v-btn>
                 <v-btn  v-if="item.author.id === key.department.id" icon class="ma-1 pa-0" @click="deleteComponent(item)">
+                  <v-icon color="iconLight">mdi-delete</v-icon>
+                </v-btn>
+                <v-btn  v-else icon class="ma-1 pa-0" @click="deleteComponent(item)" disabled>
                   <v-icon color="iconLight">mdi-delete</v-icon>
                 </v-btn>
 
@@ -163,7 +174,13 @@
                 <v-btn v-if="item.author.id === key.department.id" icon class="ma-1 pa-0" @click="editComponent(item)">
                   <v-icon color="iconLight">mdi-pencil</v-icon>
                 </v-btn>
+                <v-btn v-else icon class="ma-1 pa-0" @click="editComponent(item)" disabled>
+                  <v-icon color="iconLight">mdi-pencil</v-icon>
+                </v-btn>
                 <v-btn  v-if="item.author.id === key.department.id" icon class="ma-1 pa-0" @click="deleteComponent(item)">
+                  <v-icon color="iconLight">mdi-delete</v-icon>
+                </v-btn>
+                <v-btn  v-else icon class="ma-1 pa-0" @click="deleteComponent(item)" disabled>
                   <v-icon color="iconLight">mdi-delete</v-icon>
                 </v-btn>
 
