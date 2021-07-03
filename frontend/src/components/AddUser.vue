@@ -82,7 +82,7 @@
               counter/>
         </v-col>
 
-        <v-btn v-on:click="saveUser" color="primary" class="ml-3" tile>{{ env.keySave }}</v-btn>
+        <v-btn v-on:click="saveUser" color="primary" class="ml-3" tile height="35" small outlined>{{ env.keySave }}</v-btn>
       </v-form>
 
     </div>

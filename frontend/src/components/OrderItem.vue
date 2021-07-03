@@ -3,10 +3,6 @@
 
   <div class="order-row">
 
-
-
-
-
       <div class="order-row-container ml-3">
         <div class="order-cols col-id pa-0">
           # {{ order.id }}
@@ -59,7 +55,7 @@
         </div>
 
         <div class="order-cols col-action-order">
-          <v-btn icon v-on:click="edit">
+          <v-btn icon v-on:click="edit" class="my-1" tile>
             <v-icon dark>mdi-pencil</v-icon>
           </v-btn>
 
@@ -67,7 +63,7 @@
                     v-bind:customer="order.customer"
                     v-bind:address="order.address"/>
 
-          <v-btn icon v-on:click="del">
+          <v-btn icon v-on:click="del" class="my-1 mr-1" tile>
             <v-icon dark>mdi-delete</v-icon>
           </v-btn>
         </div>
@@ -197,7 +193,7 @@ export default {
 
 .col-action-order {
   text-align: right;
-  flex-basis: 15%;
+  flex-basis: 16%;
 }
 
 .text-red {

@@ -35,7 +35,7 @@ public class OrderController {
 
         Page<Order> orders = orderService.getAllOrders(pageable);
         if (orders.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(new OrderPageDto(orders.getContent(), pageable.getPageNumber(), orders.getTotalPages()), HttpStatus.OK);
     }

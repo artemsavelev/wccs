@@ -1,8 +1,10 @@
 #!/usr/bin/env bash
 
-#./gradlew clean
+./gradlew clean
 
-#./gradlew build
+./gradlew build
+
+yarn build
 
 echo 'Copy files...'
 
@@ -19,5 +21,4 @@ pgrep java | xargs kill -9
 nohup java -jar wccs/wccs-0.0.2-SNAPSHOT.jar > wccs/log.txt &
 EOF
 
-
-echo 'Bye'
+echo -e 'Bye \n'

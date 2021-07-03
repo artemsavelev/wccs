@@ -2,7 +2,7 @@
   <v-dialog v-model="dialog" width="80%" scrollable persistent>
 
     <template v-slot:activator="{ on }" class="mt-1">
-      <v-btn v-on="on" @click="open" small class="mb-10 mt-1" color="primary" tile>{{ env.keyAdd }}</v-btn>
+      <v-btn v-on="on" @click="open" class="mb-10 mt-1" color="primary" height="35" tile small outlined>{{ env.keyAdd }}</v-btn>
     </template>
     <v-card style="height: 90vh" class="rounded-0">
 

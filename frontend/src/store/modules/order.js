@@ -8,25 +8,16 @@ export default {
     },
     mutations: {
         updateOrderMutation(state, order) {
-
             const updateIndex = state.orders.findIndex(item => item.id === order.id)
-
-            // if (updateIndex > -1) {
                 state.orders = [
                     ...state.orders.slice(0, updateIndex),
                     order,
                     ...state.orders.slice(updateIndex + 1)
                 ]
-            // } else {
-            //     state.orders = order
-            // }
-
         },
 
         removeOrderMutation(state, order) {
-
             console.log(order.id)
-
 
             const deletionIndex = state.orders.findIndex(item => item.id === order.id)
             console.log(deletionIndex)
@@ -76,13 +67,14 @@ export default {
 
             } catch (e) {
 
-                const dataError = {
-                    message: 'Error "' + e.message + '"',
-                    color: 'error',
-                    icon: 'mdi-alert-circle'
-                }
 
-                await store.dispatch('showSnack', dataError)
+                // const dataError = {
+                //     message: 'Error "' + e.message + '"',
+                //     color: 'error',
+                //     icon: 'mdi-alert-circle'
+                // }
+                //
+                // await store.dispatch('showSnack', dataError)
             }
 
         },

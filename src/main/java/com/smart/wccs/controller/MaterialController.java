@@ -17,27 +17,17 @@ public class MaterialController {
 
     private final MaterialService materialService;
 
+
     @Autowired
     public MaterialController(MaterialService materialService) {
         this.materialService = materialService;
+
     }
 
     @GetMapping
     @JsonView(Views.UserView.class)
     public ResponseEntity<List<Material>> listMaterial() {
         List<Material> materials = materialService.getAllMaterial();
-
-        if (materials.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-
-        return new ResponseEntity<>(materials, HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "/addToSet", method = RequestMethod.GET)
-    @JsonView(Views.AdminView.class)
-    public ResponseEntity<List<Material>> listMaterialForAdmin() {
-        List<Material> materials = materialService.getAllMaterialForAdmin();
 
         if (materials.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);

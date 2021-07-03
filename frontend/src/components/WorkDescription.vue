@@ -17,7 +17,7 @@
                   name="input-2"
                   :label="env.note"
                   v-model="visibleComment"></v-textarea>
-      <v-btn class="" v-on:click="add" small color="primary" tile>{{ env.keyAdd }}</v-btn>
+      <v-btn class="" v-on:click="add" color="primary" height="35" tile small outlined>{{ env.keyAdd }}</v-btn>
     </v-col>
   </v-row>
 </div>

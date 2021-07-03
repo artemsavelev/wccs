@@ -219,10 +219,10 @@
             <v-card-actions class="pa-0">
               <v-row>
                 <v-col cols="12" sm="6" md="6">
-                  <v-btn v-on:click="save" :color="colorSave" class="mt-5" tile>{{ env.keySave }}</v-btn>
+                  <v-btn v-on:click="save" :color="colorSave" class="mt-5" height="35" tile small outlined>{{ env.keySave }}</v-btn>
                 </v-col>
                 <v-col cols="12" sm="6" md="6" class="d-flex justify-md-end">
-                  <v-btn v-on:click="clear" :color="colorClear" class="mt-5" tile>{{ env.keyClear }}</v-btn>
+                  <v-btn v-on:click="clear" :color="colorClear" class="mt-5" height="35" tile small outlined>{{ env.keyClear }}</v-btn>
                 </v-col>
               </v-row>
             </v-card-actions>

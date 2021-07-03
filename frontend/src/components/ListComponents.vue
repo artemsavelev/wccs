@@ -25,7 +25,7 @@
             ></v-autocomplete>
           </v-col>
 
-          <v-col cols="12" sm="6" md="3">
+          <v-col cols="12" sm="6" md="2">
             <v-text-field dense
                           :disabled="!select"
                           class="rounded-0 mt-4"
@@ -33,6 +33,14 @@
                           outlined
                           clearable
                           v-model="search"/>
+          </v-col>
+          <v-col cols="12" sm="6" md="3">
+            <v-btn class="mt-4 rounded-0"
+                   height="40"
+                   :disabled="!select"
+                   @click="newItem()"
+                   small
+                   outlined>{{ env.title[0] }}</v-btn>
           </v-col>
         </v-row>
       </div>
@@ -62,34 +70,40 @@
 
               <div class="col-action-section">
 
-                <v-btn v-if="item.author.id === key.department.id" icon class="ma-1 pa-0" @click="editComponent(item)">
+                <v-btn v-if="item.author.id === key.department.id" icon class="ma-1 pa-0" @click="editComponent(item)" tile small>
                   <v-icon color="iconLight">mdi-pencil</v-icon>
                 </v-btn>
-                <v-btn v-else icon class="ma-1 pa-0" @click="editComponent(item)" disabled>
+                <v-btn v-else icon class="ma-1 pa-0" @click="editComponent(item)" disabled tile small>
                   <v-icon color="iconLight">mdi-pencil</v-icon>
                 </v-btn>
-                <v-btn  v-if="item.author.id === key.department.id" icon class="ma-1 pa-0" @click="deleteComponent(item)">
+                <v-btn  v-if="item.author.id === key.department.id" icon class="ma-1 pa-0" @click="deleteComponent(item)" tile small>
                   <v-icon color="iconLight">mdi-delete</v-icon>
                 </v-btn>
-                <v-btn  v-else icon class="ma-1 pa-0" @click="deleteComponent(item)" disabled>
+                <v-btn  v-else icon class="ma-1 pa-0" @click="deleteComponent(item)" disabled tile small>
                   <v-icon color="iconLight">mdi-delete</v-icon>
                 </v-btn>
-
 
                 <div v-if="!item.departments.length">
-                  <v-btn v-on:click="del(item)" class="ma-1 rounded-0" color="red" width="110" outlined>Добавить</v-btn>
+                  <v-btn v-on:click="add(item)"
+                         class="ml-1 my-1"
+                         color="red"
+                         tile small icon>
+                    <v-icon>mdi-plus-circle</v-icon></v-btn>
                 </div>
 
                 <div v-for="dep of item.departments" :key="dep.id">
                   <div v-if="dep.name === key.department.name">
-                    <v-btn v-on:click="add(item)" class="ma-1 rounded-0" color="green" width="110" outlined>Убрать</v-btn>
+                    <v-btn v-on:click="del(item)"
+                           class="ml-1 my-1"
+                           color="green"
+                           tile small icon>
+                      <v-icon>mdi-minus-circle</v-icon></v-btn>
                   </div>
                 </div>
+
               </div>
             </div>
-
           </div>
-
         </div>
 
 
@@ -113,39 +127,47 @@
               <div class="col-price">
                 {{ item.price.toLocaleString('ru-RU') }}
               </div>
+              <div class="col-comment">
+                {{ item.note }}
+              </div>
 
               <div class="col-action-section">
 
-                <v-btn v-if="item.author.id === key.department.id" icon class="ma-1 pa-0" @click="editComponent(item)">
+                <v-btn v-if="item.author.id === key.department.id" icon class="ma-1 pa-0" @click="editComponent(item)" tile small>
                   <v-icon color="iconLight">mdi-pencil</v-icon>
                 </v-btn>
-                <v-btn v-else icon class="ma-1 pa-0" @click="editComponent(item)" disabled>
+                <v-btn v-else icon class="ma-1 pa-0" @click="editComponent(item)" disabled tile small>
                   <v-icon color="iconLight">mdi-pencil</v-icon>
                 </v-btn>
-                <v-btn  v-if="item.author.id === key.department.id" icon class="ma-1 pa-0" @click="deleteComponent(item)">
+                <v-btn  v-if="item.author.id === key.department.id" icon class="ma-1 pa-0" @click="deleteComponent(item)" tile small>
                   <v-icon color="iconLight">mdi-delete</v-icon>
                 </v-btn>
-                <v-btn  v-else icon class="ma-1 pa-0" @click="deleteComponent(item)" disabled>
+                <v-btn  v-else icon class="ma-1 pa-0" @click="deleteComponent(item)" disabled tile small>
                   <v-icon color="iconLight">mdi-delete</v-icon>
                 </v-btn>
 
-                <div v-if="!item.departments.length">
-                  <v-btn v-on:click="del(item)" class="ma-1 rounded-0" color="red" width="110" outlined>Добавить</v-btn>
+                <div v-if="item.departments.length === 0">
+                  <v-btn v-on:click="add(item)"
+                         class="ml-1 my-1"
+                         color="red"
+                         tile small icon>
+                    <v-icon>mdi-plus-circle</v-icon></v-btn>
                 </div>
 
                 <div v-for="dep of item.departments" :key="dep.id">
                   <div v-if="dep.name === key.department.name">
-                    <v-btn v-on:click="add(item)" class="ma-1 rounded-0" color="green" width="110" outlined>Убрать</v-btn>
+                    <v-btn v-on:click="del(item)"
+                           class="ml-1 my-1"
+                           color="green"
+                           tile small icon>
+                      <v-icon>mdi-minus-circle</v-icon></v-btn>
                   </div>
+
                 </div>
 
-
               </div>
-
             </div>
-
           </div>
-
         </div>
 
 
@@ -168,52 +190,54 @@
               <div class="col-price">
                 {{ item.price.toLocaleString('ru-RU') }}
               </div>
+              <div class="col-comment">
+                {{ item.note }}
+              </div>
 
               <div class="col-action-section">
 
-                <v-btn v-if="item.author.id === key.department.id" icon class="ma-1 pa-0" @click="editComponent(item)">
+                <v-btn v-if="item.author.id === key.department.id" icon class="ma-1 pa-0" @click="editComponent(item)" tile small>
                   <v-icon color="iconLight">mdi-pencil</v-icon>
                 </v-btn>
-                <v-btn v-else icon class="ma-1 pa-0" @click="editComponent(item)" disabled>
+                <v-btn v-else icon class="ma-1 pa-0" @click="editComponent(item)" disabled tile small>
                   <v-icon color="iconLight">mdi-pencil</v-icon>
                 </v-btn>
-                <v-btn  v-if="item.author.id === key.department.id" icon class="ma-1 pa-0" @click="deleteComponent(item)">
+                <v-btn  v-if="item.author.id === key.department.id" icon class="ma-1 pa-0" @click="deleteComponent(item)" tile small>
                   <v-icon color="iconLight">mdi-delete</v-icon>
                 </v-btn>
-                <v-btn  v-else icon class="ma-1 pa-0" @click="deleteComponent(item)" disabled>
+                <v-btn  v-else icon class="ma-1 pa-0" @click="deleteComponent(item)" disabled tile small>
                   <v-icon color="iconLight">mdi-delete</v-icon>
                 </v-btn>
-
 
                 <div v-if="!item.departments.length">
-                  <v-btn v-on:click="del(item)" class="ma-1 rounded-0" color="red" width="110" outlined>Добавить</v-btn>
+                  <v-btn v-on:click="add(item)"
+                         class="ml-1 my-1"
+                         color="red"
+                         tile small icon>
+                    <v-icon>mdi-plus-circle</v-icon></v-btn>
                 </div>
 
                 <div v-for="dep of item.departments" :key="dep.id">
                   <div v-if="dep.name === key.department.name">
-                    <v-btn v-on:click="add(item)" class="ma-1 rounded-0" color="green" width="110" outlined>Убрать</v-btn>
+                    <v-btn v-on:click="del(item)"
+                           class="ml-1 my-1"
+                           color="green"
+                           tile small icon>
+                      <v-icon>mdi-minus-circle</v-icon></v-btn>
                   </div>
                 </div>
+
               </div>
             </div>
-
           </div>
-
         </div>
-
-
       </v-row>
-
-
 
       <div v-else class="no-content">
         {{ env.noRecords }}
       </div>
 
-
-
     </div>
-
 
     <!--    <div class="pagination-container">-->
     <!--      <v-pagination-->
@@ -223,12 +247,9 @@
     <!--      ></v-pagination>-->
     <!--    </div>-->
 
-
     <v-navigation-drawer width="400" v-model="drawerRight" app clipped right>
-
       <AddComponent :selectedItem="this.select"
                     :edit-component="obj"/>
-
     </v-navigation-drawer>
 
 
@@ -240,10 +261,9 @@
 <script>
 import { mapActions, mapGetters, mapMutations } from 'vuex'
 import env from '../../env.config.json'
-import AddComponent from "@/components/AddComponent"
+const AddComponent = () => import('@/components/AddComponent')
+//import AddComponent from "@/components/AddComponent"
 // import {bus} from '@/utils/bus'
-
-
 
 export default {
   name: 'ListComponents',
@@ -252,20 +272,14 @@ export default {
     ...mapGetters(['allDevices', 'allMaterials', 'allWorks', 'profile']),
     ...mapMutations(['addDeviceMutation', 'addMaterialMutation', 'addWorkMutation']),
 
-
     //
     groupBy() {
-
       return Object.values(this.filteredData).reduce((acc, obj) => {
-
         let key = obj['group']
-
         if (!acc[key.name]) {
           acc[key.name] = []
         }
-
         acc[key.name].push(obj)
-
         return acc
       }, {})
     },
@@ -286,19 +300,12 @@ export default {
     visiblePages() {
 
       if (this.select === this.env.sectionDevice) {
-
         return this.allDevices
-
       } else if (this.select === this.env.sectionMaterial) {
-
         return this.allMaterials
-
       } else if (this.select === this.env.sectionWork) {
-
         return this.allWorks
-
       }
-
 
       // if (this.select === this.env.sectionDevice) {
       //   return this.allDevices.slice((this.page - 1) * this.perPage, this.page * this.perPage)
@@ -311,7 +318,6 @@ export default {
       return null
 
     },
-
 
     length() {
 
@@ -326,16 +332,10 @@ export default {
     },
   },
 
-
   mounted() {
-
     this.fetchDevicesForAdmin()
-
     this.fetchMaterialsForAdmin()
-
     this.fetchWorksForAdmin()
-
-
   },
 
   updated() {
@@ -348,7 +348,7 @@ export default {
       obj: {},
 
       env,
-      drawerRight: true,
+      drawerRight: false,
       key: JSON.parse(localStorage.getItem('user')),
       val: false,
       page: 1,
@@ -369,11 +369,20 @@ export default {
   },
 
   methods: {
+    ...mapActions(['addToSetDevice','addToSetMaterial', 'addToSetWork', 'delSetDevice', 'delSetMaterial', 'delSetWork']),
+
     add(item) {
-      console.log(item.id)
+      if (this.select === this.env.sectionDevice) {
+        this.addToSetDevice(item)
+      } else if (this.select === this.env.sectionMaterial) {
+        this.addToSetMaterial(item)
+      } else if (this.select === this.env.sectionWork) {
+        this.addToSetWork(item)
+      }
     },
 
     editComponent(item) {
+      this.drawerRight = true
       this.obj = item
     },
 
@@ -381,10 +390,20 @@ export default {
       console.log(item.id)
     },
 
-
+    newItem() {
+      this.drawerRight = true
+    },
 
     del(item) {
-      console.log(item.id)
+      if (this.select === this.env.sectionDevice) {
+        this.delSetDevice(item)
+      } else if (this.select === this.env.sectionMaterial) {
+        this.delSetMaterial(item)
+      } else if (this.select === this.env.sectionWork) {
+        this.delSetWork(item)
+      }
+
+
     }
 
     // changeItem() {
@@ -410,30 +429,26 @@ export default {
 
 .col-action-section {
   display: flex;
-
-
   /*z-index: 0;*/
   flex-basis: 5%;
 }
 
-.pagination-container {
-  margin-bottom: 2em;
-  display: flex;
-  justify-content: center;
-  align-items: flex-end;
-  width: 100%;
-  height: 100%
-}
+/*.pagination-container {*/
+/*  margin-bottom: 2em;*/
+/*  display: flex;*/
+/*  justify-content: center;*/
+/*  align-items: flex-end;*/
+/*  width: 100%;*/
+/*  height: 100%*/
+/*}*/
 
 .no-content {
   margin-top: 15em;
-
 }
 
-.content {
-  z-index: 0;
-
-}
+/*.content {*/
+/*  z-index: 0;*/
+/*}*/
 
 
 </style>

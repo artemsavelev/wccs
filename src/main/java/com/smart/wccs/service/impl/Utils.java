@@ -28,10 +28,14 @@ public class Utils {
         return auth.getName();
     }
 
-    public List<Department> getDepartmentWithUser() {
+    public List<Department> addDepartmentToList() {
         Department department = departmentRepo.findDepartmentById(userRepo.findByUsername(getAuthUserName()).getDepartment().getId());
         List<Department> departments = new ArrayList<>();
         departments.add(department);
         return departments;
+    }
+
+    public Department getDep() {
+        return departmentRepo.findDepartmentById(userRepo.findByUsername(getAuthUserName()).getDepartment().getId());
     }
 }

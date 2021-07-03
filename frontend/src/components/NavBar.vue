@@ -68,12 +68,12 @@
 
       <div v-if="profile" class="font-m ml-10">Вы вошли под именем: {{ profile.lastName }} {{ profile.firstName }}</div>
 
-      <v-btn v-if="profile" class="ml-5 mr-5" @click="logout" text tile>
+      <v-btn v-if="profile" class="ml-5 mr-5" @click="logout" tile small icon>
         <v-icon>mdi-exit-to-app</v-icon>
       </v-btn>
-
-      <v-icon v-if="profile && $route.path === '/'" @click="showDrawer">{{ iconVisibleDrawer }}</v-icon>
-
+      <v-btn v-if="profile && $route.path === '/'" class="ml-5 mr-5" @click="showDrawer"  tile small icon>
+        <v-icon>{{ iconVisibleDrawer }}</v-icon>
+      </v-btn>
     </v-app-bar>
 
   </div>

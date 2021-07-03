@@ -85,7 +85,7 @@ public class MaterialServiceImpl implements MaterialService {
         material.setCreatedDate(LocalDateTime.now());
         material.setStatus(Status.ACTIVE);
         material.setAuthor(userRepo.findByUsername(utils.getAuthUserName()).getDepartment());
-        material.setDepartments(utils.getDepartmentWithUser());
+        material.setDepartments(utils.addDepartmentToList());
         material.setGroup(sectionGroupRepo.findSectionGroupById(material.getGroup().getId()));
         Material createdMaterial = materialRepo.save(material);
         log.info("IN create - material: {} successfully added  for department: {}", createdMaterial, createdMaterial.getDepartments());

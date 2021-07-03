@@ -80,7 +80,7 @@ public class WorkServiceImpl implements WorkService {
         work.setCreatedDate(LocalDateTime.now());
         work.setStatus(Status.ACTIVE);
         work.setAuthor(userRepo.findByUsername(utils.getAuthUserName()).getDepartment());
-        work.setDepartments(utils.getDepartmentWithUser());
+        work.setDepartments(utils.addDepartmentToList());
         work.setGroup(sectionGroupRepo.findSectionGroupById(work.getGroup().getId()));
         Work createdWork = workRepo.save(work);
         log.info("IN create - work: {} successfully added for department: {}", createdWork, createdWork.getDepartments());

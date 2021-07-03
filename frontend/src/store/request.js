@@ -63,17 +63,17 @@ export default {
 
 
         } catch (e) {
+            console.log(e)
 
-
-            const dataError = {
-                message: 'Error code - ' + e.status + ': С сообщением "' + e.message + '".',
-                color: 'error',
-                icon: 'mdi-alert-circle'
-            }
-
-            await store.dispatch('showSnack', dataError)
-            // console.log(e)
-            throw new e
+            // const dataError = {
+            //     message: 'Error code - ' + e.status + ': С сообщением "' + e.message + '".',
+            //     color: 'error',
+            //     icon: 'mdi-alert-circle'
+            // }
+            //
+            // await store.dispatch('showSnack', dataError)
+            //
+            // throw new e
         }
 
     }

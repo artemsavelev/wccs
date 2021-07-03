@@ -24,7 +24,7 @@
 
 
 
-        <v-btn tile color="primary" @click="auth" class="auth-btn">{{ env.singIn }}</v-btn>
+        <v-btn color="primary" @click="auth" class="auth-btn" height="35" tile small outlined>{{ env.singIn }}</v-btn>
 
 
     </div>

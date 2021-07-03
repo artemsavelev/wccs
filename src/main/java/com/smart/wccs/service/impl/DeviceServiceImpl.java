@@ -81,7 +81,7 @@ public class DeviceServiceImpl implements DeviceService {
         device.setCreatedDate(LocalDateTime.now());
         device.setStatus(Status.ACTIVE);
         device.setAuthor(userRepo.findByUsername(utils.getAuthUserName()).getDepartment());
-        device.setDepartments(utils.getDepartmentWithUser());
+        device.setDepartments(utils.addDepartmentToList());
         device.setGroup(sectionGroupRepo.findSectionGroupById(device.getGroup().getId()));
         Device createdDevice = deviceRepo.save(device);
         log.info("IN create - device: {} successfully added for department: {}", createdDevice, createdDevice.getDepartments());

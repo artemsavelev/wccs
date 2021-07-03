@@ -1,7 +1,7 @@
 <template>
   <v-dialog v-if="profile" v-model="dialog" scrollable persistent>
     <template v-slot:activator="{ on }" class="">
-      <v-btn icon v-on="on" class="" @click="get">
+      <v-btn icon v-on="on" class="my-1" @click="get" tile>
         <v-icon dark>mdi-calculator</v-icon>
       </v-btn>
     </template>
@@ -59,7 +59,7 @@
 
         <div class="ml-4 mb-1">
           <v-card-actions class="">
-            <v-btn medium v-on:click="create" color="primary" tile>{{ env.keyMakeEstimate }}</v-btn>
+            <v-btn medium v-on:click="create" color="primary" height="35" tile small outlined>{{ env.keyMakeEstimate }}</v-btn>
             <Preview :preview="preview"/>
           </v-card-actions>
         </div>

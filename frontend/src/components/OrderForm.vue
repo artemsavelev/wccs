@@ -65,7 +65,7 @@
           </v-col>
 
         <v-card-actions class="pa-0">
-          <v-btn v-on:click="save" color="primary" class="mt-5" tile>{{ env.keySave }}</v-btn>
+          <v-btn v-on:click="save" color="primary" class="mt-5" tile height="35" small outlined>{{ env.keySave }}</v-btn>
         </v-card-actions>
         </v-form>
       </v-card-text>

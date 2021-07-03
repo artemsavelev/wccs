@@ -26,6 +26,8 @@ export default {
   computed: {
   },
   data: () => ({
+    // switch1: !!localStorage.getItem('darkTheme'),
+    // switch1: false,
     nameKey: 'Change Theme',
   }),
 

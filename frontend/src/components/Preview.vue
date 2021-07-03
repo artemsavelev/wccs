@@ -2,7 +2,7 @@
   <v-dialog v-model="dialog" width="80%"  scrollable persistent>
 
     <template v-slot:activator="{ on }">
-      <v-btn medium v-on="on" class="ml-5" color="primary" tile>{{ env.keyPreview }}</v-btn>
+      <v-btn medium v-on="on" class="ml-5" color="primary" height="35" tile small outlined>{{ env.keyPreview }}</v-btn>
     </template>
     <v-card>
 

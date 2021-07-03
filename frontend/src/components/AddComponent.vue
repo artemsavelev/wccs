@@ -6,8 +6,6 @@
         <div class="font-weight-bold ml-3">
           {{ formTitle }}
         </div>
-
-
         <div class="font-weight-thin ml-3">
           {{ env.fields }}
         </div>
@@ -52,7 +50,7 @@
                 :rules="rules"
                 :hint="env.rules[1]"
                 hide-details="auto"
-                class="rounded-0"
+                class="rounded-0 v-text-field"
                 :label="env.name + '*'"
                 v-model="name"
                 required
@@ -64,17 +62,21 @@
           <v-row class="ml-0 mr-0 mt-0 mb-1">
 
             <v-col cols="12" sm="2" md="6">
-              <v-text-field
+              <v-autocomplete
+                  class="rounded-0"
                   :disabled="!group.id"
                   :rules="rules"
                   :hint="env.rules[1]"
-                  class="rounded-0"
+                  :items="dimension"
+                  item-text="name"
+                  item-value="name"
+                  v-model="dimension.name"
                   :label="env.dimension + '*'"
-                  v-model="dimension"
                   required
                   outlined
                   dense
-                  counter/>
+                  counter
+              ></v-autocomplete>
             </v-col>
 
             <v-col cols="12" sm="2" md="6">
@@ -93,15 +95,18 @@
           </v-row>
 
           <v-col cols="12" sm="6" md="12">
-            <v-text-field
-                :disabled="!group.id"
+            <v-textarea
                 class="rounded-0"
+                :disabled="!group.id"
                 :label="env.comment"
-                v-model="comment"
+                :value="comment"
+                auto-grow
                 required
                 outlined
                 dense
-                counter/>
+                counter
+                rows="7"
+            ></v-textarea>
           </v-col>
 
 
@@ -111,21 +116,21 @@
               <v-btn @click="saveComponent"
                      :disabled="!group.id"
                      :color="colorSave"
-                     tile>{{ env.keySave }}</v-btn>
+                     height="35"
+                     tile small outlined>{{ env.keySave }}</v-btn>
             </v-col>
 
             <v-col cols="12" sm="6" md="6" class="d-flex justify-md-end">
               <v-btn @click="clear"
                      :disabled="!group.id"
                      :color="colorClear"
-                     class="ml-3" tile>{{ env.keyClear }}</v-btn>
+                     class="ml-3" height="35" tile small outlined>{{ env.keyClear }}</v-btn>
             </v-col>
           </v-card-actions>
 
         </v-form>
 
       </div>
-
   </div>
 </template>
 
@@ -145,10 +150,8 @@ export default {
   },
 
   mounted() {
-
     // fetch section group from backend
-    this.fetchGroup();
-
+    this.fetchGroup()
   },
 
   data() {
@@ -164,25 +167,20 @@ export default {
       id: '',
       select: '',
       name: '',
-      dimension: '',
+      dimension: ['м.', 'шт.', 'порт', 'м2.', 'смена', 'ед.'],
       price: '',
       comment: '',
-      items: [
-        { key: env.sectionDevice },
-        { key: env.sectionMaterial },
-        { key: env.sectionWork }
-      ],
-      group: [
-        { id: 1, name: 'Test1' },
-        { id: 2, name: 'Test2' },
-        { id: 3, name: 'Test3' }
-      ],
+      // items: [
+      //   { key: env.sectionDevice },
+      //   { key: env.sectionMaterial },
+      //   { key: env.sectionWork }
+      // ],
+      group: [],
 
       rules: [
         value => !!value || env.rules[0],
         value => (value && value.length >= 2) || env.rules[1],
       ],
-
       rulesPrice: [
         value => !!value || env.rules[0],
         value => (value && value.length >= 2) || env.rules[1],
@@ -197,36 +195,26 @@ export default {
       this.id = newVal.id
       this.group.id = newVal.group.id
       this.name = newVal.name
-      this.dimension = newVal.dimension
+      this.dimension.name = newVal.dimension
       this.price = newVal.price
-      this.comment = newVal.comment
-
-      console.log(newVal.group.id)
-
-
+      this.comment = newVal.note
     }
-
   },
 
   updated() {
     this.select = this.selectedItem
-
     // bus.$on('selected-item', data => {
     //   this.select = data
     //   console.log(data)
     // })
 
-
     if (this.name && this.dimension && this.price) {
       this.colorSave = 'success'
       this.colorClear = 'error'
     }
-
-
   },
 
   methods: {
-
     ...mapActions([
       'addDevice',
       'addMaterial',
@@ -242,7 +230,7 @@ export default {
       const component = {
         id: this.id,
         name: this.name,
-        dimension: this.dimension,
+        dimension: this.dimension.name,
         price: this.price,
         note: this.comment,
         group: {
@@ -251,9 +239,7 @@ export default {
         }
       }
 
-
       if (this.name && this.group && this.dimension && this.price) {
-
 
         if (this.select === this.env.sectionDevice) {
 
@@ -281,7 +267,7 @@ export default {
 
         }
 
-
+        this.id = ''
         this.editedIndex = -1
         this.colorSave = 'primary'
         this.colorClear = 'primary'
@@ -289,10 +275,8 @@ export default {
         this.name = ''
         this.group = [
           { id: 1, name: 'Test1' },
-          { id: 2, name: 'Test2' },
-          { id: 3, name: 'Test3' }
         ]
-        this.dimension = ''
+        this.dimension = ['м.', 'шт.', 'порт.', 'м2.', 'смена.', 'ед.']
         this.price = ''
         this.comment = ''
 
@@ -318,10 +302,8 @@ export default {
       this.name = ''
       this.group = [
         { id: 1, name: 'Test1' },
-        { id: 2, name: 'Test2' },
-        { id: 3, name: 'Test3' }
       ]
-      this.dimension = ''
+      this.dimension = ['м.', 'шт.', 'порт.', 'м2.', 'смена.', 'ед.']
       this.price = ''
       this.comment = ''
     },
@@ -330,9 +312,10 @@ export default {
 }
 </script>
 
-<style scoped>
-
-input {
-  font-size: 13px;
+<style scoped lang="scss">
+.v-text-field input {
+  font-size: 8px;
 }
+
+$font-size-root: 8px;
 </style>

@@ -73,7 +73,7 @@ export default {
             commit('fetchDeviceMutation', data)
         },
         async fetchDevicesForAdmin({commit}) {
-            const data = await req.request(api.API_DEVICE_TO_SET_URL)
+            const data = await req.request(api.API_DEVICE_VIEW_SET_URL)
             commit('fetchDeviceMutation', data)
         },
         async addDevice({commit, state}, device) {
@@ -89,6 +89,14 @@ export default {
             const data = await req.request(api.API_DEVICE_URL + device.id, 'PUT', device)
             commit('updateDeviceMutation', data)
         },
+        async addToSetDevice({commit}, device) {
+            const data = await req.request(api.API_DEVICE_TO_SET_URL + device.id, 'PATCH')
+            commit('updateDeviceMutation', data)
+        },
+        async delSetDevice({commit}, device) {
+            const data = await req.request(api.API_DEVICE_DEL_SET_URL + device.id, 'DELETE')
+            commit('updateDeviceMutation', data)
+        },
 
 
         // get materials list from backend
@@ -97,7 +105,7 @@ export default {
             commit('fetchMaterialMutation', data)
         },
         async fetchMaterialsForAdmin({commit}) {
-            const data = await req.request(api.API_MATERIAL_TO_SET_URL)
+            const data = await req.request(api.API_MATERIAL_VIEW_SET_URL)
             commit('fetchMaterialMutation', data)
         },
         async addMaterial({commit, state}, material) {
@@ -113,6 +121,14 @@ export default {
             const data = await req.request(api.API_MATERIAL_URL + material.id, 'PUT', material)
             commit('updateMaterialMutation', data)
         },
+        async addToSetMaterial({commit}, material) {
+            const data = await req.request(api.API_MATERIAL_TO_SET_URL + material.id, 'PATCH')
+            commit('updateMaterialMutation', data)
+        },
+        async delSetMaterial({commit}, material) {
+            const data = await req.request(api.API_MATERIAL_DEL_SET_URL + material.id, 'DELETE')
+            commit('updateMaterialMutation', data)
+        },
 
 
         // get works list from backend
@@ -121,7 +137,7 @@ export default {
             commit('fetchWorkMutation', data)
         },
         async fetchWorksForAdmin({commit}) {
-            const data = await req.request(api.API_WORK_TO_SET_URL)
+            const data = await req.request(api.API_WORK_VIEW_SET_URL)
             commit('fetchWorkMutation', data)
         },
         async addWork({commit, state}, work) {
@@ -135,6 +151,14 @@ export default {
         },
         async updateWork({commit}, work) {
             const data = await req.request(api.API_WORK_URL + work.id, 'PUT', work)
+            commit('updateWorkMutation', data)
+        },
+        async addToSetWork({commit}, work) {
+            const data = await req.request(api.API_WORK_TO_SET_URL + work.id, 'PATCH')
+            commit('updateWorkMutation', data)
+        },
+        async delSetWork({commit}, work) {
+            const data = await req.request(api.API_WORK_DEL_SET_URL + work.id, 'DELETE')
             commit('updateWorkMutation', data)
         },
 
