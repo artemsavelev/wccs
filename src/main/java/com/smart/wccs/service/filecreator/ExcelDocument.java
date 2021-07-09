@@ -418,7 +418,7 @@ public class ExcelDocument implements FileCreator {
     }
 
 
-    private String getValidFileName(String fileName) {
+    public String getValidFileName(String fileName) {
 
         String newFileName = fileName.replace("^\\.+", "").replaceAll("[\\\\/:*%,?\"<>|]", " ");
 

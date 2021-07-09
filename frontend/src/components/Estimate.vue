@@ -10,14 +10,15 @@
       <v-card-title class="form">
         <div class="font-xl color">{{formTitle}}</div>
         <v-checkbox v-model="ex"
-                    class="pt-0 pb-0 mt-0 mb-0 ml-5 "
+                    class="pt-0 pb-0 mt-0 mb-0 ml-5"
                     color="success"
                     :label="env.estimate + ' ' + env.estimatePreliminary"
+                    dense
                     hide-details></v-checkbox>
         <v-spacer></v-spacer>
-<!--        <v-btn small text tile v-on:click="close">-->
-          <v-icon @click="close">mdi-window-close</v-icon>
-<!--        </v-btn>-->
+        <v-btn small text tile v-on:click="close">
+          <v-icon>mdi-window-close</v-icon>
+        </v-btn>
       </v-card-title>
 
       <v-card-text class="scroll">
@@ -42,12 +43,17 @@
 
           <!-- загружаем модули -->
         <TypeOfWork v-on:transmit="transmitDescription"
+                    :descriptionFromDb="getEstimate.workDescription"
                     v-bind:ex="ex"/>
         <Device v-on:transmit="transmitDevices"
+                :deviseFromDb="getEstimate.devices"
                 v-bind:extId="extId"/>
-        <Materials v-on:transmit="transmitMaterials"/>
-        <Work v-on:transmit="transmitWorks"/>
+        <Materials v-on:transmit="transmitMaterials"
+                   :materialsFromDb="getEstimate.materials"/>
+        <Work v-on:transmit="transmitWorks"
+              :worksFromDb="getEstimate.works"/>
           <!-- // загружаем модули -->
+
 
       </v-card-text>
 
@@ -88,7 +94,7 @@ export default {
   props: ['extId', 'address', 'customer'],
   components: {TypeOfWork, Device, Materials, Work, Preview },
   computed: {
-    ...mapGetters(['profile']),
+    ...mapGetters(['profile', 'getEstimate']),
     preview() {
       const subSumDevice = this.devices.reduce((total, device) => total + device.quantity * device.price, 0)
       const subSumMaterial = this.materials.reduce((total, material) => total + material.quantity * material.price, 0)
@@ -113,10 +119,8 @@ export default {
         totalSum: totalSum
       }
     },
-
-
-
   },
+
   data() {
     return {
       env,
@@ -141,8 +145,14 @@ export default {
 
   },
 
+  mounted() {
+    // this.loadEstimate(6)
+  },
+  updated() {
+  },
+
   methods: {
-    ...mapActions(['addEstimate', 'fetchEstimate', 'showSnack']),
+    ...mapActions(['addEstimate', 'fetchEstimate', 'showSnack', 'loadEstimate']),
     close() {
       this.dialog = false
     },
@@ -200,11 +210,6 @@ export default {
 
       })
 
-
-
-
-
-
       // проверяем и загружаем файл
 
       await pause(2000)
@@ -242,15 +247,18 @@ export default {
               }
             })
       })
-
-
     },
 
-
-
-
     get() {
-      // console.log('При нажатии на кнопку калькулятор')
+      // this.loadEstimate(6)
+      // console.log(this.getEstimate.id)
+      // console.log(this.getEstimate.extId)
+      // console.log(this.getEstimate.customer)
+      // console.log(this.getEstimate.address)
+      // console.log(this.getEstimate.workDescription)
+      // console.log(this.getEstimate.devices)
+      // console.log(this.getEstimate.materials)
+      // console.log(this.getEstimate.works)
     }
 
   }

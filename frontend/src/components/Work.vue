@@ -25,7 +25,7 @@ import { mapActions, mapGetters } from "vuex";
 
 export default {
   name: "Work",
-  props: ['extId'],
+  props: ['extId', 'worksFromDb'],
   components: { DataContent, HeaderTable, ModalForm },
   computed: mapGetters(['allWorks']),
   data() {
@@ -36,9 +36,14 @@ export default {
 
     }
   },
+
+
   mounted() {
     // получаем данные с сервера (список работ)
     this.fetchWorks()
+    // this.works.push(...this.worksFromDb)
+  },
+  updated() {
   },
 
   methods: {

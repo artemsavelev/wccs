@@ -6,16 +6,17 @@ import com.smart.wccs.dto.OrderPageDto;
 import com.smart.wccs.model.Order;
 import com.smart.wccs.model.Views;
 import com.smart.wccs.service.OrderService;
+import com.smart.wccs.service.filecreator.ExcelDocument;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/api/v1/order/")
@@ -95,4 +96,19 @@ public class OrderController {
         orderService.delete(orderFromDb.getId());
         return new ResponseEntity<>(orderFromDb, HttpStatus.OK);
     }
+
+    @RequestMapping(value = "search/", method = RequestMethod.GET)
+    @JsonView({Views.UserView.class})
+    public ResponseEntity<List<Order>> searchOrders(@RequestParam("q") String value) {
+
+        List<Order> orders = orderService.search(value.toLowerCase());
+
+        if (value.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity<>(orders, HttpStatus.OK);
+    }
+
+
 }

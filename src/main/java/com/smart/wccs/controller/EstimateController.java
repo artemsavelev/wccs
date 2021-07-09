@@ -48,7 +48,7 @@ public class EstimateController {
 
     }
 
-    @RequestMapping(value = "{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "get-estimate/{id}", method = RequestMethod.GET)
     @JsonView(Views.UserView.class)
     public ResponseEntity<Estimate> getEstimate(@PathVariable(name = "id") Long id) {
         Estimate estimate = estimateService.getById(id);

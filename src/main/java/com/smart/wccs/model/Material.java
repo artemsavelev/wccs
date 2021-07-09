@@ -34,7 +34,7 @@ public class Material extends BaseEntity implements Components {
     @JoinTable(name = "materials_departments",
             joinColumns = @JoinColumn(name = "material_id"),
             inverseJoinColumns = @JoinColumn(name = "department_id"))
-    @JsonView({Views.UserView.class, Views.AdminView.class})
+    @JsonView({Views.AdminView.class})
     private List<Department> departments;
 
     @ManyToOne(fetch = FetchType.EAGER)
@@ -44,6 +44,6 @@ public class Material extends BaseEntity implements Components {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "author_id")
-    @JsonView({Views.UserView.class, Views.AdminView.class})
+    @JsonView({Views.AdminView.class})
     private Department author;
 }

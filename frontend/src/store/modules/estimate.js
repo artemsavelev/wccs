@@ -21,6 +21,11 @@ export default {
             commit('addEstimateMutation', data)
         },
 
+        async loadEstimate({commit}, id) {
+            const data = await req.request(api.API_GET_ESTIMATE_URL + id)
+            commit('addEstimateMutation', data)
+        },
+
 
         async addEstimate({commit}, estimate) {
             const data = await req.request(api.API_CREATE_ESTIMATE_URL, 'POST', estimate)
@@ -29,6 +34,9 @@ export default {
 
     },
     getters: {
+        getEstimate(state) {
+            return state.estimate
+        }
 
     }
 }

@@ -61,7 +61,6 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public void create(Order order) {
-
 //        String name = order.getAuthor().getUsername();
         User user = userRepo.findByUsername(utils.getAuthUserName());
 
@@ -90,7 +89,6 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public void delete(Long id) {
-
         Order order = orderRepo.findById(id).orElseThrow(() ->
                 new ObjectNotFoundException(id, "IN delete - delete: " + id + " not deleted. Order not found "));
 
@@ -99,5 +97,22 @@ public class OrderServiceImpl implements OrderService {
         order.setStatus(Status.DELETED);
         orderRepo.save(order);
         log.info("IN delete - order with id: {} successfully deleted", id);
+    }
+
+    @Override
+    public List<Order> search(String value) {
+
+        long start = System.currentTimeMillis();
+
+        List<Order> orders = orderRepo.findOrders(value);
+
+        long end = System.currentTimeMillis();
+
+        long total = end - start;
+
+        log.info("IN search - '{}' search value", value);
+        log.info("IN search - {} orders found for {} ms", orders.size(), total);
+        log.info("IN search - {} orders found", orders);
+        return orders;
     }
 }

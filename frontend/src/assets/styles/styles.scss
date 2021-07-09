@@ -1,5 +1,5 @@
-//@import url('https://fonts.googleapis.com/css?family=' +
-//    'Montserrat:200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&display=swap&subset=cyrillic,cyrillic-ext,latin-ext');
+@import url('https://fonts.googleapis.com/css?family=' +
+    'Montserrat:200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&display=swap&subset=cyrillic,cyrillic-ext,latin-ext');
 
 @import "~@mdi/font/css/materialdesignicons.min.css";
 
@@ -14,6 +14,8 @@ $input-text-color: var(--v-inputTextColor-base);
 $text-color: var(--v-textColor-base);
 $border-color: var(--v-borderColor-base);
 $scrollbar-track: var(--v-scrollbarTrack-base);
+$backgroundOrderItem: var(--v-backgroundOrderItem-base);
+$backgroundSearchPanel: var(--v-backgroundSearchPanel-base);
 
 
 body{

@@ -1,7 +1,7 @@
 <template>
   <div>
 
-      <div class="ml-0 mb-15 mt-3 font-s">
+      <div class="ml-0 mb-15 mt-3 font-s" v-if="!mini">
 
         <div class="font-weight-bold ml-3">
           {{ formTitle }}
@@ -45,18 +45,20 @@
           </v-col>
 
           <v-col cols="12" sm="6" md="12">
-            <v-text-field
+            <v-textarea
+                class="rounded-0"
                 :disabled="!group.id"
                 :rules="rules"
                 :hint="env.rules[1]"
-                hide-details="auto"
-                class="rounded-0 v-text-field"
                 :label="env.name + '*'"
+                :value="name"
                 v-model="name"
                 required
                 outlined
                 dense
-                counter/>
+                counter
+                rows="3"
+            ></v-textarea>
           </v-col>
 
           <v-row class="ml-0 mr-0 mt-0 mb-1">
@@ -100,12 +102,12 @@
                 :disabled="!group.id"
                 :label="env.comment"
                 :value="comment"
-                auto-grow
+                v-model="comment"
                 required
                 outlined
                 dense
                 counter
-                rows="7"
+                rows="10"
             ></v-textarea>
           </v-col>
 
@@ -140,8 +142,8 @@ import env from '../../env.config.json'
 // import { bus } from "@/utils/bus"
 
 export default {
-  name: 'AddComponent',
-  props: ['selectedItem', 'editComponent'],
+  name: 'ComponentForm',
+  props: ['selectedItem', 'editComponent', 'mini'],
   computed: {
     ...mapGetters(['profile', 'allGroups']),
     formTitle() {

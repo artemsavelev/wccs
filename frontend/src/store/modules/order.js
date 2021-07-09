@@ -4,6 +4,7 @@ import store from '@/store'
 
 export default {
     state: {
+        query: '',
         orders: []
     },
     mutations: {
@@ -31,9 +32,13 @@ export default {
 
         addOrderMutation(state, orders) {
             state.orders = [
-                ...state.orders,
                 orders
             ]
+        },
+
+        searchOrderMutation(state, orders) {
+            state.orders = orders
+            console.log(state.orders)
         },
 
         fetchOrderPageMutation(state, orders) {

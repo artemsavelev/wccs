@@ -52,6 +52,34 @@
               <span>Статус: завершено и проверено</span>
             </v-tooltip>
           </span>
+
+<!--          <span v-if="order.versionEstimate === 0" class="text-red">-->
+<!--            <v-tooltip bottom>-->
+<!--              <template v-slot:activator="{ on }">-->
+<!--                <v-icon color="red darken-1" v-on="on">mdi-file-document-edit</v-icon>-->
+<!--              </template>-->
+<!--              <span>Статус: смета в разработке</span>-->
+<!--            </v-tooltip>-->
+<!--          </span>-->
+
+<!--          <span v-else-if="order.versionEstimate === 1" class="text-green">-->
+<!--            <v-tooltip bottom>-->
+<!--              <template v-slot:activator="{ on }">-->
+<!--                <v-icon color="orange" v-on="on">mdi-file-document</v-icon>-->
+<!--              </template>-->
+<!--              <span>Статус: посчитана предварительная смета</span>-->
+<!--            </v-tooltip>-->
+<!--          </span>-->
+
+<!--          <span v-else-if="order.versionEstimate === 2" class="text-green">-->
+<!--            <v-tooltip bottom>-->
+<!--              <template v-slot:activator="{ on }">-->
+<!--                <v-icon color="green darken-2" v-on="on">mdi-file-document-multiple</v-icon>-->
+<!--              </template>-->
+<!--              <span>Статус: посчитана фактическая смета</span>-->
+<!--            </v-tooltip>-->
+<!--          </span>-->
+
         </div>
 
         <div class="order-cols col-action-order">
@@ -80,7 +108,7 @@
           </v-tooltip>
         </div>
 
-        <div class="order-cols col-address py-1">
+        <div class="order-cols col-address py-1 mb-3">
           <v-tooltip bottom>
             <template v-slot:activator="{ on }">
               <span class="font-weight-regular">{{ env.address }}: </span>
@@ -134,10 +162,12 @@ export default {
 @import "src/assets/styles/styles";
 .order-row {
   color: $text-color;
-  border-bottom: 1px solid $border-bottom;
+  border: 1px solid $border-bottom;
   font-size: small;
+  margin-top: 10px;
   margin-left: 10px;
   margin-right: 10px;
+  background-color: $backgroundOrderItem;
 }
 
 .order-row-container {

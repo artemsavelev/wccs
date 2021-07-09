@@ -1,28 +1,49 @@
 <template>
 
-  <div>
 
-    <div>
+  <div class="main-container">
 
-      <div v-if="allOrders.length" class="left">
-        <OrderItem v-for="order in allOrders"
-                   :key="order.id"
-                   v-bind:order="order"
-                   @removeOrder="removeOrder"
-                   @editOrder="editOrder"/>
+      <div class="search-panel">
+        <v-row class="ml-3 mt-3">
 
-        <LazyLoader/>
+          <v-col cols="12" sm="6" md="4" class="pa-0">
+            <v-text-field v-model="search"
+                          :label="env.search"
+                          id="s"
+                          dense
+                          outlined
+                          v-show="$route.path === '/'"
+                          class="rounded-0"/>
+          </v-col>
+          <v-col cols="12" sm="6" md="2" class="ml-3 pa-0">
+            <v-btn @click="flush" tile outlined color="primary" height="40">сбросить поиск</v-btn>
+          </v-col>
 
+        </v-row>
       </div>
-      <div v-else class="no-content mr-16"> {{ env.noRecords }}</div>
-    </div>
+
+      <div>search
+        <div v-if="allOrders.length" class="mt-14">
+          <OrderItem v-for="order in allOrders"
+                     :key="order.id"
+                     v-bind:order="order"
+                     @removeOrder="removeOrder"
+                     @editOrder="editOrder"/>
+
+          <LazyLoader/>
+        </div>
+        <div v-else class="no-content mr-16 mt-16">{{ env.noRecords }}</div>
+      </div>
 
 
 
-    <v-navigation-drawer width="400" v-model="drawerRight" app clipped right>
+    <v-navigation-drawer width="400" v-model="drawerRight" :mini-variant.sync="mini" app clipped right>
 
+      <v-btn class="mt-4 ml-2" icon @click.stop="mini = !mini" tile>
+        <v-icon>mdi-menu-right</v-icon>
+      </v-btn>
 
-        <div class="ma-3">
+        <div class="ma-3" v-if="!mini">
 
           <div class="font-weight-bold font-s">
             {{ formTitle }}
@@ -229,8 +250,6 @@
           </v-form>
         </div>
 
-
-
     </v-navigation-drawer>
 
 
@@ -243,8 +262,12 @@
 import env from '../../env.config.json'
 import LazyLoader from "@/components/LazyLoader"
 import OrderItem from "@/components/OrderItem"
-import {mapActions, mapGetters} from "vuex"
+import {mapActions, mapGetters, mapMutations} from "vuex"
 import { bus } from "@/utils/bus"
+import {fromEvent} from 'rxjs'
+import {debounceTime, distinctUntilChanged, filter, map, switchMap, tap} from "rxjs/operators";
+import {ajax} from "rxjs/ajax";
+import api from "@/api/backendApi";
 
 
 export default {
@@ -262,6 +285,8 @@ export default {
 
     ...mapActions(['fetchOrders', 'showSnack']),
 
+    mini: true,
+    search: '',
     env,
     valid: true,
     loading: false,
@@ -301,6 +326,11 @@ export default {
   methods: {
 
     ...mapActions(['addOrder', 'updateOrder', 'deleteOrder']),
+    ...mapMutations(['searchOrderMutation']),
+    flush() {
+      this.search = ''
+      Object.assign(this,     this.fetchOrders());
+    },
 
     // сохранение новой записи
     save() {
@@ -347,6 +377,7 @@ export default {
     },
 
     editOrder(item) {
+      this.mini = false
       this.colorSave = 'success'
       this.colorClear = 'error'
       this.drawerRight = true
@@ -375,7 +406,7 @@ export default {
   updated() {
     bus.$on('show-drawer', data => {
       this.drawerRight = data
-      console.log(data)
+      // console.log(data)
     })
 
 
@@ -391,13 +422,46 @@ export default {
 
     this.fetchOrders()
 
+    // поиск по заявкам напрямую в бд
+    const user = JSON.parse(localStorage.getItem('user'))
+    const search = document.getElementById('s')
+    const stream$ = fromEvent(search, 'input')
+        .pipe(
+            map(e => e.target.value.replace(/[/\\?,%*:|+"<>#--]/g, '').toLowerCase()),
+            filter(searchValue => searchValue.length >= 3),
+            debounceTime(1000),
+            distinctUntilChanged(),
+            tap(e => console.log(e)),
+            switchMap(v => ajax({
+              url: api.API_ORDER_SEARCH_URL + v,
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'bearer_' + user.token
+              }
+            }).pipe(
+                map(response => {
+                  this.searchOrderMutation(response.response)
+                  // console.log(response.response)
+                }),
+            ))
+        )
+    stream$.subscribe()
+
   },
 
 
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 
+.search-panel {
+  position: fixed;
+  width: 100%;
+  height: 5em;
+  background: $backgroundSearchPanel;
+  z-index: 1;
+  border-bottom: 1px solid $border-bottom;
+}
 
 </style>

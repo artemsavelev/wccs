@@ -31,7 +31,7 @@ import {mapActions, mapGetters} from "vuex";
 export default {
   name: "ActiveDevice",
   components: {DataContent, HeaderTable, ModalForm },
-  props: ['extId'],
+  props: ['extId', 'deviseFromDb'],
   computed: {
     ...mapGetters(['allDevices']),
   },
@@ -44,19 +44,13 @@ export default {
     }
   },
 
-  updated() {
-    //
-    // console.log('device', JSON.parse(localStorage.getItem(this.extId + '_' + this.itemName)))
-  },
-
   mounted() {
     // получаем данные с сервера (список оборудования)
     this.fetchDevices();
+    // this.devices.push(...this.deviseFromDb)
   },
 
   methods: {
-
-
     ...mapActions(['showSnack']),
 
     // добавление записи в конец массива
@@ -64,7 +58,6 @@ export default {
       this.itemName = item.name
       this.devices.push(item)
       this.$emit('transmit', this.devices)
-
     },
 
     // удаление записи из массива по id

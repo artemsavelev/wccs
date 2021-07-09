@@ -63,7 +63,7 @@ export default {
 
 
         } catch (e) {
-            console.log(e)
+            console.warn(e)
 
             // const dataError = {
             //     message: 'Error code - ' + e.status + ': С сообщением "' + e.message + '".',

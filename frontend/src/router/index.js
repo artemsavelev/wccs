@@ -51,7 +51,7 @@ const routes = [
   //   path: '/admin/add-component',
   //   name: 'AddComponent',
   //   meta: { auth: true },
-  //   component: () => import('@/components/AddComponent.vue')
+  //   component: () => import('@/components/ComponentForm.vue')
   // },
   {
     path: '/admin/components',

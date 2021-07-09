@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
+# shellcheck disable=SC2164
+cd wccs
 ./gradlew clean
-
 ./gradlew build
 
-yarn build
 
 echo 'Copy files...'
 

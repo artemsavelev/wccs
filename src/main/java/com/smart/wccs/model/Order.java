@@ -42,4 +42,7 @@ public class Order extends BaseEntity {
     @JoinColumn(name = "department_id")
     @JsonView({Views.UserView.class, Views.AdminView.class})
     private Department department;
+
+    @JsonView({Views.UserView.class, Views.AdminView.class})
+    private Integer versionEstimate;
 }

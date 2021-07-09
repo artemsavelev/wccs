@@ -38,7 +38,7 @@
 
       <div class="section-cols col-action-section">
         <v-card-actions class="ma-0 pa-0">
-          <v-btn icon v-on:click="add" :disabled="this.styleAddedItem.key === 1" class="ml-9">
+          <v-btn icon v-on:click="add" :disabled="this.styleAddedItem.key === 1" class="ml-9" tile>
             <v-icon color="iconLight">mdi-plus</v-icon>
           </v-btn>
         </v-card-actions>

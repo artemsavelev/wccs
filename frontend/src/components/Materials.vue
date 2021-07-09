@@ -26,7 +26,7 @@ import {mapActions, mapGetters} from "vuex";
 
 export default {
   name: "Materials",
-  props: ['extId'],
+  props: ['extId', 'materialsFromDb'],
   components: {DataContent, HeaderTable, ModalForm },
   computed: mapGetters(['allMaterials']),
   data() {
@@ -40,7 +40,7 @@ export default {
   mounted() {
     // получаем данные с сервера (список материалов)
     this.fetchMaterials();
-    // console.log(this.allMaterials)
+    // this.materials.push(...this.materialsFromDb)
   },
   methods: {
 

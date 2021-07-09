@@ -24,8 +24,12 @@ const ModalForm = () => import('./ModalForm')
 
 export default {
   name: "TypeOfWork",
-  props: ['ex'],
+  props: ['ex', 'descriptionFromDb'],
   components: { ModalForm },
+
+  mounted() {
+    this.description.workDescription = this.descriptionFromDb
+  },
   data() {
     return {
       env,
