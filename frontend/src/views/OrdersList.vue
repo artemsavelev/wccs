@@ -1,11 +1,7 @@
 <template>
-
-
   <div class="main-container">
-
       <div class="search-panel">
         <v-row class="ml-3 mt-3">
-
           <v-col cols="12" sm="6" md="4" class="pa-0">
             <v-text-field v-model="search"
                           :label="env.search"
@@ -18,7 +14,6 @@
           <v-col cols="12" sm="6" md="2" class="ml-3 pa-0">
             <v-btn @click="flush" tile outlined color="primary" height="40">сбросить поиск</v-btn>
           </v-col>
-
         </v-row>
       </div>
 
@@ -26,236 +21,24 @@
         <div v-if="allOrders.length" class="mt-14">
           <OrderItem v-for="order in allOrders"
                      :key="order.id"
-                     v-bind:order="order"
+                     :order="order"
                      @removeOrder="removeOrder"
                      @editOrder="editOrder"/>
 
+          <!-- ленивая загрузка при прокрутке-->
           <LazyLoader/>
         </div>
         <div v-else class="no-content mr-16 mt-16">{{ env.noRecords }}</div>
       </div>
 
-
-
-    <v-navigation-drawer width="400" v-model="drawerRight" :mini-variant.sync="mini" app clipped right>
-
+    <v-navigation-drawer width="400" :mini-variant.sync="mini" app clipped right>
       <v-btn class="mt-4 ml-2" icon @click.stop="mini = !mini" tile>
-        <v-icon>mdi-menu-right</v-icon>
+        <v-icon>{{ changeIcon }}</v-icon>
       </v-btn>
-
-        <div class="ma-3" v-if="!mini">
-
-          <div class="font-weight-bold font-s">
-            {{ formTitle }}
-          </div>
-
-          <div class="font-weight-light font-s">
-            {{ env.fields }}
-          </div>
-
-          <v-form
-              ref="form"
-              v-model="valid"
-              lazy-validation>
-
-
-            <v-row class="pt-0">
-              <v-col cols="12" sm="6" md="6">
-                <v-menu v-model="menuStartDate"
-                        :close-on-content-click="false"
-                        transition="scale-transition"
-                        offset-y
-                        min-width="100px">
-
-                  <template v-slot:activator="{ on }">
-                    <v-text-field v-model="startDate"
-                                  :label="env.startDate"
-                                  dense
-                                  disabled
-                                  readonly
-                                  v-show="false"
-                                  v-on="on">
-                    </v-text-field>
-                  </template>
-
-                  <v-date-picker
-                      v-model="startDate"
-                      @input="menuStartDate = false">
-                  </v-date-picker>
-                </v-menu>
-              </v-col>
-
-              <v-col cols="12" sm="6" md="6">
-                <v-menu v-model="menuStartTime"
-                        :close-on-content-click="false"
-                        transition="scale-transition"
-                        offset-y
-                        min-width="100px">
-
-                  <template v-slot:activator="{ on }">
-                    <v-text-field v-model="startTime"
-                                  :label="env.startTime"
-                                  dense
-                                  disabled
-                                  readonly
-                                  v-show="false"
-                                  v-on="on">
-                    </v-text-field>
-                  </template>
-
-                  <v-time-picker
-                      v-model="startTime"
-                      format="24hr"
-                      @input="menuStartTime = false">
-                  </v-time-picker>
-                </v-menu>
-              </v-col>
-            </v-row>
-
-            <v-col cols="12" class="pa-0">
-              <v-text-field
-                  :rules="rules"
-                  class="pt-5 rounded-0"
-                  dense
-                  :label="env.numberOrder + '*'"
-                  required
-                  outlined
-                  v-model="extId"/>
-            </v-col>
-
-            <v-col cols="12" class="pa-0">
-              <v-text-field
-                  :rules="rules"
-                  dense
-                  class="pt-5 rounded-0"
-                  :label="env.customer + '*'"
-                  required
-                  outlined
-                  v-model="customer"/>
-            </v-col>
-
-            <v-col cols="12" class="pa-0">
-              <v-text-field
-                  :rules="rules"
-                  dense
-                  class="pt-5 rounded-0"
-                  :label="env.address + '*'"
-                  required
-                  outlined
-                  v-model="address"/>
-            </v-col>
-
-
-            <v-col cols="12" class="pa-0">
-              <v-autocomplete v-model="workGroup.id"
-                              :items="group"
-                              label="Тип работ"
-                              item-text="groupList"
-                              item-value="id"
-                              class="mt-5 rounded-0"
-                              dense
-                              disabled
-                              v-show="false"
-                              required>
-              </v-autocomplete>
-            </v-col>
-
-            <v-autocomplete v-model="users"
-                            :items="executors"
-                            label="Исполнители"
-                            item-text="name"
-                            item-value="userId"
-                            class="mt-5 rounded-0"
-                            dense
-                            required
-                            disabled
-                            v-show="false"
-                            multiple>
-            </v-autocomplete>
-
-            <v-col cols="12" class="pa-0">
-              <v-text-field
-                  :rules="rules"
-                  dense
-                  class="pt-5 rounded-0"
-                  :label="env.typeWork + '*'"
-                  disabled
-                  v-show="false"
-                  v-model="description"/>
-            </v-col>
-
-            <v-row class="pt-5">
-              <v-col cols="12" sm="6" md="6">
-                <v-menu v-model="menuEndDate"
-                        :close-on-content-click="false"
-                        transition="scale-transition"
-                        offset-y
-                        min-width="100px">
-
-                  <template v-slot:activator="{ on }">
-                    <v-text-field v-model="endDate"
-                                  :label="env.endDate"
-                                  dense
-                                  disabled
-                                  readonly
-                                  v-show="false"
-                                  v-on="on">
-                    </v-text-field>
-                  </template>
-
-                  <v-date-picker
-                      v-model="endDate"
-                      @input="menuEndDate = false">
-                  </v-date-picker>
-                </v-menu>
-              </v-col>
-
-              <v-col cols="12" sm="6" md="6">
-                <v-menu v-model="menuEndTime"
-                        :close-on-content-click="false"
-                        transition="scale-transition"
-                        offset-y
-                        min-width="100px">
-
-                  <template v-slot:activator="{ on }">
-                    <v-text-field v-model="endTime"
-                                  :label="env.endTime"
-                                  dense
-                                  disabled
-                                  readonly
-                                  v-show="false"
-                                  v-on="on">
-                    </v-text-field>
-                  </template>
-
-                  <v-time-picker
-                      v-model="endTime"
-                      format="24hr"
-                      @input="menuEndTime = false">
-                  </v-time-picker>
-                </v-menu>
-              </v-col>
-            </v-row>
-
-            <v-card-actions class="pa-0">
-              <v-row>
-                <v-col cols="12" sm="6" md="6">
-                  <v-btn v-on:click="save" :color="colorSave" class="mt-5" height="35" tile small outlined>{{ env.keySave }}</v-btn>
-                </v-col>
-                <v-col cols="12" sm="6" md="6" class="d-flex justify-md-end">
-                  <v-btn v-on:click="clear" :color="colorClear" class="mt-5" height="35" tile small outlined>{{ env.keyClear }}</v-btn>
-                </v-col>
-              </v-row>
-            </v-card-actions>
-          </v-form>
-        </div>
-
+      <OrderForm :mini="this.mini"
+                 :editOrder="objOrder"/>
     </v-navigation-drawer>
-
-
   </div>
-
-
 </template>
 
 <script>
@@ -268,138 +51,48 @@ import {fromEvent} from 'rxjs'
 import {debounceTime, distinctUntilChanged, filter, map, switchMap, tap} from "rxjs/operators";
 import {ajax} from "rxjs/ajax";
 import api from "@/api/backendApi";
+import OrderForm from "@/components/OrderForm";
 
 
 export default {
   name: "OrdersList",
   computed: {
     ...mapGetters(['allOrders', 'profile']),
-    formTitle() {
-      return this.editedIndex === -1 ? env.title[0] : env.title[3] + ' # ' + this.id
+    changeIcon() {
+      return this.mini === true ? 'mdi-menu-left' : 'mdi-menu-right'
     },
   },
-  components: { LazyLoader, OrderItem },
+  components: { OrderForm, LazyLoader, OrderItem },
 
-
-  data: () => ( {
-
+  data: () => ({
     ...mapActions(['fetchOrders', 'showSnack']),
-
+    ...mapMutations(['searchOrderMutation']),
     mini: true,
     search: '',
+    objOrder: {},
     env,
-    valid: true,
-    loading: false,
-    drawerRight: true,
-    rules: [value => !!value || env.rules[0]],
-    message: '',
-    color: '',
-    colorSave: 'primary',
-    colorClear: 'primary',
-    id: '',
-    extId: '',
-    customer: '',
-    address: '',
-    creationDate: '',
-    editedIndex: -1,
-
-    startDate: new Date().toISOString().substr(0, 10),
-    startTime: new Date().getHours() + ':' + new Date().getMinutes(),
-    menuStartDate: false,
-    menuStartTime: false,
-    endDate: null,
-    endTime: null,
-    menuEndDate: false,
-    menuEndTime: false,
-    executors: [],
-    users: [],
-    userId: '',
-    group: [],
-    workGroup: {
-      id: '',
-      groupList: '',
-    },
-    description: '',
-
   }),
 
   methods: {
-
-    ...mapActions(['addOrder', 'updateOrder', 'deleteOrder']),
-    ...mapMutations(['searchOrderMutation']),
+    ...mapActions(['deleteOrder']),
     flush() {
       this.search = ''
-      Object.assign(this,     this.fetchOrders());
-    },
-
-    // сохранение новой записи
-    save() {
-
-      const order = {
-        id: this.id,
-        extId: this.extId,
-        customer: this.customer,
-        address: this.address,
-      }
-
-      if (this.extId && this.customer && this.address) {
-
-        if (this.id) {
-          this.updateOrder(order)
-        } else {
-          this.addOrder(order)
-        }
-
-        this.editedIndex = -1
-        this.$refs.form.resetValidation()
-        this.id = ''
-        this.extId = ''
-        this.customer = ''
-        this.address = ''
-        this.colorSave = 'primary'
-        this.colorClear = 'primary'
-
-      } else {
-        this.$refs.form.validate()
-      }
-
-    },
-
-    clear() {
-      this.colorSave = 'primary'
-      this.colorClear = 'primary'
-      this.editedIndex = -1
-      this.$refs.form.resetValidation()
-      this.id = ''
-      this.extId = ''
-      this.customer = ''
-      this.address = ''
+      Object.assign(this, this.fetchOrders());
     },
 
     editOrder(item) {
       this.mini = false
-      this.colorSave = 'success'
-      this.colorClear = 'error'
-      this.drawerRight = true
-      this.editedIndex = 1
-      this.id = item.id
-      this.extId =  item.extId
-      this.customer = item.customer
-      this.address = item.address
+      this.objOrder = item
     },
 
     removeOrder(item) {
-
       this.deleteOrder(item)
-
       const data = {
         message: 'Запись с # "' + item.id + '" удалена ',
         color: 'warning',
         icon: 'mdi-alert'
       }
-
       this.showSnack(data)
-
     }
   },
 
@@ -409,17 +102,13 @@ export default {
       // console.log(data)
     })
 
-
     if (this.extId && this.customer && this.address) {
       this.colorSave = 'success'
       this.colorClear = 'error'
     }
-
-
   },
 
   mounted() {
-
     this.fetchOrders()
 
     // поиск по заявкам напрямую в бд
@@ -448,13 +137,10 @@ export default {
     stream$.subscribe()
 
   },
-
-
 }
 </script>
 
 <style scoped lang="scss">
-
 .search-panel {
   position: fixed;
   width: 100%;
@@ -463,5 +149,4 @@ export default {
   z-index: 1;
   border-bottom: 1px solid $border-bottom;
 }
-
 </style>

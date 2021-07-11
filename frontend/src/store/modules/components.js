@@ -8,6 +8,7 @@ export default {
         materials: [],
         works: []
     },
+
     mutations: {
         // devices
         fetchDeviceMutation(state, devices) {
@@ -66,6 +67,7 @@ export default {
             ]
         }
     },
+
     actions: {
         // get devices list from backend
         async fetchDevices({commit}) {
@@ -163,6 +165,7 @@ export default {
         },
 
     },
+
     getters: {
         allDevices(state) {
             return (state.devices || []).sort((a, b) => (a.id - b.id))
@@ -173,8 +176,8 @@ export default {
         },
 
         allWorks(state) {
+            // console.log(state.works)
             return (state.works || []).sort((a, b) => (a.id - b.id))
         }
-
     }
 }

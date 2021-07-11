@@ -8,7 +8,6 @@ export default {
     mutations: {
         setSnack (state, payload) {
             state.payload = payload
-
             // console.log(state.payload)
         }
     },
@@ -18,7 +17,6 @@ export default {
         },
     },
     getters: {
-
         snackData(state) {
             return state.payload
         }

@@ -4,9 +4,9 @@ import store from '@/store'
 
 export default {
     state: {
-        query: '',
         orders: []
     },
+
     mutations: {
         updateOrderMutation(state, order) {
             const updateIndex = state.orders.findIndex(item => item.id === order.id)
@@ -18,8 +18,6 @@ export default {
         },
 
         removeOrderMutation(state, order) {
-            console.log(order.id)
-
             const deletionIndex = state.orders.findIndex(item => item.id === order.id)
             console.log(deletionIndex)
             if (deletionIndex > -1) {
@@ -32,13 +30,13 @@ export default {
 
         addOrderMutation(state, orders) {
             state.orders = [
+                ...state.orders,
                 orders
             ]
         },
 
         searchOrderMutation(state, orders) {
             state.orders = orders
-            console.log(state.orders)
         },
 
         fetchOrderPageMutation(state, orders) {
@@ -48,7 +46,6 @@ export default {
                     res[val.id] = val
                     return res
                 }, {})
-
             state.orders = Object.values(targetOrders)
         },
 
@@ -60,19 +57,15 @@ export default {
             state.currentPage = currentPage
         }
     },
+
     actions: {
         async fetchOrders({commit}) {
             try{
-
                 const data = await req.request(api.API_ORDER_URL)
-
                 commit('fetchOrderPageMutation', data.orders)
                 commit('updateTotalPagesMutation', data.totalPages)
                 commit('updateCurrentPageMutation', Math.min(data.currentPage, data.totalPages))
-
             } catch (e) {
-
-
                 // const dataError = {
                 //     message: 'Error "' + e.message + '"',
                 //     color: 'error',
@@ -81,34 +74,25 @@ export default {
                 //
                 // await store.dispatch('showSnack', dataError)
             }
-
         },
 
         async addOrder({commit, state}, order) {
-
             try {
-
                 const data = await req.request(api.API_ORDER_URL, 'POST', order)
                 const index = state.orders.findIndex(item => item.id === data.id)
-                // console.log(index)
-
                 if (index > -1) {
                     commit('updateOrderMutation', data)
                 } else {
                     commit('addOrderMutation', data)
                 }
-
             } catch (e) {
-
                 const dataError = {
                     message: 'Error "' + e.message + '"',
                     color: 'error',
                     icon: 'mdi-alert-circle'
                 }
-
                 await store.dispatch('showSnack', dataError)
             }
-
         },
 
         async updateOrder({ commit }, order) {
@@ -117,9 +101,7 @@ export default {
         },
 
         async deleteOrder({ commit }, order) {
-            console.log(order)
             const data = await req.request(api.API_ORDER_URL + order.id, 'DELETE')
-            console.log(data)
             commit('removeOrderMutation', data)
         },
 
@@ -131,7 +113,6 @@ export default {
                 commit('updateCurrentPageMutation', Math.min(data.currentPage, data.totalPages))
 
             } catch (e) {
-
                 const dataError = {
                     // message: 'Error "' + e.message + '". Записей больше нет.',
                     message: 'Записей больше нет.',
@@ -140,14 +121,12 @@ export default {
                 }
                 await store.dispatch('showSnack', dataError)
             }
-
         }
-
     },
+
     getters: {
         allOrders(state) {
             return (state.orders || []).sort((a, b) => -(a.id - b.id))
         }
-
     }
 }

@@ -1,6 +1,4 @@
 <template>
-
-
   <div class="order-row">
 
       <div class="order-row-container ml-3">
@@ -118,11 +116,6 @@
           </v-tooltip>
         </div>
       </div>
-
-
-
-
-
   </div>
 
 </template>
@@ -151,10 +144,7 @@ export default {
     customer: '',
     address: '',
     selection: 'addEstimate'
-
   }),
-
-
 }
 </script>
 

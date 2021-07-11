@@ -23,7 +23,6 @@ export default {
     },
 
     actions: {
-
         async login({ commit }, user) {
             try {
 
@@ -34,8 +33,6 @@ export default {
                         'Content-Type': 'application/json'
                     }
                 })
-
-
                 if (response.ok) {
                     const user = await response.json()
                     commit('loginSuccess', user)
@@ -49,7 +46,6 @@ export default {
                 throw new e
             }
         },
-
 
         async logout({ commit }) {
             localStorage.removeItem('user')

@@ -1,8 +1,6 @@
 <template>
   <div>
-
       <div class="ml-0 mb-15 mt-3 font-s" v-if="!mini">
-
         <div class="font-weight-bold ml-3">
           {{ formTitle }}
         </div>
@@ -14,7 +12,6 @@
             ref="form"
             v-model="valid"
             lazy-validation>
-
 
 <!--          <v-col cols="12" sm="6" md="12" class="ml-0">-->
 <!--            <v-autocomplete-->
@@ -62,7 +59,6 @@
           </v-col>
 
           <v-row class="ml-0 mr-0 mt-0 mb-1">
-
             <v-col cols="12" sm="2" md="6">
               <v-autocomplete
                   class="rounded-0"
@@ -111,9 +107,7 @@
             ></v-textarea>
           </v-col>
 
-
           <v-card-actions class="pa-0">
-
             <v-col cols="12" sm="6" md="6">
               <v-btn @click="saveComponent"
                      :disabled="!group.id"
@@ -129,9 +123,7 @@
                      class="ml-3" height="35" tile small outlined>{{ env.keyClear }}</v-btn>
             </v-col>
           </v-card-actions>
-
         </v-form>
-
       </div>
   </div>
 </template>
@@ -139,13 +131,12 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
 import env from '../../env.config.json'
-// import { bus } from "@/utils/bus"
 
 export default {
   name: 'ComponentForm',
   props: ['selectedItem', 'editComponent', 'mini'],
   computed: {
-    ...mapGetters(['profile', 'allGroups']),
+    ...mapGetters(['allGroups']),
     formTitle() {
       return this.editedIndex === -1 ? env.addComponent : env.editComponent + ' # ' + this.id
     },
@@ -156,8 +147,7 @@ export default {
     this.fetchGroup()
   },
 
-  data() {
-    return {
+  data: () => ({
       ...mapActions(['fetchGroup']),
       env,
       valid: true,
@@ -165,20 +155,13 @@ export default {
       colorSave: 'primary',
       colorClear: 'primary',
       editedIndex: -1,
-
       id: '',
       select: '',
       name: '',
       dimension: ['м.', 'шт.', 'порт', 'м2.', 'смена', 'ед.'],
       price: '',
       comment: '',
-      // items: [
-      //   { key: env.sectionDevice },
-      //   { key: env.sectionMaterial },
-      //   { key: env.sectionWork }
-      // ],
       group: [],
-
       rules: [
         value => !!value || env.rules[0],
         value => (value && value.length >= 2) || env.rules[1],
@@ -187,28 +170,10 @@ export default {
         value => !!value || env.rules[0],
         value => (value && value.length >= 2) || env.rules[1],
       ],
-
-    }
-  },
-
-  watch: {
-    editComponent(newVal) {
-      this.editedIndex = 1
-      this.id = newVal.id
-      this.group.id = newVal.group.id
-      this.name = newVal.name
-      this.dimension.name = newVal.dimension
-      this.price = newVal.price
-      this.comment = newVal.note
-    }
-  },
+  }),
 
   updated() {
     this.select = this.selectedItem
-    // bus.$on('selected-item', data => {
-    //   this.select = data
-    //   console.log(data)
-    // })
 
     if (this.name && this.dimension && this.price) {
       this.colorSave = 'success'
@@ -228,7 +193,6 @@ export default {
     ]),
 
     saveComponent() {
-
       const component = {
         id: this.id,
         name: this.name,
@@ -240,35 +204,26 @@ export default {
           name: this.group.name
         }
       }
-
       if (this.name && this.group && this.dimension && this.price) {
-
         if (this.select === this.env.sectionDevice) {
-
           if (this.id) {
             this.updateDevice(component)
           } else {
             this.addDevice(component)
           }
-
         } else if (this.select === this.env.sectionMaterial) {
-
-          if (this.id) {
+          if (this.editedIndex === 1) {
             this.updateMaterial(component)
           } else {
             this.addMaterial(component)
           }
-
         } else {
-
           if (this.id) {
             this.updateWork(component)
           } else {
             this.addWork(component)
           }
-
         }
-
         this.id = ''
         this.editedIndex = -1
         this.colorSave = 'primary'
@@ -281,17 +236,13 @@ export default {
         this.dimension = ['м.', 'шт.', 'порт.', 'м2.', 'смена.', 'ед.']
         this.price = ''
         this.comment = ''
-
       } else {
-
         this.$refs.form.validate()
-
         const data = {
           message: 'Поля формы не должны быть пустыми',
           color: 'error',
           icon: 'mdi-alert-circle'
         }
-
         this.showSnack(data)
       }
     },
@@ -301,6 +252,7 @@ export default {
       this.colorSave = 'primary'
       this.colorClear = 'primary'
       this.$refs.form.resetValidation()
+      this.id = ''
       this.name = ''
       this.group = [
         { id: 1, name: 'Test1' },
@@ -309,8 +261,19 @@ export default {
       this.price = ''
       this.comment = ''
     },
+  },
 
-  }
+  watch: {
+    editComponent(newVal) {
+      this.editedIndex = 1
+      this.id = newVal.id
+      this.group.id = newVal.group.id
+      this.name = newVal.name
+      this.dimension.name = newVal.dimension
+      this.price = newVal.price
+      this.comment = newVal.note
+    }
+  },
 }
 </script>
 
