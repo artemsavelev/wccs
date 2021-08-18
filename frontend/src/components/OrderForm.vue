@@ -14,7 +14,7 @@
       <v-col cols="12" class="pa-0">
         <v-text-field
             :rules="rules"
-            class="pt-5 rounded-0"
+            class="pt-5 rounded-0 styled-input font-s"
             dense
             :label="env.numberOrder + '*'"
             required
@@ -26,7 +26,7 @@
         <v-text-field
             :rules="rules"
             dense
-            class="pt-5 rounded-0"
+            class="pt-5 rounded-0 styled-input font-s"
             :label="env.customer + '*'"
             required
             outlined
@@ -37,7 +37,7 @@
         <v-text-field
             :rules="rules"
             dense
-            class="pt-5 rounded-0"
+            class="pt-5 rounded-0 styled-input font-s"
             :label="env.address + '*'"
             required
             outlined

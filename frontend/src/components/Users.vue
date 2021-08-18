@@ -37,8 +37,26 @@
                   max-width="400">
 
             <v-card-text>
-              <v-avatar v-if="avatar" size="88">
-                <v-img :src="`https://avataaars.io/${avatar}`" class="mb-6"></v-img>
+              <v-avatar size="88">
+                <!--- with some props ---->
+<!--                <avatars v-if="avatar" :isCircle="isCircle"-->
+<!--                         :circleColor="circleColor"-->
+<!--                         :skinColor="skinColor"-->
+<!--                         :facialHairType="facialHairType"-->
+<!--                         :facialHairColor="facialHairColor"-->
+<!--                         :eyebrowType="eyebrowType"-->
+<!--                         :eyeType="eyeType"-->
+<!--                         :mouthType="mouthType"-->
+<!--                         :hairColor="hairColor"-->
+<!--                         :accessoriesType="accessoriesType"-->
+<!--                         :topType="topType"-->
+<!--                         :topColor="topColor"-->
+<!--                         :clotheType="clotheType"-->
+<!--                         :clotheColor="clotheColor"-->
+<!--                         :graphicType="graphicType">-->
+<!--                </avatars>-->
+<!--                <avatars v-else></avatars>-->
+                <avatars></avatars>
               </v-avatar>
               <h3 class="headline mb-2">
                 {{ selected.name }}
@@ -82,10 +100,8 @@
     </v-row>
 
 
-    <v-navigation-drawer width="400" v-model="drawerRight" app clipped right>
-
+    <v-navigation-drawer width="400" app clipped right>
       <AddUser/>
-
     </v-navigation-drawer>
 
 
@@ -98,29 +114,38 @@ import env from '../../env.config.json'
 // import api from '@/api/backendApi'
 import {mapActions, mapGetters} from 'vuex'
 import AddUser from "@/components/AddUser";
+import avatars from "vuejs-avataaars";
 
-const avatars = [
-  '?accessoriesType=Blank&avatarStyle=Circle&clotheColor=PastelGreen&clotheType=ShirtScoopNeck&eyeType=Wink&eyebrowType=UnibrowNatural&facialHairColor=Black&facialHairType=MoustacheMagnum&hairColor=Platinum&mouthType=Concerned&skinColor=Tanned&topType=Turban',
-  '?accessoriesType=Sunglasses&avatarStyle=Circle&clotheColor=Gray02&clotheType=ShirtScoopNeck&eyeType=EyeRoll&eyebrowType=RaisedExcited&facialHairColor=Red&facialHairType=BeardMagestic&hairColor=Red&hatColor=White&mouthType=Twinkle&skinColor=DarkBrown&topType=LongHairBun',
-  '?accessoriesType=Prescription02&avatarStyle=Circle&clotheColor=Black&clotheType=ShirtVNeck&eyeType=Surprised&eyebrowType=Angry&facialHairColor=Blonde&facialHairType=Blank&hairColor=Blonde&hatColor=PastelOrange&mouthType=Smile&skinColor=Black&topType=LongHairNotTooLong',
-  '?accessoriesType=Round&avatarStyle=Circle&clotheColor=PastelOrange&clotheType=Overall&eyeType=Close&eyebrowType=AngryNatural&facialHairColor=Blonde&facialHairType=Blank&graphicType=Pizza&hairColor=Black&hatColor=PastelBlue&mouthType=Serious&skinColor=Light&topType=LongHairBigHair',
-  '?accessoriesType=Kurt&avatarStyle=Circle&clotheColor=Gray01&clotheType=BlazerShirt&eyeType=Surprised&eyebrowType=Default&facialHairColor=Red&facialHairType=Blank&graphicType=Selena&hairColor=Red&hatColor=Blue02&mouthType=Twinkle&skinColor=Pale&topType=LongHairCurly',
-]
 
 const pause = ms => new Promise(resolve => setTimeout(resolve, ms))
 export default {
   name: 'Users',
-  components: {AddUser},
+  components: {AddUser, avatars},
   data: () => ({
 
     ...mapActions(['fetchUsers']),
 
     env,
-    drawerRight: true,
     active: [],
-    avatar: null,
+    avatar: JSON.parse(localStorage.getItem('avatar')),
     open: [],
     users: [],
+
+    skinColor: '',
+    eyebrowType: '',
+    eyeType: '',
+    mouthType: '',
+    facialHairType: '',
+    facialHairColor: '',
+    hairColor: '',
+    topType: '',
+    topColor: '',
+    accessoriesType: '',
+    clotheType: '',
+    clotheColor: '',
+    graphicType: '',
+    isCircle: true,
+    circleColor: '',
   }),
 
   computed: {
@@ -145,7 +170,7 @@ export default {
   },
 
   watch: {
-    selected: 'randomAvatar',
+    // selected: 'randomAvatar',
   },
 
   methods: {
@@ -172,14 +197,32 @@ export default {
       return item.children.push(...data)
     },
 
-    randomAvatar () {
-      this.avatar = avatars[Math.floor(Math.random() * avatars.length)]
-    },
+
   },
 
 
   mounted() {
     this.fetchUsers()
+
+    if (localStorage.getItem('avatar')) {
+      const ava = JSON.parse(localStorage.getItem('avatar'))
+      this.skinColor = ava.skinColor
+      this.eyebrowType = ava.eyebrowType
+      this.eyeType = ava.eyeType
+      this.mouthType = ava.mouthType
+      this.facialHairType = ava.facialHairType
+      this.facialHairColor = ava.facialHairColor
+      this.hairColor = ava.hairColor
+      this.topType = ava.topType
+      this.topColor = ava.topColor
+      this.accessoriesType = ava.accessoriesType
+      this.clotheType = ava.clotheType
+      this.clotheColor = ava.clotheColor
+      this.graphicType = ava.graphicType
+      this.isCircle = ava.isCircle
+      this.circleColor = ava.circleColor
+    }
+
   },
 }
 </script>

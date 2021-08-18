@@ -6,8 +6,18 @@
           # {{ order.id }}
         </div>
 
-        <div class="order-cols col-ext-id pa-0">
+        <div class="order-cols col-id pa-0">
           ID: {{ order.extId }}
+        </div>
+
+        <div class="order-cols col-ext-id py-1">
+          <v-tooltip bottom>
+            <template v-slot:activator="{ on }">
+              <span class="font-weight-regular">{{ env.author }}: </span>
+              <span v-on="on" class="font-weight-regular">{{ order.author.lastName }} {{ order.author.firstName }}</span>
+            </template>
+            <span>{{ order.author.lastName }}</span>
+          </v-tooltip>
         </div>
 
         <div class="order-cols col-created-date pa-0">
@@ -95,7 +105,12 @@
         </div>
       </div>
 
+
+
+
       <div class="order-col-container font-weight-bold ml-3">
+
+
         <div class="order-cols col-customer py-1">
           <v-tooltip bottom>
             <template v-slot:activator="{ on }">

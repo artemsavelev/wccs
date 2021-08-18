@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-if="profile" v-model="dialog" scrollable persistent>
+  <v-dialog v-if="profile" v-model="dialog" width="90%" scrollable persistent @input="drag()">
     <template v-slot:activator="{ on }" class="">
       <v-btn icon v-on="on" class="my-1" @click="get" tile>
         <v-icon dark>mdi-calculator</v-icon>
@@ -7,7 +7,7 @@
     </template>
 
     <v-card class="rounded-0">
-      <v-card-title class="form">
+      <v-card-title class="form draggable">
         <div class="font-xl color">{{formTitle}}</div>
         <v-checkbox v-model="ex"
                     class="pt-0 pb-0 mt-0 mb-0 ml-5"
@@ -84,8 +84,7 @@ import Device from './Device'
 import Materials from './Materials'
 import Work from './Work'
 import Preview from './Preview'
-
-
+import {drag} from '@/utils/draggable'
 
 
 const pause = ms => new Promise(resolve => setTimeout(resolve, ms))
@@ -152,6 +151,7 @@ export default {
   },
 
   methods: {
+    drag,
     ...mapActions(['addEstimate', 'fetchEstimate', 'showSnack', 'loadEstimate']),
     close() {
       this.dialog = false
@@ -176,9 +176,7 @@ export default {
     async create() {
       this.keyEstimate = this.ex ? this.key = 'ПРЕДВАРИТЕЛЬНАЯ' : this.key = 'ФАКТИЧЕСКАЯ'
       this.fileName = this.address + ' ' + this.customer + ' ' + this.extId + ' ' + this.keyEstimate + '.xlsx'
-
       this.fileName = this.fileName.replace(/[/\\?,%*:|"<>]/g, ' ')
-      // console.log(this.fileName)
 
       // создаем объект для отправки на сервер
       this.estimate = {
@@ -194,8 +192,6 @@ export default {
         works: this.works
       }
 
-      // console.log(this.estimate)
-
       // отправляем данные на сервер через store
       await this.addEstimate(this.estimate).then(() => {
         this.loading = true
@@ -205,19 +201,17 @@ export default {
           color: 'success',
           icon: 'mdi-check-circle'
         }
-
         this.showSnack(data)
-
       })
 
       // проверяем и загружаем файл
-
       await pause(2000)
       await fetch(api.API_GET_FILE + this.fileName, {
-
         method: 'GET',
       }).then(response => {
 
+        // const file = response.url.split('/')
+        // const estimateFileName = decodeURI(file[file.length - 1])
         response.blob()
             .then((blob) => {
 
@@ -227,29 +221,38 @@ export default {
                 const url = window.URL.createObjectURL(blob);
                 const a = document.createElement('a');
                 a.href = url;
-                a.download = this.fileName;
+                a.download = this.fileName
                 document.body.appendChild(a);
                 a.click();
                 a.remove();  //afterwards we remove the element again
                 this.loading = false // останавливаем анимацию
 
               } else {
-
                 const data = {
-                  message: 'Ошибка, файл - "' + this.fileName + '" не создан.',
+                  message: 'Ошибка, файл - "' + this.fileName + '" не скачать.',
                   color: 'error',
                   icon: 'mdi-alert-circle'
                 }
-
                 this.showSnack(data)
                 this.loading = false // останавливаем анимацию
-
               }
             })
       })
     },
 
-    get() {
+    async get() {
+      // this.keyEstimate = this.ex ? this.key = 'ПРЕДВАРИТЕЛЬНАЯ' : this.key = 'ФАКТИЧЕСКАЯ'
+      // this.fileName = this.address + ' ' + this.customer + ' ' + this.extId + ' ' + this.keyEstimate + '.xlsx'
+      // this.fileName = this.fileName.replace(/[/\\?,%*:|"<>]/g, ' ')
+      //
+      // await fetch(api.API_CREATE_ESTIMATE_TEST_URL, {
+      //   method: 'POST',
+      //
+      // }).then(response => {
+      //   console.log(response)
+      //   return response.text();
+      // }).then(data => console.log(data))
+
       // this.loadEstimate(6)
       // console.log(this.getEstimate.id)
       // console.log(this.getEstimate.extId)
@@ -259,8 +262,7 @@ export default {
       // console.log(this.getEstimate.devices)
       // console.log(this.getEstimate.materials)
       // console.log(this.getEstimate.works)
-    }
-
+    },
   }
 }
 </script>

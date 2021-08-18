@@ -12,9 +12,9 @@ public interface MaterialService {
 
     Material getById(Long id);
 
-    void create(Material material);
+    Material create(Material material);
 
-    void update(Long id, Material material);
+    Material update(Long id, Material material);
 
     List<Material> createAll(List<Material> materials);
 

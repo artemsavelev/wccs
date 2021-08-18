@@ -1,18 +1,40 @@
 package com.smart.wccs.model;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.List;
 
-@EqualsAndHashCode(callSuper = true)
+
 @Entity
 @Table(name = "device")
 @Data
-public class Device extends BaseEntity implements Components {
+@NoArgsConstructor
+public class Device implements Components {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonView({Views.UserView.class, Views.AdminView.class})
+    private Long id;
+
+    @CreatedDate
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime createdDate;
+
+    @LastModifiedDate
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime updatedDate;
+
+    @Enumerated(EnumType.STRING)
+    @JsonView(Views.AdminView.class)
+    private Status status;
 
     @JsonView({Views.UserView.class, Views.AdminView.class})
     private String name;
@@ -30,7 +52,7 @@ public class Device extends BaseEntity implements Components {
     @JsonView({Views.UserView.class, Views.AdminView.class})
     private String note;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "devices_departments",
             joinColumns = @JoinColumn(name = "device_id"),
             inverseJoinColumns = @JoinColumn(name = "department_id"))
@@ -46,4 +68,8 @@ public class Device extends BaseEntity implements Components {
     @JoinColumn(name = "author_id")
     @JsonView({Views.UserView.class, Views.AdminView.class})
     private Department author;
+
+    public Device(String name) {
+        this.name = name;
+    }
 }

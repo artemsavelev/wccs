@@ -13,12 +13,12 @@ export default {
         }
     },
     actions: {
-        async fetchEstimate({commit}, file) {
-            console.log(file)
-            const data = await req.request(api.API_GET_FILE + file)
-            console.log(data)
-            commit('addEstimateMutation', data)
-        },
+        // async fetchEstimate({commit}, file) {
+        //     console.log(file)
+        //     const data = await req.request(api.API_GET_FILE + file)
+        //     console.log(data)
+        //     commit('addEstimateMutation', data)
+        // },
 
         async loadEstimate({commit}, id) {
             const data = await req.request(api.API_GET_ESTIMATE_URL + id)

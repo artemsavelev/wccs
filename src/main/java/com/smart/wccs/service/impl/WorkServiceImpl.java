@@ -75,7 +75,7 @@ public class WorkServiceImpl implements WorkService {
     }
 
     @Override
-    public void create(Work work) {
+    public Work create(Work work) {
 
         work.setCreatedDate(LocalDateTime.now());
         work.setStatus(Status.ACTIVE);
@@ -85,6 +85,7 @@ public class WorkServiceImpl implements WorkService {
         Work createdWork = workRepo.save(work);
         log.info("IN create - work: {} successfully added for department: {}", createdWork, createdWork.getDepartments());
 
+        return work;
     }
 
     @Override
@@ -97,7 +98,7 @@ public class WorkServiceImpl implements WorkService {
     }
 
     @Override
-    public void update(Long id, Work work) {
+    public Work update(Long id, Work work) {
         Work workFromDb = workRepo.findById(id).orElseThrow(() ->
                 new ObjectNotFoundException(id,
                         "IN update - work with id: " + id + " not updated. Device not found "));
@@ -112,6 +113,7 @@ public class WorkServiceImpl implements WorkService {
 
         Work updatedWork = workRepo.save(workFromDb);
         log.info("IN update - work: {} successfully updated", updatedWork);
+        return work;
     }
 
     @Override

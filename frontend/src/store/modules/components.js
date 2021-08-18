@@ -88,7 +88,7 @@ export default {
             }
         },
         async updateDevice({commit}, device) {
-            const data = await req.request(api.API_DEVICE_URL + device.id, 'PUT', device)
+            const data = await req.request(api.API_DEVICE_UPDATE_URL + device.id, 'PUT', device)
             commit('updateDeviceMutation', data)
         },
         async addToSetDevice({commit}, device) {
@@ -120,7 +120,7 @@ export default {
             }
         },
         async updateMaterial({commit}, material) {
-            const data = await req.request(api.API_MATERIAL_URL + material.id, 'PUT', material)
+            const data = await req.request(api.API_MATERIAL_UPDATE_URL + material.id, 'PUT', material)
             commit('updateMaterialMutation', data)
         },
         async addToSetMaterial({commit}, material) {
@@ -152,7 +152,7 @@ export default {
             }
         },
         async updateWork({commit}, work) {
-            const data = await req.request(api.API_WORK_URL + work.id, 'PUT', work)
+            const data = await req.request(api.API_WORK_UPDATE_URL + work.id, 'PUT', work)
             commit('updateWorkMutation', data)
         },
         async addToSetWork({commit}, work) {
@@ -176,7 +176,6 @@ export default {
         },
 
         allWorks(state) {
-            // console.log(state.works)
             return (state.works || []).sort((a, b) => (a.id - b.id))
         }
     }

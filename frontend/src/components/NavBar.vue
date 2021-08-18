@@ -1,12 +1,29 @@
 <template>
   <div>
-
     <v-navigation-drawer v-if="profile" v-model="drawer" :mini-variant.sync="mini" width="400" app clipped>
 
-      <v-list dense class="pa-0 font-weight-light">
+      <v-list v-if="profile" dense class="pa-0 font-weight-light">
         <v-list-item class="px-2 mb-1 mt-1">
           <v-list-item-avatar>
-            <v-img :src="`https://avataaars.io/${avatar}`"></v-img>
+
+            <!--- with some props ---->
+            <avatars :isCircle="isCircle"
+                     :circleColor="circleColor"
+                     :skinColor="skinColor"
+                     :facialHairType="facialHairType"
+                     :facialHairColor="facialHairColor"
+                     :eyebrowType="eyebrowType"
+                     :eyeType="eyeType"
+                     :mouthType="mouthType"
+                     :hairColor="hairColor"
+                     :accessoriesType="accessoriesType"
+                     :topType="topType"
+                     :topColor="topColor"
+                     :clotheType="clotheType"
+                     :clotheColor="clotheColor"
+                     :graphicType="graphicType">
+            </avatars>
+
           </v-list-item-avatar>
           <v-list-item-content>
             <v-list-item-title>{{ profile.lastName }} {{ profile.firstName }}</v-list-item-title>
@@ -78,18 +95,12 @@
 import env from '../../env.config.json'
 import {mapGetters, mapMutations} from 'vuex'
 import {bus} from '@/utils/bus'
-
-const avatars = [
-  '?accessoriesType=Blank&avatarStyle=Circle&clotheColor=PastelGreen&clotheType=ShirtScoopNeck&eyeType=Wink&eyebrowType=UnibrowNatural&facialHairColor=Black&facialHairType=MoustacheMagnum&hairColor=Platinum&mouthType=Concerned&skinColor=Tanned&topType=Turban',
-  '?accessoriesType=Sunglasses&avatarStyle=Circle&clotheColor=Gray02&clotheType=ShirtScoopNeck&eyeType=EyeRoll&eyebrowType=RaisedExcited&facialHairColor=Red&facialHairType=BeardMagestic&hairColor=Red&hatColor=White&mouthType=Twinkle&skinColor=DarkBrown&topType=LongHairBun',
-  '?accessoriesType=Prescription02&avatarStyle=Circle&clotheColor=Black&clotheType=ShirtVNeck&eyeType=Surprised&eyebrowType=Angry&facialHairColor=Blonde&facialHairType=Blank&hairColor=Blonde&hatColor=PastelOrange&mouthType=Smile&skinColor=Black&topType=LongHairNotTooLong',
-  '?accessoriesType=Round&avatarStyle=Circle&clotheColor=PastelOrange&clotheType=Overall&eyeType=Close&eyebrowType=AngryNatural&facialHairColor=Blonde&facialHairType=Blank&graphicType=Pizza&hairColor=Black&hatColor=PastelBlue&mouthType=Serious&skinColor=Light&topType=LongHairBigHair',
-  '?accessoriesType=Kurt&avatarStyle=Circle&clotheColor=Gray01&clotheType=BlazerShirt&eyeType=Surprised&eyebrowType=Default&facialHairColor=Red&facialHairType=Blank&graphicType=Selena&hairColor=Red&hatColor=Blue02&mouthType=Twinkle&skinColor=Pale&topType=LongHairCurly',
-]
+import avatars from "vuejs-avataaars";
 
 // const pause = ms => new Promise(resolve => setTimeout(resolve, ms))
 export default {
   name: 'NavBar',
+  components: {avatars},
   computed: {
     ...mapGetters(['profile']),
 
@@ -150,13 +161,10 @@ export default {
     }
 
   },
-  data() {
-    return {
+  data: () => ({
       env,
-
       mini: true,
       avatar: null,
-
       icon: 'mdi-magnify',
       iconVisibleDrawer: 'mdi-dots-vertical',
       selection: 'addOrder',
@@ -168,8 +176,24 @@ export default {
       drawerRight: true,
       items: [],
       right: null,
-    }
-  },
+
+      skinColor: '',
+      eyebrowType: '',
+      eyeType: '',
+      mouthType: '',
+      facialHairType: '',
+      facialHairColor: '',
+      hairColor: '',
+      topType: '',
+      topColor: '',
+      accessoriesType: '',
+      clotheType: '',
+      clotheColor: '',
+      graphicType: '',
+      isCircle: true,
+      circleColor: '',
+
+  }),
 
   updated() {
     if (this.profile) {
@@ -191,7 +215,28 @@ export default {
   },
 
   mounted() {
-    this.avatar = avatars[Math.floor(Math.random() * avatars.length)]
+    // this.avatar = avatars[Math.floor(Math.random() * avatars.length)]
+
+
+    if (localStorage.getItem('avatar')) {
+      const ava = JSON.parse(localStorage.getItem('avatar'))
+
+      this.skinColor = ava.skinColor
+      this.eyebrowType = ava.eyebrowType
+      this.eyeType = ava.eyeType
+      this.mouthType = ava.mouthType
+      this.facialHairType = ava.facialHairType
+      this.facialHairColor = ava.facialHairColor
+      this.hairColor = ava.hairColor
+      this.topType = ava.topType
+      this.topColor = ava.topColor
+      this.accessoriesType = ava.accessoriesType
+      this.clotheType = ava.clotheType
+      this.clotheColor = ava.clotheColor
+      this.graphicType = ava.graphicType
+      this.isCircle = ava.isCircle
+      this.circleColor = ava.circleColor
+    }
   },
 
   methods: {
@@ -222,19 +267,6 @@ export default {
 <style scoped lang="scss">
 .offset {
   margin-right: 127px;
-}
-
-.red_list .v-list-item-group .v-list-item--active{
-  background-color: red;
-  color: white;
-}
-
-.v-list__group--active {
-  border: 1px solid red
-}
-
-.border {
-  border: 2px dashed orange;
 }
 
 </style>

@@ -1,18 +1,13 @@
 <template>
   <div>
-
-
     <v-switch
         class="pt-0 pb-0 mt-10 mb-0 ml-5 "
         @change="change"
         inset
+        v-model="switch1"
         :label="nameKey"
         persistent-hint>
-
     </v-switch>
-
-    <!--  <v-btn v-on:click="change" small class="pt-0 pb-0 mt-10 mb-0 ml-5 " color="primary" tile>{{ this.nameKey }}</v-btn>-->
-
 
   </div>
 </template>
@@ -26,17 +21,15 @@ export default {
   computed: {
   },
   data: () => ({
-    // switch1: !!localStorage.getItem('darkTheme'),
-    // switch1: false,
-    nameKey: 'Change Theme',
+    switch1: JSON.parse(localStorage.getItem('darkTheme')),
+    nameKey: JSON.parse(localStorage.getItem('darkTheme')) ? 'Get Light Theme' : 'Get Dark Theme',
   }),
-
+  updated() {
+    this.nameKey = JSON.parse(localStorage.getItem('darkTheme')) ? 'Get Light Theme' : 'Get Dark Theme'
+  },
   methods: {
-
     change() {
       this.$vuetify.theme.dark = !this.$vuetify.theme.dark
-      // this.$vuetify.theme.dark ? this.nameKey = 'Get Light Theme' : this.nameKey = 'Get Dark Theme'
-      // this.$vuetify.theme.dark ? this.switch1 = true : this.switch1 = false
       localStorage.setItem('darkTheme', this.$vuetify.theme.dark.toString())
     },
 

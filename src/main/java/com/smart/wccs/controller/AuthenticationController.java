@@ -2,20 +2,20 @@ package com.smart.wccs.controller;
 
 
 import com.fasterxml.jackson.annotation.JsonView;
-import com.smart.wccs.dto.*;
+import com.smart.wccs.dto.AuthenticationRequestDto;
 import com.smart.wccs.model.User;
 import com.smart.wccs.model.Views;
 import com.smart.wccs.security.JwtTokenProvider;
 import com.smart.wccs.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -77,10 +77,12 @@ public class AuthenticationController {
     }
 
 
-    @GetMapping("logout")
+    @PostMapping("logout")
     @JsonView(Views.UserView.class)
     public ResponseEntity<?> logout(HttpServletRequest request, HttpServletResponse response) {
-        userService.logout(request, response);
+        SecurityContextLogoutHandler securityContextLogoutHandler = new SecurityContextLogoutHandler();
+        securityContextLogoutHandler.logout(request, response, null);
+//        userService.logout(request, response);
         return ResponseEntity.ok("OK");
     }
 

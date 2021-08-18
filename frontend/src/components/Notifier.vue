@@ -41,8 +41,6 @@ export default {
 
       if (mutation.type === 'setSnack') {
 
-
-
         // switch (state.snackbar.payload.color) {
         //   case "success":
         //
@@ -60,7 +58,6 @@ export default {
         //     // default: this.icon = ''
         //     //     break
         // }
-
 
         this.message = state.snackbar.payload.message;
         this.color = state.snackbar.payload.color;

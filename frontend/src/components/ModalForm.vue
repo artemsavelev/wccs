@@ -6,7 +6,7 @@
     </template>
     <v-card style="height: 90vh" class="rounded-0">
 
-      <v-card-title class="form">
+      <v-card-title class="form draggable">
         <span class="font-xl">{{formTitle}}</span>
         <v-spacer></v-spacer>
         <v-btn small text tile v-on:click="close">
@@ -19,7 +19,7 @@
           <!--  search in component -->
           <v-col cols="5" class="pa-0 mt-0 mr-0 mb-0 ml-3">
             <v-text-field dense
-                          class="rounded-0"
+                          class="rounded-0 styled-input font-s"
                           :label="env.search"
                           outlined
                           clearable
@@ -89,25 +89,18 @@ export default {
 
     //
      groupBy() {
-
       return Object.values(this.filteredData).reduce((acc, obj) => {
-
         let key = obj['group']
-
         if (!acc[key.name]) {
           acc[key.name] = []
         }
-
         acc[key.name].push(obj)
-
         return acc
       }, {})
     },
 
-
     // поиск по данным
     filteredData() {
-
       let result = this.data
       // let result = this.groupBy(this.data, 'group')
       if (this.search && this.search.length >= 3) {
@@ -149,13 +142,8 @@ export default {
 
   methods: {
     ...mapActions(['showSnack']),
-
     addItem(item) {
-
-      //console.log(item)
-
       this.$emit('transmitParentForm', item)
-
       const data = {
         message: 'Запись с именем - "' + item.name + '" добавлена в конструктор.',
         color: 'success',
@@ -163,7 +151,6 @@ export default {
       }
 
       this.showSnack(data)
-
     },
 
     addWorkDescription(item) {
@@ -172,12 +159,10 @@ export default {
     },
 
     open() {
-
-      //console.log('open modal form')
     },
 
     close() {
-      this.search = '';
+      this.search = ''
       this.dialog = false
     },
     // сортировка по id

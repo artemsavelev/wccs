@@ -104,7 +104,10 @@ public class OrderServiceImpl implements OrderService {
 
         long start = System.currentTimeMillis();
 
-        List<Order> orders = orderRepo.findOrders(value);
+        List<Order> orders = orderRepo.findOrders(value)
+                .stream()
+                .filter(o -> o.getStatus() == Status.ACTIVE)
+                .collect(Collectors.toList());
 
         long end = System.currentTimeMillis();
 

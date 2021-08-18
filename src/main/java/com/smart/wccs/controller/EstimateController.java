@@ -7,9 +7,7 @@ import com.smart.wccs.service.EstimateService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,7 +16,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
@@ -60,8 +59,10 @@ public class EstimateController {
         return new ResponseEntity<>(estimate, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/files/{file_name:.+}", method = RequestMethod.GET)
-    public void getFile(@PathVariable("file_name") String fileName, @RequestHeader String referer, HttpServletResponse response) {
+    @RequestMapping(value = "/download/", method = RequestMethod.GET)
+//    @RequestMapping(value = "/files/{file_name:.+}", method = RequestMethod.GET)
+//    public void getFile(@PathVariable("file_name") String fileName, @RequestHeader String referer, HttpServletResponse response) {
+    public void getFile(@RequestParam("fileName") String fileName, @RequestHeader String referer, HttpServletResponse response) {
         // стоит проверить, если необходимо, авторизован ли пользователь и имеет достаточно прав на скачивание файла. Если нет, то выбрасываем здесь Exception
 
         if (referer == null || referer.isEmpty())
@@ -91,5 +92,20 @@ public class EstimateController {
                 }
             }
         }
+    }
+
+    @RequestMapping(value = "/download/test", method = RequestMethod.POST)
+    public ResponseEntity<?> get(@RequestBody String f, HttpServletResponse response) throws IOException {
+
+
+        List<Path> list = Files.walk(Paths.get(uploadPath))
+                .filter(Files::isRegularFile)
+                .collect(Collectors.toList());
+        Path file = list.get(0);
+
+        Path fileName = list.get(0).getName(3);
+
+
+        return new ResponseEntity<>(fileName.toString(), HttpStatus.OK);
     }
 }

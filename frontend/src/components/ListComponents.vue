@@ -12,14 +12,14 @@
               required
               outlined
               dense
-              class="rounded-0 mt-3"
+              class="rounded-0 mt-3 styled-input font-s"
           ></v-autocomplete>
         </v-col>
 
         <v-col cols="12" sm="6" md="2">
           <v-text-field dense
                         :disabled="!select"
-                        class="rounded-0 mt-3"
+                        class="rounded-0 mt-3 styled-input font-s"
                         :label="env.search"
                         outlined
                         clearable
@@ -29,7 +29,7 @@
     </div>
 
     <div class="mb-5">
-      <v-row class="mt-15 pa-10" v-if="allDevices || allMaterials || allMaterials">
+      <v-row class="mt-15 pa-10" v-if="allDevices.length > 0 || allMaterials.length > 0 || allMaterials.length > 0">
 
         <div v-if="this.select === this.env.sectionDevice" class="width-container">
           <ComponentItem :loadComponent="allDevices"
@@ -59,7 +59,7 @@
         </div>
       </v-row>
 
-      <div v-else class="no-content">
+      <div v-else class="no-content font-weight-thin">
         {{ env.noRecords }}
       </div>
     </div>
@@ -190,6 +190,10 @@ export default {
 
 .no-content {
   margin-top: 15em;
+}
+
+ul {
+  list-style: none;
 }
 
 </style>

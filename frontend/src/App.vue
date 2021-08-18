@@ -6,7 +6,10 @@
     <v-main>
 
       <div v-if="!profile && $route.path !== '/login'" class="ma-5">
-        Необходимо <router-link to="/login" tag="a" class="nav-link">авторизоваться</router-link>
+        Необходимо
+        <router-link to="/login" class="nav-link" custom v-slot="{ navigate }">
+          <span @click="navigate" @keypress.enter="navigate" role="link">авторизоваться</span>
+        </router-link>
       </div>
 
       <router-view/>

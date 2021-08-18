@@ -28,7 +28,7 @@
 
           <v-col cols="12" sm="6" md="12">
             <v-autocomplete
-                class="rounded-0"
+                class="rounded-0 styled-input font-s"
                 :disabled="!selectedItem"
                 :items="allGroups"
                 item-text="name"
@@ -43,7 +43,7 @@
 
           <v-col cols="12" sm="6" md="12">
             <v-textarea
-                class="rounded-0"
+                class="rounded-0 styled-input font-s"
                 :disabled="!group.id"
                 :rules="rules"
                 :hint="env.rules[1]"
@@ -61,7 +61,7 @@
           <v-row class="ml-0 mr-0 mt-0 mb-1">
             <v-col cols="12" sm="2" md="6">
               <v-autocomplete
-                  class="rounded-0"
+                  class="rounded-0 styled-input font-s"
                   :disabled="!group.id"
                   :rules="rules"
                   :hint="env.rules[1]"
@@ -82,7 +82,7 @@
                   :disabled="!group.id"
                   :rules="rulesPrice"
                   :hint="env.rules[1]"
-                  class="rounded-0"
+                  class="rounded-0 styled-input font-s"
                   :label="env.price + '*'"
                   v-model="price"
                   required
@@ -94,7 +94,7 @@
 
           <v-col cols="12" sm="6" md="12">
             <v-textarea
-                class="rounded-0"
+                class="rounded-0 styled-input font-s"
                 :disabled="!group.id"
                 :label="env.comment"
                 :value="comment"
@@ -138,7 +138,7 @@ export default {
   computed: {
     ...mapGetters(['allGroups']),
     formTitle() {
-      return this.editedIndex === -1 ? env.addComponent : env.editComponent + ' # ' + this.id
+      return this.editedIndex === -1 ? this.selectedItem + '. ' + env.title[0] : env.title[3] + ' # ' + this.id
     },
   },
 

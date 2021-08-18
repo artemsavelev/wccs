@@ -80,7 +80,7 @@ public class MaterialServiceImpl implements MaterialService {
     }
 
     @Override
-    public void create(Material material) {
+    public Material create(Material material) {
 
         material.setCreatedDate(LocalDateTime.now());
         material.setStatus(Status.ACTIVE);
@@ -90,6 +90,7 @@ public class MaterialServiceImpl implements MaterialService {
         Material createdMaterial = materialRepo.save(material);
         log.info("IN create - material: {} successfully added  for department: {}", createdMaterial, createdMaterial.getDepartments());
 
+        return material;
     }
 
     @Override
@@ -102,7 +103,7 @@ public class MaterialServiceImpl implements MaterialService {
     }
 
     @Override
-    public void update(Long id, Material material) {
+    public Material update(Long id, Material material) {
         Material materialFromDb = materialRepo.findById(id).orElseThrow(() ->
                 new ObjectNotFoundException(id,
                         "IN update - material with id: " + id + " not updated. Material not found "));
@@ -117,6 +118,7 @@ public class MaterialServiceImpl implements MaterialService {
 
         Material updatedMaterial = materialRepo.save(materialFromDb);
         log.info("IN update - material: {} successfully updated", updatedMaterial);
+        return material;
     }
 
     @Override

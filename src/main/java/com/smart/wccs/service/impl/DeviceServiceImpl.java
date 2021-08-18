@@ -76,7 +76,7 @@ public class DeviceServiceImpl implements DeviceService {
     }
 
     @Override
-    public void create(Device device) {
+    public Device create(Device device) {
 
         device.setCreatedDate(LocalDateTime.now());
         device.setStatus(Status.ACTIVE);
@@ -85,6 +85,7 @@ public class DeviceServiceImpl implements DeviceService {
         device.setGroup(sectionGroupRepo.findSectionGroupById(device.getGroup().getId()));
         Device createdDevice = deviceRepo.save(device);
         log.info("IN create - device: {} successfully added for department: {}", createdDevice, createdDevice.getDepartments());
+        return device;
     }
 
     @Override
@@ -97,7 +98,7 @@ public class DeviceServiceImpl implements DeviceService {
     }
 
     @Override
-    public void update(Long id, Device device) {
+    public Device update(Long id, Device device) {
         Device deviceFromDb = deviceRepo.findById(id).orElseThrow(() ->
                 new ObjectNotFoundException(id,
                         "IN update - device with id: " + id + " not updated. Device not found "));
@@ -107,11 +108,14 @@ public class DeviceServiceImpl implements DeviceService {
         deviceFromDb.setUpdatedDate(LocalDateTime.now());
         deviceFromDb.setName(device.getName());
         deviceFromDb.setDimension(device.getDimension());
-        deviceFromDb.setPrice(device.getPrice());
+        if (device.getPrice() >= 0) {
+            deviceFromDb.setPrice(device.getPrice());
+        }
         deviceFromDb.setNote(device.getNote());
 
         Device updatedDevice = deviceRepo.save(deviceFromDb);
         log.info("IN update - device: {} successfully updated", updatedDevice);
+        return device;
     }
 
     @Override

@@ -43,6 +43,7 @@ public class ActionToSetServiceImpl implements ActionToSetService {
         Department department = userRepo.findByUsername(utils.getAuthUserName()).getDepartment();
         deviceFromDb.getDepartments().add(department);
         deviceRepo.save(deviceFromDb);
+        log.info("IN toSetDevice - device {} added to set", deviceFromDb);
     }
 
     @Override
@@ -53,6 +54,7 @@ public class ActionToSetServiceImpl implements ActionToSetService {
         Department department = userRepo.findByUsername(utils.getAuthUserName()).getDepartment();
         materialFromDb.getDepartments().add(department);
         materialRepo.save(materialFromDb);
+        log.info("IN toSetMaterial - material {} added to set", materialFromDb);
     }
 
     @Override
@@ -63,6 +65,7 @@ public class ActionToSetServiceImpl implements ActionToSetService {
         Department department = userRepo.findByUsername(utils.getAuthUserName()).getDepartment();
         workFromDb.getDepartments().add(department);
         workRepo.save(workFromDb);
+        log.info("IN toSetWork - work {} added to set", workFromDb);
     }
 
     @Override
@@ -83,7 +86,7 @@ public class ActionToSetServiceImpl implements ActionToSetService {
             }
             return false;
         });
-
+        log.info("IN delSetDevice - device {} deleted from set", deviceFromDb);
     }
 
     @Override
@@ -104,7 +107,7 @@ public class ActionToSetServiceImpl implements ActionToSetService {
             }
             return false;
         });
-
+        log.info("IN delSetMaterial - material {} deleted from set", materialFromDb);
     }
 
     @Override
@@ -125,6 +128,6 @@ public class ActionToSetServiceImpl implements ActionToSetService {
             }
             return false;
         });
-
+        log.info("IN delSetWork - work {} deleted from set", workFromDb);
     }
 }

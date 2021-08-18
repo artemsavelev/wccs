@@ -21,7 +21,6 @@ public class MaterialController {
     @Autowired
     public MaterialController(MaterialService materialService) {
         this.materialService = materialService;
-
     }
 
     @GetMapping
@@ -50,15 +49,16 @@ public class MaterialController {
 
     @PostMapping
     @JsonView(Views.UserView.class)
-    public ResponseEntity<Material> saveMaterial(@RequestBody Material material) {
+    public ResponseEntity<?> saveMaterial(@RequestBody Material material) {
 
         if (material == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        } else if (material.getPrice() < 0) {
+            return new ResponseEntity<>("Значение цены не может быть отрицательным", HttpStatus.BAD_REQUEST);
         }
 
         materialService.create(material);
         return new ResponseEntity<>(material, HttpStatus.OK);
-
     }
 
     @RequestMapping(value = "/addAll", method = RequestMethod.POST)
@@ -68,19 +68,4 @@ public class MaterialController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "{id}", method = RequestMethod.PUT)
-    @JsonView(Views.UserView.class)
-    public ResponseEntity<Material> updateMaterial(@PathVariable(name = "id") Long id, @RequestBody Material material) {
-
-        if (material == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-
-        materialService.update(id, material);
-
-        Material materialFromDb = materialService.getById(id);
-
-        return new ResponseEntity<>(materialFromDb, HttpStatus.OK);
-
-    }
 }

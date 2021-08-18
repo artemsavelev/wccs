@@ -2,18 +2,20 @@
   <div class="main-container">
       <div class="search-panel">
         <v-row class="ml-3 mt-3">
-          <v-col cols="12" sm="6" md="4" class="pa-0">
+          <v-col cols="12" sm="6" md="2" class="pa-0">
             <v-text-field v-model="search"
                           :label="env.search"
                           id="s"
                           dense
                           outlined
-                          v-show="$route.path === '/'"
-                          class="rounded-0"/>
+                          @click:clear="flush"
+                          style="left: -1px"
+                          clearable
+                          class="rounded-0 styled-input font-s"/>
           </v-col>
-          <v-col cols="12" sm="6" md="2" class="ml-3 pa-0">
-            <v-btn @click="flush" tile outlined color="primary" height="40">сбросить поиск</v-btn>
-          </v-col>
+<!--          <v-col cols="12" sm="6" md="2" class="ml-3 pa-0">-->
+<!--            <v-btn @click="flush" tile outlined color="primary" height="40">сбросить поиск</v-btn>-->
+<!--          </v-col>-->
         </v-row>
       </div>
 

@@ -174,4 +174,49 @@ public class AdminController {
         return new ResponseEntity<>(workFromDb, HttpStatus.OK);
     }
 
+    @RequestMapping(value = "device/update/{id}", method = RequestMethod.PUT)
+    @JsonView(Views.AdminView.class)
+    public ResponseEntity<?> updateDevice(@PathVariable(name = "id") Long id, @RequestBody Device device) {
+
+        if (device == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        } else if (device.getPrice() < 0) {
+            return new ResponseEntity<>("Значение цены не может быть отрицательным", HttpStatus.BAD_REQUEST);
+        }
+
+        deviceService.update(id, device);
+        Device deviceFromDb = deviceService.getById(id);
+        return new ResponseEntity<>(deviceFromDb, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "material/update/{id}", method = RequestMethod.PUT)
+    @JsonView(Views.AdminView.class)
+    public ResponseEntity<?> updateMaterial(@PathVariable(name = "id") Long id, @RequestBody Material material) {
+
+        if (material == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        } else if (material.getPrice() < 0) {
+            return new ResponseEntity<>("Значение цены не может быть отрицательным", HttpStatus.BAD_REQUEST);
+        }
+
+        materialService.update(id, material);
+        Material materialFromDb = materialService.getById(id);
+        return new ResponseEntity<>(materialFromDb, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "work/update/{id}", method = RequestMethod.PUT)
+    @JsonView(Views.AdminView.class)
+    public ResponseEntity<?> updateWork(@PathVariable(name = "id") Long id, @RequestBody Work work) {
+
+        if (work == null) {
+            return new ResponseEntity<>("Данные не могут быть пустыми", HttpStatus.BAD_REQUEST);
+        } else if (work.getPrice() < 0) {
+            return new ResponseEntity<>("Значение цены не может быть отрицательным", HttpStatus.BAD_REQUEST);
+        }
+
+        workService.update(id, work);
+        Work workFromDb = workService.getById(id);
+        return new ResponseEntity<>(workFromDb, HttpStatus.OK);
+    }
+
 }

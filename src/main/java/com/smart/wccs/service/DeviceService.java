@@ -12,9 +12,9 @@ public interface DeviceService {
 
     Device getById(Long id);
 
-    void create(Device device);
+    Device create(Device device);
 
-    void update(Long id, Device device);
+    Device update(Long id, Device device);
 
     List<Device> createAll(List<Device> devices);
 

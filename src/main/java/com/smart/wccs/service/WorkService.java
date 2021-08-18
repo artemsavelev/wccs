@@ -12,9 +12,9 @@ public interface WorkService {
 
     Work getById(Long id);
 
-    void create(Work work);
+    Work create(Work work);
 
-    void update(Long id, Work work);
+    Work update(Long id, Work work);
 
     List<Work> createAll(List<Work> works);
 
