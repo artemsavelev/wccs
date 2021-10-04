@@ -1,59 +1,86 @@
 <template>
-<div>
-  <v-row>
-    <v-col cols="12">
-      <v-textarea outlined
-                  :auto-grow="true"
-                  rows="4"
-                  class="rounded-0 styled-input font-s"
-                  name="input-1"
-                  v-model="workDescription"
-                  :label="env.typeWork"></v-textarea>
+  <div>
+    <div class="main font-s mt-5">
+      <div class="font-s mt-1">
+        {{ env.typeWork }}:
+      </div>
+      <div class="font-s mt-0">
+        <div v-for="items in this.localDescription">
+          <i>{{ items }}</i>
+        </div>
+      </div>
+      <div class="font-s mt-0 red--text">
+        <i>{{ this.description.comment }}</i>
+      </div>
+      <ModalForm @addParentFormDescription="addWorkDescription"
+                 :ex="ex"
+                 :descriptionFromDb="descriptionFromDb"
+                 :typeSection="typeSection"/>
 
-      <v-textarea outlined
-                  :auto-grow="true"
-                  rows="3"
-                  class="rounded-0 styled-input font-s"
-                  name="input-2"
-                  :label="env.note"
-                  v-model="visibleComment"></v-textarea>
-      <v-btn class="" v-on:click="add" color="primary" height="35" tile small outlined>{{ env.keyAdd }}</v-btn>
-    </v-col>
-  </v-row>
-</div>
+    </div>
+  </div>
 </template>
 
 <script>
 import env from '../../env.config.json'
+const ModalForm = () => import('./ModalForm')
 
 export default {
-  name: "ListTypeWork",
-  props: ['ex'],
-  computed: {
-    visibleComment() {
-      return this.ex ? env.preliminary + env.priceTimeout : env.priceTimeout
+  name: "WorkDescription",
+  props: ['ex', 'descriptionFromDb'],
+  components: { ModalForm },
+  watch: {
+    descriptionFromDb(newVal) {
+      if (newVal !== null) {
+        this.description.workDescription = newVal
+        this.$emit('transmit', this.description.workDescription)
+      } else {
+        this.description = ''
+      }
+    },
+    ex(val) {
+      if (val) {
+        this.description.comment = env.preliminary + env.priceTimeout
+      } else {
+        this.description.comment = env.priceTimeout
+      }
     }
   },
-
+  mounted() {
+  },
   data() {
     return {
       env,
-      workDescription: env.workDescription,
-      comment: this.visibleComment
+      typeSection: 0,
+      description: {},
+      localDescription: []
     }
   },
-
   methods: {
-    add() {
+    addWorkDescription(text) {
 
-      const description = {
-        workDescription: this.workDescription,
-        comment: this.visibleComment
+      const description = text.workDescription.split('\n').map(e => {
+        if (e.length > 4) {
+          return e
+        } else {
+          return null
+        }
+      })
+
+      const index = description.indexOf(null);
+
+      if (index > -1) {
+        description.splice(index, description.length);
       }
 
-      this.$emit('add', description)
+      this.localDescription = description
 
-    },
+      this.description = {
+        workDescription: description.join('\n'),
+        comment: text.comment
+      }
+      this.$emit('transmit', this.description)
+    }
   }
 }
 </script>

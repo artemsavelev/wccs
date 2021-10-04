@@ -11,9 +11,7 @@ public enum Cols {
     SEVENTH_COL(6),
     EIGHTH_COL(7);
 
-
     private final int col;
-
 
     Cols(int col) {
         this.col = col;

@@ -2,32 +2,30 @@ package com.smart.wccs.controller;
 
 
 import com.fasterxml.jackson.annotation.JsonView;
+import com.smart.wccs.exceptions.BadRequestException;
 import com.smart.wccs.model.*;
+import com.smart.wccs.repo.UserRepo;
 import com.smart.wccs.service.*;
+import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(value = "/api/v1/admin/")
 public class AdminController {
 
     private final UserService userService;
-    private final ActionToSetService actionToSetService;
-    private final DeviceService deviceService;
-    private final MaterialService materialService;
-    private final WorkService workService;
+    private final UserRepo userRepo;
 
     @Autowired
-    public AdminController(UserService userService, ActionToSetService actionToSetService, DeviceService deviceService, MaterialService materialService, WorkService workService) {
+    public AdminController(UserService userService, UserRepo userRepo) {
         this.userService = userService;
-        this.actionToSetService = actionToSetService;
-        this.deviceService = deviceService;
-        this.materialService = materialService;
-        this.workService = workService;
+        this.userRepo = userRepo;
     }
 
     @GetMapping(value = "users/{id}")
@@ -57,166 +55,45 @@ public class AdminController {
     @PostMapping("registration")
     @JsonView(Views.AdminView.class)
     public ResponseEntity<?> registration(@RequestBody User user) {
+
+        boolean email = userService.getAllUsers()
+                .stream()
+                .anyMatch(e -> e.getEmail().equalsIgnoreCase(user.getEmail()));
+
+        boolean username = userService.getAllUsers()
+                .stream()
+                .anyMatch(u -> u.getUsername().equalsIgnoreCase(user.getUsername()));
+
+//        userService.getAllUsers()
+//                .stream()
+//                .map(User::getUsername)
+//                .filter(x -> x.equalsIgnoreCase(user.getUsername()))
+//                .findAny()
+//                .ifPresent(i -> {
+//                    new ResponseEntity<>("Пользователь с login \"" + user.getUsername()
+//                            + "\" уже существует. Придумайте другой логин", HttpStatus.BAD_REQUEST);
+//                });
+
+        if (user == null) {
+            return new ResponseEntity<>("Вы не передали никаких данных", HttpStatus.BAD_REQUEST);
+        }
+
+        if (user.getPositions().isEmpty()) {
+            return new ResponseEntity<>("Поле должности не должно быть пустым", HttpStatus.BAD_REQUEST);
+        } else if (user.getPositions().size() > 1) {
+            return new ResponseEntity<>("Поле должности не может иметь несколько значений", HttpStatus.BAD_REQUEST);
+        }
+
+        if (email) {
+            return new ResponseEntity<>("Пользователь с email \"" + user.getEmail()
+                    + "\" уже существует. Введите другой email", HttpStatus.BAD_REQUEST);
+        }
+
+        if (username) {
+            return new ResponseEntity<>("Пользователь с login \"" + user.getUsername()
+                    + "\" уже существует. Придумайте другой логин", HttpStatus.BAD_REQUEST);
+        }
+
         return ResponseEntity.ok(userService.register(user));
     }
-
-    @RequestMapping(value = "device/view-set", method = RequestMethod.GET)
-    @JsonView(Views.AdminView.class)
-    public ResponseEntity<List<Device>> listDeviceForAdmin() {
-        List<Device> devices = deviceService.getAllDeviceForAdmin();
-
-        if (devices.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-
-        return new ResponseEntity<>(devices, HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "device/to-set/{id}", method = RequestMethod.PATCH)
-    @JsonView(Views.AdminView.class)
-    public ResponseEntity<Device> toSetDevice(@PathVariable(name = "id") Long id) {
-
-        if (id == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-
-        actionToSetService.toSetDevice(id);
-        Device deviceFromDb = deviceService.getById(id);
-        return new ResponseEntity<>(deviceFromDb, HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "device/del-set/{id}", method = RequestMethod.DELETE)
-    @JsonView(Views.AdminView.class)
-    public ResponseEntity<Device> delSetDevice(@PathVariable(name = "id") Long id) {
-
-        if (id == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-
-        actionToSetService.delSetDevice(id);
-        Device deviceFromDb = deviceService.getById(id);
-        return new ResponseEntity<>(deviceFromDb, HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "material/view-set", method = RequestMethod.GET)
-    @JsonView(Views.AdminView.class)
-    public ResponseEntity<List<Material>> listMaterialForAdmin() {
-        List<Material> materials = materialService.getAllMaterialForAdmin();
-
-        if (materials.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-
-        return new ResponseEntity<>(materials, HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "material/to-set/{id}", method = RequestMethod.PATCH)
-    @JsonView(Views.AdminView.class)
-    public ResponseEntity<Material> toSetMaterial(@PathVariable(name = "id") Long id) {
-
-        if (id == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-
-        actionToSetService.toSetMaterial(id);
-        Material materialFromDb = materialService.getById(id);
-        return new ResponseEntity<>(materialFromDb, HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "material/del-set/{id}", method = RequestMethod.DELETE)
-    @JsonView(Views.AdminView.class)
-    public ResponseEntity<Material> delSetMaterial(@PathVariable(name = "id") Long id) {
-
-        if (id == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-
-        actionToSetService.delSetMaterial(id);
-        Material materialFromDb = materialService.getById(id);
-        return new ResponseEntity<>(materialFromDb, HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "work/view-set", method = RequestMethod.GET)
-    @JsonView(Views.AdminView.class)
-    public ResponseEntity<List<Work>> listWorkForAdmin() {
-        List<Work> works = workService.getAllWorkForAdmin();
-
-        if (works.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-
-        return new ResponseEntity<>(works, HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "work/to-set/{id}", method = RequestMethod.PATCH)
-    @JsonView(Views.AdminView.class)
-    public ResponseEntity<Work> toSetWork(@PathVariable(name = "id") Long id) {
-
-        if (id == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-
-        actionToSetService.toSetWork(id);
-        Work workFromDb = workService.getById(id);
-        return new ResponseEntity<>(workFromDb, HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "work/del-set/{id}", method = RequestMethod.DELETE)
-    @JsonView(Views.AdminView.class)
-    public ResponseEntity<Work> delSetWork(@PathVariable(name = "id") Long id) {
-
-        if (id == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-
-        actionToSetService.delSetWork(id);
-        Work workFromDb = workService.getById(id);
-        return new ResponseEntity<>(workFromDb, HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "device/update/{id}", method = RequestMethod.PUT)
-    @JsonView(Views.AdminView.class)
-    public ResponseEntity<?> updateDevice(@PathVariable(name = "id") Long id, @RequestBody Device device) {
-
-        if (device == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        } else if (device.getPrice() < 0) {
-            return new ResponseEntity<>("Значение цены не может быть отрицательным", HttpStatus.BAD_REQUEST);
-        }
-
-        deviceService.update(id, device);
-        Device deviceFromDb = deviceService.getById(id);
-        return new ResponseEntity<>(deviceFromDb, HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "material/update/{id}", method = RequestMethod.PUT)
-    @JsonView(Views.AdminView.class)
-    public ResponseEntity<?> updateMaterial(@PathVariable(name = "id") Long id, @RequestBody Material material) {
-
-        if (material == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        } else if (material.getPrice() < 0) {
-            return new ResponseEntity<>("Значение цены не может быть отрицательным", HttpStatus.BAD_REQUEST);
-        }
-
-        materialService.update(id, material);
-        Material materialFromDb = materialService.getById(id);
-        return new ResponseEntity<>(materialFromDb, HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "work/update/{id}", method = RequestMethod.PUT)
-    @JsonView(Views.AdminView.class)
-    public ResponseEntity<?> updateWork(@PathVariable(name = "id") Long id, @RequestBody Work work) {
-
-        if (work == null) {
-            return new ResponseEntity<>("Данные не могут быть пустыми", HttpStatus.BAD_REQUEST);
-        } else if (work.getPrice() < 0) {
-            return new ResponseEntity<>("Значение цены не может быть отрицательным", HttpStatus.BAD_REQUEST);
-        }
-
-        workService.update(id, work);
-        Work workFromDb = workService.getById(id);
-        return new ResponseEntity<>(workFromDb, HttpStatus.OK);
-    }
-
 }

@@ -1,18 +1,18 @@
 <template>
   <div>
-    <HeaderTable v-bind:typeSection="typeSection"
-                 v-bind:sortName="sortByName"
-                 v-bind:sortId="sortById"/>
+    <HeaderTable :typeSection="typeSection"
+                 :sortName="sortByName"
+                 :sortId="sortById"/>
 
     <DataContent v-for="item in works"
                  :key="item.id"
-                 v-on:remove="removeWork"
-                 v-bind:item="item"/>
+                 @remove="removeWork"
+                 :item="item"/>
 
-    <ModalForm v-on:transmitParentForm="addWork"
-               v-bind:typeSection="typeSection"
-               v-bind:extId="extId"
-               v-bind:data="allWorks"/>
+    <ModalForm @transmitParentForm="addWork"
+               :typeSection="typeSection"
+               :extId="extId"
+               :data="allWorks"/>
   </div>
 </template>
 
@@ -33,15 +33,17 @@ export default {
       ...mapActions(['fetchWorks']),
       typeSection: 3,
       works: []
-
     }
   },
-
-
+  watch: {
+    worksFromDb(newVal) {
+      this.works = newVal
+      this.$emit('transmit', this.works)
+    }
+  },
   mounted() {
     // получаем данные с сервера (список работ)
     this.fetchWorks()
-    // this.works.push(...this.worksFromDb)
   },
   updated() {
   },

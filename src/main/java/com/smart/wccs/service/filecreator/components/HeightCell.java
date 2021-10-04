@@ -9,7 +9,6 @@ public enum HeightCell {
     HEIGHT_CELL_TEXT(70),
     HEIGHT_CELL_EMPTY(7);
 
-
     private final int index;
 
     HeightCell(int index) {

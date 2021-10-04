@@ -48,20 +48,6 @@ public class WorkController {
         return new ResponseEntity<>(work, HttpStatus.OK);
     }
 
-    @PostMapping
-    @JsonView(Views.UserView.class)
-    public ResponseEntity<?> saveWork(@RequestBody Work work) {
-
-        if (work == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        } else if (work.getPrice() < 0) {
-            return new ResponseEntity<>("Значение цены не может быть отрицательным", HttpStatus.BAD_REQUEST);
-        }
-
-        workService.create(work);
-        return new ResponseEntity<>(work, HttpStatus.OK);
-    }
-
     @RequestMapping(value = "/addAll", method = RequestMethod.POST)
     @JsonView(Views.UserView.class)
     public ResponseEntity<List<Work>> saveWorkAll(@RequestBody List<Work> works) {

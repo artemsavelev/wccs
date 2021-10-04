@@ -2,37 +2,42 @@ package com.smart.wccs.controller;
 
 
 import com.fasterxml.jackson.annotation.JsonView;
+import com.smart.wccs.dto.EventType;
+import com.smart.wccs.dto.ObjectType;
 import com.smart.wccs.dto.OrderPageDto;
 import com.smart.wccs.model.Order;
 import com.smart.wccs.model.Views;
 import com.smart.wccs.service.OrderService;
-import com.smart.wccs.service.filecreator.ExcelDocument;
+import com.smart.wccs.util.WsSender;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.function.BiConsumer;
 
 @RestController
 @RequestMapping(value = "/api/v1/order/")
 public class OrderController {
-    public static final int MESSAGES_PER_PAGE = 30;
 
+    public static final int ORDERS_PER_PAGE = 30;
     private final OrderService orderService;
+    private final BiConsumer<EventType, Order> wsSender;
 
     @Autowired
-    public OrderController(OrderService orderService) {
+    public OrderController(OrderService orderService, WsSender wsSender) {
         this.orderService = orderService;
+        this.wsSender = wsSender.getSender(ObjectType.ORDER, Views.UserView.class);
     }
 
     @GetMapping
     @JsonView(Views.UserView.class)
-    public ResponseEntity<OrderPageDto> listOrders(@PageableDefault(size = MESSAGES_PER_PAGE, sort = { "id" }, direction = Sort.Direction.DESC) Pageable pageable) {
+    public ResponseEntity<OrderPageDto> listOrders(@PageableDefault(size = ORDERS_PER_PAGE, sort = { "id" }, direction = Sort.Direction.DESC) Pageable pageable) {
 
         Page<Order> orders = orderService.getAllOrders(pageable);
         if (orders.isEmpty()) {
@@ -53,8 +58,6 @@ public class OrderController {
         return new ResponseEntity<>(order, HttpStatus.OK);
     }
 
-    @MessageMapping("/sendMessage") // websocket endpoint for call saveAll method
-    @SendTo("/topic/messages") // websocket endpoint sending messages for subscribes
     @PostMapping
     @JsonView(Views.UserView.class)
     public ResponseEntity<Order> saveOrder(@RequestBody Order order) {
@@ -63,9 +66,10 @@ public class OrderController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
-        orderService.create(order);
-        return new ResponseEntity<>(order, HttpStatus.OK);
-
+        Order orderFromDb = orderService.create(order);
+        // ws
+        wsSender.accept(EventType.CREATE, orderFromDb);
+        return new ResponseEntity<>(orderFromDb, HttpStatus.OK);
     }
 
     @RequestMapping(value = "{id}", method = RequestMethod.PUT)
@@ -76,10 +80,9 @@ public class OrderController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
-        orderService.update(id, order);
-
-        Order orderFromDb = orderService.getById(id);
-
+        Order orderFromDb = orderService.update(id, order);;
+        // ws
+        wsSender.accept(EventType.UPDATE, orderFromDb);
         return new ResponseEntity<>(orderFromDb, HttpStatus.OK);
 
     }
@@ -94,6 +97,8 @@ public class OrderController {
         }
 
         orderService.delete(orderFromDb.getId());
+        // ws
+        wsSender.accept(EventType.REMOVE, orderFromDb);
         return new ResponseEntity<>(orderFromDb, HttpStatus.OK);
     }
 

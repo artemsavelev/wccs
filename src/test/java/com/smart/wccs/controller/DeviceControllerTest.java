@@ -10,13 +10,12 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -74,25 +73,7 @@ class DeviceControllerTest extends Authentication {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(id))
                 .andExpect(jsonPath("$.name").value("Test name"));
-        Mockito.verify(deviceService, Mockito.times(2)).getById(id);
-    }
-
-    @Test
-    void saveDeviceTest() throws Exception {
-        final String token = extractToken(login().andReturn());
-        Device device = new Device();
-        device.setName("Test name1");
-        Assertions.assertNotNull(device);
-
-        Mockito.when(deviceService.create(Mockito.any())).thenReturn(device);
-
-        this.mockMvc.perform(post("/api/v1/device/")
-                .header("Authorization", "bearer_" + token)
-                .content(objectMapper.writeValueAsString(device))
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name").value("Test name1"));
-        Mockito.verify(deviceService, Mockito.times(1)).create(device);
+        Mockito.verify(deviceService, Mockito.times(1)).getById(id);
     }
 
 }

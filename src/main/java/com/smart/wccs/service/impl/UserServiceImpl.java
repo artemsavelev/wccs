@@ -59,7 +59,7 @@ public class UserServiceImpl implements UserService {
         user.setUpdatedDate(LocalDateTime.now());
         user.setDepartment(user.getDepartment());
 
-        User registeredUser = userRepo.save(user);
+        User registeredUser = userRepo.saveAndFlush(user);
 
         log.info("IN register - user with username: {} successfully registered", registeredUser);
 
@@ -104,17 +104,18 @@ public class UserServiceImpl implements UserService {
     public void delete(Long id) {
         User user = userRepo.findById(id).orElseThrow(() ->
                 new UsernameNotFoundException("User doesn't exists"));
-
         user.setStatus(Status.DELETED);
-
-//        userRepo.deleteById(id);
         log.info("IN delete - user with id: {} successfully deleted", id);
+    }
+
+    @Override
+    public User update(User user) {
+        return null;
     }
 
     @Override
     public void logout(HttpServletRequest request, HttpServletResponse response) {
         SecurityContextLogoutHandler securityContextLogoutHandler = new SecurityContextLogoutHandler();
         securityContextLogoutHandler.logout(request, response, null);
-
     }
 }

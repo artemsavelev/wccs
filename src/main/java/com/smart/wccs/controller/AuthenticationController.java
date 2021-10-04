@@ -28,12 +28,8 @@ import java.util.Map;
 public class AuthenticationController {
 
     private final AuthenticationManager authenticationManager;
-
     private final JwtTokenProvider jwtTokenProvider;
-
     private final UserService userService;
-
-
 
     @Autowired
     public AuthenticationController(AuthenticationManager authenticationManager, JwtTokenProvider jwtTokenProvider, UserService userService) {
@@ -59,7 +55,8 @@ public class AuthenticationController {
 
             Map<Object, Object> response = new HashMap<>();
 
-            // передаем данные на фронтенд в профиль
+            // передаем данные в профиль
+            response.put("id", user.getId());
             response.put("username", username);
             response.put("lastName", user.getLastName());
             response.put("firstName", user.getFirstName());
@@ -75,7 +72,6 @@ public class AuthenticationController {
             throw new BadCredentialsException("Invalid username or password");
         }
     }
-
 
     @PostMapping("logout")
     @JsonView(Views.UserView.class)

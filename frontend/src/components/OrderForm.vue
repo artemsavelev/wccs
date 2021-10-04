@@ -60,8 +60,8 @@
 
 <script>
 
-import env from "../../env.config.json";
-import {mapActions} from "vuex";
+import env from '../../env.config.json'
+import {mapActions} from 'vuex'
 
 export default {
   name: "OrderForm",
@@ -88,17 +88,23 @@ export default {
   methods: {
     ...mapActions(['addOrder', 'updateOrder']),
     save() {
-      const order = {
-        id: this.id,
-        extId: this.extId,
-        customer: this.customer,
-        address: this.address,
-      }
       if (this.extId && this.customer && this.address) {
+
+
+        const order = {
+          id: this.id,
+          extId: this.extId.trim(),
+          customer: this.customer.trim(),
+          address: this.address.trim()
+        }
+
+
+
         if (this.id) {
           this.updateOrder(order)
         } else {
           this.addOrder(order)
+          // sendMessage(order)
         }
         this.editedIndex = -1
         this.$refs.form.resetValidation()

@@ -78,22 +78,22 @@ class MaterialControllerTest extends Authentication {
         Mockito.verify(materialService, Mockito.times(1)).getById(id);
     }
 
-    @Test
-    void saveMaterialTest() throws Exception {
-        final String token = extractToken(login().andReturn());
-        Material material = new Material();
-        material.setName("Test name1");
-        Assertions.assertNotNull(material);
-
-        Mockito.when(materialService.create(Mockito.any())).thenReturn(material);
-
-        this.mockMvc.perform(post("/api/v1/material/")
-                .header("Authorization", "bearer_" + token)
-                .content(objectMapper.writeValueAsString(material))
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name").value("Test name1"));
-        Mockito.verify(materialService, Mockito.times(1)).create(material);
-    }
+//    @Test
+//    void saveMaterialTest() throws Exception {
+//        final String token = extractToken(login().andReturn());
+//        Material material = new Material();
+//        material.setName("Test name1");
+//        Assertions.assertNotNull(material);
+//
+//        Mockito.when(materialService.create(Mockito.any())).thenReturn(material);
+//
+//        this.mockMvc.perform(post("/api/v1/material/")
+//                .header("Authorization", "bearer_" + token)
+//                .content(objectMapper.writeValueAsString(material))
+//                .contentType(MediaType.APPLICATION_JSON))
+//                .andExpect(status().isOk())
+//                .andExpect(jsonPath("$.name").value("Test name1"));
+//        Mockito.verify(materialService, Mockito.times(1)).create(material);
+//    }
 
 }

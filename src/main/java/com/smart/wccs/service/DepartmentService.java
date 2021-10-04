@@ -11,4 +11,6 @@ public interface DepartmentService {
     Department getById(Long id);
 
     void create(Department department);
+
+    void delete(Long id);
 }

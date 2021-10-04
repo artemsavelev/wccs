@@ -78,9 +78,6 @@ public class Data {
 
     }
 
-
-
-
     private CellStyle getStyle() {
 
         return new StyleBuilder(workbook)

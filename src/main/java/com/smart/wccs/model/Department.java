@@ -1,10 +1,13 @@
 package com.smart.wccs.model;
 
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonView;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
@@ -12,10 +15,11 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 
-
 @Entity
 @Table(name = "department")
-@Data
+@Getter
+@Setter
+@ToString
 public class Department {
 
     @Id

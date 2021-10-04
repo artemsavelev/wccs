@@ -8,7 +8,6 @@ export default {
     mutations: {
         setSnack (state, payload) {
             state.payload = payload
-            // console.log(state.payload)
         }
     },
     actions: {

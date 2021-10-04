@@ -26,15 +26,15 @@
       </div>
 
       <div class="section-cols col-sum">
-        {{ item.price * item.quantity | format }}
+        {{ (item.price * item.quantity).toFixed(2) | format }}
       </div>
 
       <div class="section-cols col-action-section">
         <v-card-actions class="pa-0 ma-0">
-          <v-btn icon v-on:click="edit">
+          <v-btn icon v-on:click="edit" tile>
             <v-icon color="iconLight">mdi-pencil</v-icon>
           </v-btn>
-          <v-btn icon v-on:click="remove">
+          <v-btn icon v-on:click="remove" tile>
             <v-icon color="iconLight">mdi-delete</v-icon>
           </v-btn>
         </v-card-actions>

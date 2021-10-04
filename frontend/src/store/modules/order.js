@@ -1,6 +1,7 @@
 import req from '../request'
-import api from '../../api/backendApi'
+import api from '@/api/backendApi'
 import store from '@/store'
+// const user = JSON.parse(localStorage.getItem('user'))
 
 export default {
     state: {

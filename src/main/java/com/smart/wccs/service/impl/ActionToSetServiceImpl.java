@@ -42,7 +42,7 @@ public class ActionToSetServiceImpl implements ActionToSetService {
                         "IN toSetDevice - device with id: " + id + " not updated. Device not found "));
         Department department = userRepo.findByUsername(utils.getAuthUserName()).getDepartment();
         deviceFromDb.getDepartments().add(department);
-        deviceRepo.save(deviceFromDb);
+        deviceRepo.saveAndFlush(deviceFromDb);
         log.info("IN toSetDevice - device {} added to set", deviceFromDb);
     }
 
@@ -53,7 +53,7 @@ public class ActionToSetServiceImpl implements ActionToSetService {
                         "IN toSetMaterial - material with id: " + id + " not updated. Material not found "));
         Department department = userRepo.findByUsername(utils.getAuthUserName()).getDepartment();
         materialFromDb.getDepartments().add(department);
-        materialRepo.save(materialFromDb);
+        materialRepo.saveAndFlush(materialFromDb);
         log.info("IN toSetMaterial - material {} added to set", materialFromDb);
     }
 
@@ -64,7 +64,7 @@ public class ActionToSetServiceImpl implements ActionToSetService {
                         "IN toSetWork - work with id: " + id + " not updated. Work not found "));
         Department department = userRepo.findByUsername(utils.getAuthUserName()).getDepartment();
         workFromDb.getDepartments().add(department);
-        workRepo.save(workFromDb);
+        workRepo.saveAndFlush(workFromDb);
         log.info("IN toSetWork - work {} added to set", workFromDb);
     }
 
@@ -75,7 +75,7 @@ public class ActionToSetServiceImpl implements ActionToSetService {
                         "IN delSetDevice - device with id: " + id + " not deleted. Device not found "));
         Department department = userRepo.findByUsername(utils.getAuthUserName()).getDepartment();
         deviceFromDb.getDepartments().remove(department);
-        deviceRepo.save(deviceFromDb);
+        deviceRepo.saveAndFlush(deviceFromDb);
 
         // данная логика нужна для соблюдения изолированности между отделами
         deviceRepo.findById(id).filter(dep -> {
@@ -96,7 +96,7 @@ public class ActionToSetServiceImpl implements ActionToSetService {
                         "IN delSetMaterial - material with id: " + id + " not deleted. Material not found "));
         Department department = userRepo.findByUsername(utils.getAuthUserName()).getDepartment();
         materialFromDb.getDepartments().remove(department);
-        materialRepo.save(materialFromDb);
+        materialRepo.saveAndFlush(materialFromDb);
 
         // данная логика нужна для соблюдения изолированности между отделами
         materialRepo.findById(id).filter(dep -> {
@@ -117,7 +117,7 @@ public class ActionToSetServiceImpl implements ActionToSetService {
                         "IN delSetWork - work with id: " + id + " not deleted. Work not found "));
         Department department = userRepo.findByUsername(utils.getAuthUserName()).getDepartment();
         workFromDb.getDepartments().remove(department);
-        workRepo.save(workFromDb);
+        workRepo.saveAndFlush(workFromDb);
 
         // данная логика нужна для соблюдения изолированности между отделами
         workRepo.findById(id).filter(dep -> {

@@ -189,9 +189,9 @@
 <script>
 
 import avatars from 'vuejs-avataaars'
-import env from "../../env.config.json"
-import avatar from "../utils/avatar"
-import {mapActions} from "vuex"
+import env from '../../env.config.json'
+import avatar from '@/utils/avatar'
+import {mapActions} from 'vuex'
 import {drag} from '@/utils/draggable'
 
 export default {

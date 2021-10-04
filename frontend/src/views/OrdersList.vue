@@ -1,8 +1,8 @@
 <template>
-  <div class="main-container">
+  <div v-if="profile" class="main-container">
       <div class="search-panel">
         <v-row class="ml-3 mt-3">
-          <v-col cols="12" sm="6" md="2" class="pa-0">
+          <v-col cols="6" sm="4" md="2" class="pa-0">
             <v-text-field v-model="search"
                           :label="env.search"
                           id="s"
@@ -13,16 +13,13 @@
                           clearable
                           class="rounded-0 styled-input font-s"/>
           </v-col>
-<!--          <v-col cols="12" sm="6" md="2" class="ml-3 pa-0">-->
-<!--            <v-btn @click="flush" tile outlined color="primary" height="40">сбросить поиск</v-btn>-->
-<!--          </v-col>-->
         </v-row>
       </div>
 
       <div>search
         <div v-if="allOrders.length" class="mt-14">
-          <OrderItem v-for="order in allOrders"
-                     :key="order.id"
+          <OrderItem v-for="(order, id) in allOrders"
+                     :key="id"
                      :order="order"
                      @removeOrder="removeOrder"
                      @editOrder="editOrder"/>
@@ -45,15 +42,15 @@
 
 <script>
 import env from '../../env.config.json'
-import LazyLoader from "@/components/LazyLoader"
-import OrderItem from "@/components/OrderItem"
-import {mapActions, mapGetters, mapMutations} from "vuex"
-import { bus } from "@/utils/bus"
+import LazyLoader from '@/components/LazyLoader'
+import OrderItem from '@/components/OrderItem'
+import {mapActions, mapGetters, mapMutations} from 'vuex'
+import { bus } from '@/utils/bus'
 import {fromEvent} from 'rxjs'
-import {debounceTime, distinctUntilChanged, filter, map, switchMap, tap} from "rxjs/operators";
-import {ajax} from "rxjs/ajax";
-import api from "@/api/backendApi";
-import OrderForm from "@/components/OrderForm";
+import {debounceTime, distinctUntilChanged, filter, map, switchMap, tap} from 'rxjs/operators'
+import {ajax} from 'rxjs/ajax'
+import api from '@/api/backendApi'
+import OrderForm from '@/components/OrderForm'
 
 
 export default {
@@ -68,7 +65,7 @@ export default {
 
   data: () => ({
     ...mapActions(['fetchOrders', 'showSnack']),
-    ...mapMutations(['searchOrderMutation']),
+    ...mapMutations(['searchOrderMutation', 'addOrderMutation']),
     mini: true,
     search: '',
     objOrder: {},
@@ -104,6 +101,8 @@ export default {
       // console.log(data)
     })
 
+
+
     if (this.extId && this.customer && this.address) {
       this.colorSave = 'success'
       this.colorClear = 'error'
@@ -122,7 +121,7 @@ export default {
             filter(searchValue => searchValue.length >= 3),
             debounceTime(1000),
             distinctUntilChanged(),
-            tap(e => console.log(e)),
+            tap(e => console.info('search string - ', e)),
             switchMap(v => ajax({
               url: api.API_ORDER_SEARCH_URL + v,
               headers: {
@@ -143,6 +142,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
+@import "src/assets/styles/styles";
 .search-panel {
   position: fixed;
   width: 100%;

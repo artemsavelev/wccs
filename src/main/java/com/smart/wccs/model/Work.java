@@ -13,13 +13,15 @@ import java.util.List;
 
 @Entity
 @Table(name = "work")
-@Data
+@Getter
+@Setter
+@ToString
 @NoArgsConstructor
 public class Work implements Components {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonView({Views.UserView.class, Views.AdminView.class})
+    @JsonView({Views.IdName.class, Views.UserView.class, Views.AdminView.class})
     private Long id;
 
     @CreatedDate
@@ -34,18 +36,18 @@ public class Work implements Components {
     @JsonView(Views.AdminView.class)
     private Status status;
 
-    @JsonView({Views.UserView.class, Views.AdminView.class})
+    @JsonView({Views.IdName.class, Views.UserView.class, Views.AdminView.class})
     private String name;
 
-    @JsonView({Views.UserView.class, Views.AdminView.class})
+    @JsonView({Views.IdName.class, Views.UserView.class, Views.AdminView.class})
     private String dimension;
 
-    @JsonView({Views.UserView.class, Views.AdminView.class})
-    private double price;
-
     @Transient
-    @JsonView({Views.UserView.class, Views.AdminView.class})
+    @JsonView({Views.IdName.class, Views.UserView.class, Views.AdminView.class})
     private int quantity;
+
+    @JsonView({Views.IdName.class, Views.UserView.class, Views.AdminView.class})
+    private double price;
 
     @JsonView({Views.UserView.class, Views.AdminView.class})
     private String note;
@@ -67,6 +69,9 @@ public class Work implements Components {
     @JoinColumn(name = "author_id")
     @JsonView({Views.UserView.class, Views.AdminView.class})
     private Department author;
+
+    @OneToMany(mappedBy = "work", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    List<EstimateWorks> works;
 
     public Work(String name) {
         this.name = name;

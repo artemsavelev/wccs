@@ -1,17 +1,19 @@
 <template>
-  <v-dialog v-model="dialog" width="80%"  scrollable persistent>
+  <v-dialog v-model="dialog" width="80%" scrollable>
 
     <template v-slot:activator="{ on }">
-      <v-btn medium v-on="on" class="ml-5" color="primary" height="35" tile small outlined>{{ env.keyPreview }}</v-btn>
+      <v-btn medium v-on="on" class="ml-5" color="primary" height="35" tile small outlined>
+        <v-icon color="warning">mdi-view-headline</v-icon>&nbsp;{{ env.keyPreview }}
+      </v-btn>
     </template>
-    <v-card>
+    <v-card class="rounded-0">
 
-      <v-card-title class="form">
+      <v-card-title>
         <span class="font-xl">{{formTitle}}</span>
         <v-spacer></v-spacer>
-<!--        <v-btn small text tile v-on:click="close">-->
-          <v-icon v-on:click="close">mdi-close</v-icon>
-<!--        </v-btn>-->
+        <v-btn small text tile @click="close">
+          <v-icon>mdi-close</v-icon>
+        </v-btn>
       </v-card-title>
       <v-card-text class="scroll font-s">
 
@@ -23,7 +25,11 @@
             <div class="owner">{{ env.owner }}: {{ preview.owner }}</div>
             <div class="empty"></div>
             <div class="type">{{ env.typeWork }}:</div>
-            <div class="description">{{ preview.workDescription }}</div>
+            <div class="description">
+              <div v-for="item in this.description">
+                {{ item }}
+              </div>
+            </div>
             <div class="comment">{{ preview.comment }}</div>
 
             <div class="section-device font-weight-bold font-s">{{ env.sectionDevice }}</div>
@@ -40,7 +46,7 @@
                 {{ env.subTotal[0] }}:
               </div>
               <div class="subtotal-price font-weight-bold">
-                {{ preview.subSumDevice | format }}
+                {{ (preview.subSumDevice).toFixed(2) | format }}
               </div>
             </div>
 
@@ -58,7 +64,7 @@
                 {{ env.subTotal[1] }}:
               </div>
               <div class="subtotal-price font-weight-bold">
-                {{ preview.subSumMaterial | format }}
+                {{ (preview.subSumMaterial).toFixed(2) | format }}
               </div>
             </div>
 
@@ -78,7 +84,7 @@
                 {{ env.subTotal[2] }}:
               </div>
               <div class="subtotal-price font-weight-bold">
-                {{ preview.subSumWork | format }}
+                {{ (preview.subSumWork).toFixed(2) | format }}
               </div>
             </div>
 
@@ -101,7 +107,7 @@
                 {{ env.total }}:
               </div>
               <div class="total-price font-weight-bold">
-                {{ preview.totalSum | format }}
+                {{ (preview.totalSum).toFixed(2) | format }}
               </div>
             </div>
 
@@ -129,14 +135,27 @@ export default {
       formTitle: env.title[2],
       dialog: false,
       typeSection: 4,
+      description: []
+    }
+  },
+
+  watch: {
+    preview(val) {
+      if (val !== null) {
+        this.description = (val.workDescription || '').split('\n').map(e => {
+          if (e.length > 4) {
+            return e
+          } else {
+            return null
+          }
+        })
+      }
     }
   },
   methods: {
     close() {
       this.dialog = false
     },
-
-
     // сортировка по id
     sortById() {
       this.preview.materials.sort((a, b) => a.id - b.id)

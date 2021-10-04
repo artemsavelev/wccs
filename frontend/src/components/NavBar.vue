@@ -2,7 +2,7 @@
   <div>
     <v-navigation-drawer v-if="profile" v-model="drawer" :mini-variant.sync="mini" width="400" app clipped>
 
-      <v-list v-if="profile" dense class="pa-0 font-weight-light">
+      <v-list v-if="profile" dense class="pa-0 font-weight-light" flat>
         <v-list-item class="px-2 mb-1 mt-1">
           <v-list-item-avatar>
 
@@ -35,34 +35,32 @@
           </v-btn>
         </v-list-item>
 
-        <v-list-group active-class="primary v-list__group--active"
+        <v-list-group active-class="primary"
                       v-for="item in showItems"
                       :key="item.title"
-                      color="white"
                       v-model="item.active">
 
           <template v-slot:activator>
             <v-list-item-icon>
-              <v-icon>{{ item.icon }}</v-icon>
+              <v-icon color="white">{{ item.icon }}</v-icon>
             </v-list-item-icon>
-            <v-list-item-content>
+            <v-list-item-content style="color: white">
               <v-list-item-title v-text="item.title"></v-list-item-title>
             </v-list-item-content>
           </template>
 
-          <v-list-item active-class="indigo lighten-5"
-                       color="black"
+          <v-list-item active-class="indigo lighten-4"
                        v-for="child in item.items"
                        :key="child.title"
                        :to="child.route"
                        link>
 
             <v-list-item-icon>
-              <v-icon>{{ child.icon }}</v-icon>
+              <v-icon color="black">{{ child.icon }}</v-icon>
             </v-list-item-icon>
 
             <v-list-item-content>
-              <v-list-item-title>{{ child.title }}</v-list-item-title>
+              <v-list-item-title style="color: black">{{ child.title }}</v-list-item-title>
             </v-list-item-content>
 
           </v-list-item>
@@ -83,9 +81,9 @@
       <v-btn v-if="profile" class="ml-5 mr-5" @click="logout" tile small icon>
         <v-icon>mdi-exit-to-app</v-icon>
       </v-btn>
-<!--      <v-btn v-if="profile && $route.path === '/'" class="ml-5 mr-5" @click="showDrawer"  tile small icon>-->
-<!--        <v-icon>{{ iconVisibleDrawer }}</v-icon>-->
-<!--      </v-btn>-->
+      <!--      <v-btn v-if="profile && $route.path === '/'" class="ml-5 mr-5" @click="showDrawer"  tile small icon>-->
+      <!--        <v-icon>{{ iconVisibleDrawer }}</v-icon>-->
+      <!--      </v-btn>-->
     </v-app-bar>
 
   </div>
@@ -95,7 +93,7 @@
 import env from '../../env.config.json'
 import {mapGetters, mapMutations} from 'vuex'
 import {bus} from '@/utils/bus'
-import avatars from "vuejs-avataaars";
+import avatars from 'vuejs-avataaars'
 
 // const pause = ms => new Promise(resolve => setTimeout(resolve, ms))
 export default {
@@ -162,36 +160,38 @@ export default {
 
   },
   data: () => ({
-      env,
-      mini: true,
-      avatar: null,
-      icon: 'mdi-magnify',
-      iconVisibleDrawer: 'mdi-dots-vertical',
-      selection: 'addOrder',
-      ordersList: [],
-      dialog: false,
-      isRoleAdmin: false,
-      isRoleSuper: false,
-      drawer: true,
-      drawerRight: true,
-      items: [],
-      right: null,
+    env,
+    active: [],
+    open: [],
+    mini: true,
+    avatar: null,
+    icon: 'mdi-magnify',
+    iconVisibleDrawer: 'mdi-dots-vertical',
+    selection: 'addOrder',
+    ordersList: [],
+    dialog: false,
+    isRoleAdmin: false,
+    isRoleSuper: false,
+    drawer: true,
+    drawerRight: true,
+    items: [],
+    right: null,
 
-      skinColor: '',
-      eyebrowType: '',
-      eyeType: '',
-      mouthType: '',
-      facialHairType: '',
-      facialHairColor: '',
-      hairColor: '',
-      topType: '',
-      topColor: '',
-      accessoriesType: '',
-      clotheType: '',
-      clotheColor: '',
-      graphicType: '',
-      isCircle: true,
-      circleColor: '',
+    skinColor: '',
+    eyebrowType: '',
+    eyeType: '',
+    mouthType: '',
+    facialHairType: '',
+    facialHairColor: '',
+    hairColor: '',
+    topType: '',
+    topColor: '',
+    accessoriesType: '',
+    clotheType: '',
+    clotheColor: '',
+    graphicType: '',
+    isCircle: true,
+    circleColor: '',
 
   }),
 

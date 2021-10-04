@@ -3,8 +3,9 @@ package com.smart.wccs.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonView;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
@@ -15,13 +16,14 @@ import java.util.List;
 
 @Entity
 @Table(name = "device")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 public class Device implements Components {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonView({Views.UserView.class, Views.AdminView.class})
+    @JsonView({Views.IdName.class, Views.UserView.class, Views.AdminView.class})
     private Long id;
 
     @CreatedDate
@@ -36,18 +38,18 @@ public class Device implements Components {
     @JsonView(Views.AdminView.class)
     private Status status;
 
-    @JsonView({Views.UserView.class, Views.AdminView.class})
+    @JsonView({Views.IdName.class, Views.UserView.class, Views.AdminView.class})
     private String name;
 
-    @JsonView({Views.UserView.class, Views.AdminView.class})
+    @JsonView({Views.IdName.class, Views.UserView.class, Views.AdminView.class})
     private String dimension;
 
-    @JsonView({Views.UserView.class, Views.AdminView.class})
-    private double price;
-
     @Transient
-    @JsonView({Views.UserView.class, Views.AdminView.class})
+    @JsonView({Views.IdName.class, Views.UserView.class, Views.AdminView.class})
     private int quantity;
+
+    @JsonView({Views.IdName.class, Views.UserView.class, Views.AdminView.class})
+    private double price;
 
     @JsonView({Views.UserView.class, Views.AdminView.class})
     private String note;
@@ -69,7 +71,19 @@ public class Device implements Components {
     @JsonView({Views.UserView.class, Views.AdminView.class})
     private Department author;
 
+    @OneToMany(mappedBy = "device")
+    List<EstimateDevices> devices;
+
     public Device(String name) {
         this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return "Device{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", price=" + price +
+                '}';
     }
 }

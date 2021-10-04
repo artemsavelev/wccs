@@ -83,7 +83,7 @@ public class DeviceServiceImpl implements DeviceService {
         device.setAuthor(userRepo.findByUsername(utils.getAuthUserName()).getDepartment());
         device.setDepartments(utils.addDepartmentToList());
         device.setGroup(sectionGroupRepo.findSectionGroupById(device.getGroup().getId()));
-        Device createdDevice = deviceRepo.save(device);
+        Device createdDevice = deviceRepo.saveAndFlush(device);
         log.info("IN create - device: {} successfully added for department: {}", createdDevice, createdDevice.getDepartments());
         return device;
     }
@@ -113,7 +113,7 @@ public class DeviceServiceImpl implements DeviceService {
         }
         deviceFromDb.setNote(device.getNote());
 
-        Device updatedDevice = deviceRepo.save(deviceFromDb);
+        Device updatedDevice = deviceRepo.saveAndFlush(deviceFromDb);
         log.info("IN update - device: {} successfully updated", updatedDevice);
         return device;
     }

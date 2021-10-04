@@ -43,9 +43,8 @@ public class UserController {
         User user = userService.findById(id);
 
         if (user == null) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-
 
         return new ResponseEntity<>(user, HttpStatus.OK);
     }

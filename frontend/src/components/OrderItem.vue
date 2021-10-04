@@ -23,7 +23,7 @@
         <div class="order-cols col-created-date pa-0">
           <v-tooltip bottom>
             <template v-slot:activator="{ on }">
-              <span v-on="on">Дата создания: {{ order.createdDate }}</span>
+              <span v-on="on">{{ order.createdDate }}</span>
             </template>
             <span>Дата создания: {{ order.createdDate }}</span>
           </v-tooltip>
@@ -32,7 +32,7 @@
         <div v-if="order.updatedDate" class="order-cols col-created-date pa-0">
           <v-tooltip bottom>
             <template v-slot:activator="{ on }">
-              <span v-on="on">Дата обновления: {{ order.updatedDate }}</span>
+              <span v-on="on">{{ order.updatedDate }}</span>
             </template>
             <span>Дата обновления: {{ order.updatedDate }}</span>
           </v-tooltip>
@@ -61,32 +61,32 @@
             </v-tooltip>
           </span>
 
-<!--          <span v-if="order.versionEstimate === 0" class="text-red">-->
-<!--            <v-tooltip bottom>-->
-<!--              <template v-slot:activator="{ on }">-->
-<!--                <v-icon color="red darken-1" v-on="on">mdi-file-document-edit</v-icon>-->
-<!--              </template>-->
-<!--              <span>Статус: смета в разработке</span>-->
-<!--            </v-tooltip>-->
-<!--          </span>-->
+          <span v-if="order.versionEstimate === 'ACTIVE'" class="text-red">
+            <v-tooltip bottom>
+              <template v-slot:activator="{ on }">
+                <v-icon color="red darken-1" v-on="on">mdi-file-document-edit</v-icon>
+              </template>
+              <span>Статус: смета в разработке</span>
+            </v-tooltip>
+          </span>
 
-<!--          <span v-else-if="order.versionEstimate === 1" class="text-green">-->
-<!--            <v-tooltip bottom>-->
-<!--              <template v-slot:activator="{ on }">-->
-<!--                <v-icon color="orange" v-on="on">mdi-file-document</v-icon>-->
-<!--              </template>-->
-<!--              <span>Статус: посчитана предварительная смета</span>-->
-<!--            </v-tooltip>-->
-<!--          </span>-->
+          <span v-else-if="order.versionEstimate === 'PROCESS'" class="text-green">
+            <v-tooltip bottom>
+              <template v-slot:activator="{ on }">
+                <v-icon color="orange" v-on="on">mdi-file-document</v-icon>
+              </template>
+              <span>Статус: посчитана предварительная смета</span>
+            </v-tooltip>
+          </span>
 
-<!--          <span v-else-if="order.versionEstimate === 2" class="text-green">-->
-<!--            <v-tooltip bottom>-->
-<!--              <template v-slot:activator="{ on }">-->
-<!--                <v-icon color="green darken-2" v-on="on">mdi-file-document-multiple</v-icon>-->
-<!--              </template>-->
-<!--              <span>Статус: посчитана фактическая смета</span>-->
-<!--            </v-tooltip>-->
-<!--          </span>-->
+          <span v-else-if="order.versionEstimate === 'COMPLETED'" class="text-green">
+            <v-tooltip bottom>
+              <template v-slot:activator="{ on }">
+                <v-icon color="green darken-2" v-on="on">mdi-file-document-multiple</v-icon>
+              </template>
+              <span>Статус: посчитана фактическая смета</span>
+            </v-tooltip>
+          </span>
 
         </div>
 
@@ -95,9 +95,7 @@
             <v-icon dark>mdi-pencil</v-icon>
           </v-btn>
 
-          <Estimate v-bind:extId="order.extId"
-                    v-bind:customer="order.customer"
-                    v-bind:address="order.address"/>
+          <Estimate :order="order"/>
 
           <v-btn icon v-on:click="del" class="my-1 mr-1" tile>
             <v-icon dark>mdi-delete</v-icon>
@@ -138,27 +136,33 @@
 <script>
 import Estimate from '@/components/Estimate'
 import env from '../../env.config.json'
+import {mapGetters} from 'vuex'
 
 export default {
   name: 'OrderItem',
   props: ['order'],
   components: { Estimate },
+  computed: {
+    ...mapGetters(['profile']),
+  },
+  mounted() {
+  },
+  updated() {
+  },
   methods: {
-
     edit() {
       this.$emit('editOrder', this.order)
     },
 
     del() {
       this.$emit('removeOrder', this.order)
-    },
-
+    }
   },
   data: () => ({
     env,
     customer: '',
     address: '',
-    selection: 'addEstimate'
+    // selection: 'addEstimate'
   }),
 }
 </script>
@@ -222,7 +226,7 @@ export default {
 }
 
 .col-verif {
-  text-align: right;
+  text-align: center;
   flex-basis: 5%;
 }
 

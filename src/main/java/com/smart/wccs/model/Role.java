@@ -2,8 +2,9 @@ package com.smart.wccs.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonView;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
@@ -12,7 +13,9 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "roles")
-@Data
+@Getter
+@Setter
+@ToString
 public class Role {
 
     @Id

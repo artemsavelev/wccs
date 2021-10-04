@@ -18,5 +18,7 @@ public interface UserService {
 
     void delete(Long id);
 
+    User update(User user);
+
     void logout(HttpServletRequest request, HttpServletResponse response);
 }

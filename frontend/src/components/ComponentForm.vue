@@ -63,8 +63,6 @@
               <v-autocomplete
                   class="rounded-0 styled-input font-s"
                   :disabled="!group.id"
-                  :rules="rules"
-                  :hint="env.rules[1]"
                   :items="dimension"
                   item-text="name"
                   item-value="name"
@@ -73,7 +71,6 @@
                   required
                   outlined
                   dense
-                  counter
               ></v-autocomplete>
             </v-col>
 
@@ -158,7 +155,7 @@ export default {
       id: '',
       select: '',
       name: '',
-      dimension: ['м.', 'шт.', 'порт', 'м2.', 'смена', 'ед.'],
+      dimension:  env.dimensionList,
       price: '',
       comment: '',
       group: [],
@@ -193,18 +190,19 @@ export default {
     ]),
 
     saveComponent() {
-      const component = {
-        id: this.id,
-        name: this.name,
-        dimension: this.dimension.name,
-        price: this.price,
-        note: this.comment,
-        group: {
-          id: this.group.id,
-          name: this.group.name
-        }
-      }
       if (this.name && this.group && this.dimension && this.price) {
+        const component = {
+          id: this.id,
+          name: this.name.trim(),
+          dimension: this.dimension.name,
+          price: this.price,
+          note: this.comment,
+          group: {
+            id: this.group.id,
+            name: this.group.name
+          }
+        }
+
         if (this.select === this.env.sectionDevice) {
           if (this.id) {
             this.updateDevice(component)
@@ -233,7 +231,7 @@ export default {
         this.group = [
           { id: 1, name: 'Test1' },
         ]
-        this.dimension = ['м.', 'шт.', 'порт.', 'м2.', 'смена.', 'ед.']
+        this.dimension = env.dimensionList
         this.price = ''
         this.comment = ''
       } else {
@@ -257,7 +255,7 @@ export default {
       this.group = [
         { id: 1, name: 'Test1' },
       ]
-      this.dimension = ['м.', 'шт.', 'порт.', 'м2.', 'смена.', 'ед.']
+      this.dimension = env.dimensionList
       this.price = ''
       this.comment = ''
     },
@@ -278,9 +276,6 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.v-text-field input {
-  font-size: 8px;
-}
 
 $font-size-root: 8px;
 </style>

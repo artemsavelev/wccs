@@ -1,5 +1,4 @@
 import store from '@/store'
-import router from '@/router'
 import api from '../api/backendApi'
 
 
@@ -36,25 +35,24 @@ export default {
                 }
                 return await response.json()
             } else {
-                // if (url === api.API_ORDER_URL && response.status === 401) {
-                //     localStorage.removeItem('user')
-                //     await router.push({ path: '/login'})
-                // }
                 response.text().then(e => {
+                    const err = JSON.parse(e)
                     if (url === api.API_ORDER_URL && response.status === 401) {
                         const dataError = {
-                            message: 'Error code - ' + response.status + ': Токен JWT истек или недействителен. Требуется авторизация',
+                            message: 'Error code - ' + response.status + ': Токен JWT истек или недействителен. Требуется авторизация.',
                             color: 'error',
                             icon: 'mdi-alert-circle'
                         }
                         store.dispatch('showSnack', dataError)
-                        router.push('/login')
+                        store.dispatch('logout')
                     } else {
                         const dataError = {
-                            message: 'Error code - ' + response.status + ': С сообщением "' + e + '".',
+                            message: 'Error code - ' + err.status + ': С сообщением "'
+                                + err.error + ': ' + err.message + ' ' + err.timestamp + '".',
                             color: 'error',
                             icon: 'mdi-alert-circle'
                         }
+                        console.error(err)
                         store.dispatch('showSnack', dataError)
                     }
                 })

@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Value;
 
 public class FontBuilder {
 
-
     private final Font font;
 
     @Value("${fontName}")

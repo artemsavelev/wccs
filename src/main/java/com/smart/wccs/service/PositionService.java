@@ -11,4 +11,6 @@ public interface PositionService {
     Position getById(Long id);
 
     void create(Position position);
+
+    void delete(Long id);
 }

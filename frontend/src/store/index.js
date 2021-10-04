@@ -5,8 +5,9 @@ import order from './modules/order'
 import errors from './modules/errors'
 import estimate from './modules/estimate'
 import components from './modules/components'
-import registration from './modules/registration'
 import users from './modules/users'
+import positions from './modules/positions'
+import departments from './modules/departments'
 import snackbar from './modules/snackbar'
 import group from './modules/group'
 
@@ -20,8 +21,9 @@ export default new Vuex.Store({
     errors,
     estimate,
     components,
-    registration,
     users,
+    positions,
+    departments,
     snackbar,
     group
   }

@@ -1,7 +1,7 @@
 package com.smart.wccs.service.filecreator;
 
-import com.smart.wccs.model.Estimate;
+import com.smart.wccs.dto.EstimateDto;
 
 public interface FileCreator {
-    void createFile(Estimate estimate);
+    String createFile(EstimateDto estimate);
 }

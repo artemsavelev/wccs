@@ -84,54 +84,54 @@ class AdminControllerTest extends Authentication {
     void delSetWorkTest() {
     }
 
-    @Test
-    void updateDeviceTest() throws Exception {
-        final String token = extractToken(login().andReturn());
-        long id = 1L;
-        Device device = new Device("Test 123");
-        Assertions.assertNotNull(device);
-
-        Mockito.when(deviceService.update(Mockito.any(), Mockito.any())).thenReturn(device);
-
-        this.mockMvc.perform(put("/api/v1/admin/device/update/{id}", id)
-                .header("Authorization", "bearer_" + token)
-                .content(objectMapper.writeValueAsString(new Device("Test 123")))
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
-        Mockito.verify(deviceService, Mockito.times(1)).update(id, device);
-    }
-
-    @Test
-    void updateMaterialTest() throws Exception {
-        final String token = extractToken(login().andReturn());
-        long id = 1L;
-        Material material = new Material("Test 123");
-        Assertions.assertNotNull(material);
-
-        Mockito.when(materialService.update(Mockito.any(), Mockito.any())).thenReturn(material);
-
-        this.mockMvc.perform(put("/api/v1/admin/material/update/{id}", id)
-                .header("Authorization", "bearer_" + token)
-                .content(objectMapper.writeValueAsString(new Device("Test 123")))
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
-        Mockito.verify(materialService, Mockito.times(1)).update(id, material);
-    }
-
-    @Test
-    void updateWorkTest() throws Exception {
-        final String token = extractToken(login().andReturn());
-        long id = 1L;
-        Work work = new Work("Test 123");
-        Assertions.assertNotNull(work);
-
-        Mockito.when(workService.update(Mockito.any(), Mockito.any())).thenReturn(work);
-
-        this.mockMvc.perform(put("/api/v1/admin/work/update/{id}", id)
-                .header("Authorization", "bearer_" + token)
-                .content(objectMapper.writeValueAsString(new Work("Test 123")))
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
-        Mockito.verify(workService, Mockito.times(1)).update(id, work);
-    }
+//    @Test
+//    void updateDeviceTest() throws Exception {
+//        final String token = extractToken(login().andReturn());
+//        long id = 1L;
+//        Device device = new Device("Test 123");
+//        Assertions.assertNotNull(device);
+//
+//        Mockito.when(deviceService.update(Mockito.any(), Mockito.any())).thenReturn(device);
+//
+//        this.mockMvc.perform(put("/api/v1/admin/device/update/{id}", id)
+//                .header("Authorization", "bearer_" + token)
+//                .content(objectMapper.writeValueAsString(new Device("Test 123")))
+//                .contentType(MediaType.APPLICATION_JSON))
+//                .andExpect(status().isOk());
+//        Mockito.verify(deviceService, Mockito.times(1)).update(id, device);
+//    }
+//
+//    @Test
+//    void updateMaterialTest() throws Exception {
+//        final String token = extractToken(login().andReturn());
+//        long id = 1L;
+//        Material material = new Material("Test 123");
+//        Assertions.assertNotNull(material);
+//
+//        Mockito.when(materialService.update(Mockito.any(), Mockito.any())).thenReturn(material);
+//
+//        this.mockMvc.perform(put("/api/v1/admin/material/update/{id}", id)
+//                .header("Authorization", "bearer_" + token)
+//                .content(objectMapper.writeValueAsString(new Device("Test 123")))
+//                .contentType(MediaType.APPLICATION_JSON))
+//                .andExpect(status().isOk());
+//        Mockito.verify(materialService, Mockito.times(1)).update(id, material);
+//    }
+//
+//    @Test
+//    void updateWorkTest() throws Exception {
+//        final String token = extractToken(login().andReturn());
+//        long id = 1L;
+//        Work work = new Work("Test 123");
+//        Assertions.assertNotNull(work);
+//
+//        Mockito.when(workService.update(Mockito.any(), Mockito.any())).thenReturn(work);
+//
+//        this.mockMvc.perform(put("/api/v1/admin/work/update/{id}", id)
+//                .header("Authorization", "bearer_" + token)
+//                .content(objectMapper.writeValueAsString(new Work("Test 123")))
+//                .contentType(MediaType.APPLICATION_JSON))
+//                .andExpect(status().isOk());
+//        Mockito.verify(workService, Mockito.times(1)).update(id, work);
+//    }
 }

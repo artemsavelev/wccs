@@ -4,7 +4,7 @@
     <template v-slot:activator="{ on }" class="mt-1">
       <v-btn v-on="on" @click="open" class="mb-10 mt-1" color="primary" height="35" tile small outlined>{{ env.keyAdd }}</v-btn>
     </template>
-    <v-card style="height: 90vh" class="rounded-0">
+    <v-card height="unset" class="rounded-0">
 
       <v-card-title class="form draggable">
         <span class="font-xl">{{formTitle}}</span>
@@ -28,9 +28,9 @@
           <!-- // search in component -->
           <v-col class="pt-0 pr-3 pb-0 pl-3">
 
-            <HeaderTable v-bind:type="type"
-                         v-bind:sortName="sortByName"
-                         v-bind:sortId="sortById"/>
+            <HeaderTable :type="type"
+                         :sortName="sortByName"
+                         :sortId="sortById"/>
           </v-col>
         </v-container>
       </div>
@@ -39,8 +39,25 @@
         <v-container>
           <div v-if="typeSection === 0">
             <!--   load component add work description   -->
-            <WorkDescription v-bind:ex="ex"
-                             v-on:add="addWorkDescription"/>
+            <v-row>
+              <v-col cols="12">
+                <v-textarea outlined
+                            :auto-grow="true"
+                            rows="4"
+                            class="rounded-0 styled-input font-s"
+                            name="input-1"
+                            :label="env.typeWork"
+                            v-model="workDescription"></v-textarea>
+                <v-textarea outlined
+                            :auto-grow="true"
+                            rows="3"
+                            class="rounded-0 styled-input font-s"
+                            name="input-2"
+                            :label="env.note"
+                            v-model="visibleComment"></v-textarea>
+                <v-btn class="" @click="addWorkDescription" color="primary" height="35" tile small outlined>{{ env.keyAdd }}</v-btn>
+              </v-col>
+            </v-row>
             <!--   // load component add work description -->
           </div>
 
@@ -48,21 +65,18 @@
             <v-row class="pl-3">
               <v-col>
                 <!--   load module add device, material, work    -->
-                <div class="mb-10 ml-1 mr-3" v-for="(group, i) of Object.values(groupBy)"
-                     :key="group.id"> <span class="font-weight-light font-xl"> {{ Object.keys(groupBy)[i] }} </span>
-
+                <div class="mb-10 ml-1 mr-3" v-for="(group, i) of Object.values(groupBy)" :key="group.id">
+                  <span class="font-weight-light font-xl"> {{ Object.keys(groupBy)[i] }} </span>
                   <SectionItem v-for="item of group"
+                               @transmitItemInModalForm="addItem"
                                :key="item.id"
-                               v-on:transmitItemInModalForm="addItem"
-                               v-bind:extId="extId"
-                               v-bind:item="item"/>
-
+                               :item="item"/>
                 </div>
                 <!--  // load module add device, material, work  -->
               </v-col>
-
             </v-row>
           </div>
+
           <div v-else class="no-content">
             {{ env.noRecords }}
           </div>
@@ -76,18 +90,19 @@
 <script>
 import env from '../../env.config.json'
 import {mapActions} from 'vuex'
-
 const SectionItem = () => import('@/components/SectionItem')
 const HeaderTable = () => import('@/components/HeaderTable')
-const WorkDescription = () => import('@/components/WorkDescription')
 
 export default {
   name: 'ModalWin',
-  components: { WorkDescription, HeaderTable, SectionItem },
-  props: ['typeSection', 'data', 'ex', 'extId'],
+  components: { HeaderTable, SectionItem },
+  props: ['openModalForm', 'typeSection', 'data', 'ex', 'descriptionFromDb'],
   computed: {
 
-    //
+    visibleComment() {
+      return this.ex ? env.preliminary + env.priceTimeout : env.priceTimeout
+    },
+    // группировка записей
      groupBy() {
       return Object.values(this.filteredData).reduce((acc, obj) => {
         let key = obj['group']
@@ -98,11 +113,9 @@ export default {
         return acc
       }, {})
     },
-
     // поиск по данным
     filteredData() {
       let result = this.data
-      // let result = this.groupBy(this.data, 'group')
       if (this.search && this.search.length >= 3) {
         result = result.filter(item => {
           if (item.name.toLowerCase().indexOf(this.search.toLowerCase()) !== -1) {
@@ -112,7 +125,6 @@ export default {
       }
       return result;
     },
-
     // наименование модальных окон
     formTitle() {
       if (this.typeSection === 0) {
@@ -125,19 +137,41 @@ export default {
         return env.sectionWork;
       }
     },
-
   },
+
+
+  watch: {
+    openModalForm(val) {
+      this.dialog = val
+    },
+    descriptionFromDb(val) {
+      if (val) {
+        this.workDescription = val
+        const description = {
+          workDescription: this.workDescription,
+          comment: this.visibleComment
+        }
+        this.$emit('addParentFormDescription', description)
+      } else {
+        this.workDescription = env.workDescription
+        const description = {
+          workDescription: '',
+          comment: ''
+        }
+        this.$emit('addParentFormDescription', description)
+      }
+    },
+  },
+
   data() {
     return {
       env,
       dialog: false,
       search: '',
       type: 123,
+      workDescription: env.workDescription,
+      comment: this.visibleComment
     }
-  },
-
-  updated() {
-    // console.log(Object.values(this.groupBy))
   },
 
   methods: {
@@ -153,8 +187,12 @@ export default {
       this.showSnack(data)
     },
 
-    addWorkDescription(item) {
-      this.$emit('addParentFormDescription', item)
+    addWorkDescription() {
+      const description = {
+        workDescription: this.workDescription,
+        comment: this.visibleComment
+      }
+      this.$emit('addParentFormDescription', description)
       this.dialog = false
     },
 
@@ -164,6 +202,7 @@ export default {
     close() {
       this.search = ''
       this.dialog = false
+      this.$emit('closeModalForm', this.dialog)
     },
     // сортировка по id
     sortById() {
@@ -179,8 +218,5 @@ export default {
 </script>
 
 <style lang="scss">
-.group {
-
-}
 
 </style>

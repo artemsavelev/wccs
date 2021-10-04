@@ -87,7 +87,7 @@ public class MaterialServiceImpl implements MaterialService {
         material.setAuthor(userRepo.findByUsername(utils.getAuthUserName()).getDepartment());
         material.setDepartments(utils.addDepartmentToList());
         material.setGroup(sectionGroupRepo.findSectionGroupById(material.getGroup().getId()));
-        Material createdMaterial = materialRepo.save(material);
+        Material createdMaterial = materialRepo.saveAndFlush(material);
         log.info("IN create - material: {} successfully added  for department: {}", createdMaterial, createdMaterial.getDepartments());
 
         return material;
@@ -113,10 +113,12 @@ public class MaterialServiceImpl implements MaterialService {
         materialFromDb.setUpdatedDate(LocalDateTime.now());
         materialFromDb.setName(material.getName());
         materialFromDb.setDimension(material.getDimension());
-        materialFromDb.setPrice(material.getPrice());
+        if (material.getPrice() >= 0) {
+            materialFromDb.setPrice(material.getPrice());
+        }
         materialFromDb.setNote(material.getNote());
 
-        Material updatedMaterial = materialRepo.save(materialFromDb);
+        Material updatedMaterial = materialRepo.saveAndFlush(materialFromDb);
         log.info("IN update - material: {} successfully updated", updatedMaterial);
         return material;
     }

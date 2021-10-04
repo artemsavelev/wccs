@@ -2,9 +2,11 @@ package com.smart.wccs.model;
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonView;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
@@ -13,12 +15,14 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "orders")
-@Data
+@Getter
+@Setter
+@ToString
 public class Order {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonView({Views.UserView.class, Views.AdminView.class})
+    @JsonView({Views.IdName.class, Views.UserView.class, Views.AdminView.class})
     private Long id;
 
     @CreatedDate
@@ -63,6 +67,7 @@ public class Order {
     @JsonView({Views.UserView.class, Views.AdminView.class})
     private Department department;
 
+    @Enumerated(EnumType.STRING)
     @JsonView({Views.UserView.class, Views.AdminView.class})
-    private Integer versionEstimate;
+    private Status versionEstimate;
 }

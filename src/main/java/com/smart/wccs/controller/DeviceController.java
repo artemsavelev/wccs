@@ -34,7 +34,6 @@ public class DeviceController {
         return new ResponseEntity<>(devices, HttpStatus.OK);
     }
 
-
     @GetMapping(value = "{id}")
     @JsonView(Views.UserView.class)
     public ResponseEntity<Device> getDevice(@PathVariable(name = "id") Long id) {
@@ -44,20 +43,6 @@ public class DeviceController {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
 
-        return new ResponseEntity<>(device, HttpStatus.OK);
-    }
-
-    @PostMapping
-    @JsonView(Views.UserView.class)
-    public ResponseEntity<?> saveDevice(@RequestBody Device device) {
-
-        if (device == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        } else if (device.getPrice() < 0) {
-            return new ResponseEntity<>("Значение цены не может быть отрицательным", HttpStatus.BAD_REQUEST);
-        }
-
-        deviceService.create(device);
         return new ResponseEntity<>(device, HttpStatus.OK);
     }
 

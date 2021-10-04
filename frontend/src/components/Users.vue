@@ -13,9 +13,9 @@
                     dense
                     transition>
           <template v-slot:prepend="{ item }">
-            <v-icon v-if="!item.children">
-              mdi-account
-            </v-icon>
+              <v-icon v-if="!item.children">
+                mdi-account
+              </v-icon>
           </template>
 
         </v-treeview>
@@ -34,7 +34,7 @@
                   :key="selected.id"
                   class="pt-6 mx-auto"
                   flat
-                  max-width="400">
+                  max-width="600">
 
             <v-card-text>
               <v-avatar size="88">
@@ -101,7 +101,7 @@
 
 
     <v-navigation-drawer width="400" app clipped right>
-      <AddUser/>
+      <UserForm :editUser="selected"/>
     </v-navigation-drawer>
 
 
@@ -111,16 +111,15 @@
 
 <script>
 import env from '../../env.config.json'
-// import api from '@/api/backendApi'
 import {mapActions, mapGetters} from 'vuex'
-import AddUser from "@/components/AddUser";
-import avatars from "vuejs-avataaars";
+import UserForm from '@/components/UserForm'
+import avatars from 'vuejs-avataaars'
 
 
 const pause = ms => new Promise(resolve => setTimeout(resolve, ms))
 export default {
   name: 'Users',
-  components: {AddUser, avatars},
+  components: {UserForm, avatars},
   data: () => ({
 
     ...mapActions(['fetchUsers']),
@@ -164,6 +163,8 @@ export default {
       if (!this.active.length) return undefined
 
       const id = this.active[0]
+
+      //console.log(this.allUsers.find(user => user.id === id))
 
       return this.allUsers.find(user => user.id === id)
     },

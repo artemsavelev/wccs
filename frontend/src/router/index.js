@@ -39,7 +39,7 @@ const routes = [
   //   path: '/admin/add-user',
   //   name: 'AddUser',
   //   meta: { auth: true },
-  //   component: () => import('@/components/AddUser.vue')
+  //   component: () => import('@/components/UserForm.vue')
   // },
   {
     path: '/admin/users',
@@ -57,7 +57,7 @@ const routes = [
     path: '/admin/components',
     name: 'ListComponents',
     meta: { auth: true },
-    component: () => import('@/components/ListComponents.vue')
+    component: () => import('@/components/ComponentsList.vue')
   }
 
 ];
@@ -79,12 +79,12 @@ router.beforeEach((to, from, next) => {
   // }
 
 
-  const publicPages = ['/login'];
-  const authRequired = !publicPages.includes(to.path);
-  const loggedIn = localStorage.getItem('user');
+  const publicPages = ['/login']
+  const authRequired = !publicPages.includes(to.path)
+  const loggedIn = localStorage.getItem('user')
 
   if (authRequired && !loggedIn) {
-    return next('/login');
+    return next('/login')
   }
 
   next();

@@ -1,5 +1,5 @@
-import req from "@/store/request"
-import api from "@/api/backendApi"
+import req from '@/store/request'
+import api from '@/api/backendApi'
 
 
 export default {
@@ -74,12 +74,13 @@ export default {
             const data = await req.request(api.API_DEVICE_URL)
             commit('fetchDeviceMutation', data)
         },
+        // admin
         async fetchDevicesForAdmin({commit}) {
             const data = await req.request(api.API_DEVICE_VIEW_SET_URL)
             commit('fetchDeviceMutation', data)
         },
         async addDevice({commit, state}, device) {
-            const data = await req.request(api.API_DEVICE_URL, 'POST', device)
+            const data = await req.request(api.API_DEVICE_SAVE_URL, 'POST', device)
             const index = state.devices.findIndex(item => item.id === data.id)
             if (index > -1) {
                 commit('updateDeviceMutation', data)
@@ -106,12 +107,13 @@ export default {
             const data = await req.request(api.API_MATERIAL_URL)
             commit('fetchMaterialMutation', data)
         },
+        // admin
         async fetchMaterialsForAdmin({commit}) {
             const data = await req.request(api.API_MATERIAL_VIEW_SET_URL)
             commit('fetchMaterialMutation', data)
         },
         async addMaterial({commit, state}, material) {
-            const data = await req.request(api.API_MATERIAL_URL, 'POST', material)
+            const data = await req.request(api.API_MATERIAL_SAVE_URL, 'POST', material)
             const index = state.materials.findIndex(item => item.id === data.id)
             if (index > -1) {
                 commit('updateMaterialMutation', data)
@@ -138,12 +140,13 @@ export default {
             const data = await req.request(api.API_WORK_URL)
             commit('fetchWorkMutation', data)
         },
+        // admin
         async fetchWorksForAdmin({commit}) {
             const data = await req.request(api.API_WORK_VIEW_SET_URL)
             commit('fetchWorkMutation', data)
         },
         async addWork({commit, state}, work) {
-            const data = await req.request(api.API_WORK_URL, 'POST', work)
+            const data = await req.request(api.API_WORK_SAVE_URL, 'POST', work)
             const index = state.works.findIndex(item => item.id === data.id)
             if (index > -1) {
                 commit('updateWorkMutation', data)

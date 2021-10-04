@@ -1,6 +1,9 @@
 <template>
   <v-card>
     <v-snackbar v-model="show"
+                tile
+                transition="scroll-x-transition"
+                :outlined="outlined"
                 :color="color"
                 :multi-line="mode === 'multi-line'"
                 :top="y === 'top'"
@@ -8,11 +11,13 @@
                 :bottom="y === 'bottom'"
                 :left="x === 'left'"
                 :timeout="timeout"
+                :max-height="maxHeight"
+                :max-width="maxWidth"
                 :vertical="mode === 'vertical'">
 
       <div class="snackbar-container">
         <div class="snackbar-item">
-          <v-icon class="item" dark>{{ icon }}</v-icon>
+          <v-icon class="item" :color="colorIcon" dark>{{ icon }}</v-icon>
         </div>
 
         <div class="snackbar-item">
@@ -21,9 +26,7 @@
       </div>
 
       <template v-slot:action="{ attrs }">
-<!--        <v-btn dark text @click="show = false" tile v-bind="attrs">-->
-          <v-icon @click="show = false" v-bind="attrs" class="mr-5">mdi-close</v-icon>
-<!--        </v-btn>-->
+          <v-icon @click="show = false" :color="colorIcon" v-bind="attrs" class="mr-5" dark>mdi-close</v-icon>
       </template>
     </v-snackbar>
   </v-card>
@@ -34,11 +37,24 @@
 export default {
   name: "Notifier",
 
+  updated() {
+    const getSnackProp = JSON.parse(localStorage.getItem('snackProp'))
+    this.maxHeight = getSnackProp.h
+    this.maxWidth = getSnackProp.w
+    this.x = getSnackProp.x.name
+    this.y = getSnackProp.y.name
+    this.outlined = getSnackProp.outlined
+    this.timeout = getSnackProp.duration
+    if (this.outlined) {
+      this.colorIcon = this.color
+    } else {
+      this.colorIcon = ''
+    }
+  },
+
   created() {
 
     this.$store.subscribe((mutation, state) => {
-
-
       if (mutation.type === 'setSnack') {
 
         // switch (state.snackbar.payload.color) {
@@ -59,12 +75,11 @@ export default {
         //     //     break
         // }
 
-        this.message = state.snackbar.payload.message;
-        this.color = state.snackbar.payload.color;
-        this.icon = state.snackbar.payload.icon;
+        this.message = state.snackbar.payload.message
+        this.color = state.snackbar.payload.color
+        this.icon = state.snackbar.payload.icon
         this.show = true;
       }
-
     });
 
   },
@@ -76,7 +91,11 @@ export default {
       message: '\t',
       mode: '',
       color: '',
+      outlined: false,
+      colorIcon: '',
       timeout: 6000,
+      maxHeight: 700,
+      maxWidth: 700,
       x: '',
       y: 'top',
     }

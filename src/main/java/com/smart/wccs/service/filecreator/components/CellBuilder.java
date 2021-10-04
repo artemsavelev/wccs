@@ -5,13 +5,11 @@ import org.apache.poi.ss.util.CellRangeAddress;
 
 public class CellBuilder {
 
-
     private final Sheet sheet;
     private final CellType type = CellType.STRING;
     private Row row;
     private Cell cell;
     private final int firstCol = 0;
-
 
     public CellBuilder(Sheet sheet) {
         this.sheet = sheet;

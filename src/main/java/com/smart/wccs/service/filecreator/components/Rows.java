@@ -16,14 +16,11 @@ public enum Rows {
     ELEVENTH_ROW(10),
     TWELFTH_ROW(11);
 
-
     private final int row;
-
 
     Rows(int row) {
         this.row = row;
     }
-
 
     public int getRow() {
         return row;

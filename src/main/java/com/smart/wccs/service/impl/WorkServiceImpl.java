@@ -108,10 +108,12 @@ public class WorkServiceImpl implements WorkService {
         workFromDb.setUpdatedDate(LocalDateTime.now());
         workFromDb.setName(work.getName());
         workFromDb.setDimension(work.getDimension());
-        workFromDb.setPrice(work.getPrice());
+        if (work.getPrice() >= 0) {
+            workFromDb.setPrice(work.getPrice());
+        }
         workFromDb.setNote(work.getNote());
 
-        Work updatedWork = workRepo.save(workFromDb);
+        Work updatedWork = workRepo.saveAndFlush(workFromDb);
         log.info("IN update - work: {} successfully updated", updatedWork);
         return work;
     }

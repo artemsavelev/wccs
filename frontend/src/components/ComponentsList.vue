@@ -79,11 +79,11 @@
 <script>
 import {mapActions, mapGetters} from 'vuex'
 import env from '../../env.config.json'
-import ComponentItem from "@/components/ComponentItem";
+import ComponentItem from '@/components/ComponentItem'
 const ComponentForm = () => import('@/components/ComponentForm')
 
 export default {
-  name: 'ListComponents',
+  name: 'ComponentsList',
   components: {ComponentItem, ComponentForm},
   computed:  {
     ...mapGetters(['allDevices', 'allMaterials', 'allWorks']),
@@ -124,7 +124,8 @@ export default {
       'addToSetWork',
       'delSetDevice',
       'delSetMaterial',
-      'delSetWork'
+      'delSetWork',
+      'showSnack'
     ]),
 
     editItem(item) {
@@ -137,21 +138,37 @@ export default {
     },
 
     addItemToSet(item) {
+      const data = {
+        message: 'Запись "' + item.name + '" добавлена в набор',
+        color: 'success',
+        icon: 'mdi-check-circle'
+      }
       if (this.select === this.env.sectionDevice) {
+        this.showSnack(data)
         this.addToSetDevice(item)
       } else if (this.select === this.env.sectionMaterial) {
+        this.showSnack(data)
         this.addToSetMaterial(item)
       } else if (this.select === this.env.sectionWork) {
+        this.showSnack(data)
         this.addToSetWork(item)
       }
     },
 
     delItemFromSet(item) {
+      const data = {
+        message: 'Запись "' + item.name + '" удалена из набора',
+        color: 'info',
+        icon: 'mdi-check-circle'
+      }
       if (this.select === this.env.sectionDevice) {
+        this.showSnack(data)
         this.delSetDevice(item)
       } else if (this.select === this.env.sectionMaterial) {
+        this.showSnack(data)
         this.delSetMaterial(item)
       } else if (this.select === this.env.sectionWork) {
+        this.showSnack(data)
         this.delSetWork(item)
       }
     },
@@ -160,6 +177,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
+
 
 .main-container {
   font-size: small;

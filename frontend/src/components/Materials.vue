@@ -1,18 +1,18 @@
 <template>
   <div>
-    <HeaderTable v-bind:typeSection="typeSection"
-                 v-bind:sortName="sortByName"
-                 v-bind:sortId="sortById"/>
+    <HeaderTable :typeSection="typeSection"
+                 :sortName="sortByName"
+                 :sortId="sortById"/>
 
     <DataContent v-for="item in materials"
                  :key="item.id"
-                 v-on:remove="removeMaterial"
-                 v-bind:item="item"/>
+                 @remove="removeMaterial"
+                 :item="item"/>
 
-    <ModalForm v-on:transmitParentForm="addMaterial"
-               v-bind:typeSection="typeSection"
-               v-bind:extId="extId"
-               v-bind:data="allMaterials"/>
+    <ModalForm @transmitParentForm="addMaterial"
+               :typeSection="typeSection"
+               :extId="extId"
+               :data="allMaterials"/>
   </div>
 </template>
 
@@ -34,13 +34,22 @@ export default {
       ...mapActions(['fetchMaterials']),
       typeSection: 2,
       materials: []
-
+    }
+  },
+  watch: {
+    materialsFromDb(newVal) {
+      this.materials = newVal
+      this.$emit('transmit', this.materials)
     }
   },
   mounted() {
     // получаем данные с сервера (список материалов)
-    this.fetchMaterials();
-    // this.materials.push(...this.materialsFromDb)
+    this.fetchMaterials()
+    // загружаем если есть данные по предыдущей смете
+    if (this.materialsFromDb) {
+      this.materials.push(...this.materialsFromDb)
+      this.$emit('transmit', this.materials)
+    }
   },
   methods: {
 

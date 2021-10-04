@@ -2,6 +2,7 @@
   <div class="auth">
     <div>
 
+
         <v-text-field :label="env.login"
                       @keypress.enter="auth"
                       :rules="rules"
@@ -21,8 +22,6 @@
                       v-model="password"
                       class="mb-5"
                       counter></v-text-field>
-
-
 
         <v-btn color="primary" @click="auth" class="auth-btn" height="35" tile small outlined>{{ env.singIn }}</v-btn>
 
@@ -94,17 +93,13 @@ export default {
 
 <style scoped lang="scss">
 .auth {
-  //border: 1px solid black;
   display: flex;
   justify-content: center;
-  //width: 400px;
   height: 90%;
-
-  //margin: 25vh auto;
   align-items: center;
 
   &-btn{
-    width: 400px;
+    width: 300px;
 
   }
 }

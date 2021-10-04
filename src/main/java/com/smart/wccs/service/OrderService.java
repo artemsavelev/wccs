@@ -29,14 +29,14 @@ public interface OrderService {
      *
      * @param order
      */
-    void create(Order order);
+    Order create(Order order);
 
     /**
      *
      * @param id
      * @param order
      */
-    void update(Long id, Order order);
+    Order update(Long id, Order order);
 
     /**
      *

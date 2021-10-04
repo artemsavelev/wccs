@@ -17,7 +17,6 @@ public class MaterialController {
 
     private final MaterialService materialService;
 
-
     @Autowired
     public MaterialController(MaterialService materialService) {
         this.materialService = materialService;
@@ -44,20 +43,6 @@ public class MaterialController {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
 
-        return new ResponseEntity<>(material, HttpStatus.OK);
-    }
-
-    @PostMapping
-    @JsonView(Views.UserView.class)
-    public ResponseEntity<?> saveMaterial(@RequestBody Material material) {
-
-        if (material == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        } else if (material.getPrice() < 0) {
-            return new ResponseEntity<>("Значение цены не может быть отрицательным", HttpStatus.BAD_REQUEST);
-        }
-
-        materialService.create(material);
         return new ResponseEntity<>(material, HttpStatus.OK);
     }
 

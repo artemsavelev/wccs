@@ -2,9 +2,7 @@ package com.smart.wccs.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonView;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
@@ -15,13 +13,15 @@ import java.util.List;
 
 @Entity
 @Table(name = "material")
-@Data
+@Getter
+@Setter
+@ToString
 @NoArgsConstructor
 public class Material implements Components {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonView({Views.UserView.class, Views.AdminView.class})
+    @JsonView({Views.IdName.class, Views.UserView.class, Views.AdminView.class})
     private Long id;
 
     @CreatedDate
@@ -36,17 +36,17 @@ public class Material implements Components {
     @JsonView(Views.AdminView.class)
     private Status status;
 
-    @JsonView({Views.UserView.class, Views.AdminView.class})
+    @JsonView({Views.IdName.class, Views.UserView.class, Views.AdminView.class})
     private String name;
 
-    @JsonView({Views.UserView.class, Views.AdminView.class})
+    @JsonView({Views.IdName.class, Views.UserView.class, Views.AdminView.class})
     private String dimension;
 
     @Transient
-    @JsonView({Views.UserView.class, Views.AdminView.class})
+    @JsonView({Views.IdName.class, Views.UserView.class, Views.AdminView.class})
     private int quantity;
 
-    @JsonView({Views.UserView.class, Views.AdminView.class})
+    @JsonView({Views.IdName.class, Views.UserView.class, Views.AdminView.class})
     private double price;
 
     @JsonView({Views.UserView.class, Views.AdminView.class})
@@ -69,6 +69,9 @@ public class Material implements Components {
     @JoinColumn(name = "author_id")
     @JsonView({Views.UserView.class, Views.AdminView.class})
     private Department author;
+
+    @OneToMany(mappedBy = "material", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    List<EstimateMaterials> materials;
 
     public Material(String name) {
         this.name = name;

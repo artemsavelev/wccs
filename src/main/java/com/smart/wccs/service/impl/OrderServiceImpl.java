@@ -1,5 +1,6 @@
 package com.smart.wccs.service.impl;
 
+import com.smart.wccs.model.Department;
 import com.smart.wccs.model.Order;
 import com.smart.wccs.model.Status;
 import com.smart.wccs.model.User;
@@ -15,6 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,7 +28,6 @@ public class OrderServiceImpl implements OrderService {
     private final UserRepo userRepo;
     private final Utils utils;
 
-
     @Autowired
     public OrderServiceImpl(OrderRepo orderRepo, UserRepo userRepo, Utils utils) {
         this.orderRepo = orderRepo;
@@ -36,10 +37,10 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Page<Order> getAllOrders(Pageable pageable) {
+        Department department = userRepo.findByUsername(utils.getAuthUserName()).getDepartment();
 
-        List<Order> orders =  orderRepo.findAll(pageable)
+        List<Order> orders =  orderRepo.findAllByDepartment(department, pageable)
                 .stream()
-                .filter(o -> o.getDepartment() == userRepo.findByUsername(utils.getAuthUserName()).getDepartment())
                 .filter(o -> o.getStatus() == Status.ACTIVE)
                 .collect(Collectors.toList());
         log.info("IN getAllOrder - {} orders found", orders.size());
@@ -60,21 +61,21 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void create(Order order) {
-//        String name = order.getAuthor().getUsername();
+    public Order create(Order order) {
         User user = userRepo.findByUsername(utils.getAuthUserName());
-
         order.setCreatedDate(LocalDateTime.now());
         order.setAuthor(user);
         order.setStatus(Status.ACTIVE);
         order.setDepartment(user.getDepartment());
+        order.setVersionEstimate(Status.ACTIVE);
 
-        Order createdOrder = orderRepo.save(order);
+        Order createdOrder = orderRepo.saveAndFlush(order);
         log.info("IN create - order: {} successfully created", createdOrder);
+        return createdOrder;
     }
 
     @Override
-    public void update(Long id, Order order) {
+    public Order update(Long id, Order order) {
         Order orderFromDb = orderRepo.findById(id).orElseThrow(() ->
                 new ObjectNotFoundException(id,
                         "IN update - order with id: " + id + " not updated. Order not found "));
@@ -83,28 +84,28 @@ public class OrderServiceImpl implements OrderService {
         orderFromDb.setCustomer(order.getCustomer());
         orderFromDb.setAddress(order.getAddress());
 
-        Order createdOrder = orderRepo.save(orderFromDb);
-        log.info("IN update - order: {} successfully updated", createdOrder);
+        Order updatedOrder = orderRepo.saveAndFlush(orderFromDb);
+        log.info("IN update - order: {} successfully updated", updatedOrder);
+        return updatedOrder;
     }
 
     @Override
     public void delete(Long id) {
         Order order = orderRepo.findById(id).orElseThrow(() ->
                 new ObjectNotFoundException(id, "IN delete - delete: " + id + " not deleted. Order not found "));
-
 //        orderRepo.deleteById(id);
-
         order.setStatus(Status.DELETED);
-        orderRepo.save(order);
+        orderRepo.saveAndFlush(order);
         log.info("IN delete - order with id: {} successfully deleted", id);
     }
 
     @Override
     public List<Order> search(String value) {
+        Department department = userRepo.findByUsername(utils.getAuthUserName()).getDepartment();
 
         long start = System.currentTimeMillis();
 
-        List<Order> orders = orderRepo.findOrders(value)
+        List<Order> orders = orderRepo.findOrdersByDepartment(department, value)
                 .stream()
                 .filter(o -> o.getStatus() == Status.ACTIVE)
                 .collect(Collectors.toList());

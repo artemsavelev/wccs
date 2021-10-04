@@ -1,7 +1,10 @@
 package com.smart.wccs.service.filecreator;
 
+import com.smart.wccs.dto.EstimateDto;
 import com.smart.wccs.model.Components;
+import com.smart.wccs.model.Device;
 import com.smart.wccs.model.Estimate;
+import com.smart.wccs.model.Status;
 import com.smart.wccs.service.filecreator.components.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.*;
@@ -25,28 +28,22 @@ public class ExcelDocument implements FileCreator {
 
     @Value("${tax.percent}")
     private int tax;
-
     private String keyEstimate;
-
     private final int fontDefaultSize = 8;
-
     private int fontTitleSize = 12;
-
     private Workbook workbook;
-
     private Sheet sheet;
 
     @Override
-    public void createFile(Estimate estimate) {
+    public String createFile(EstimateDto estimate) {
 
-        if ("ПРЕДВАРИТЕЛЬНАЯ".equals(estimate.getKey())) {
+        if (estimate.getKey() == Status.ACTIVE) {
             keyEstimate = "ПРЕДВАРИТЕЛЬНАЯ";
         } else {
             keyEstimate = "ФАКТИЧЕСКАЯ";
         }
 
         workbook = new XSSFWorkbook();
-
         sheet = workbook.createSheet("Смета " + keyEstimate);
 
         if (workbook instanceof XSSFWorkbook) {
@@ -95,8 +92,7 @@ public class ExcelDocument implements FileCreator {
                 .row(Rows.FIFTH_ROW.getRow())
                 .cell()
                 .value("составил: " +
-                        estimate.getAuthor().getLastName() + " " +
-                        estimate.getAuthor().getFirstName() + " " +
+                        estimate.getAuthor() + " " +
                         estimate.getCreatedDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
                 .style(getStyle(fontDefaultSize))
 
@@ -154,7 +150,6 @@ public class ExcelDocument implements FileCreator {
                         .wrapText(true)
                         .buildStyle());
 
-
         // секция (Активное оборудование)
         sectionHeader(Rows.TENTH_ROW.getRow(), "1. Активное оборудование");
         headerTable(Rows.ELEVENTH_ROW.getRow());
@@ -164,9 +159,6 @@ public class ExcelDocument implements FileCreator {
         int startRowDevice = Rows.TWELFTH_ROW.getRow() + listDevice.size();
         totalSum(Rows.TWELFTH_ROW.getRow(), startRowDevice, "ИТОГО за активное оборудование: ");
         int lastRowDevice = startRowDevice + 1;
-
-
-
 
         // секция (Материалы и оборудование)
         sectionHeader(lastRowDevice, "2. Материалы и оборудование");
@@ -178,9 +170,6 @@ public class ExcelDocument implements FileCreator {
         totalSum(lastRowDevice + 2, startRowMaterial, "ИТОГО за материалы и оборудование: ");
         int lastRowMaterial = startRowMaterial + 1;
 
-
-
-
         // секция (Работы)
         sectionHeader(lastRowMaterial, "3. Работы");
         headerTable(lastRowMaterial + 1);
@@ -191,9 +180,6 @@ public class ExcelDocument implements FileCreator {
         totalSum(lastRowMaterial + 2, startRowWork, "ИТОГО за работы: ");
         int lastRowWork = startRowWork + 1;
 
-
-
-
         new CellBuilder(sheet)
                 .mergedRegion(lastRowWork, Cols.SIXTH_COL)
                 .row(lastRowWork)
@@ -201,8 +187,6 @@ public class ExcelDocument implements FileCreator {
                 .cell()
                 .value("")
                 .style(getStyle(fontDefaultSize));
-
-
 
         new CellBuilder(sheet)
                 // total tax
@@ -263,14 +247,11 @@ public class ExcelDocument implements FileCreator {
                         .dataFormat((short) 0x27)
                         .buildStyle());
 
-
-
         String fileName = estimate.getAddress() + " " +
                 estimate.getCustomer() + " " +
                 estimate.getExtId() + " " +
+                System.currentTimeMillis() + " " +
                 keyEstimate + ".xlsx";
-
-
 
 
         try (FileOutputStream outFile = new FileOutputStream(getFile(fileName))) {
@@ -278,10 +259,10 @@ public class ExcelDocument implements FileCreator {
         } catch (IOException e) {
             log.error("IN createFile - create estimate {} : error {}", e.getMessage(), e.getStackTrace());
         }
+        return getValidFileName(fileName);
     }
 
     private CellStyle getStyle() {
-
         return new StyleBuilder(workbook)
                 .font(new FontBuilder(workbook)
                         .fontName()
@@ -294,9 +275,7 @@ public class ExcelDocument implements FileCreator {
                 .buildStyle();
     }
 
-
     private CellStyle getStyle(int fontSize) {
-
         return new StyleBuilder(workbook)
                 .font(new FontBuilder(workbook)
                         .fontName()
@@ -306,7 +285,6 @@ public class ExcelDocument implements FileCreator {
                 .horizontalAlign(HorizontalAlignment.CENTER)
                 .buildStyle();
     }
-
 
     private void sectionHeader(int row, String value) {
         new CellBuilder(sheet)
@@ -324,12 +302,9 @@ public class ExcelDocument implements FileCreator {
                         .verticalAlign(VerticalAlignment.BOTTOM)
                         .horizontalAlign(HorizontalAlignment.LEFT)
                         .buildStyle());
-
     }
 
-
     private void headerTable(int row) {
-
         new CellBuilder(sheet)
                 .row(row)
                 .heightRow(HeightCell.HEIGHT_CELL_DEFAULT.getIndex())
@@ -356,10 +331,7 @@ public class ExcelDocument implements FileCreator {
                 .cell(Cols.SIXTH_COL.getCol())
                 .value("Сумма")
                 .style(getStyle());
-
     }
-
-
 
     private void totalSum(int startRow, int lastRowComponent, String value) {
         new CellBuilder(sheet)
@@ -390,9 +362,7 @@ public class ExcelDocument implements FileCreator {
                         .horizontalAlign(HorizontalAlignment.CENTER)
                         .dataFormat((short) 0x27)
                         .buildStyle());
-
     }
-
 
     private File getDir() {
         // проверяем существует ли папка
@@ -402,29 +372,26 @@ public class ExcelDocument implements FileCreator {
             uploadDir.mkdir();
             log.info("Dir '{}' is created", uploadDir);
         }
-
         return uploadDir;
     }
 
-
-
-    private File getFile(String fileName) throws IOException {
-
+    public File getFile(String fileName) throws IOException {
         String validFileName = getValidFileName(fileName);
-
         log.info("Save file in valid file name '{}'", validFileName);
-
         return new File(getDir() + File.separator + validFileName);
     }
 
-
+    // фильтруем символы которые не допустимы в названиях файлов
     public String getValidFileName(String fileName) {
 
-        String newFileName = fileName.replace("^\\.+", "").replaceAll("[\\\\/:*%,?\"<>|]", " ");
+        String newFileName = fileName
+                .replace("^\\.+", "")
+                .replace("/", "_")
+                .replaceAll("[:*%,?\"<>|]", " ");
 
-        if(newFileName.length() == 0)
+        if(newFileName.length() == 0) {
             throw new IllegalStateException("File Name " + fileName + " results in a empty fileName!");
-
+        }
         return newFileName;
     }
 

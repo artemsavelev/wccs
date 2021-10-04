@@ -1,35 +1,33 @@
-
 import SockJS from 'sockjs-client'
-import { Stomp } from '@stomp/stompjs'
+import {Stomp} from '@stomp/stompjs'
+import api from '@/api/backendApi'
 
 let stompClient = null
 const handlers = []
+const user = JSON.parse(localStorage.getItem('user'))
 
-// функция коннекта websocket
+// функция инициализации соединения по websocket
 export function connect() {
 
-    const user = JSON.parse(localStorage.getItem('user'));
-
-    const socket = new SockJS('http://192.168.88.2:8080/gs-guide-websocket')
-
-    stompClient = Stomp.over(socket)
-    stompClient.debug = () => {}
-    stompClient.connect({
-        'Content-type': 'application/json',
-        'Authorization': 'bearer_' + user.token
-    }, () => {
-        // console.log(frame)
-        stompClient.subscribe('/topic/messages', message => {
-            handlers.forEach(handler => handler(JSON.parse(message.body)))
-        }, {
-            'Content-type': 'application/json',
-            'Authorization': 'bearer_' + user.token
-        })
+    stompClient = Stomp.over(() => {
+        return new SockJS(api.host + ':8080/gs-guide-websocket/')
+    })
+    stompClient.debug = (e) => {
+        console.log(e)
+    }
+    stompClient.reconnect_delay = 5000
+    stompClient.connect({}, () => {
+        if (user) {
+            stompClient.subscribe('/topic/messages/' + user.department.id, message => {
+                handlers.forEach(handler => {
+                    handler(JSON.parse(message.body))
+                })
+            })
+        }
     })
 }
 
-// функция заполнения массива сообщениями
-// addMessageMutations в компоненте App.vue
+// функция заполнения массива сообщениями в компоненте App.vue
 export function addHandler(handler) {
     handlers.push(handler)
 }
@@ -38,14 +36,11 @@ export function disconnect() {
     if (stompClient !== null) {
         stompClient.disconnect()
     }
-    //console.log("Disconnected")
 }
 
 // функция отправки сообщений через websocket
+// не используется если есть WsSender на бекэнде
 export function sendMessage(message) {
-
-    const user = JSON.parse(localStorage.getItem('user'));
-
     const username = user.username
     const order = {
         ...message,
@@ -53,9 +48,5 @@ export function sendMessage(message) {
             username,
         }
     }
-
-    stompClient.send("/app/sendMessage", {
-        'Content-type': 'application/json',
-        'Authorization': 'bearer_' + user.token
-    }, JSON.stringify(order))
+    stompClient.send("/app/sendMessage", {}, JSON.stringify(order))
 }
