@@ -106,10 +106,6 @@ public class EstimateServiceImpl implements EstimateService {
             ));
         }
 
-        // create excel file
-//        fileFactory.creator();
-//        fileCreator.createFile(estimate);
-
         log.info("IN create - estimate: {} successfully added", createdEstimate);
         return createdEstimate;
     }
@@ -130,8 +126,6 @@ public class EstimateServiceImpl implements EstimateService {
                 .sorted(Comparator.comparing(Estimate::getId))
                 .collect(Collectors.toList());
 
-
-
         EstimateDto estimateDto = EstimateDto.estimateDtoList(estimates)
                 .stream()
                 .reduce((a, b) -> b)
@@ -147,7 +141,7 @@ public class EstimateServiceImpl implements EstimateService {
 
     @Override
     public Estimate getById(Long id) {
-        Estimate estimate = estimateRepo.getOne(id);
+        Estimate estimate = estimateRepo.getById(id);
         log.info("IN findById - estimate found by id: {}", estimate);
         return estimate;
     }

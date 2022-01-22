@@ -1,6 +1,6 @@
 package com.smart.wccs.service.filecreator.components;
 
-public interface RowTest {
+public interface Rows {
 
     int FIRST_ROW = 0;
     int SECOND_ROW = 1;

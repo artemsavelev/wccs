@@ -34,19 +34,19 @@ public class Data {
                     .value(i)
                     .style(getStyle())
 
-                    .cell(Cols.SECOND_COL.getCol())
+                    .cell(ColsTest.SECOND_COL.getCol())
                     .value(comp.getName())
                     .style(getStyle())
 
-                    .cell(Cols.THIRD_COL.getCol())
+                    .cell(ColsTest.THIRD_COL.getCol())
                     .value(comp.getDimension())
                     .style(getStyle())
 
-                    .cell(Cols.FOURTH_COL.getCol(), CellType.NUMERIC)
+                    .cell(ColsTest.FOURTH_COL.getCol(), CellType.NUMERIC)
                     .value(comp.getQuantity())
                     .style(getStyle())
 
-                    .cell(Cols.FIFTH_COL.getCol(), CellType.NUMERIC)
+                    .cell(ColsTest.FIFTH_COL.getCol(), CellType.NUMERIC)
                     .value(comp.getPrice())
                     .style(new StyleBuilder(workbook)
                             .font(new FontBuilder(workbook)
@@ -60,7 +60,7 @@ public class Data {
                             .dataFormat((short) 0x27)
                             .buildStyle())
 
-                    .cell(Cols.SIXTH_COL.getCol(), CellType.FORMULA)
+                    .cell(ColsTest.SIXTH_COL.getCol(), CellType.FORMULA)
                     .cellFormula(row + 1)
                     .style(new StyleBuilder(workbook)
                             .font(new FontBuilder(workbook)

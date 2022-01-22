@@ -4,7 +4,7 @@ import api from '../api/backendApi'
 
 export default {
     async request(url, method = 'GET', data = null) {
-        try {
+        // try {
             const user = JSON.parse(localStorage.getItem('user'))
             const headers = {}
             let body
@@ -35,31 +35,36 @@ export default {
                 }
                 return await response.json()
             } else {
-                response.text().then(e => {
-                    const err = JSON.parse(e)
-                    if (url === api.API_ORDER_URL && response.status === 401) {
-                        const dataError = {
-                            message: 'Error code - ' + response.status + ': Токен JWT истек или недействителен. Требуется авторизация.',
-                            color: 'error',
-                            icon: 'mdi-alert-circle'
-                        }
-                        store.dispatch('showSnack', dataError)
-                        store.dispatch('logout')
-                    } else {
-                        const dataError = {
-                            message: 'Error code - ' + err.status + ': С сообщением "'
-                                + err.error + ': ' + err.message + ' ' + err.timestamp + '".',
-                            color: 'error',
-                            icon: 'mdi-alert-circle'
-                        }
-                        console.error(err)
-                        store.dispatch('showSnack', dataError)
-                    }
-                })
+
+                const reader = response.body.getReader()
+                const err = new TextDecoder().decode((await reader.read()).value)
+                const error = JSON.parse(err)
+
+                console.error(error)
+
+                const dataError = {
+                    message: new Date(error.timestamp).toLocaleString('ru-RU') + ' - Error code - ' + error.status + ': С сообщением "'
+                        + error.error + ': ' + error.message + '".',
+                    color: 'error',
+                    icon: 'mdi-alert-circle'
+                }
+
+                if (error.status === 401) {
+
+                    dataError.message = 'Error code - ' + error.status + ': Токен JWT истек или недействителен. Требуется авторизация.'
+                    await store.dispatch('showSnack', dataError)
+                    await store.dispatch('logout')
+
+                } else {
+                    await store.dispatch('showSnack', dataError)
+                }
+
             }
 
-        } catch (e) {
-            console.warn(e)
-        }
+        // } catch (e) {
+        //     // console.warn(e)
+        // }
     }
+
+
 }

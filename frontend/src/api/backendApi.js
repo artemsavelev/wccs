@@ -12,7 +12,7 @@ console.info(process.env.NODE_ENV)
 
 export default {
     host,
-    API_REGISTRATION_URL: API_BASE_URL + 'admin/registration',
+    API_REGISTRATION_URL: API_BASE_URL + 'admin/registration/',
     API_ADMIN_URL: API_BASE_URL + 'admin/users',
     API_AUTH_URL: API_BASE_URL + 'auth/login',
     API_USER_URL: API_BASE_URL + 'user/',

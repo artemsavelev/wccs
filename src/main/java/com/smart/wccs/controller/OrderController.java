@@ -5,8 +5,10 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.smart.wccs.dto.EventType;
 import com.smart.wccs.dto.ObjectType;
 import com.smart.wccs.dto.OrderPageDto;
+import com.smart.wccs.exceptions.BadRequestException;
 import com.smart.wccs.model.Order;
 import com.smart.wccs.model.Views;
+import com.smart.wccs.repo.OrderRepo;
 import com.smart.wccs.service.OrderService;
 import com.smart.wccs.util.WsSender;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,11 +28,13 @@ import java.util.function.BiConsumer;
 public class OrderController {
 
     public static final int ORDERS_PER_PAGE = 30;
+    private final OrderRepo orderRepo;
     private final OrderService orderService;
     private final BiConsumer<EventType, Order> wsSender;
 
     @Autowired
-    public OrderController(OrderService orderService, WsSender wsSender) {
+    public OrderController(OrderRepo orderRepo, OrderService orderService, WsSender wsSender) {
+        this.orderRepo = orderRepo;
         this.orderService = orderService;
         this.wsSender = wsSender.getSender(ObjectType.ORDER, Views.UserView.class);
     }
@@ -66,6 +70,17 @@ public class OrderController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
+        orderRepo.findAll()
+                .stream()
+                .filter(x -> x.getExtId().equalsIgnoreCase(order.getExtId()) &&
+                        x.getCustomer().equalsIgnoreCase(order.getCustomer()) &&
+                        x.getAddress().equalsIgnoreCase(order.getAddress()))
+                .findAny()
+                .ifPresent(i -> {
+                    throw new BadRequestException("Задача с ID \"" + order.getExtId() + "\" с заказчиком \"" +
+                            order.getCustomer() + "\" с адресом \"" + order.getAddress() + "\" уже существует.");
+                });
+
         Order orderFromDb = orderService.create(order);
         // ws
         wsSender.accept(EventType.CREATE, orderFromDb);
@@ -80,7 +95,7 @@ public class OrderController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
-        Order orderFromDb = orderService.update(id, order);;
+        Order orderFromDb = orderService.update(id, order);
         // ws
         wsSender.accept(EventType.UPDATE, orderFromDb);
         return new ResponseEntity<>(orderFromDb, HttpStatus.OK);

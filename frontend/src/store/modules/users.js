@@ -15,7 +15,17 @@ export default {
                 ...state.users,
                 user
             ]
-        }
+        },
+        updateUserMutation(state, user) {
+            if (user) {
+                const updateIndex = state.users.findIndex(item => item.id === user.id)
+                state.users = [
+                    ...state.users.slice(0, updateIndex),
+                    user,
+                    ...state.users.slice(updateIndex + 1)
+                ]
+            }
+        },
     },
 
     actions: {
@@ -28,8 +38,8 @@ export default {
             commit('addUserMutation', data)
         },
         async editUser({commit}, user) {
-            const data = await req.request(api.API_REGISTRATION_URL, 'PUT', user)
-            commit('addUserMutation', data)
+            const data = await req.request(api.API_REGISTRATION_URL + user.id, 'PUT', user)
+            commit('updateUserMutation', data)
         },
     },
 

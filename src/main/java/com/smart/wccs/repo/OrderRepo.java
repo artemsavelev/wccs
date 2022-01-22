@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface OrderRepo extends JpaRepository<Order, Long> {
+
     /**
      * Поисковый запрос в БД на совпадение по полям extId, customer, address
      * @param department отдел авторизированного пользователя (для изоляции по отделу)

@@ -1,6 +1,7 @@
 package com.smart.wccs.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import com.smart.wccs.exceptions.BadRequestException;
 import com.smart.wccs.model.Material;
 import com.smart.wccs.model.Views;
 import com.smart.wccs.service.ActionToSetService;
@@ -68,7 +69,7 @@ public class AdminMaterialController {
         if (material == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         } else if (material.getPrice() < 0) {
-            return new ResponseEntity<>("Значение цены не может быть отрицательным", HttpStatus.BAD_REQUEST);
+            throw new BadRequestException("Значение цены не может быть отрицательным");
         }
 
         materialService.update(id, material);
@@ -83,7 +84,7 @@ public class AdminMaterialController {
         if (material == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         } else if (material.getPrice() < 0) {
-            return new ResponseEntity<>("Значение цены не может быть отрицательным", HttpStatus.BAD_REQUEST);
+            throw new BadRequestException("Значение цены не может быть отрицательным");
         }
 
         materialService.create(material);

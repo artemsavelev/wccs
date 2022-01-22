@@ -101,7 +101,7 @@
 
 
     <v-navigation-drawer width="400" app clipped right>
-      <UserForm :editUser="selected"/>
+      <UserForm :edit="selected"/>
     </v-navigation-drawer>
 
 
@@ -114,12 +114,13 @@ import env from '../../env.config.json'
 import {mapActions, mapGetters} from 'vuex'
 import UserForm from '@/components/UserForm'
 import avatars from 'vuejs-avataaars'
+import Auth from "@/views/Auth";
 
 
 const pause = ms => new Promise(resolve => setTimeout(resolve, ms))
 export default {
   name: 'Users',
-  components: {UserForm, avatars},
+  components: {Auth, UserForm, avatars},
   data: () => ({
 
     ...mapActions(['fetchUsers']),

@@ -1,6 +1,6 @@
 package com.smart.wccs.service.filecreator.components;
 
-public enum Rows {
+public enum RowsTest {
 
     FIRST_ROW(0),
     SECOND_ROW(1),
@@ -17,7 +17,7 @@ public enum Rows {
 
     private final int row;
 
-    Rows(int row) {
+    RowsTest(int row) {
         this.row = row;
     }
 

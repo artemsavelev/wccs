@@ -47,7 +47,7 @@
         <!-- диалоговое окно выбора сметы -->
         <EstimateChose :visibleEstimateChose="visibleEstimateChose" :estimates="estimates" @chose="chose" @visibleEstimateChose="estimateChose"/>
         <!-- диалоговое окно ввода номера, если самостоятельно переключаем тип сметы -->
-        <ExtId :visibleExtId="visibleExtId" @sendValue="sendValue" @visibleExtId="extId"/>
+<!--        <ExtId :visibleExtId="visibleExtId" @sendValue="sendValue" @visibleExtId="extId"/>-->
       </v-card-text>
 
       <template>
@@ -227,9 +227,9 @@ export default {
         this.order.extId = this.order.extId.split('-')[0]
       }
     },
-    sendValue(value) {
-      this.order.extId = this.order.extId + '-' + value
-    },
+    // sendValue(value) {
+    //   this.order.extId = this.order.extId + '-' + value
+    // },
     async create() {
       const extId = this.obj.extId ? this.obj.extId + '-' + this.order.extId : this.order.extId
       this.keyEstimate = this.ex ? this.key = 'ПРЕДВАРИТЕЛЬНАЯ' : this.key = 'ФАКТИЧЕСКАЯ'

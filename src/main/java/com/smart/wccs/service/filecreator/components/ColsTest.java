@@ -1,6 +1,6 @@
 package com.smart.wccs.service.filecreator.components;
 
-public enum Cols {
+public enum ColsTest {
 
     FIRST_COL(0),
     SECOND_COL(1),
@@ -13,7 +13,7 @@ public enum Cols {
 
     private final int col;
 
-    Cols(int col) {
+    ColsTest(int col) {
         this.col = col;
     }
 

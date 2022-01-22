@@ -15,18 +15,18 @@ public class CellBuilder {
         this.sheet = sheet;
     }
 
-    public CellBuilder mergedRegion(Rows numRow, Cols lastCol) {
-        this.sheet.addMergedRegion(new CellRangeAddress(numRow.getRow(), numRow.getRow(), firstCol, lastCol.getCol()));
+//    public CellBuilder mergedRegion(RowsTest row, Cols col) {
+//        this.sheet.addMergedRegion(new CellRangeAddress(row.getRow(), row.getRow(), firstCol, col.getCol()));
+//        return this;
+//    }
+
+    public CellBuilder mergedRegion(int row, int col) {
+        this.sheet.addMergedRegion(new CellRangeAddress(row, row, firstCol, col));
         return this;
     }
 
-    public CellBuilder mergedRegion(int numRow, Cols lastCol) {
-        this.sheet.addMergedRegion(new CellRangeAddress(numRow, numRow, firstCol, lastCol.getCol()));
-        return this;
-    }
-
-    public CellBuilder row(int numRow) {
-        this.row = sheet.createRow(numRow);
+    public CellBuilder row(int row) {
+        this.row = sheet.createRow(row);
         return this;
     }
 
@@ -91,9 +91,23 @@ public class CellBuilder {
         return this;
     }
 
-    // формула вычета налога
+    /**
+     * Формула вычета налога
+     *
+     * Посчитать НДС в том числе — это значит выделить налог, который заложен в итоговую сумму. Здесь для вычисления используют формулы:
+     * НДС = С / 120 × 20 — если нужно посчитать НДС 20% (с 01.01.2019),
+     * НДС = С / 118 × 18 — если нужно посчитать НДС 18% (до 01.01.2019),
+     * НДС = С / 110 × 10 — если ставка налога 10%,
+     * Где: С — сумма, включающая НДС.
+     *
+     * @param firstSum сумма по первому блоку (Активное оборудование)
+     * @param secondSum сумма по второму блоку (Материалы и оборудование)
+     * @param thirdSum сумма по третьему блоку (Работы)
+     * @param tax налоговый процент
+     * @return текущий контекст
+     */
     public CellBuilder cellFormula(int firstSum, int secondSum,  int thirdSum, int tax) {
-        String formula = "(F" + firstSum + "+F" + secondSum + "+F" + thirdSum + ")*" + tax + "/100";
+        String formula = "(F" + firstSum + "+F" + secondSum + "+F" + thirdSum + ")/" + (100 + tax) + "*" + tax;
         this.cell.setCellFormula(formula);
         return this;
     }

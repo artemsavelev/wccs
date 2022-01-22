@@ -3,17 +3,16 @@ package com.smart.wccs.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.smart.wccs.exceptions.BadRequestException;
-import com.smart.wccs.model.*;
+import com.smart.wccs.model.User;
+import com.smart.wccs.model.Views;
 import com.smart.wccs.repo.UserRepo;
-import com.smart.wccs.service.*;
-import org.hibernate.ObjectNotFoundException;
+import com.smart.wccs.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping(value = "/api/v1/admin/")
@@ -52,48 +51,72 @@ public class AdminController {
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
-    @PostMapping("registration")
+    @RequestMapping(value = "registration/", method = RequestMethod.POST)
     @JsonView(Views.AdminView.class)
     public ResponseEntity<?> registration(@RequestBody User user) {
 
-        boolean email = userService.getAllUsers()
+        boolean isEmail = userService.getAllUsers()
                 .stream()
                 .anyMatch(e -> e.getEmail().equalsIgnoreCase(user.getEmail()));
 
-        boolean username = userService.getAllUsers()
+        boolean isUsername = userService.getAllUsers()
                 .stream()
                 .anyMatch(u -> u.getUsername().equalsIgnoreCase(user.getUsername()));
 
-//        userService.getAllUsers()
-//                .stream()
-//                .map(User::getUsername)
-//                .filter(x -> x.equalsIgnoreCase(user.getUsername()))
-//                .findAny()
-//                .ifPresent(i -> {
-//                    new ResponseEntity<>("Пользователь с login \"" + user.getUsername()
-//                            + "\" уже существует. Придумайте другой логин", HttpStatus.BAD_REQUEST);
-//                });
-
         if (user == null) {
-            return new ResponseEntity<>("Вы не передали никаких данных", HttpStatus.BAD_REQUEST);
+            throw new BadRequestException("Вы не передали никаких данных");
         }
 
         if (user.getPositions().isEmpty()) {
-            return new ResponseEntity<>("Поле должности не должно быть пустым", HttpStatus.BAD_REQUEST);
+            throw new BadRequestException("Поле должности не должно быть пустым");
         } else if (user.getPositions().size() > 1) {
-            return new ResponseEntity<>("Поле должности не может иметь несколько значений", HttpStatus.BAD_REQUEST);
+            throw new BadRequestException("Поле должности не может иметь несколько значений");
         }
 
-        if (email) {
-            return new ResponseEntity<>("Пользователь с email \"" + user.getEmail()
-                    + "\" уже существует. Введите другой email", HttpStatus.BAD_REQUEST);
+        if (isEmail) {
+            throw new BadRequestException("Пользователь с email \"" + user.getEmail()
+                    + "\" уже существует. Введите другой email");
         }
 
-        if (username) {
-            return new ResponseEntity<>("Пользователь с login \"" + user.getUsername()
-                    + "\" уже существует. Придумайте другой логин", HttpStatus.BAD_REQUEST);
+        if (isUsername) {
+            throw new BadRequestException("Пользователь с login \"" + user.getUsername()
+                    + "\" уже существует. Придумайте другой логин");
         }
-
         return ResponseEntity.ok(userService.register(user));
+    }
+
+    @RequestMapping(value = "registration/{id}", method = RequestMethod.PUT)
+    @JsonView(Views.AdminView.class)
+    public ResponseEntity<?> updateUser(@PathVariable(name = "id") Long id, @RequestBody User user) {
+
+        if (user.getPositions().isEmpty()) {
+            throw new BadRequestException("Поле должности не должно быть пустым");
+        } else if (user.getPositions().size() > 1) {
+            throw new BadRequestException("Поле должности не может иметь несколько значений");
+        }
+
+        userService.getAllUsers()
+                .stream()
+                .filter(x -> !x.getId().equals(id))
+                .map(User::getEmail)
+                .filter(x -> x.equalsIgnoreCase(user.getEmail()))
+                .findAny()
+                .ifPresent(i -> {
+                    throw new BadRequestException("Пользователь с email \"" + user.getEmail()
+                            + "\" уже существует. Введите другой email");
+                });
+
+        userService.getAllUsers()
+                .stream()
+                .filter(x -> !x.getId().equals(id))
+                .map(User::getUsername)
+                .filter(x -> x.equalsIgnoreCase(user.getUsername()))
+                .findAny()
+                .ifPresent(i -> {
+                    throw new BadRequestException("Пользователь с login \"" + user.getUsername()
+                            + "\" уже существует. Придумайте другой логин");
+                });
+
+        return ResponseEntity.ok(userService.update(id, user));
     }
 }

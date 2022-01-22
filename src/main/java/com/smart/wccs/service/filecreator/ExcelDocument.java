@@ -2,8 +2,6 @@ package com.smart.wccs.service.filecreator;
 
 import com.smart.wccs.dto.EstimateDto;
 import com.smart.wccs.model.Components;
-import com.smart.wccs.model.Device;
-import com.smart.wccs.model.Estimate;
 import com.smart.wccs.model.Status;
 import com.smart.wccs.service.filecreator.components.*;
 import lombok.extern.slf4j.Slf4j;
@@ -47,7 +45,7 @@ public class ExcelDocument implements FileCreator {
         sheet = workbook.createSheet("Смета " + keyEstimate);
 
         if (workbook instanceof XSSFWorkbook) {
-            ((XSSFWorkbook) workbook).getProperties().getCoreProperties().setCreator(estimate.getAuthor().toString());
+            ((XSSFWorkbook) workbook).getProperties().getCoreProperties().setCreator(estimate.getAuthor());
         }
 
         List<Components> listDevice = new ArrayList<>(estimate.getDevices());
@@ -59,7 +57,7 @@ public class ExcelDocument implements FileCreator {
         new CellBuilder(sheet)
                 // первая строка
                 .mergedRegion(Rows.FIRST_ROW, Cols.SIXTH_COL)
-                .row(Rows.FIRST_ROW.getRow())
+                .row(Rows.FIRST_ROW)
                 .heightRow(HeightCell.HEIGHT_CELL_TITLE.getIndex())
                 .cell()
                 .value("ФАКТИЧЕСКАЯ".equals(keyEstimate) ? "Смета" : "Смета " + keyEstimate)
@@ -67,7 +65,7 @@ public class ExcelDocument implements FileCreator {
 
                 // вторая строка
                 .mergedRegion(Rows.SECOND_ROW, Cols.SIXTH_COL)
-                .row(Rows.SECOND_ROW.getRow())
+                .row(Rows.SECOND_ROW)
                 .heightRow(HeightCell.HEIGHT_CELL_DEFAULT.getIndex())
                 .cell()
                 .value("№: " + estimate.getExtId())
@@ -75,21 +73,21 @@ public class ExcelDocument implements FileCreator {
 
                 // третья строка
                 .mergedRegion(Rows.THIRD_ROW, Cols.SIXTH_COL)
-                .row(Rows.THIRD_ROW.getRow())
+                .row(Rows.THIRD_ROW)
                 .cell()
                 .value("адрес: " + estimate.getAddress())
                 .style(getStyle(fontDefaultSize))
 
                 // четвертая строка
                 .mergedRegion(Rows.FOURTH_ROW, Cols.SIXTH_COL)
-                .row(Rows.FOURTH_ROW.getRow())
+                .row(Rows.FOURTH_ROW)
                 .cell()
                 .value("заказчик: " + estimate.getCustomer())
                 .style(getStyle(fontDefaultSize))
 
                 // пятая строка
                 .mergedRegion(Rows.FIFTH_ROW, Cols.SIXTH_COL)
-                .row(Rows.FIFTH_ROW.getRow())
+                .row(Rows.FIFTH_ROW)
                 .cell()
                 .value("составил: " +
                         estimate.getAuthor() + " " +
@@ -98,14 +96,14 @@ public class ExcelDocument implements FileCreator {
 
                 // шестая строка
                 .mergedRegion(Rows.SIXTH_ROW, Cols.SIXTH_COL)
-                .row(Rows.SIXTH_ROW.getRow())
+                .row(Rows.SIXTH_ROW)
                 .cell()
                 .value("")
                 .style(getStyle(fontDefaultSize))
 
                 // седьмая строка
                 .mergedRegion(Rows.SEVENTH_ROW, Cols.SIXTH_COL)
-                .row(Rows.SEVENTH_ROW.getRow())
+                .row(Rows.SEVENTH_ROW)
                 .cell()
                 .value("Описание работ :")
                 .style(new StyleBuilder(workbook)
@@ -119,7 +117,7 @@ public class ExcelDocument implements FileCreator {
 
                 // восьмая строка
                 .mergedRegion(Rows.EIGHTH_ROW, Cols.SIXTH_COL)
-                .row(Rows.EIGHTH_ROW.getRow())
+                .row(Rows.EIGHTH_ROW)
                 .heightRow(HeightCell.HEIGHT_CELL_DESCRIPTION.getIndex())
                 .cell()
                 .value(estimate.getWorkDescription())
@@ -135,7 +133,7 @@ public class ExcelDocument implements FileCreator {
 
                 // девятая строка
                 .mergedRegion(Rows.NINTH_ROW, Cols.SIXTH_COL)
-                .row(Rows.NINTH_ROW.getRow())
+                .row(Rows.NINTH_ROW)
                 .heightRow(HeightCell.HEIGHT_CELL_TEXT.getIndex())
                 .cell()
                 .value(estimate.getSimpleText())
@@ -151,13 +149,13 @@ public class ExcelDocument implements FileCreator {
                         .buildStyle());
 
         // секция (Активное оборудование)
-        sectionHeader(Rows.TENTH_ROW.getRow(), "1. Активное оборудование");
-        headerTable(Rows.ELEVENTH_ROW.getRow());
+        sectionHeader(Rows.TENTH_ROW, "1. Активное оборудование");
+        headerTable(Rows.ELEVENTH_ROW);
 
         // Data device
-        new Data(workbook, sheet).getData(Rows.ELEVENTH_ROW.getRow(), listDevice);
-        int startRowDevice = Rows.TWELFTH_ROW.getRow() + listDevice.size();
-        totalSum(Rows.TWELFTH_ROW.getRow(), startRowDevice, "ИТОГО за активное оборудование: ");
+        new Data(workbook, sheet).getData(Rows.ELEVENTH_ROW, listDevice);
+        int startRowDevice = Rows.TWELFTH_ROW + listDevice.size();
+        totalSum(Rows.TWELFTH_ROW, startRowDevice, "ИТОГО за активное оборудование: ");
         int lastRowDevice = startRowDevice + 1;
 
         // секция (Материалы и оборудование)
@@ -205,7 +203,7 @@ public class ExcelDocument implements FileCreator {
                         .horizontalAlign(HorizontalAlignment.RIGHT)
                         .buildStyle())
 
-                .cell(Cols.SIXTH_COL.getCol(), CellType.FORMULA)
+                .cell(ColsTest.SIXTH_COL.getCol(), CellType.FORMULA)
                 .cellFormula(lastRowDevice, lastRowMaterial, lastRowWork, tax)
                 .style(new StyleBuilder(workbook)
                         .font(new FontBuilder(workbook)
@@ -234,7 +232,7 @@ public class ExcelDocument implements FileCreator {
                         .horizontalAlign(HorizontalAlignment.RIGHT)
                         .buildStyle())
 
-                .cell(Cols.SIXTH_COL.getCol(), CellType.FORMULA)
+                .cell(ColsTest.SIXTH_COL.getCol(), CellType.FORMULA)
                 .cellFormula(lastRowDevice, lastRowMaterial, lastRowWork)
                 .style(new StyleBuilder(workbook)
                         .font(new FontBuilder(workbook)
@@ -308,27 +306,27 @@ public class ExcelDocument implements FileCreator {
         new CellBuilder(sheet)
                 .row(row)
                 .heightRow(HeightCell.HEIGHT_CELL_DEFAULT.getIndex())
-                .cell(Cols.FIRST_COL.getCol())
+                .cell(ColsTest.FIRST_COL.getCol())
                 .value("#")
                 .style(getStyle())
 
-                .cell(Cols.SECOND_COL.getCol())
+                .cell(ColsTest.SECOND_COL.getCol())
                 .value("Наименование")
                 .style(getStyle())
 
-                .cell(Cols.THIRD_COL.getCol())
+                .cell(ColsTest.THIRD_COL.getCol())
                 .value("Ед. изм.")
                 .style(getStyle())
 
-                .cell(Cols.FOURTH_COL.getCol())
+                .cell(ColsTest.FOURTH_COL.getCol())
                 .value("Кол-во")
                 .style(getStyle())
 
-                .cell(Cols.FIFTH_COL.getCol())
+                .cell(ColsTest.FIFTH_COL.getCol())
                 .value("Цена")
                 .style(getStyle())
 
-                .cell(Cols.SIXTH_COL.getCol())
+                .cell(ColsTest.SIXTH_COL.getCol())
                 .value("Сумма")
                 .style(getStyle());
     }
@@ -350,7 +348,7 @@ public class ExcelDocument implements FileCreator {
                         .horizontalAlign(HorizontalAlignment.RIGHT)
                         .buildStyle())
 
-                .cell(Cols.SIXTH_COL.getCol(), CellType.FORMULA)
+                .cell(ColsTest.SIXTH_COL.getCol(), CellType.FORMULA)
                 .cellFormula(startRow + 1, lastRowComponent)
                 .style(new StyleBuilder(workbook)
                         .font(new FontBuilder(workbook)
@@ -386,7 +384,7 @@ public class ExcelDocument implements FileCreator {
 
         String newFileName = fileName
                 .replace("^\\.+", "")
-                .replace("/", "_")
+                .replace("/", "-")
                 .replaceAll("[:*%,?\"<>|]", " ");
 
         if(newFileName.length() == 0) {

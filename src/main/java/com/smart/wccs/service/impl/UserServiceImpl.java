@@ -109,8 +109,23 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User update(User user) {
-        return null;
+    public User update(Long id, User user) {
+        User userFromDb = userRepo.findById(id).orElseThrow();
+
+        userFromDb.setPassword(passwordEncoder.encode(user.getPassword()));
+        userFromDb.setFirstName(user.getFirstName());
+        userFromDb.setLastName(user.getLastName());
+        userFromDb.setPositions(user.getPositions());
+        userFromDb.setEmail(user.getEmail());
+        userFromDb.setUsername(user.getUsername());
+        userFromDb.setUpdatedDate(LocalDateTime.now());
+        userFromDb.setDepartment(user.getDepartment());
+
+        User updatedUser = userRepo.saveAndFlush(userFromDb);
+
+        log.info("IN update - user with username: {} successfully updated", updatedUser);
+
+        return updatedUser;
     }
 
     @Override

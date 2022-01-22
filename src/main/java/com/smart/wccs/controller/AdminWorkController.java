@@ -1,6 +1,7 @@
 package com.smart.wccs.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import com.smart.wccs.exceptions.BadRequestException;
 import com.smart.wccs.model.Views;
 import com.smart.wccs.model.Work;
 import com.smart.wccs.service.ActionToSetService;
@@ -66,9 +67,9 @@ public class AdminWorkController {
     public ResponseEntity<?> updateWork(@PathVariable(name = "id") Long id, @RequestBody Work work) {
 
         if (work == null) {
-            return new ResponseEntity<>("Данные не могут быть пустыми", HttpStatus.BAD_REQUEST);
+            throw new BadRequestException("Данные не могут быть пустыми");
         } else if (work.getPrice() < 0) {
-            return new ResponseEntity<>("Значение цены не может быть отрицательным", HttpStatus.BAD_REQUEST);
+            throw new BadRequestException("Значение цены не может быть отрицательным");
         }
 
         workService.update(id, work);
@@ -83,7 +84,7 @@ public class AdminWorkController {
         if (work == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         } else if (work.getPrice() < 0) {
-            return new ResponseEntity<>("Значение цены не может быть отрицательным", HttpStatus.BAD_REQUEST);
+            throw new BadRequestException("Значение цены не может быть отрицательным");
         }
 
         workService.create(work);

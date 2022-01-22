@@ -97,7 +97,7 @@
                 {{ env.tax + ' ' + env.taxPercent }}%:
               </div>
               <div class="tax-price font-weight-bold">
-                {{ env.taxPercent * preview.totalSum / 100 | format }}
+                {{ (preview.totalSum / (100 + env.taxPercent) * env.taxPercent).toFixed(2) | format }}
               </div>
             </div>
 

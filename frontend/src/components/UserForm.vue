@@ -117,7 +117,7 @@ import env from '../../env.config.json'
 
 export default {
   name: "AddUser",
-  props: ['editUser'],
+  props: ['edit'],
   computed: {
     ...mapGetters(['profile', 'allPositions']),
     formTitle() {
@@ -125,7 +125,7 @@ export default {
     },
   },
   watch: {
-    editUser(newVal) {
+    edit(newVal) {
       this.$refs.form.resetValidation()
       this.editedIndex = 1
       this.id = newVal.id
@@ -176,7 +176,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['addUser', 'showSnack']),
+    ...mapActions(['addUser', 'editUser', 'showSnack']),
     saveUser() {
       const positions = this.position.map(pos => {
         return this.id ? { ...pos } : { id: pos }
@@ -187,6 +187,7 @@ export default {
         this.email = this.email.replace(/[/\\<>]/g, '').toLowerCase()
 
         const user = {
+          id: this.id,
           lastName: this.lastName.trim(),
           firstName: this.firstName.trim(),
           username: this.username.trim(),
@@ -200,6 +201,8 @@ export default {
 
         if (!this.id) {
           this.addUser(user)
+        } else {
+          this.editUser(user)
         }
       } else {
         this.$refs.form.validate()
