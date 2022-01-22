@@ -1,30 +1,17 @@
 package com.smart.wccs.service.filecreator.components;
 
+public interface RowTest {
 
-public enum Rows {
-
-    FIRST_ROW(0),
-    SECOND_ROW(1),
-    THIRD_ROW(2),
-    FOURTH_ROW(3),
-    FIFTH_ROW(4),
-    SIXTH_ROW(5),
-    SEVENTH_ROW(6),
-    EIGHTH_ROW(7),
-    NINTH_ROW(8),
-    TENTH_ROW(9),
-    ELEVENTH_ROW(10),
-    TWELFTH_ROW(11);
-
-    private final int row;
-
-    Rows(int row) {
-        this.row = row;
-    }
-
-    public int getRow() {
-        return row;
-    }
-
-
+    int FIRST_ROW = 0;
+    int SECOND_ROW = 1;
+    int THIRD_ROW = 2;
+    int FOURTH_ROW = 3;
+    int FIFTH_ROW = 4;
+    int SIXTH_ROW = 5;
+    int SEVENTH_ROW = 6;
+    int EIGHTH_ROW = 7;
+    int NINTH_ROW = 8;
+    int TENTH_ROW = 9;
+    int ELEVENTH_ROW = 10;
+    int TWELFTH_ROW = 11;
 }
